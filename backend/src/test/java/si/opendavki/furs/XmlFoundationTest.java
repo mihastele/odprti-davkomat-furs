@@ -9,9 +9,9 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import si.opendavki.model.*;
 
-/** Uses SYNTHETIC fixture XSDs (not FURS's); proves wiring, rounding and failure reporting, not eDavki acceptance. */
+/** Validates against the official FURS XSDs in /schemas. Schema-valid is necessary, not sufficient, for tax-correctness. */
 class XmlFoundationTest {
-    private static final Path SCHEMAS = Path.of("src/test/resources/schemas");
+    private static final Path SCHEMAS = Path.of("../schemas");
     private final SchemaValidator validator = new SchemaValidator(SCHEMAS);
     private final Taxpayer tp = new Taxpayer("12345678", "FO");
 
@@ -29,8 +29,8 @@ class XmlFoundationTest {
     @Test void kdvpIsValidAndRunningBalanceIsDerived() {
         String xml = new KdvpXmlWriter().write(kdvp(buy("2023-03-01", "10", "140.5"), sell("2025-02-14", "4.5", "210.1")));
         assertTrue(validator.validate(FormType.KDVP, xml).valid(), xml);
-        assertTrue(xml.contains("<F8>5.5000</F8>"), xml);
-        assertTrue(xml.contains("<F4>140.5000</F4>"));
+        assertTrue(xml.contains("<F8>5.50000000</F8>"), xml);
+        assertTrue(xml.contains("<F4>140.50000000</F4>"));
     }
 
     @Test void sameDayPurchaseSortsBeforeSale() {
@@ -63,6 +63,19 @@ class XmlFoundationTest {
     @Test void missingSchemaFailsLoudly() {
         assertThrows(SchemaValidator.SchemaMissingException.class,
                 () -> new SchemaValidator(Path.of("does-not-exist")).validate(FormType.KDVP, "<a/>"));
+    }
+
+    @Test void divBodyHasNoBodyContentAndDividendsAreOutsideDohDiv() {
+        var d = new Dividend(LocalDate.parse("2025-05-15"), null, "X", "Y", "US", "1",
+                BigDecimal.ONE, BigDecimal.ZERO, "US", null, "t");
+        String xml = new DivXmlWriter().write(new DivReport(tp, 2025, List.of(d)));
+        assertFalse(xml.contains("bodyContent"));
+        assertTrue(xml.indexOf("</Doh_Div>") < xml.indexOf("<Dividend>") || xml.contains("<Doh_Div/>"));
+    }
+
+    @Test void schemaRejectsNegativeQuantity() {
+        String xml = new KdvpXmlWriter().write(kdvp(buy("2023-03-01", "1", "1"))).replace("<F3>1.00000000", "<F3>-1.00000000");
+        assertFalse(validator.validate(FormType.KDVP, xml).valid());
     }
 
     @Test void badTaxNumberRejected() {

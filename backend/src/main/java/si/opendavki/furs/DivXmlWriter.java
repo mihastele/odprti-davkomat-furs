@@ -9,11 +9,15 @@ public final class DivXmlWriter {
 
     public String write(DivReport report) {
         XmlBuilder x = new XmlBuilder(FormType.DIV.namespace);
-        Element body = x.envelope(report.taxpayer(), "O");
-        Element root = x.child(body, FormType.DIV.bodyElement);
+        Element body = x.envelope(report.taxpayer(), "O", false);
 
+        Element root = x.child(body, FormType.DIV.bodyElement);
+        x.text(root, "Period", Integer.toString(report.year()));
+        x.text(root, "IsResident", true); // Doh-Div is filed by Slovenian tax residents
+
+        // Dividend rows are siblings of Doh_Div inside body, not children of it.
         for (Dividend d : report.dividends()) {
-            Element e = x.child(root, "Dividend");
+            Element e = x.child(body, "Dividend");
             x.text(e, "Date", d.date());
             if (d.payerTaxNumber() != null && !d.payerTaxNumber().isBlank()) {
                 x.text(e, "PayerTaxNumber", d.payerTaxNumber());

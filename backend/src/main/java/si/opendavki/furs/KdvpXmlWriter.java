@@ -19,7 +19,7 @@ public final class KdvpXmlWriter {
 
     public String write(KdvpReport report) {
         XmlBuilder x = new XmlBuilder(FormType.KDVP.namespace);
-        Element body = x.envelope(report.taxpayer(), "O");
+        Element body = x.envelope(report.taxpayer(), "O", true);
         Element root = x.child(body, FormType.KDVP.bodyElement);
 
         Element kdvp = x.child(root, "KDVP");
@@ -28,6 +28,12 @@ public final class KdvpXmlWriter {
         x.text(kdvp, "PeriodStart", LocalDate.of(report.year(), 1, 1));
         x.text(kdvp, "PeriodEnd", LocalDate.of(report.year(), 12, 31));
         x.text(kdvp, "IsResident", report.resident());
+        // The schema requires all five counters; only plain PLVP sheets (Securities) are produced so far.
+        x.text(kdvp, "SecurityCount", Integer.toString(report.securities().size()));
+        x.text(kdvp, "SecurityShortCount", "0");
+        x.text(kdvp, "SecurityWithContractCount", "0");
+        x.text(kdvp, "SecurityWithContractShortCount", "0");
+        x.text(kdvp, "ShareCount", "0");
 
         int itemId = 1;
         for (Security s : report.securities()) {
@@ -56,8 +62,8 @@ public final class KdvpXmlWriter {
                     Element p = x.child(row, "Purchase");
                     x.text(p, "F1", e.date());
                     x.text(p, "F2", e.acquisitionType());
-                    x.text(p, "F3", XmlBuilder.dec(e.quantity(), 4));
-                    x.text(p, "F4", XmlBuilder.dec(e.unitPrice(), 4));
+                    x.text(p, "F3", XmlBuilder.dec(e.quantity(), 8));
+                    x.text(p, "F4", XmlBuilder.dec(e.unitPrice(), 8));
                 } else {
                     held = held.subtract(e.quantity());
                     if (held.signum() < 0) {
@@ -66,10 +72,10 @@ public final class KdvpXmlWriter {
                     }
                     Element sale = x.child(row, "Sale");
                     x.text(sale, "F6", e.date());
-                    x.text(sale, "F7", XmlBuilder.dec(e.quantity(), 4));
-                    x.text(sale, "F9", XmlBuilder.dec(e.unitPrice(), 4));
+                    x.text(sale, "F7", XmlBuilder.dec(e.quantity(), 8));
+                    x.text(sale, "F9", XmlBuilder.dec(e.unitPrice(), 8));
                 }
-                x.text(row, "F8", XmlBuilder.dec(held, 4));
+                x.text(row, "F8", XmlBuilder.dec(held, 8));
             }
         }
         return x.serialize();

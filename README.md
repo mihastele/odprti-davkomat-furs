@@ -19,19 +19,16 @@ A CLI that generates Doh-KDVP and Doh-Div XML from synthetic JSON, validates aga
 
 Exit codes: 0 valid, 1 XSD validation failed, 2 input error, 3 schema missing.
 
-### Official schemas are NOT bundled
+### Official schemas
 
-FURS hosts were unreachable from the environment this was written in, so **no official XSD is in this repo** and the
-element layout/namespaces in `FormType`, `KdvpXmlWriter` and `DivXmlWriter` were written from knowledge of the
-eDavki format, not checked against the real schemas. Before trusting any output:
+The official FURS `Doh_KDVP_9.xsd`, `Doh_Div_3.xsd` and `EDP-Common-1.xsd` are in `schemas/` (checksums in
+`SHA256SUMS`) and all tests validate against them. Writers follow their element order and constraints
+(e.g. Doh_KDVP requires the five sheet counters and `edp:bodyContent`; Doh_Div must not have `bodyContent` and
+carries `Dividend` rows as siblings of `Doh_Div`). Quantities and unit values are written with 8 decimals, the schema maximum.
 
-1. Download `Doh_KDVP_*.xsd`, `Doh_Div_*.xsd` and `EDP-Common-*.xsd` from the eDavki XML schema page
-   (`schemas fetch <name> <https-url>` records the SHA-256) into `schemas/`.
-2. Fix any validation errors/version mismatches in `FormType` and the writers.
-3. Import a generated file into eDavki and compare with a hand-prepared declaration.
-
-`backend/src/test/resources/schemas/` holds **synthetic fixture XSDs** that only mirror our own output so the
-validator, rounding and error reporting can be tested. Schema-valid is not tax-correct.
+Schema-valid is necessary, not sufficient: still import a generated file into eDavki and compare it with a
+hand-prepared declaration before filing. Not yet generated: short/contract/share/capital-reduction sheets,
+foreign-tax details per item, loss transfer, `F10` (ZDoh-2 art. 97 rule).
 
 ## Design rules
 
