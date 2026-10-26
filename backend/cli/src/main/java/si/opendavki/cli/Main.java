@@ -35,7 +35,7 @@ import si.opendavki.model.KdvpReport;
 @Command(name = "opendavki", mixinStandardHelpOptions = true, version = "0.1.0",
         description = "Open-source, local-first FURS eDavki XML tooling.",
         subcommands = {Main.Generate.class, Main.Validate.class, Main.Schemas.class, Main.Adapters.class,
-                Main.Import.class, Main.Check.class})
+                Main.Import.class, Main.Check.class, Main.Fx.class})
 public final class Main implements Callable<Integer> {
 
     /** Exit codes: 0 ok, 1 XSD validation failed, 2 usage/input error, 3 schema missing. */
@@ -139,6 +139,34 @@ public final class Main implements Callable<Integer> {
         @Override public Integer call() throws IOException {
             Ledger l = si.opendavki.json.Json.MAPPER.readValue(ledgerFile.toFile(), Ledger.class);
             return printDiagnostics(LedgerChecker.check(l), l.entries().size() + " ledger entries checked");
+        }
+    }
+
+    @Command(name = "fx", description = "Look up the EUR conversion rate that the configured source gives for a day.")
+    static final class Fx implements Callable<Integer> {
+        @Parameters(index = "0", description = "ISO 4217 currency, e.g. USD") String currency;
+        @Parameters(index = "1", description = "Date yyyy-MM-dd") java.time.LocalDate date;
+        @Parameters(index = "2", arity = "0..1", description = "Optional amount to convert to EUR") java.math.BigDecimal amount;
+        @Option(names = "--env-file", defaultValue = ".env", description = "Settings file (see .env.example)") Path envFile;
+
+        @Override public Integer call() throws IOException {
+            si.opendavki.fx.FxConfig cfg;
+            try {
+                cfg = si.opendavki.fx.FxConfig.fromEnvironment(envFile);
+            } catch (IllegalArgumentException e) {
+                System.err.println("Configuration error: " + e.getMessage());
+                return INPUT_ERROR;
+            }
+            try {
+                si.opendavki.fx.Rate r = new si.opendavki.fx.FxService(cfg).rate(currency.toUpperCase(java.util.Locale.ROOT), date);
+                System.out.printf("source=%s currency=%s requested=%s rateDate=%s unitsPerEur=%s%s%n", r.source(), r.currency(),
+                        r.requestedDate(), r.rateDate(), r.unitsPerEur().toPlainString(), r.isFallback() ? " (fallback to earlier day)" : "");
+                if (amount != null) System.out.println(amount.toPlainString() + " " + r.currency() + " = " + r.toEur(amount).toPlainString() + " EUR");
+                return 0;
+            } catch (si.opendavki.fx.RateUnavailableException e) {
+                System.err.println(e.getMessage());
+                return SCHEMA_MISSING;
+            }
         }
     }
 
