@@ -1,0 +1,576 @@
+{
+  "entries" : [ {
+    "type" : "TRADE",
+    "id" : "ibkr-d5be16c110d887b9",
+    "broker" : "ibkr",
+    "account" : "U1234567",
+    "date" : "2024-03-01",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 13
+    },
+    "instrument" : {
+      "isin" : "US0378331005",
+      "symbol" : "AAPL",
+      "name" : "APPLE INC",
+      "assetClass" : "STOCK"
+    },
+    "side" : "BUY",
+    "quantity" : 10,
+    "price" : 170.5,
+    "currency" : "USD",
+    "fee" : 1,
+    "feeCurrency" : "USD"
+  }, {
+    "type" : "TRADE",
+    "id" : "ibkr-d0b5bb3d21f07667",
+    "broker" : "ibkr",
+    "account" : "U1234567",
+    "date" : "2024-03-05",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 14
+    },
+    "instrument" : {
+      "isin" : "IE00BK5BQT80",
+      "symbol" : "VWCE",
+      "name" : "VANGUARD FTSE ALL-WORLD UCITS ETF",
+      "assetClass" : "ETF"
+    },
+    "side" : "BUY",
+    "quantity" : 1000,
+    "price" : 100.25,
+    "currency" : "EUR",
+    "fee" : 1.25,
+    "feeCurrency" : "EUR"
+  }, {
+    "type" : "TRADE",
+    "id" : "ibkr-3fd28576afa7dd43",
+    "broker" : "ibkr",
+    "account" : "U1234567",
+    "date" : "2024-06-03",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 15
+    },
+    "instrument" : {
+      "isin" : "US0378331005",
+      "symbol" : "AAPL",
+      "name" : "APPLE INC",
+      "assetClass" : "STOCK"
+    },
+    "side" : "SELL",
+    "quantity" : 4,
+    "price" : 190,
+    "currency" : "USD",
+    "fee" : 1.1,
+    "feeCurrency" : "USD"
+  }, {
+    "type" : "TRADE",
+    "id" : "ibkr-67d1714de4d5bc5d",
+    "broker" : "ibkr",
+    "account" : "U1234567",
+    "date" : "2024-04-03",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 20
+    },
+    "instrument" : {
+      "isin" : "US0378331005",
+      "symbol" : "AAPL",
+      "name" : "APPLE INC",
+      "assetClass" : "STOCK"
+    },
+    "side" : "BUY",
+    "quantity" : 1,
+    "price" : 171,
+    "currency" : "USD",
+    "fee" : 1,
+    "feeCurrency" : "USD"
+  }, {
+    "type" : "CORPORATE_ACTION",
+    "id" : "ibkr-6d69f2698989bff5",
+    "broker" : "ibkr",
+    "account" : "U1234567",
+    "date" : "2024-06-07",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 39
+    },
+    "instrument" : {
+      "isin" : "US67066G1040",
+      "symbol" : "NVDA",
+      "name" : "NVIDIA CORP",
+      "assetClass" : "STOCK"
+    },
+    "type" : "SPLIT",
+    "newQuantity" : 10,
+    "oldQuantity" : 1,
+    "description" : "NVDA(US67066G1040) Split 10 for 1 (NVDA, NVIDIA CORP, US67066G1040)"
+  }, {
+    "type" : "CORPORATE_ACTION",
+    "id" : "ibkr-27f553e807d71e9f",
+    "broker" : "ibkr",
+    "account" : "U1234567",
+    "date" : "2024-09-09",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 40
+    },
+    "instrument" : {
+      "isin" : "US1234567890",
+      "symbol" : "REVCO",
+      "name" : "REVCO",
+      "assetClass" : "STOCK"
+    },
+    "type" : "UNSUPPORTED",
+    "description" : "REVCO(US1234567890) Split 1 for 10 (REVCO, REV CO, US1234567890)"
+  }, {
+    "type" : "CORPORATE_ACTION",
+    "id" : "ibkr-ec9e129d05ab9528",
+    "broker" : "ibkr",
+    "account" : "U1234567",
+    "date" : "2024-10-09",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 41
+    },
+    "instrument" : {
+      "isin" : "US7654321098",
+      "symbol" : "ABCD",
+      "name" : "ABCD",
+      "assetClass" : "STOCK"
+    },
+    "type" : "UNSUPPORTED",
+    "description" : "ABCD(US7654321098) Merged(Acquisition) with XYZ for 1 share"
+  }, {
+    "type" : "TRANSFER",
+    "id" : "ibkr-dc20dac2764389b0",
+    "broker" : "ibkr",
+    "account" : "U1234567",
+    "date" : "2024-02-01",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 43
+    },
+    "instrument" : {
+      "isin" : "US0378331005",
+      "symbol" : "AAPL",
+      "name" : "APPLE INC",
+      "assetClass" : "STOCK"
+    },
+    "direction" : "IN",
+    "quantity" : 5,
+    "counterparty" : "Other Broker"
+  }, {
+    "type" : "TRANSFER",
+    "id" : "ibkr-4a24e0cdca7b85b7",
+    "broker" : "ibkr",
+    "account" : "U1234567",
+    "date" : "2024-11-01",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 44
+    },
+    "instrument" : {
+      "isin" : "IE00BK5BQT80",
+      "symbol" : "VWCE",
+      "name" : "VANGUARD FTSE ALL-WORLD UCITS ETF",
+      "assetClass" : "ETF"
+    },
+    "direction" : "OUT",
+    "quantity" : 200,
+    "counterparty" : "Another Broker"
+  }, {
+    "type" : "DIVIDEND",
+    "id" : "ibkr-fee4978956fb3959",
+    "broker" : "ibkr",
+    "account" : "U1234567",
+    "date" : "2024-05-16",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 28
+    },
+    "instrument" : {
+      "isin" : "US0378331005",
+      "symbol" : "AAPL",
+      "name" : "APPLE INC",
+      "assetClass" : "STOCK"
+    },
+    "gross" : 3.00,
+    "withholdingTax" : 0.45,
+    "currency" : "USD",
+    "sourceCountry" : "US"
+  }, {
+    "type" : "DIVIDEND",
+    "id" : "ibkr-62c58249eb93d494",
+    "broker" : "ibkr",
+    "account" : "U1234567",
+    "date" : "2024-06-20",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 30
+    },
+    "instrument" : {
+      "isin" : "IE00BK5BQT80",
+      "symbol" : "VWCE",
+      "name" : "VANGUARD FTSE ALL-WORLD UCITS ETF",
+      "assetClass" : "ETF"
+    },
+    "gross" : 500.00,
+    "withholdingTax" : 0,
+    "currency" : "EUR",
+    "sourceCountry" : "IE"
+  }, {
+    "type" : "DIVIDEND",
+    "id" : "ibkr-ff55d135b93a95dd",
+    "broker" : "ibkr",
+    "account" : "U1234567",
+    "date" : "2024-08-15",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 33
+    },
+    "instrument" : {
+      "isin" : "US67066G1040",
+      "symbol" : "NVDA",
+      "name" : "NVIDIA CORP",
+      "assetClass" : "STOCK"
+    },
+    "gross" : 1.00,
+    "withholdingTax" : 0,
+    "currency" : "USD",
+    "sourceCountry" : "US"
+  } ],
+  "diagnostics" : [ {
+    "severity" : "INFO",
+    "code" : "METADATA",
+    "message" : "Used as metadata, produces no entry",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 2
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "METADATA",
+    "message" : "Used as metadata, produces no entry",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 3
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "METADATA",
+    "message" : "Used as metadata, produces no entry",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 4
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "METADATA",
+    "message" : "Used as metadata, produces no entry",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 6
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "METADATA",
+    "message" : "Used as metadata, produces no entry",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 7
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "METADATA",
+    "message" : "Used as metadata, produces no entry",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 8
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "NOT_TAX_RELEVANT",
+    "message" : "Section 'Net Asset Value' does not affect the tax declarations",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 10
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "TOTAL_ROW",
+    "message" : "Aggregate row in 'Net Asset Value'",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 11
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "EXECUTION_DETAIL",
+    "message" : "Execution detail of an 'Order' row already imported (avoids double counting)",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 16
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "LOT_DETAIL",
+    "message" : "Lot detail row; derived data, lots are rebuilt by the FIFO engine",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 17
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "FOREX_TRADE",
+    "message" : "Currency conversion; not a security disposal",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 18
+    }
+  }, {
+    "severity" : "WARNING",
+    "code" : "UNSUPPORTED_ASSET_CATEGORY",
+    "message" : "'Equity and Index Options' trades are not supported (separate tax treatment): AAPL 17JAN25 200 C",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 19
+    }
+  }, {
+    "severity" : "WARNING",
+    "code" : "CANCELLED_TRADE",
+    "message" : "Trade flagged as cancelled (code Ca); check that the cancelling counter-trade is in the statement",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 20
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "TOTAL_ROW",
+    "message" : "Aggregate row in 'Trades'",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 21
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "TOTAL_ROW",
+    "message" : "Aggregate row in 'Trades'",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 22
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "METADATA",
+    "message" : "Used as metadata, produces no entry",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 24
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "METADATA",
+    "message" : "Used as metadata, produces no entry",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 25
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "METADATA",
+    "message" : "Used as metadata, produces no entry",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 26
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "TOTAL_ROW",
+    "message" : "Currency total line in 'Dividends'",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 31
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "TOTAL_ROW",
+    "message" : "Currency total line in 'Withholding Tax'",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 37
+    }
+  }, {
+    "severity" : "WARNING",
+    "code" : "TRANSFER_IN_NO_COST_BASIS",
+    "message" : "Incoming transfer carries no acquisition date or cost basis in the statement; add it from the sending broker's records before computing gains",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 43
+    }
+  }, {
+    "severity" : "ERROR",
+    "code" : "INVALID_DIRECTION",
+    "message" : "Transfer direction must be In or Out, got 'Sideways'",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 45
+    }
+  }, {
+    "severity" : "WARNING",
+    "code" : "UNSUPPORTED_SECTION",
+    "message" : "'Interest' is tax-relevant but not supported yet; declare it separately",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 47
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "TOTAL_ROW",
+    "message" : "Total line in 'Interest'",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 48
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "NOT_TAX_RELEVANT",
+    "message" : "Section 'Open Positions' does not affect the tax declarations",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 50
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "NOT_TAX_RELEVANT",
+    "message" : "Section 'Open Positions' does not affect the tax declarations",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 51
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "DIVIDEND_ROWS_MERGED",
+    "message" : "Same instrument, date and currency (merged into line 28)",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 29
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "WITHHOLDING_JOINED",
+    "message" : "Withholding tax joined to its dividend (merged into line 28)",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 35
+    }
+  }, {
+    "severity" : "WARNING",
+    "code" : "PAYMENT_IN_LIEU",
+    "message" : "Payment in lieu of dividend for NVDA is treated as a dividend; confirm its tax treatment",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 33
+    }
+  }, {
+    "severity" : "ERROR",
+    "code" : "WHT_WITHOUT_DIVIDEND",
+    "message" : "No dividend for MSFT on 2024-07-01 in USD to attach this withholding tax to (reclassification or late adjustment?)",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 36
+    }
+  } ],
+  "stats" : {
+    "rowsRead" : 39,
+    "rowsMapped" : 14,
+    "rowsSkipped" : 23,
+    "rowsFailed" : 2
+  }
+}

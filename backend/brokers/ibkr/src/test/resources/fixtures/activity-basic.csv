@@ -1,0 +1,51 @@
+Statement,Header,Field Name,Field Value
+Statement,Data,BrokerName,Interactive Brokers Ireland Limited
+Statement,Data,Title,Activity Statement
+Statement,Data,Period,"January 1, 2024 - December 31, 2024"
+Account Information,Header,Field Name,Field Value
+Account Information,Data,Name,Synthetic User
+Account Information,Data,Account,U1234567
+Account Information,Data,Base Currency,EUR
+Net Asset Value,Header,Asset Class,Prior Total,Current Long,Current Short,Current Total,Change
+Net Asset Value,Data,Cash,0,100,0,100,100
+Net Asset Value,Total,,0,100,0,100,100
+Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,C. Price,Proceeds,Comm/Fee,Basis,Realized P/L,MTM P/L,Code
+Trades,Data,Order,Stocks,USD,AAPL,"2024-03-01, 10:15:00",10,170.5,171,-1705,-1,1706,0,5,O
+Trades,Data,Order,Stocks,EUR,VWCE,"2024-03-05, 09:00:01","1,000",100.25,100.3,-100250,-1.25,100251.25,0,50,O
+Trades,Data,Order,Stocks,USD,AAPL,"2024-06-03, 15:30:00",-4,190,191,760,-1.1,-682,77.9,-4,C
+Trades,Data,Trade,Stocks,USD,AAPL,"2024-06-03, 15:30:00",-4,190,191,760,-1.1,-682,77.9,-4,C
+Trades,Data,ClosedLot,Stocks,USD,AAPL,"2024-03-01, 10:15:00",4,170.5,,,,682,,,
+Trades,Data,Order,Forex,USD,EUR.USD,"2024-03-01, 10:14:00",1000,1.08,1.08,-1080,-2,1080,0,0,O
+Trades,Data,Order,Equity and Index Options,USD,AAPL 17JAN25 200 C,"2024-04-02, 11:00:00",1,5.1,5.2,-510,-1,510,0,1,O
+Trades,Data,Order,Stocks,USD,AAPL,"2024-04-03, 11:00:00",1,171,171,-171,-1,172,0,0,Ca;O
+Trades,SubTotal,,Stocks,USD,AAPL,,7,,,,,,,,
+Trades,Total,,Stocks,,,,,,,,,,,,
+Financial Instrument Information,Header,Asset Category,Symbol,Description,Conid,Security ID,Underlying,Listing Exch,Multiplier,Type,Code
+Financial Instrument Information,Data,Stocks,AAPL,APPLE INC,265598,US0378331005,,NASDAQ,1,COMMON,
+Financial Instrument Information,Data,Stocks,VWCE,VANGUARD FTSE ALL-WORLD UCITS ETF,1,IE00BK5BQT80,,IBIS2,1,ETF,
+Financial Instrument Information,Data,Stocks,NVDA,NVIDIA CORP,4815747,US67066G1040,,NASDAQ,1,COMMON,
+Dividends,Header,Currency,Date,Description,Amount
+Dividends,Data,USD,2024-05-16,AAPL(US0378331005) Cash Dividend USD 0.24 per Share (Ordinary Dividend),2.40
+Dividends,Data,USD,2024-05-16,AAPL(US0378331005) Cash Dividend USD 0.24 per Share (Ordinary Dividend),0.60
+Dividends,Data,EUR,2024-06-20,VWCE(IE00BK5BQT80) Cash Dividend EUR 0.5 per Share (Ordinary Dividend),500.00
+Dividends,Data,Total,,,503.00
+Payment In Lieu Of Dividends,Header,Currency,Date,Description,Amount
+Payment In Lieu Of Dividends,Data,USD,2024-08-15,NVDA(US67066G1040) Payment in Lieu of Dividend (Ordinary Dividend),1.00
+Withholding Tax,Header,Currency,Date,Description,Amount,Code
+Withholding Tax,Data,USD,2024-05-16,AAPL(US0378331005) Cash Dividend USD 0.24 per Share - US Tax,-0.45,
+Withholding Tax,Data,USD,2024-07-01,MSFT(US5949181045) Cash Dividend USD 0.75 per Share - US Tax,-1.00,
+Withholding Tax,Data,Total,,,-1.45,
+Corporate Actions,Header,Asset Category,Currency,Report Date,Date/Time,Description,Quantity,Proceeds,Value,Realized P/L,Code
+Corporate Actions,Data,Stocks,USD,2024-06-10,"2024-06-07, 20:25:00","NVDA(US67066G1040) Split 10 for 1 (NVDA, NVIDIA CORP, US67066G1040)",90,0,0,0,
+Corporate Actions,Data,Stocks,USD,2024-09-10,"2024-09-09, 20:25:00","REVCO(US1234567890) Split 1 for 10 (REVCO, REV CO, US1234567890)",-90,0,0,0,
+Corporate Actions,Data,Stocks,USD,2024-10-10,"2024-10-09, 20:25:00","ABCD(US7654321098) Merged(Acquisition) with XYZ for 1 share",-5,100,0,0,
+Transfers,Header,Asset Category,Currency,Date,Type,Direction,Symbol,Description,Conid,Security ID,Underlying,Listing Exch,Quantity,Xfer Company,Xfer Account,Market Value,Realized P/L,Cash Amount,Code
+Transfers,Data,Stocks,USD,2024-02-01,ACATS,In,AAPL,APPLE INC,265598,US0378331005,,NASDAQ,5,Other Broker,12345,850,0,0,
+Transfers,Data,Stocks,EUR,2024-11-01,ACATS,Out,VWCE,VANGUARD FTSE ALL-WORLD UCITS ETF,1,IE00BK5BQT80,,IBIS2,200,Another Broker,999,0,0,0,
+Transfers,Data,Stocks,EUR,2024-11-02,ACATS,Sideways,VWCE,VANGUARD,1,IE00BK5BQT80,,IBIS2,1,X,9,0,0,0,
+Interest,Header,Currency,Date,Description,Amount
+Interest,Data,EUR,2024-02-05,EUR Credit Interest for Jan-2024,0.12
+Interest,Data,Total,,,0.12
+Open Positions,Header,DataDiscriminator,Asset Category,Currency,Symbol,Quantity,Mult,Cost Price,Cost Basis,Close Price,Value,Unrealized P/L,Code
+Open Positions,Data,Summary,Stocks,USD,AAPL,12,1,170.5,2046,191,2292,246,
+Open Positions,Data,Summary,Stocks,USD

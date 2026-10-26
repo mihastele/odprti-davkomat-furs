@@ -62,6 +62,25 @@ public record ImportResult(List<LedgerEntry> entries, List<Diagnostic> diagnosti
             return this;
         }
 
+        /** Like {@link #skipped(int, String, String)} but with an explicit severity, e.g. WARNING for tax-relevant rows we do not support. */
+        public Builder skipped(int line, String code, String reason, Diagnostic.Severity severity) {
+            account(line);
+            skipped++;
+            diagnostics.add(new Diagnostic(severity, code, reason, ref(line)));
+            return this;
+        }
+
+        /**
+         * The row contributed to an entry built from another row (e.g. several statement lines for one dividend, or a
+         * withholding-tax line joined to its dividend). Counts as mapped; an INFO diagnostic records the join.
+         */
+        public Builder merged(int line, int intoLine, String code, String note) {
+            account(line);
+            mapped++;
+            diagnostics.add(Diagnostic.info(code, note + " (merged into line " + intoLine + ")", ref(line)));
+            return this;
+        }
+
         /** The row could not be understood; this is an ERROR the user must resolve. */
         public Builder failed(int line, String code, String reason) {
             account(line);
