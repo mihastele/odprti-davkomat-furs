@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SYNTHETIC TEST FIXTURE. NOT the official FURS schema. Exercises the validator machinery only. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+           targetNamespace="http://edavki.durs.si/Documents/Schemas/Doh_Div_3.xsd"
+           xmlns="http://edavki.durs.si/Documents/Schemas/Doh_Div_3.xsd"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  <xs:simpleType name="eur"><xs:restriction base="xs:decimal"><xs:fractionDigits value="2"/><xs:minInclusive value="0"/></xs:restriction></xs:simpleType>
+  <xs:element name="Envelope"><xs:complexType><xs:sequence>
+    <xs:element ref="edp:Header"/><xs:element ref="edp:AttachmentList"/><xs:element ref="edp:Signatures"/>
+    <xs:element name="body"><xs:complexType><xs:sequence>
+      <xs:element ref="edp:bodyContent"/>
+      <xs:element name="Doh_Div"><xs:complexType><xs:sequence>
+        <xs:element name="Dividend" maxOccurs="unbounded"><xs:complexType><xs:sequence>
+          <xs:element name="Date" type="xs:date"/>
+          <xs:element name="PayerTaxNumber" type="xs:string" minOccurs="0"/>
+          <xs:element name="PayerName" type="xs:string"/>
+          <xs:element name="PayerAddress" type="xs:string"/>
+          <xs:element name="PayerCountry"><xs:simpleType><xs:restriction base="xs:string"><xs:pattern value="[A-Z]{2}"/></xs:restriction></xs:simpleType></xs:element>
+          <xs:element name="Type" type="xs:string"/>
+          <xs:element name="Value" type="eur"/>
+          <xs:element name="ForeignTax" type="eur"/>
+          <xs:element name="SourceCountry" type="xs:string"/>
+          <xs:element name="ReliefStatement" type="xs:string" minOccurs="0"/>
+        </xs:sequence></xs:complexType></xs:element>
+      </xs:sequence></xs:complexType></xs:element>
+    </xs:sequence></xs:complexType></xs:element>
+  </xs:sequence></xs:complexType></xs:element>
+</xs:schema>

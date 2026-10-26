@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SYNTHETIC TEST FIXTURE. NOT the official FURS schema. Exercises the validator machinery only. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+           targetNamespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:element name="Header">
+    <xs:complexType><xs:sequence>
+      <xs:element name="taxpayer"><xs:complexType><xs:sequence>
+        <xs:element name="taxNumber"><xs:simpleType><xs:restriction base="xs:string"><xs:pattern value="\d{8}"/></xs:restriction></xs:simpleType></xs:element>
+        <xs:element name="taxpayerType" type="xs:string"/>
+      </xs:sequence></xs:complexType></xs:element>
+      <xs:element name="Workflow"><xs:complexType><xs:sequence>
+        <xs:element name="DocumentWorkflowID" type="xs:string"/>
+      </xs:sequence></xs:complexType></xs:element>
+    </xs:sequence></xs:complexType>
+  </xs:element>
+  <xs:element name="AttachmentList"><xs:complexType/></xs:element>
+  <xs:element name="Signatures"><xs:complexType/></xs:element>
+  <xs:element name="bodyContent"><xs:complexType/></xs:element>
+</xs:schema>
