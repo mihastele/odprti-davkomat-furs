@@ -1,0 +1,288 @@
+{
+  "entries" : [ {
+    "type" : "TRADE",
+    "id" : "T-1",
+    "broker" : "brokerA",
+    "account" : "main",
+    "date" : "2023-03-01",
+    "source" : {
+      "adapter" : "generic",
+      "file" : "basic.csv",
+      "fileSha256" : "a7e4071d9166eb1079754d2b563d1d5a1de099fe15f5bc9e5d9248688eb8328a",
+      "line" : 3
+    },
+    "instrument" : {
+      "isin" : "US0378331005",
+      "symbol" : "AAPL",
+      "name" : "Apple Inc.",
+      "assetClass" : "STOCK"
+    },
+    "side" : "BUY",
+    "quantity" : 10,
+    "price" : 140.50,
+    "currency" : "USD",
+    "fee" : 1.00,
+    "feeCurrency" : "USD"
+  }, {
+    "type" : "TRADE",
+    "id" : "g-759d07849e890331",
+    "broker" : "brokerA",
+    "account" : "main",
+    "date" : "2023-03-01",
+    "source" : {
+      "adapter" : "generic",
+      "file" : "basic.csv",
+      "fileSha256" : "a7e4071d9166eb1079754d2b563d1d5a1de099fe15f5bc9e5d9248688eb8328a",
+      "line" : 4
+    },
+    "instrument" : {
+      "isin" : "US0378331005",
+      "symbol" : "AAPL",
+      "name" : "Apple Inc.",
+      "assetClass" : "STOCK"
+    },
+    "side" : "BUY",
+    "quantity" : 5,
+    "price" : 141.00,
+    "currency" : "USD",
+    "fee" : 0,
+    "feeCurrency" : "USD"
+  }, {
+    "type" : "TRADE",
+    "id" : "g-879c5ef912fe8a89",
+    "broker" : "brokerA",
+    "account" : "main",
+    "date" : "2023-03-01",
+    "source" : {
+      "adapter" : "generic",
+      "file" : "basic.csv",
+      "fileSha256" : "a7e4071d9166eb1079754d2b563d1d5a1de099fe15f5bc9e5d9248688eb8328a",
+      "line" : 5
+    },
+    "instrument" : {
+      "isin" : "US0378331005",
+      "symbol" : "AAPL",
+      "name" : "Apple Inc.",
+      "assetClass" : "STOCK"
+    },
+    "side" : "BUY",
+    "quantity" : 5,
+    "price" : 141.00,
+    "currency" : "USD",
+    "fee" : 0,
+    "feeCurrency" : "USD"
+  }, {
+    "type" : "DIVIDEND",
+    "id" : "g-1c4002d4b73c7ccd",
+    "broker" : "brokerA",
+    "account" : "main",
+    "date" : "2023-05-15",
+    "source" : {
+      "adapter" : "generic",
+      "file" : "basic.csv",
+      "fileSha256" : "a7e4071d9166eb1079754d2b563d1d5a1de099fe15f5bc9e5d9248688eb8328a",
+      "line" : 6
+    },
+    "instrument" : {
+      "isin" : "US0378331005",
+      "symbol" : "AAPL",
+      "name" : "Apple Inc.",
+      "assetClass" : "STOCK"
+    },
+    "gross" : 12.34,
+    "withholdingTax" : 1.85,
+    "currency" : "USD",
+    "sourceCountry" : "US"
+  }, {
+    "type" : "CORPORATE_ACTION",
+    "id" : "g-f8724a78c3963e75",
+    "broker" : "brokerA",
+    "account" : "main",
+    "date" : "2023-08-31",
+    "source" : {
+      "adapter" : "generic",
+      "file" : "basic.csv",
+      "fileSha256" : "a7e4071d9166eb1079754d2b563d1d5a1de099fe15f5bc9e5d9248688eb8328a",
+      "line" : 7
+    },
+    "instrument" : {
+      "isin" : "US0378331005",
+      "symbol" : "AAPL",
+      "name" : "Apple Inc.",
+      "assetClass" : "STOCK"
+    },
+    "type" : "SPLIT",
+    "newQuantity" : 4,
+    "oldQuantity" : 1,
+    "description" : "4-for-1"
+  }, {
+    "type" : "TRANSFER",
+    "id" : "g-9f195453cb119fd6",
+    "broker" : "brokerA",
+    "account" : "main",
+    "date" : "2024-01-10",
+    "source" : {
+      "adapter" : "generic",
+      "file" : "basic.csv",
+      "fileSha256" : "a7e4071d9166eb1079754d2b563d1d5a1de099fe15f5bc9e5d9248688eb8328a",
+      "line" : 8
+    },
+    "instrument" : {
+      "isin" : "US0378331005",
+      "symbol" : "AAPL",
+      "name" : "Apple Inc.",
+      "assetClass" : "STOCK"
+    },
+    "direction" : "OUT",
+    "quantity" : 40,
+    "counterparty" : "brokerB"
+  }, {
+    "type" : "TRANSFER",
+    "id" : "g-15edd301e1ee8da6",
+    "broker" : "brokerB",
+    "account" : "main",
+    "date" : "2024-01-12",
+    "source" : {
+      "adapter" : "generic",
+      "file" : "basic.csv",
+      "fileSha256" : "a7e4071d9166eb1079754d2b563d1d5a1de099fe15f5bc9e5d9248688eb8328a",
+      "line" : 9
+    },
+    "instrument" : {
+      "isin" : "US0378331005",
+      "symbol" : "AAPL",
+      "name" : "Apple Inc.",
+      "assetClass" : "STOCK"
+    },
+    "direction" : "IN",
+    "quantity" : 40,
+    "acquisitionDate" : "2023-03-01",
+    "costBasisPerUnit" : 35.125,
+    "costCurrency" : "USD",
+    "counterparty" : "brokerA"
+  }, {
+    "type" : "TRADE",
+    "id" : "T-2",
+    "broker" : "brokerB",
+    "account" : "main",
+    "date" : "2024-06-03",
+    "source" : {
+      "adapter" : "generic",
+      "file" : "basic.csv",
+      "fileSha256" : "a7e4071d9166eb1079754d2b563d1d5a1de099fe15f5bc9e5d9248688eb8328a",
+      "line" : 10
+    },
+    "instrument" : {
+      "isin" : "US0378331005",
+      "symbol" : "AAPL",
+      "name" : "Apple Inc.",
+      "assetClass" : "STOCK"
+    },
+    "side" : "SELL",
+    "quantity" : 15,
+    "price" : 190.25,
+    "currency" : "USD",
+    "fee" : 0.50,
+    "feeCurrency" : "EUR"
+  }, {
+    "type" : "CORPORATE_ACTION",
+    "id" : "g-5af9cf809adae7d0",
+    "broker" : "brokerB",
+    "account" : "main",
+    "date" : "2024-07-01",
+    "source" : {
+      "adapter" : "generic",
+      "file" : "basic.csv",
+      "fileSha256" : "a7e4071d9166eb1079754d2b563d1d5a1de099fe15f5bc9e5d9248688eb8328a",
+      "line" : 11
+    },
+    "instrument" : {
+      "isin" : "US0378331005",
+      "symbol" : "AAPL",
+      "name" : "Apple Inc.",
+      "assetClass" : "STOCK"
+    },
+    "type" : "UNSUPPORTED",
+    "description" : "spin-off of XYZ"
+  }, {
+    "type" : "TRADE",
+    "id" : "g-3978a27305a0f38f",
+    "broker" : "brokerB",
+    "account" : "main",
+    "date" : "2024-07-02",
+    "source" : {
+      "adapter" : "generic",
+      "file" : "basic.csv",
+      "fileSha256" : "a7e4071d9166eb1079754d2b563d1d5a1de099fe15f5bc9e5d9248688eb8328a",
+      "line" : 12
+    },
+    "instrument" : {
+      "symbol" : "SAPX",
+      "name" : "Unknown ETF",
+      "assetClass" : "ETF"
+    },
+    "side" : "BUY",
+    "quantity" : 3,
+    "price" : 10,
+    "currency" : "EUR",
+    "fee" : 0,
+    "feeCurrency" : "EUR"
+  } ],
+  "diagnostics" : [ {
+    "severity" : "INFO",
+    "code" : "COMMENT",
+    "message" : "Comment row",
+    "source" : {
+      "adapter" : "generic",
+      "file" : "basic.csv",
+      "fileSha256" : "a7e4071d9166eb1079754d2b563d1d5a1de099fe15f5bc9e5d9248688eb8328a",
+      "line" : 1
+    }
+  }, {
+    "severity" : "ERROR",
+    "code" : "UNKNOWN_TYPE",
+    "message" : "Unknown row type 'BOGUS' (expected BUY, SELL, DIVIDEND, SPLIT, CORPORATE_ACTION, TRANSFER_IN, TRANSFER_OUT)",
+    "source" : {
+      "adapter" : "generic",
+      "file" : "basic.csv",
+      "fileSha256" : "a7e4071d9166eb1079754d2b563d1d5a1de099fe15f5bc9e5d9248688eb8328a",
+      "line" : 13
+    }
+  }, {
+    "severity" : "ERROR",
+    "code" : "INVALID_NUMBER",
+    "message" : "'quantity' is not a plain decimal number: 'abc'",
+    "source" : {
+      "adapter" : "generic",
+      "file" : "basic.csv",
+      "fileSha256" : "a7e4071d9166eb1079754d2b563d1d5a1de099fe15f5bc9e5d9248688eb8328a",
+      "line" : 14
+    }
+  }, {
+    "severity" : "ERROR",
+    "code" : "INVALID_DATE",
+    "message" : "'date' must be yyyy-MM-dd, got '2024-13-01'",
+    "source" : {
+      "adapter" : "generic",
+      "file" : "basic.csv",
+      "fileSha256" : "a7e4071d9166eb1079754d2b563d1d5a1de099fe15f5bc9e5d9248688eb8328a",
+      "line" : 15
+    }
+  }, {
+    "severity" : "ERROR",
+    "code" : "COLUMN_COUNT",
+    "message" : "Expected 22 columns, found 3",
+    "source" : {
+      "adapter" : "generic",
+      "file" : "basic.csv",
+      "fileSha256" : "a7e4071d9166eb1079754d2b563d1d5a1de099fe15f5bc9e5d9248688eb8328a",
+      "line" : 16
+    }
+  } ],
+  "stats" : {
+    "rowsRead" : 15,
+    "rowsMapped" : 10,
+    "rowsSkipped" : 1,
+    "rowsFailed" : 4
+  }
+}
