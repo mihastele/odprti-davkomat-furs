@@ -10,6 +10,9 @@ Principle: never output a tax number that cannot be traced back to an original b
 
 **ODV-001 done:** Doh-KDVP (all six sheet types) and Doh-Div (incl. corporate-payout and late-filing blocks) XML generation, validated against the official XSDs.
 **ODV-002 done:** canonical ledger, broker adapter SPI with a no-lost-rows contract, generic CSV adapter, ledger checks.
+**ODV-003 done (unverified on real data):** Interactive Brokers Activity Statement CSV adapter, see [docs/ibkr.md](docs/ibkr.md).
+
+Known limitations and everything still missing: **[docs/BACKLOG.md](docs/BACKLOG.md)**.
 
     cd backend && mvn install                  # Java 21
     J="java -jar cli/target/opendavki.jar"
@@ -24,7 +27,7 @@ Principle: never output a tax number that cannot be traced back to an original b
 Exit codes: 0 ok, 1 XSD validation failed / ledger errors, 2 input error, 3 schema missing.
 
 Layout: `backend/core` (ledger, adapter SPI, FURS XML), `backend/brokers/<id>` (one module per broker, see
-[docs/adapters.md](docs/adapters.md)), `backend/cli`. Generic CSV: [docs/generic-csv.md](docs/generic-csv.md).
+[docs/adapters.md](docs/adapters.md)), `backend/cli`. Generic CSV: [docs/generic-csv.md](docs/generic-csv.md). IBKR: [docs/ibkr.md](docs/ibkr.md).
 
 ### Official schemas
 
@@ -51,7 +54,7 @@ will produce them from the ledger.
 |---|---|
 | ODV-001 | XML foundation (done) |
 | ODV-002 | Canonical ledger + broker adapter SPI, one Maven module per broker (done) |
-| ODV-003 | IBKR importer (Flex/Activity CSV), regression fixtures with anonymized statements |
+| ODV-003 | IBKR importer (Activity CSV) (done; needs real-statement verification) |
 | ODV-004 | Cross-broker FIFO, splits, fractional shares, EUR conversion (ECB/Bank of Slovenia rates) |
 | ODV-005 | Audit report + diagnostics (missing purchases, duplicates, suspicious FX) |
 | ODV-006+ | Trading 212, Revolut, Trade Republic, eToro, XTB, DEGIRO, Lightyear, N26 |
