@@ -4,6 +4,9 @@ Everything known to be missing, simplified or unverified. Nothing here is hidden
 the situation it reports a diagnostic or refuses to continue. Items are grouped by area; `Planned` names the ticket
 that is meant to close it (tickets beyond ODV-003 are provisional). Update this file whenever a gap is found or closed.
 
+**Housekeeping rule:** when a gap is fixed, delete its row here *and* its line in the README's "Known limitations"
+section in the same change. When a new gap is found, add it to both.
+
 **Verification summary:** XML output is validated against the official XSDs (`schemas/`) but has never been imported
 into eDavki. No importer has been run on a real broker statement. No tax number is computed yet.
 
@@ -60,3 +63,14 @@ into eDavki. No importer has been run on a real broker statement. No tax number 
 | I-13 | Trades flagged cancelled (`Ca`) are mapped with a WARNING; matching cancel/rebook pairs are not netted automatically. | with I-02 |
 | I-14 | Payment-in-lieu is treated as a dividend with a WARNING; its Slovenian tax treatment is unconfirmed. | ODV-005 |
 | I-15 | IBKR's own `Realized P/L` and `Basis` columns are ignored; they could serve as an independent cross-check of our FIFO result. | ODV-005 |
+
+## Exchange rates (ODV-004 groundwork)
+
+| ID | Gap | Planned |
+|---|---|---|
+| X-01 | The default source (ECB) is **not confirmed as FURS's recommendation**; FURS guidance could not be read from the build environment. | immediately, by a maintainer |
+| X-02 | `BSI` has no default URL: no official Bank of Slovenia download endpoint/format was confirmed. It only reads a URL you configure (ECB `Cube` XML or CSV). | ODV-004 |
+| X-03 | The ECB download (`eurofxref-hist.xml`) was never exercised live (network blocked in the build environment); only a local sample in the same layout is tested. | ODV-004 |
+| X-04 | Which rate date applies (transaction day, previous day, monthly) and how/when to round is undecided and unverified. Current behaviour: rate of the transaction day, else the latest earlier one within the lookback limit; 12-decimal conversion, no rounding. | ODV-004 |
+| X-05 | The "third source" is a user-supplied CSV (`FILE`), chosen as an assumption (ECB and BSI were the two sources discussed); replace if a different third source was intended. | decision needed |
+| X-06 | Rates are not yet wired into the tax pipeline: nothing converts ledger amounts to EUR, and the audit trail does not list rates used. | ODV-004 |

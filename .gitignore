@@ -7,3 +7,7 @@ dist/
 # real broker statements and generated declarations are personal financial data
 /private/
 *.out.xml
+
+# local configuration and caches
+.env
+.opendavki/
