@@ -86,6 +86,28 @@ final class XmlBuilder {
         return text(parent, name, value.toString());
     }
 
+    /** Optional elements: skipped entirely when the value is absent (the schemas make them minOccurs=0). */
+    void opt(Element parent, String name, String value) {
+        if (value != null && !value.isBlank()) text(parent, name, value);
+    }
+
+    void opt(Element parent, String name, Boolean value) {
+        if (value != null) text(parent, name, value.booleanValue());
+    }
+
+    void opt(Element parent, String name, LocalDate value) {
+        if (value != null) text(parent, name, value);
+    }
+
+    void opt(Element parent, String name, BigDecimal value, int scale) {
+        if (value != null) text(parent, name, dec(value, scale));
+    }
+
+    /** Unrestricted xs:decimal (schema has no digit limits): exact value, no exponent. */
+    void optPlain(Element parent, String name, BigDecimal value) {
+        if (value != null) text(parent, name, value.stripTrailingZeros().toPlainString());
+    }
+
     /** Fixed-scale decimal string, HALF_UP like the declaration's own rounding. */
     static String dec(BigDecimal v, int scale) {
         return v.setScale(scale, RoundingMode.HALF_UP).toPlainString();

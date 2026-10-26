@@ -14,6 +14,7 @@ import java.time.LocalDate;
 public record Dividend(
         LocalDate date,
         String payerTaxNumber,
+        String payerIdentificationNumber,
         String payerName,
         String payerAddress,
         String payerCountry,
@@ -34,5 +35,12 @@ public record Dividend(
             throw new IllegalArgumentException("payerCountry must be ISO 3166 alpha-2, got: " + payerCountry);
         }
         if (sourceCountry == null || sourceCountry.isBlank()) sourceCountry = payerCountry;
+    }
+
+    public Dividend(LocalDate date, String payerTaxNumber, String payerName, String payerAddress, String payerCountry,
+                    String type, BigDecimal grossValue, BigDecimal foreignTax, String sourceCountry,
+                    String reliefStatement, String sourceRef) {
+        this(date, payerTaxNumber, null, payerName, payerAddress, payerCountry, type, grossValue, foreignTax,
+                sourceCountry, reliefStatement, sourceRef);
     }
 }
