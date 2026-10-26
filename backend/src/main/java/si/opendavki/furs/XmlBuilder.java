@@ -32,8 +32,11 @@ final class XmlBuilder {
         }
     }
 
-    /** Creates the Envelope root with the standard EDP header; returns the {@code body} element to fill. */
-    Element envelope(Taxpayer taxpayer, String workflowId) {
+    /**
+     * Creates the Envelope root with the standard EDP header; returns the {@code body} element to fill.
+     * Doh_KDVP_9 requires {@code edp:bodyContent} in the body, Doh_Div_3 does not allow it.
+     */
+    Element envelope(Taxpayer taxpayer, String workflowId, boolean bodyContent) {
         Element env = doc.createElementNS(ns, "Envelope");
         env.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns:edp", FormType.EDP_NAMESPACE);
         doc.appendChild(env);
@@ -48,7 +51,7 @@ final class XmlBuilder {
         edp(env, "Signatures");
 
         Element body = child(env, "body");
-        edp(body, "bodyContent");
+        if (bodyContent) edp(body, "bodyContent");
         return body;
     }
 
