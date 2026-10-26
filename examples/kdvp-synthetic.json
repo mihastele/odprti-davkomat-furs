@@ -1,0 +1,16 @@
+{
+  "taxpayer": {"taxNumber": "12345678", "taxpayerType": "FO"},
+  "year": 2025,
+  "resident": true,
+  "hasForeignTax": false,
+  "securities": [
+    {
+      "isin": "US0378331005", "code": "AAPL", "name": "Apple Inc.", "fund": false,
+      "events": [
+        {"kind": "PURCHASE", "date": "2023-03-01", "quantity": 10, "unitPrice": 140.5, "acquisitionType": "B", "sourceRef": "synthetic:1"},
+        {"kind": "PURCHASE", "date": "2024-06-10", "quantity": 5.5, "unitPrice": 190.25, "acquisitionType": "B", "sourceRef": "synthetic:2"},
+        {"kind": "SALE", "date": "2025-02-14", "quantity": 12, "unitPrice": 210.1, "sourceRef": "synthetic:3"}
+      ]
+    }
+  ]
+}

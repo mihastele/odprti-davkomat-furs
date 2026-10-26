@@ -1,0 +1,8 @@
+{
+  "taxpayer": {"taxNumber": "12345678", "taxpayerType": "FO"},
+  "year": 2025,
+  "dividends": [
+    {"date": "2025-05-15", "payerName": "Apple Inc.", "payerAddress": "One Apple Park Way, Cupertino", "payerCountry": "US",
+     "type": "1", "grossValue": 12.34, "foreignTax": 1.85, "sourceCountry": "US", "sourceRef": "synthetic:d1"}
+  ]
+}
