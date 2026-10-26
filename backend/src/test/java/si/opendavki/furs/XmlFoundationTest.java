@@ -22,8 +22,8 @@ class XmlFoundationTest {
         return new SecurityEvent(SecurityEvent.Kind.SALE, LocalDate.parse(d), new BigDecimal(q), new BigDecimal(p), null, "t");
     }
     private KdvpReport kdvp(SecurityEvent... ev) {
-        return new KdvpReport(tp, 2025, true, false,
-                List.of(new Security("US0378331005", "AAPL", "Apple Inc.", false, List.of(ev))));
+        return new KdvpReport(tp, 2025, true, List.of(KdvpItem.ofSecurity(SheetType.PLVP,
+                new Security("US0378331005", "AAPL", "Apple Inc.", false, List.of(ev)))));
     }
 
     @Test void kdvpIsValidAndRunningBalanceIsDerived() {
