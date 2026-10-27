@@ -2,7 +2,6 @@ package si.opendavki.fx;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,9 +25,7 @@ public record FxConfig(FxSource source, Path cacheDir, String ecbUrl, String bsi
     }
 
     public static FxConfig fromEnvironment(Path dotEnv) throws IOException {
-        Map<String, String> merged = new HashMap<>(DotEnv.read(dotEnv));
-        System.getenv().forEach((k, v) -> { if (k.startsWith("OPENDAVKI_")) merged.put(k, v); });
-        return from(merged);
+        return from(DotEnv.environment(dotEnv));
     }
 
     public static FxConfig from(Map<String, String> env) {

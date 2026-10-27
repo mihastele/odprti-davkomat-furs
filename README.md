@@ -43,9 +43,9 @@ Principles:
 | Broker adapter framework (one module per broker, no lost rows, fixture test kit) | ✅ |
 | Generic CSV adapter | ✅ |
 | Interactive Brokers (Activity Statement CSV) | 🟡 implemented, **unverified on real statements** |
-| Exchange rates: ECB (default) / Bank of Slovenia / own CSV, configured in `.env` | 🟡 implemented, **not yet used by any calculation**, ECB download untested live |
-| FIFO engine, EUR conversion, gain/loss reports | ⬜ next (ODV-004) |
-| Audit report | ⬜ |
+| Exchange rates: ECB (default) / Bank of Slovenia / own CSV, configured in `.env` | 🟡 implemented and used by the tax engine; ECB download untested live |
+| Tax engine: cross-broker FIFO, EUR conversion, fees, splits, ledger → Doh-KDVP/Doh-Div, audit trail | 🟡 implemented ([docs](docs/tax-engine.md)), verified only on hand-computed synthetic cases |
+| Audit report (human-readable explanation of every figure) | ⬜ (raw audit trail JSON exists) |
 | Trading 212, Revolut, Trade Republic, eToro, XTB, DEGIRO, Lightyear, N26 | ⬜ planned |
 | Vue 3 browser interface | ⬜ planned |
 
@@ -62,14 +62,25 @@ $J import statement.csv -o ledger.json       # read, de-duplicate, check (exit c
 $J check ledger.json
 $J fx USD 2024-03-01 100                     # rate the configured source gives, and 100 USD in EUR
 
-$J generate KDVP ../examples/kdvp-synthetic.json --schema-dir ../schemas -o kdvp.out.xml
-$J generate DIV  ../examples/div-synthetic.json  --schema-dir ../schemas -o div.out.xml
-$J validate KDVP kdvp.out.xml --schema-dir ../schemas
+# ledger -> declarations for a tax year (XML validated against the XSDs, plus audit-<year>.json)
+$J report ledger.json --year 2024 --tax-number 12345678 --out-dir out --schema-dir ../schemas
+
+$J validate KDVP out/kdvp-2024.xml --schema-dir ../schemas
+$J generate KDVP ../examples/kdvp-synthetic.json --schema-dir ../schemas -o kdvp.out.xml   # from a hand-written report (dev tool)
+```
+
+Try the whole pipeline offline on synthetic data (own rates file instead of the ECB download):
+
+```bash
+cd backend && mvn -q install && cd ..
+J="java -jar backend/cli/target/opendavki.jar"
+$J import examples/statement-generic.csv -o /tmp/ledger.json
+$J report /tmp/ledger.json --year 2024 --tax-number 12345678 --out-dir /tmp/out --env-file examples/synthetic.env
 ```
 
 Exit codes: `0` ok, `1` XSD validation failed or ledger errors, `2` input/config error, `3` schema or rate source unavailable.
 
-`generate` currently takes a hand-written report JSON (see `examples/`); the ledger → tax engine → report pipeline is the next milestone.
+`report` refuses to write XML when any instrument or payment had to be left out because of an error; `--allow-incomplete` writes the partial result for inspection only.
 
 ## Configuration
 
@@ -82,6 +93,7 @@ Copy [`.env.example`](.env.example) to `.env` (git-ignored). Real environment va
 | `OPENDAVKI_FX_MAX_LOOKBACK_DAYS` | `7` | limit for the fallback above |
 | `OPENDAVKI_FX_CACHE_DIR` | `.opendavki/cache/fx` | download cache |
 | `OPENDAVKI_FX_ECB_URL`, `_BSI_URL`, `_FILE` | ECB history URL, empty, empty | source locations |
+| `OPENDAVKI_INCLUDE_FEES` | `true` | add broker fees to purchase cost and deduct them from sale value (unverified rule, see docs/tax-engine.md) |
 
 Details, and why ECB is the default, in [docs/fx.md](docs/fx.md).
 
@@ -99,12 +111,12 @@ Adding a broker means adding one module that depends only on `core`: see [docs/a
 ## Repository layout
 
 ```
-backend/core            ledger, adapter SPI, exchange rates, FURS XML writers and XSD validator
+backend/core            ledger, adapter SPI, exchange rates, tax engine, FURS XML writers and XSD validator
 backend/brokers/<id>    one Maven module per broker adapter
 backend/cli             command-line tool (shaded jar)
 schemas/                official FURS XSDs, byte-for-byte, with SHA256SUMS
 examples/               synthetic report inputs
-docs/                   adapter guide, format docs, FX, backlog
+docs/                   adapter guide, format docs, FX, tax engine, backlog
 ```
 
 ## Official schemas
@@ -120,12 +132,13 @@ sheet) are rejected instead of dropped, and a sale larger than the held quantity
 
 Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**.
 
-- **No tax calculation yet**: no FIFO, no EUR conversion in the pipeline, fees not in cost basis; earlier years' purchases must be supplied by hand (D-02, D-08, L-01, L-02).
+- **Tax engine unverified**: FIFO, EUR conversion, fee treatment and the sheet layout (open lots carried into the year, split restating) follow assumptions that are not confirmed against ZDoh-2/FURS and were tested only on hand-computed synthetic cases (T-01 to T-03, T-08, T-09).
+- **Tax engine gaps**: only plain `PLVP` sheets; no F10, per-item foreign tax or loss transfer; Doh-Div lacks payer address and tax number; an unsupported corporate action or a missing purchase excludes the instrument (T-04 to T-07, T-10, T-11).
 - **Never validated end to end**: generated XML has not been imported into eDavki or compared with a hand-prepared declaration (D-01).
 - **IBKR importer unverified**: written from IBKR's documented layout, tested only on a synthetic statement; Activity CSV only (I-01, I-02).
-- **Exchange rates**: the default source (ECB) is not confirmed as FURS's recommendation, the Bank of Slovenia source has no default URL, the ECB download was never run live, and the rate-date and rounding rules are undecided (X-01 to X-04).
+- **Exchange rates**: the default source (ECB) is not confirmed as FURS's recommendation, the Bank of Slovenia source has no default URL, the ECB download was never run live, and the rate-date and rounding rules are undecided (X-01 to X-05).
 - **Corporate actions**: only forward splits are applied; reverse splits, mergers, spin-offs and ISIN changes need manual handling (L-04, I-05).
-- **Incoming broker transfers have no cost basis** unless added by hand, so cross-broker FIFO cannot yet be exact (I-08).
+- **Incoming transfers from a broker that is not imported have no cost basis** unless the ledger is edited by hand (I-08).
 - **Out of scope for now**: options, futures, CFDs, interest (Doh-Obr), crypto, other eDavki forms, signing/submission (D-09, I-04, I-10, D-11).
 - **Only original filings** are produced; corrections and late submissions are partly modelled (D-04).
 - **No browser interface, CI or license file yet** (L-10, L-11).
@@ -138,8 +151,8 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**.
 | ODV-001 | FURS XML foundation | done |
 | ODV-002 | Canonical ledger and broker adapter SPI | done |
 | ODV-003 | Interactive Brokers importer | done, needs real-statement verification |
-| ODV-004 | FIFO engine, EUR conversion, ledger → report pipeline | next |
-| ODV-005 | Audit report and diagnostics (missing purchases, duplicates, suspicious rates) | |
+| ODV-004 | FIFO engine, EUR conversion, ledger → report pipeline | done, unverified against real data |
+| ODV-005 | Human-readable audit report, more diagnostics (missing purchases, duplicates, suspicious rates) | next |
 | ODV-006 | Corporate actions, instrument master | |
 | ODV-007 | Golden files against eDavki, schema versioning | |
 | ODV-008 | CI, license | |
