@@ -3,6 +3,7 @@ package si.opendavki.tax;
 import java.util.List;
 import si.opendavki.ledger.Diagnostic;
 import si.opendavki.model.DivReport;
+import si.opendavki.model.Dividend;
 import si.opendavki.model.KdvpReport;
 
 /**
@@ -11,12 +12,13 @@ import si.opendavki.model.KdvpReport;
  * filed as they stand.
  */
 public record TaxResult(int year, KdvpReport kdvp, DivReport div, List<Diagnostic> diagnostics,
-                        List<LotMatch> lotMatches, List<RateUse> rates, boolean complete) {
+                        List<LotMatch> lotMatches, List<RateUse> rates, boolean complete, boolean feesIncluded) {
 
     /** The audit trail as a serialisable document. */
-    public record Audit(int year, boolean complete, List<LotMatch> lotMatches, List<RateUse> rates, List<Diagnostic> diagnostics) {}
+    public record Audit(int year, boolean complete, boolean feesIncluded, List<LotMatch> lotMatches,
+                        List<Dividend> dividends, List<RateUse> rates, List<Diagnostic> diagnostics) {}
 
     public Audit audit() {
-        return new Audit(year, complete, lotMatches, rates, diagnostics);
+        return new Audit(year, complete, feesIncluded, lotMatches, div == null ? List.of() : div.dividends(), rates, diagnostics);
     }
 }

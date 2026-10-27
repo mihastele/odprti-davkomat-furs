@@ -84,3 +84,11 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 | T-09 | Unit values are written with 8 decimals (schema maximum), so quantity × unit value can differ from the exact total by fractions of a cent (e.g. splits or fee shares that do not divide evenly). | ODV-007 |
 | T-10 | The first error of an instrument stops processing it, so several independent problems in one instrument need several runs. Prior-year sales of an instrument only matter if it also sells in the report year. | ODV-005 |
 | T-11 | The engine has no wash-sale, 'holding period' or loss-restriction rules and no per-year loss carry-over; eDavki/FURS rules for those are not modelled. | ODV-0xx |
+
+## Audit report (ODV-005)
+
+| ID | Gap | Planned |
+|---|---|---|
+| A-01 | The audit report is Markdown only and English only; no HTML/PDF, no localisation. | ODV-009 |
+| A-02 | The report itemises sales and the lots they consumed, but not the Doh-KDVP rows of lots that stay open (carried into the year or bought and unsold), nor a row-by-row reconciliation of the XML to source lines. | ODV-005 |
+| A-03 | INFO diagnostics (paired transfers, rate fallbacks, split duplicates) are only counted in the Markdown, not listed; the JSON has them. | ODV-005 |

@@ -57,7 +57,7 @@ public final class TaxEngine {
         boolean complete = run.diagnostics.stream().noneMatch(d -> d.severity() == Diagnostic.Severity.ERROR);
         KdvpReport kdvp = items.isEmpty() ? null : new KdvpReport(taxpayer, year, true, items);
         DivReport div = dividends.isEmpty() ? null : new DivReport(taxpayer, year, dividends);
-        return new TaxResult(year, kdvp, div, List.copyOf(run.diagnostics), List.copyOf(run.matches), List.copyOf(run.rates), complete);
+        return new TaxResult(year, kdvp, div, List.copyOf(run.diagnostics), List.copyOf(run.matches), List.copyOf(run.rates), complete, options.includeFees());
     }
 
     /** Shared mutable collectors for one computation. */

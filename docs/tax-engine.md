@@ -41,8 +41,12 @@ Warnings: `TRANSFER_BASIS_MISSING`, `TRANSFER_OUT_UNPAIRED`, `PAYER_DETAILS_MISS
 
 ## Outputs of `report`
 
-`kdvp-<year>.xml`, `div-<year>.xml` (validated against the XSDs), and `audit-<year>.json` with every lot match, every
-rate used and every diagnostic. Per-instrument gains are printed rounded to cents (`HALF_UP`) for reading only.
+`kdvp-<year>.xml`, `div-<year>.xml` (validated against the XSDs), `audit-<year>.json` with every lot match, every rate
+used, every dividend and every diagnostic, and `audit-<year>.md`, the same trail as a readable report: status banner,
+per-instrument summary, each sale with the lots it consumed and the statement line of each, dividends, every exchange
+rate with its transaction date and rate date, and all errors and warnings. `opendavki audit audit-<year>.json` renders
+the Markdown again from the JSON. Money is rounded to cents (`HALF_UP`) and unit values to 8 decimals for reading only;
+the JSON keeps 12 decimals.
 
 ## Not covered
 
