@@ -45,7 +45,7 @@ Principles:
 | Interactive Brokers (Activity Statement CSV) | 🟡 implemented, **unverified on real statements** |
 | Exchange rates: ECB (default) / Bank of Slovenia / own CSV, configured in `.env` | 🟡 implemented and used by the tax engine; ECB download untested live |
 | Tax engine: cross-broker FIFO, EUR conversion, fees, splits, ledger → Doh-KDVP/Doh-Div, audit trail | 🟡 implemented ([docs](docs/tax-engine.md)), verified only on hand-computed synthetic cases |
-| Audit report (human-readable explanation of every figure) | ⬜ (raw audit trail JSON exists) |
+| Audit report: every gain traced to sale and lot statement lines, every rate and dividend listed (Markdown + JSON) | 🟡 implemented ([docs](docs/tax-engine.md)); open-lot rows not itemised yet |
 | Trading 212, Revolut, Trade Republic, eToro, XTB, DEGIRO, Lightyear, N26 | ⬜ planned |
 | Vue 3 browser interface | ⬜ planned |
 
@@ -62,9 +62,10 @@ $J import statement.csv -o ledger.json       # read, de-duplicate, check (exit c
 $J check ledger.json
 $J fx USD 2024-03-01 100                     # rate the configured source gives, and 100 USD in EUR
 
-# ledger -> declarations for a tax year (XML validated against the XSDs, plus audit-<year>.json)
+# ledger -> declarations for a tax year (XML validated against the XSDs, plus audit-<year>.json and audit-<year>.md)
 $J report ledger.json --year 2024 --tax-number 12345678 --out-dir out --schema-dir ../schemas
 
+$J audit out/audit-2024.json                 # render the readable audit report again from the JSON
 $J validate KDVP out/kdvp-2024.xml --schema-dir ../schemas
 $J generate KDVP ../examples/kdvp-synthetic.json --schema-dir ../schemas -o kdvp.out.xml   # from a hand-written report (dev tool)
 ```
@@ -141,6 +142,7 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**.
 - **Incoming transfers from a broker that is not imported have no cost basis** unless the ledger is edited by hand (I-08).
 - **Out of scope for now**: options, futures, CFDs, interest (Doh-Obr), crypto, other eDavki forms, signing/submission (D-09, I-04, I-10, D-11).
 - **Only original filings** are produced; corrections and late submissions are partly modelled (D-04).
+- **Audit report** is Markdown/English only and does not itemise the sheet rows of lots that stay open (A-01 to A-03).
 - **No browser interface, CI or license file yet** (L-10, L-11).
 <!-- KNOWN-LIMITATIONS:END -->
 
@@ -152,7 +154,7 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**.
 | ODV-002 | Canonical ledger and broker adapter SPI | done |
 | ODV-003 | Interactive Brokers importer | done, needs real-statement verification |
 | ODV-004 | FIFO engine, EUR conversion, ledger → report pipeline | done, unverified against real data |
-| ODV-005 | Human-readable audit report, more diagnostics (missing purchases, duplicates, suspicious rates) | next |
+| ODV-005 | Human-readable audit report (done); more diagnostics: ledger checks, semantic declaration checks, IBKR P/L cross-check | audit report done, diagnostics next |
 | ODV-006 | Corporate actions, instrument master | |
 | ODV-007 | Golden files against eDavki, schema versioning | |
 | ODV-008 | CI, license | |

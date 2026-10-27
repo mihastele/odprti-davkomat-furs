@@ -35,7 +35,7 @@ import si.opendavki.model.KdvpReport;
 @Command(name = "opendavki", mixinStandardHelpOptions = true, version = "0.1.0",
         description = "Open-source, local-first FURS eDavki XML tooling.",
         subcommands = {Main.Generate.class, Main.Validate.class, Main.Schemas.class, Main.Adapters.class,
-                Main.Import.class, Main.Check.class, Main.Fx.class, Main.Report.class})
+                Main.Import.class, Main.Check.class, Main.Fx.class, Main.Report.class, Main.Audit.class})
 public final class Main implements Callable<Integer> {
 
     /** Exit codes: 0 ok, 1 XSD validation failed, 2 usage/input error, 3 schema missing. */
@@ -147,7 +147,7 @@ public final class Main implements Callable<Integer> {
         @Parameters(index = "0", description = "Ledger JSON file (from `import`)") Path ledgerFile;
         @Option(names = "--year", required = true, description = "Tax year") int year;
         @Option(names = "--tax-number", required = true, description = "Your 8-digit tax number (davčna številka)") String taxNumber;
-        @Option(names = "--out-dir", defaultValue = ".", description = "Where to write kdvp-<year>.xml, div-<year>.xml, audit-<year>.json") Path outDir;
+        @Option(names = "--out-dir", defaultValue = ".", description = "Where to write kdvp-<year>.xml, div-<year>.xml, audit-<year>.json and .md") Path outDir;
         @Option(names = "--env-file", defaultValue = ".env", description = "Settings file (see .env.example)") Path envFile;
         @Option(names = "--schema-dir", defaultValue = DEFAULT_SCHEMA_DIR, description = "Directory with official XSDs") Path schemaDir;
         @Option(names = "--allow-incomplete", description = "Write XML even if some instruments/payments were left out because of errors (NOT for filing)") boolean allowIncomplete;
@@ -173,8 +173,9 @@ public final class Main implements Callable<Integer> {
             Files.createDirectories(outDir);
             Path audit = outDir.resolve("audit-" + year + ".json");
             Files.writeString(audit, si.opendavki.json.Json.MAPPER.writeValueAsString(result.audit()) + "\n", StandardCharsets.UTF_8);
+            Files.writeString(outDir.resolve("audit-" + year + ".md"), si.opendavki.tax.AuditReport.markdown(result.audit()), StandardCharsets.UTF_8);
             printGains(result);
-            int exit = printDiagnostics(result.diagnostics(), "Audit trail written to " + audit + " (" + result.lotMatches().size()
+            int exit = printDiagnostics(result.diagnostics(), "Audit trail written to " + audit + " and audit-" + year + ".md (" + result.lotMatches().size()
                     + " lot matches, " + result.rates().size() + " rates)");
             if (!result.complete() && !allowIncomplete) {
                 System.err.println("REFUSING to write XML: the result is incomplete. Fix the errors above, or use --allow-incomplete to inspect partial output.");
@@ -204,6 +205,25 @@ public final class Main implements Callable<Integer> {
             java.util.Map<String, java.math.BigDecimal> gains = new java.util.TreeMap<>();
             for (si.opendavki.tax.LotMatch m : r.lotMatches()) gains.merge(m.instrument(), m.gainEur(), java.math.BigDecimal::add);
             gains.forEach((k, v) -> System.err.printf("  gain %-14s %s EUR%n", k, v.setScale(2, java.math.RoundingMode.HALF_UP).toPlainString()));
+        }
+    }
+
+    @Command(name = "audit", description = "Render an audit-<year>.json as a readable Markdown report.")
+    static final class Audit implements Callable<Integer> {
+        @Parameters(index = "0", description = "audit-<year>.json written by `report`") Path auditFile;
+        @Option(names = {"-o", "--out"}, description = "Output file (default: stdout)") Path out;
+
+        @Override public Integer call() throws IOException {
+            si.opendavki.tax.TaxResult.Audit a;
+            try {
+                a = si.opendavki.json.Json.MAPPER.readValue(auditFile.toFile(), si.opendavki.tax.TaxResult.Audit.class);
+            } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+                System.err.println("Input error: " + e.getMessage());
+                return INPUT_ERROR;
+            }
+            String md = si.opendavki.tax.AuditReport.markdown(a);
+            if (out != null) Files.writeString(out, md, StandardCharsets.UTF_8); else System.out.print(md);
+            return a.complete() ? 0 : VALIDATION_FAILED;
         }
     }
 

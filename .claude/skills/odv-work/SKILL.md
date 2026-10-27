@@ -18,7 +18,7 @@ Drive OpenDavki forward one verified increment at a time. `AGENTS.md` is the sta
 - **If the user named a ticket or backlog ID**, do that. Re-read its rows in BACKLOG and the code they touch.
 - **Otherwise** take the first open item from this queue, unless blocked (then say why and take the next):
   1. **ODV-004** is done (see docs/tax-engine.md); its open assumptions are the `T-` rows in BACKLOG.
-  2. **ODV-005** human-readable audit report built from `audit-<year>.json`: explain every figure back to source lines; ledger checks (L-03); semantic
+  2. **ODV-005** the audit report is done (`AuditReport`, A-xx rows remain); what is left is diagnostics: ledger checks (L-03); semantic
      declaration checks (D-05); IBKR cross-check against IBKR's own realized P/L (I-15).
   3. **ODV-006** corporate actions and instrument master (L-04, L-05, I-05, I-12).
   4. **ODV-007** golden files and schema versioning (D-01, D-03, D-04, D-10, D-13, X-01).
