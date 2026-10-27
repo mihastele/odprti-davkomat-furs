@@ -14,12 +14,12 @@ never guess.
 ## Repository map
 
 ```
-backend/core            ledger, broker adapter SPI, FX rates, FURS XML writers + XSD validator (si.opendavki.*)
+backend/core            ledger, broker adapter SPI, FX rates, tax engine, FURS XML writers + XSD validator (si.opendavki.*)
 backend/brokers/<id>    one Maven module per broker adapter; depends only on core
 backend/cli             picocli command line, shaded jar, discovers adapters with ServiceLoader
 schemas/                official FURS XSDs, byte-for-byte, with SHA256SUMS. Never edit.
 examples/               synthetic report inputs
-docs/                   adapters.md, generic-csv.md, ibkr.md, fx.md, BACKLOG.md
+docs/                   adapters.md, generic-csv.md, ibkr.md, fx.md, tax-engine.md, BACKLOG.md
 .env.example            every configuration key with its default
 ```
 

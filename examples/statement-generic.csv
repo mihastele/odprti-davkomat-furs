@@ -1,0 +1,8 @@
+# Synthetic statement for the end-to-end example. Not real data.
+type,date,broker,account,id,isin,symbol,name,asset_class,quantity,price,currency,fee,fee_currency,gross,withholding,source_country,split_new,split_old,acquisition_date,counterparty,description
+BUY,2023-03-01,brokerA,main,,US0378331005,AAPL,Apple Inc.,STOCK,10,110,USD,2.20,USD,,,,,,,,
+BUY,2023-09-12,brokerA,main,,IE00BK5BQT80,VWCE,Vanguard FTSE All-World UCITS ETF,ETF,4,100,EUR,1,EUR,,,,,,,,
+SPLIT,2024-02-05,brokerA,main,,US0378331005,AAPL,Apple Inc.,STOCK,,,,,,,,,2,1,,,2-for-1
+DIVIDEND,2024-05-15,brokerA,main,,US0378331005,AAPL,Apple Inc.,STOCK,,,USD,,,12.50,2.50,US,,,,,
+SELL,2024-03-01,brokerA,main,,US0378331005,AAPL,Apple Inc.,STOCK,12,60.5,USD,1.21,USD,,,,,,,,
+SELL,2024-11-20,brokerA,main,,IE00BK5BQT80,VWCE,Vanguard FTSE All-World UCITS ETF,ETF,4,115,EUR,1,EUR,,,,,,,,

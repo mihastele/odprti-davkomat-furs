@@ -11,6 +11,13 @@ import java.util.Map;
 public final class DotEnv {
     private DotEnv() {}
 
+    /** The {@code .env} file overlaid with real {@code OPENDAVKI_*} environment variables (which win). */
+    public static Map<String, String> environment(Path file) throws IOException {
+        Map<String, String> merged = new HashMap<>(read(file));
+        System.getenv().forEach((k, v) -> { if (k.startsWith("OPENDAVKI_")) merged.put(k, v); });
+        return merged;
+    }
+
     public static Map<String, String> read(Path file) throws IOException {
         Map<String, String> m = new HashMap<>();
         if (!Files.isRegularFile(file)) return m;

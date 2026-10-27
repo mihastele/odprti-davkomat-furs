@@ -35,7 +35,7 @@ import si.opendavki.model.KdvpReport;
 @Command(name = "opendavki", mixinStandardHelpOptions = true, version = "0.1.0",
         description = "Open-source, local-first FURS eDavki XML tooling.",
         subcommands = {Main.Generate.class, Main.Validate.class, Main.Schemas.class, Main.Adapters.class,
-                Main.Import.class, Main.Check.class, Main.Fx.class})
+                Main.Import.class, Main.Check.class, Main.Fx.class, Main.Report.class})
 public final class Main implements Callable<Integer> {
 
     /** Exit codes: 0 ok, 1 XSD validation failed, 2 usage/input error, 3 schema missing. */
@@ -139,6 +139,71 @@ public final class Main implements Callable<Integer> {
         @Override public Integer call() throws IOException {
             Ledger l = si.opendavki.json.Json.MAPPER.readValue(ledgerFile.toFile(), Ledger.class);
             return printDiagnostics(LedgerChecker.check(l), l.entries().size() + " ledger entries checked");
+        }
+    }
+
+    @Command(name = "report", description = "Compute Doh-KDVP and Doh-Div for a tax year from a ledger, write validated XML and an audit trail.")
+    static final class Report implements Callable<Integer> {
+        @Parameters(index = "0", description = "Ledger JSON file (from `import`)") Path ledgerFile;
+        @Option(names = "--year", required = true, description = "Tax year") int year;
+        @Option(names = "--tax-number", required = true, description = "Your 8-digit tax number (davčna številka)") String taxNumber;
+        @Option(names = "--out-dir", defaultValue = ".", description = "Where to write kdvp-<year>.xml, div-<year>.xml, audit-<year>.json") Path outDir;
+        @Option(names = "--env-file", defaultValue = ".env", description = "Settings file (see .env.example)") Path envFile;
+        @Option(names = "--schema-dir", defaultValue = DEFAULT_SCHEMA_DIR, description = "Directory with official XSDs") Path schemaDir;
+        @Option(names = "--allow-incomplete", description = "Write XML even if some instruments/payments were left out because of errors (NOT for filing)") boolean allowIncomplete;
+
+        @Override public Integer call() throws IOException {
+            si.opendavki.model.Taxpayer taxpayer;
+            si.opendavki.fx.FxConfig fxConfig;
+            si.opendavki.tax.TaxOptions options;
+            Ledger ledger;
+            try {
+                taxpayer = new si.opendavki.model.Taxpayer(taxNumber, "FO");
+                java.util.Map<String, String> env = si.opendavki.fx.DotEnv.environment(envFile);
+                fxConfig = si.opendavki.fx.FxConfig.from(env);
+                options = si.opendavki.tax.TaxOptions.from(env);
+                ledger = si.opendavki.json.Json.MAPPER.readValue(ledgerFile.toFile(), Ledger.class);
+            } catch (IllegalArgumentException | com.fasterxml.jackson.core.JsonProcessingException e) {
+                System.err.println("Input error: " + e.getMessage());
+                return INPUT_ERROR;
+            }
+
+            si.opendavki.tax.TaxResult result = new si.opendavki.tax.TaxEngine(new si.opendavki.fx.FxService(fxConfig), options)
+                    .compute(ledger, year, taxpayer);
+            Files.createDirectories(outDir);
+            Path audit = outDir.resolve("audit-" + year + ".json");
+            Files.writeString(audit, si.opendavki.json.Json.MAPPER.writeValueAsString(result.audit()) + "\n", StandardCharsets.UTF_8);
+            printGains(result);
+            int exit = printDiagnostics(result.diagnostics(), "Audit trail written to " + audit + " (" + result.lotMatches().size()
+                    + " lot matches, " + result.rates().size() + " rates)");
+            if (!result.complete() && !allowIncomplete) {
+                System.err.println("REFUSING to write XML: the result is incomplete. Fix the errors above, or use --allow-incomplete to inspect partial output.");
+                return VALIDATION_FAILED;
+            }
+            if (!result.complete()) System.err.println("WARNING: incomplete result written because of --allow-incomplete. Do not file it.");
+            if (result.kdvp() == null && result.div() == null) {
+                System.err.println("Nothing to declare for " + year + ".");
+                return exit;
+            }
+            if (result.kdvp() != null) {
+                exit = Math.max(exit, writeAndValidate(FormType.KDVP, new KdvpXmlWriter().write(result.kdvp()), outDir.resolve("kdvp-" + year + ".xml")));
+            }
+            if (result.div() != null) {
+                exit = Math.max(exit, writeAndValidate(FormType.DIV, new DivXmlWriter().write(result.div()), outDir.resolve("div-" + year + ".xml")));
+            }
+            return exit;
+        }
+
+        private int writeAndValidate(FormType form, String xml, Path file) throws IOException {
+            Files.writeString(file, xml, StandardCharsets.UTF_8);
+            return report(form, xml, schemaDir, file);
+        }
+
+        /** Per-instrument realised result in EUR, rounded to cents for reading only: eDavki computes the declared figures itself. */
+        private static void printGains(si.opendavki.tax.TaxResult r) {
+            java.util.Map<String, java.math.BigDecimal> gains = new java.util.TreeMap<>();
+            for (si.opendavki.tax.LotMatch m : r.lotMatches()) gains.merge(m.instrument(), m.gainEur(), java.math.BigDecimal::add);
+            gains.forEach((k, v) -> System.err.printf("  gain %-14s %s EUR%n", k, v.setScale(2, java.math.RoundingMode.HALF_UP).toPlainString()));
         }
     }
 
