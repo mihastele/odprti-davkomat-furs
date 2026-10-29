@@ -136,8 +136,8 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**.
 - **Tax engine unverified**: FIFO, EUR conversion, fee treatment and the sheet layout (open lots carried into the year, split restating) follow assumptions that are not confirmed against ZDoh-2/FURS and were tested only on hand-computed synthetic cases (T-01 to T-03, T-08, T-09).
 - **Tax engine gaps**: only plain `PLVP` sheets; no F10, per-item foreign tax or loss transfer; Doh-Div lacks payer address and tax number; an unsupported corporate action or a missing purchase excludes the instrument (T-04 to T-07, T-10, T-11).
 - **Never validated end to end**: generated XML has not been imported into eDavki or compared with a hand-prepared declaration (D-01).
-- **IBKR importer unverified**: written from IBKR's documented layout, tested only on a synthetic statement; Activity CSV only (I-01, I-02).
-- **Exchange rates**: the default source (ECB) is not confirmed as FURS's recommendation, the Bank of Slovenia source has no default URL, the ECB download was never run live, and the rate-date and rounding rules are undecided (X-01 to X-05).
+- **Importers unverified**: written from published layouts and tested only on synthetic statements; no real or officially documented sample exists for any broker (I-01, I-02, S-01, [docs/sample-data.md](docs/sample-data.md)).
+- **Exchange rates**: the ECB reference rates are the source the maintainers state FURS recommends, but the FURS document was not read; the Bank of Slovenia source has no default URL, the ECB download was never run live, and the rate-date and rounding rules are undecided (X-02 to X-05).
 - **Corporate actions**: only forward splits are applied; reverse splits, mergers, spin-offs and ISIN changes need manual handling (L-04, I-05).
 - **Incoming transfers from a broker that is not imported have no cost basis** unless the ledger is edited by hand (I-08).
 - **Out of scope for now**: options, futures, CFDs, interest (Doh-Obr), crypto, other eDavki forms, signing/submission (D-09, I-04, I-10, D-11).
@@ -163,8 +163,8 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**.
 
 ## Contributing
 
-Anonymized real broker statements (with the expected result you worked out by hand) are the most valuable
-contribution: they turn into regression fixtures for the adapters. See [docs/adapters.md](docs/adapters.md).
+Broker statements are the most valuable contribution (a paper/demo account works, no personal data needed): they turn into
+regression fixtures for the adapters. See [docs/sample-data.md](docs/sample-data.md) and [docs/adapters.md](docs/adapters.md).
 
 ## Disclaimer
 

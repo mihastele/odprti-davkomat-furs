@@ -19,11 +19,13 @@ needed; a stale cache is used if the download fails; data that cannot be parsed 
 java -jar backend/cli/target/opendavki.jar fx USD 2024-03-01 100
 ```
 
-## Why ECB is the default, and what is not confirmed
+## Why ECB is the default
 
-Bank of Slovenia publishes the ECB reference rates (its daily list is taken from the ECB website), so `ECB` and `BSI`
-carry the same numbers. The default is `ECB` because it is the primary source and has a stable public download.
-**The claim "FURS recommends this source and this rate date" could not be verified**: the FURS pages were unreachable
-from the build environment and a web search found no FURS instruction on which rate (trade-date rate, previous day,
-monthly) the Doh-KDVP/Doh-Div conversion requires. Confirm against the current FURS instructions and ZDoh-2 before
-filing, and change the default if FURS says otherwise (BACKLOG X-01, X-04).
+Maintainer statement (2026-10-29): FURS recommends converting foreign currencies in obligations towards FURS with the
+official ECB reference exchange rates published by Banka Slovenije ("za pretvorbo tujih valut pri obveznostih do FURS se
+priporoča uporaba uradnih referenčnih tečajev ECB, ki jih objavlja Banka Slovenije"). Bank of Slovenia republishes the
+ECB reference rates, so `ECB` and `BSI` carry the same numbers; `ECB` is the default because it is the primary source with
+a stable public download, `BSI` is available if you prefer the Slovenian channel and have a download URL for it.
+
+Still open: the FURS document itself was not read (the FURS pages were unreachable from the build environment), and
+neither the **rate date** (transaction day, day before, ...) nor the rounding rule is confirmed (BACKLOG X-04).

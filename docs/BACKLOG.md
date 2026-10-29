@@ -64,10 +64,9 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 
 | ID | Gap | Planned |
 |---|---|---|
-| X-01 | The default source (ECB) is **not confirmed as FURS's recommendation**; FURS guidance could not be read from the build environment. | immediately, by a maintainer |
-| X-02 | `BSI` has no default URL: no official Bank of Slovenia download endpoint/format was confirmed. It only reads a URL you configure (ECB `Cube` XML or CSV). | ODV-004 |
+| X-02 | `BSI` has no default URL (the maintainers state FURS points to the ECB rates as published by Banka Slovenije, so a working BSI download would be the most natural source): no official Bank of Slovenia download endpoint/format was confirmed. It only reads a URL you configure (ECB `Cube` XML or CSV). | ODV-004 |
 | X-03 | The ECB download (`eurofxref-hist.xml`) was never exercised live (network blocked in the build environment); only a local sample in the same layout is tested. | ODV-007 |
-| X-04 | Which rate date applies (transaction day, previous day, monthly) and how/when to round is undecided and unverified. Current behaviour (now used by the tax engine): rate of the transaction day, else the latest earlier one within the lookback limit; 12-decimal conversion, unit values rounded to 8 decimals only when written. | maintainer decision |
+| X-04 | Which rate date applies (transaction day, previous day, monthly) and how/when to round is undecided and unverified; only the choice of source (ECB reference rates) is confirmed by the maintainers. Current behaviour (now used by the tax engine): rate of the transaction day, else the latest earlier one within the lookback limit; 12-decimal conversion, unit values rounded to 8 decimals only when written. | maintainer decision |
 | X-05 | The "third source" is a user-supplied CSV (`FILE`), chosen as an assumption (ECB and BSI were the two sources discussed); replace if a different third source was intended. | decision needed |
 
 ## Tax engine (ODV-004)
@@ -93,3 +92,9 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 | A-01 | The audit report is Markdown only and English only; no HTML/PDF, no localisation. | ODV-009 |
 | A-02 | The report itemises sales and the lots they consumed, but not the Doh-KDVP rows of lots that stay open (carried into the year or bought and unsold), nor a row-by-row reconciliation of the XML to source lines. | ODV-005 |
 | A-03 | INFO diagnostics (paired transfers, rate fallbacks, split duplicates) are only counted in the Markdown, not listed; the JSON has them. | ODV-005 |
+
+## Sample data
+
+| ID | Gap | Planned |
+|---|---|---|
+| S-01 | No real or officially documented sample statement exists for any broker. Every importer is written from published layouts and tested on synthetic fixtures; see docs/sample-data.md for how to obtain verified samples (paper/demo accounts, anonymised donations, open-source test files). | ongoing |
