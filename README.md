@@ -39,7 +39,7 @@ Principles:
 | Area | State |
 |---|---|
 | Doh-KDVP XML (all six sheet types) and Doh-Div XML (incl. corporate-payout and late-filing blocks) | ✅ generated and validated against the official XSDs |
-| Canonical ledger, de-duplication, consistency checks | ✅ |
+| Canonical ledger, de-duplication, consistency checks ([list](docs/ledger-checks.md)) | ✅ |
 | Broker adapter framework (one module per broker, no lost rows, fixture test kit) | ✅ |
 | Generic CSV adapter | ✅ |
 | Interactive Brokers (Activity Statement CSV) | 🟡 implemented, **unverified on real statements** |
@@ -154,7 +154,7 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**.
 | ODV-002 | Canonical ledger and broker adapter SPI | done |
 | ODV-003 | Interactive Brokers importer | done, needs real-statement verification |
 | ODV-004 | FIFO engine, EUR conversion, ledger → report pipeline | done, unverified against real data |
-| ODV-005 | Human-readable audit report (done); more diagnostics: ledger checks, semantic declaration checks, IBKR P/L cross-check | audit report done, diagnostics next |
+| ODV-005 | Audit report (done); ledger checks for transfers, prices and precision (done, see [docs](docs/ledger-checks.md)); semantic declaration checks and IBKR P/L cross-check | partly done |
 | ODV-006 | Corporate actions, instrument master | |
 | ODV-007 | Golden files against eDavki, schema versioning | |
 | ODV-008 | CI, license | |
