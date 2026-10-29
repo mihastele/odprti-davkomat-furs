@@ -39,6 +39,15 @@
     <finalName>opendavki</finalName>
     <plugins>
       <plugin>
+        <!-- The shade plugin replaces target/opendavki.jar with the fat jar. Without forceCreation the next build reuses that
+             fat jar as the "thin" input when the CLI sources are unchanged, and its stale copies of core classes win. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <forceCreation>true</forceCreation>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.6.0</version>
