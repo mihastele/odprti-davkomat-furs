@@ -3,7 +3,6 @@ package si.opendavki.tax;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -25,7 +24,6 @@ import si.opendavki.model.*;
  */
 public final class TaxEngine {
     private static final int SCALE = 12;
-    private static final int TRANSFER_PAIR_DAYS = 10;
 
     private final FxService fx;
     private final TaxOptions options;
@@ -152,7 +150,7 @@ public final class TaxEngine {
             this.entries = entries;
             this.yearStart = yearStart;
             this.instrument = entries.get(0).instrument();
-            this.pairedTransfers = pairTransfers(entries);
+            this.pairedTransfers = TransferPairing.paired(entries);
         }
 
         java.util.Optional<KdvpItem> process() {
@@ -363,28 +361,6 @@ public final class TaxEngine {
                         + held.toPlainString() + " for " + instrument.key(), entries.get(0).source());
             }
         }
-    }
-
-    /**
-     * Pairs outgoing and incoming transfers of the same quantity between different accounts within a few days.
-     * Heuristic (BACKLOG T-04): anything unpaired is reported, never silently assumed to be an own-account move.
-     */
-    private static Set<String> pairTransfers(List<LedgerEntry> entries) {
-        Set<String> paired = new HashSet<>();
-        for (LedgerEntry e : entries) {
-            if (!(e instanceof SecurityTransfer out) || out.direction() != SecurityTransfer.Direction.OUT) continue;
-            for (LedgerEntry c : entries) {
-                if (c instanceof SecurityTransfer in && in.direction() == SecurityTransfer.Direction.IN
-                        && !paired.contains(in.id()) && in.quantity().compareTo(out.quantity()) == 0
-                        && !(in.broker().equals(out.broker()) && in.account().equals(out.account()))
-                        && Math.abs(ChronoUnit.DAYS.between(in.date(), out.date())) <= TRANSFER_PAIR_DAYS) {
-                    paired.add(in.id());
-                    paired.add(out.id());
-                    break;
-                }
-            }
-        }
-        return paired;
     }
 
     // ---- dividends --------------------------------------------------------------------------------------------

@@ -29,7 +29,8 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 
 | ID | Gap | Planned |
 |---|---|---|
-| L-03 | `LedgerChecker` only checks per-account positions, ISIN presence and unsupported corporate actions. Missing: transfer OUT↔IN pairing across brokers, duplicate detection for entries without ids across brokers, suspicious FX/price checks, quantity-precision checks, wash-trade hints. | ODV-005 |
+| L-03 | `LedgerChecker` does not yet detect: duplicate entries across brokers or files that carry no ids and differ only in formatting, implausible exchange rates (day-over-day jumps), wash-trade patterns, or dividends on instruments with no position. | ODV-005 |
+| L-12 | The `SUSPICIOUS_PRICE` thresholds (4× the median split-adjusted price, at least 3 trades) and the 10-day transfer pairing window are heuristics chosen without data; they may miss real errors or flag normal moves. | ODV-005 |
 | L-04 | Corporate actions: only forward splits change positions. Reverse splits, mergers, spin-offs, ISIN changes, stock dividends, return of capital, rights are carried as `UNSUPPORTED` and need manual handling. | ODV-006 |
 | L-05 | No instrument master: renamed symbols or changed ISINs are not linked; instruments without ISIN match by symbol only. | ODV-006 |
 | L-06 | No cash, interest, fee or FX entries in the ledger (only trades, dividends, corporate actions, transfers). | ODV-0xx |
