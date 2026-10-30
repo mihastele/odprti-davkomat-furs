@@ -102,4 +102,42 @@ class GenericCsvAdapterTest {
         }
         return sb.toString();
     }
+
+    private static final String CONVERSION_HEADER = "type,date,broker,account,id,isin,symbol,name,asset_class,quantity,price,currency,split_new,split_old,new_isin,new_symbol,new_name\n";
+
+    @Test void conversionRowBecomesAnExplicitConversionEntry() {
+        var r = adapter.read(StatementSource.ofText("c.csv", CONVERSION_HEADER
+                + "CONVERSION,2024-06-01,b,x,,US0378331005,OLD,Old Co,STOCK,,,,2,1,US5949181045,NEW,New Co\n"));
+        assertEquals(1, r.stats().rowsMapped());
+        CorporateAction c = (CorporateAction) r.entries().get(0);
+        assertEquals(CorporateAction.Type.CONVERSION, c.type());
+        assertEquals("US5949181045", c.target().isin());
+        assertEquals("NEW", c.target().symbol());
+        assertEquals(0, new java.math.BigDecimal("2").compareTo(c.newQuantity()));
+        assertEquals(0, java.math.BigDecimal.ONE.compareTo(c.oldQuantity()));
+    }
+
+    @Test void conversionWithoutTargetOrRatioFails() {
+        var r = adapter.read(StatementSource.ofText("c.csv", CONVERSION_HEADER
+                + "CONVERSION,2024-06-01,b,x,,US0378331005,OLD,Old Co,STOCK,,,,2,1,,,\n"
+                + "CONVERSION,2024-06-01,b,x,,US0378331005,OLD,Old Co,STOCK,,,,,,US5949181045,,\n"
+                + "CONVERSION,2024-06-01,b,x,,US0378331005,OLD,Old Co,STOCK,,,,1,1,US0378331005,,\n"));
+        assertEquals(List.of("MISSING_FIELD", "MISSING_FIELD", "INVALID_VALUE"), r.diagnostics().stream().map(Diagnostic::code).toList());
+        assertEquals(0, r.entries().size());
+    }
+
+    /** 10 OLD @100 (2022), 2-for-1 exchange into NEW (2024-06-01), sell 5 NEW @60: lot 20 @50, gain 5 * (60 - 50) = 50. */
+    @Test void aConversionEnteredByHandFlowsThroughTheTaxEngine() {
+        var r = adapter.read(StatementSource.ofText("c.csv", CONVERSION_HEADER
+                + "BUY,2022-01-01,b,x,,US0378331005,OLD,Old Co,STOCK,10,100,EUR,,,,,\n"
+                + "CONVERSION,2024-06-01,b,x,,US0378331005,OLD,Old Co,STOCK,,,,2,1,US5949181045,NEW,New Co\n"
+                + "SELL,2024-09-01,b,x,,US5949181045,NEW,New Co,STOCK,5,60,EUR,,,,,\n"));
+        assertFalse(r.hasErrors(), r.diagnostics().toString());
+        var fx = new si.opendavki.fx.FxService(si.opendavki.fx.FxConfig.defaults());
+        var result = new si.opendavki.tax.TaxEngine(fx, si.opendavki.tax.TaxOptions.defaults())
+                .compute(Ledger.of(r.entries()), 2024, new si.opendavki.model.Taxpayer("12345678", "FO"));
+        assertTrue(result.complete(), result.diagnostics().toString());
+        assertEquals(0, new java.math.BigDecimal("50").compareTo(result.lotMatches().get(0).gainEur()));
+        assertEquals("US5949181045", result.kdvp().items().get(0).security().isin());
+    }
 }

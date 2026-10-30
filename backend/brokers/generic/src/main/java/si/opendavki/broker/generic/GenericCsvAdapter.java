@@ -161,6 +161,15 @@ public final class GenericCsvAdapter implements BrokerAdapter {
                 return new LedgerEntry[]{new CorporateAction(id, broker, account, date, ref, ins,
                         CorporateAction.Type.SPLIT, nw, old, f.get("description"))};
             }
+            case "CONVERSION" -> {
+                BigDecimal nw = f.number("split_new", true), old = f.number("split_old", true);
+                String newIsin = f.require("new_isin").toUpperCase(Locale.ROOT);
+                String newSymbol = f.get("new_symbol").isEmpty() ? newIsin : f.get("new_symbol");
+                Instrument target = new Instrument(newIsin, newSymbol, f.get("new_name").isEmpty() ? null : f.get("new_name"), cls);
+                if (id.isEmpty()) id = ids.derive(broker, account, type, date.toString(), ins.key(), newIsin, nw.toPlainString(), old.toPlainString());
+                return new LedgerEntry[]{new CorporateAction(id, broker, account, date, ref, ins, CorporateAction.Type.CONVERSION,
+                        nw, old, f.get("description"), target)};
+            }
             case "CORPORATE_ACTION" -> {
                 if (id.isEmpty()) id = ids.derive(broker, account, type, date.toString(), ins.key(), f.get("description"));
                 return new LedgerEntry[]{new CorporateAction(id, broker, account, date, ref, ins,
@@ -175,7 +184,7 @@ public final class GenericCsvAdapter implements BrokerAdapter {
                         basis, basis == null ? null : currency, f.get("counterparty").isEmpty() ? null : f.get("counterparty"))};
             }
             default -> throw new RowError("UNKNOWN_TYPE", "Unknown row type '" + type
-                    + "' (expected BUY, SELL, DIVIDEND, SPLIT, CORPORATE_ACTION, TRANSFER_IN, TRANSFER_OUT)");
+                    + "' (expected BUY, SELL, DIVIDEND, SPLIT, CONVERSION, CORPORATE_ACTION, TRANSFER_IN, TRANSFER_OUT)");
         }
     }
 

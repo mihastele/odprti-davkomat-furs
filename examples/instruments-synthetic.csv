@@ -1,0 +1,3 @@
+# User-maintained corrections (see docs/instrument-master.md). match = ISIN, or symbol for instruments without ISIN.
+match,isin,asset_class,name
+CUSIPX,IE00BFMXXD54,ETF,Vanguard S&P 500 (Acc)

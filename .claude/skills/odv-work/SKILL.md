@@ -20,7 +20,7 @@ Drive OpenDavki forward one verified increment at a time. `AGENTS.md` is the sta
   1. **ODV-004** is done (see docs/tax-engine.md); its open assumptions are the `T-` rows in BACKLOG.
   2. **ODV-005** the audit report is done (`AuditReport`, A-xx rows remain); ledger checks for transfers, prices and precision are done (docs/ledger-checks.md); left: remaining ledger checks (L-03, L-12); semantic
      declaration checks (D-05); IBKR cross-check against IBKR's own realized P/L (I-15).
-  3. **ODV-006** corporate actions and instrument master (L-04, L-05, I-05, I-12).
+  3. **ODV-006** is done for splits, reverse splits, conversions and the instrument master (docs/corporate-actions.md); open: cash components (C-03), adapter-generated conversions (C-04, I-05, R-06), ignoring ledger entries (L-13).
   4. **ODV-007** golden files and schema versioning (D-01, D-03, D-04, D-10, D-13).
   5. **ODV-008** CI and licence (L-10). **ODV-009** Vue 3 UI on a local-only backend (L-11).
   6. More brokers in README order, one module each.

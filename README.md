@@ -39,13 +39,13 @@ Principles:
 | Area | State |
 |---|---|
 | Doh-KDVP XML (all six sheet types) and Doh-Div XML (incl. corporate-payout and late-filing blocks) | ✅ generated and validated against the official XSDs |
-| Canonical ledger, de-duplication, consistency checks ([list](docs/ledger-checks.md)) | ✅ |
+| Canonical ledger, de-duplication, consistency checks ([list](docs/ledger-checks.md)), instrument master ([docs](docs/instrument-master.md)) | ✅ |
 | Broker adapter framework (one module per broker, no lost rows, fixture test kit) | ✅ |
 | Generic CSV adapter | ✅ |
 | Interactive Brokers (Activity Statement CSV) | 🟡 implemented, **unverified on real statements** |
 | Trading 212 (history CSV) | 🟡 implemented; layout and arithmetic checked against one real export ([docs](docs/trading212.md)) |
 | Exchange rates: ECB (default) / Bank of Slovenia / own CSV, configured in `.env` | 🟡 implemented and used by the tax engine; ECB download untested live |
-| Tax engine: cross-broker FIFO, EUR conversion, fees, splits, ledger → Doh-KDVP/Doh-Div, audit trail | 🟡 implemented ([docs](docs/tax-engine.md)), verified only on hand-computed synthetic cases |
+| Tax engine: cross-broker FIFO, EUR conversion, fees, splits, reverse splits, conversions, ledger → Doh-KDVP/Doh-Div, audit trail | 🟡 implemented ([docs](docs/tax-engine.md)), verified only on hand-computed synthetic cases |
 | Audit report: every gain traced to sale and lot statement lines, every rate and dividend listed (Markdown + JSON) | 🟡 implemented ([docs](docs/tax-engine.md)); open-lot rows not itemised yet |
 | Trading 212, Revolut, Trade Republic, eToro, XTB, DEGIRO, Lightyear, N26 | ⬜ planned |
 | Vue 3 browser interface | ⬜ planned |
@@ -95,6 +95,7 @@ Copy [`.env.example`](.env.example) to `.env` (git-ignored). Real environment va
 | `OPENDAVKI_FX_MAX_LOOKBACK_DAYS` | `7` | limit for the fallback above |
 | `OPENDAVKI_FX_CACHE_DIR` | `.opendavki/cache/fx` | download cache |
 | `OPENDAVKI_FX_ECB_URL`, `_BSI_URL`, `_FILE` | ECB history URL, empty, empty | source locations |
+| `OPENDAVKI_INSTRUMENTS_FILE` | empty | CSV that fixes missing ISINs and asset classes ([docs/instrument-master.md](docs/instrument-master.md)) |
 | `OPENDAVKI_INCLUDE_FEES` | `true` | add broker fees to purchase cost and deduct them from sale value (unverified rule, see docs/tax-engine.md) |
 
 Details, and why ECB is the default, in [docs/fx.md](docs/fx.md).
@@ -140,7 +141,7 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**.
 - **Never validated end to end**: generated XML has not been imported into eDavki or compared with a hand-prepared declaration (D-01).
 - **Importers barely verified**: Trading 212 was checked against one real export (not committed), IBKR only against a synthetic statement written from its documented layout; no other broker has a sample (I-01, I-02, R-01 to R-07, S-01, [docs/sample-data.md](docs/sample-data.md)).
 - **Exchange rates**: the ECB reference rates are the source the maintainers state FURS recommends, but the FURS document was not read; the Bank of Slovenia source has no default URL, the ECB download was never run live, and the rate-date and rounding rules are undecided (X-02 to X-05).
-- **Corporate actions**: only forward splits are applied; reverse splits, mergers, spin-offs and ISIN changes need manual handling (L-04, I-05).
+- **Corporate actions**: splits (forward and reverse) and hand-entered conversions are applied ([docs](docs/corporate-actions.md)); the tax-neutral treatment of conversions is unverified, mergers with cash, spin-offs and similar are not modelled, and broker adapters do not produce conversions themselves (L-04, I-05, C-01 to C-04, L-13).
 - **Incoming transfers from a broker that is not imported have no cost basis** unless the ledger is edited by hand (I-08).
 - **Out of scope for now**: options, futures, CFDs, interest (Doh-Obr), crypto, other eDavki forms, signing/submission (D-09, I-04, I-10, D-11).
 - **Only original filings** are produced; corrections and late submissions are partly modelled (D-04).
@@ -157,7 +158,7 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**.
 | ODV-003 | Interactive Brokers importer | done, needs real-statement verification |
 | ODV-004 | FIFO engine, EUR conversion, ledger → report pipeline | done, unverified against real data |
 | ODV-005 | Audit report (done); ledger checks for transfers, prices and precision (done, see [docs](docs/ledger-checks.md)); semantic declaration checks and IBKR P/L cross-check | partly done |
-| ODV-006 | Corporate actions, instrument master | |
+| ODV-006 | Splits, reverse splits, conversions, instrument master | done (cash components and adapter support open) |
 | ODV-007 | Golden files against eDavki, schema versioning | |
 | ODV-008 | CI, license | |
 | ODV-009 | Vue 3 interface on a local-only backend | |

@@ -2,6 +2,7 @@ package si.opendavki.ledger;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.function.UnaryOperator;
 
 /** A dividend: gross amount and foreign tax withheld, both in {@code currency}. Never netted against trade results. */
 public record DividendPayment(String id, String broker, String account, LocalDate date, SourceRef source,
@@ -20,4 +21,8 @@ public record DividendPayment(String id, String broker, String account, LocalDat
     }
 
     @Override public int dayOrder() { return 4; }
+
+    @Override public LedgerEntry mapInstruments(UnaryOperator<Instrument> f) {
+        return new DividendPayment(id, broker, account, date, source, f.apply(instrument), gross, withholdingTax, currency, sourceCountry);
+    }
 }

@@ -31,8 +31,8 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 |---|---|---|
 | L-03 | `LedgerChecker` does not yet detect: duplicate entries across brokers or files that carry no ids and differ only in formatting, implausible exchange rates (day-over-day jumps), wash-trade patterns, or dividends on instruments with no position. | ODV-005 |
 | L-12 | The `SUSPICIOUS_PRICE` thresholds (4× the median split-adjusted price, at least 3 trades) and the 10-day transfer pairing window are heuristics chosen without data; they may miss real errors or flag normal moves. | ODV-005 |
-| L-04 | Corporate actions: only forward splits change positions. Reverse splits, mergers, spin-offs, ISIN changes, stock dividends, return of capital, rights are carried as `UNSUPPORTED` and need manual handling. | ODV-006 |
-| L-05 | No instrument master: renamed symbols or changed ISINs are not linked; instruments without ISIN match by symbol only. | ODV-006 |
+| L-04 | Corporate actions: splits (forward and reverse) and explicit conversions are applied. Mergers with cash, spin-offs, stock dividends, rights, return of capital and the cash for fractional shares after a reverse split are not; they exclude a sold instrument (see C-03). | ODV-0xx |
+| L-05 | The instrument master is a user-maintained file (M-01); there is no automatic detection of renamed symbols or changed ISINs, so a conversion must be entered by hand (C-04). | ODV-0xx |
 | L-06 | No cash, interest, fee or FX entries in the ledger (only trades, dividends, corporate actions, transfers). | ODV-0xx |
 | L-07 | Ledger JSON `formatVersion` is 1 with no migration path. Entries from `import` are written even when errors exist (exit code 1 signals it). | ODV-005 |
 | L-08 | Generic CSV: no decimal comma, no alternative date formats, no time-of-day. | when needed |
@@ -48,14 +48,14 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 | I-02 | **Never run on a real statement.** Section/column names come from IBKR's documented layout; the fixture is synthetic. Real files may differ (extra discriminators, multi-account layouts, renamed columns). Anonymized real samples are needed as regression fixtures. | first available sample |
 | I-03 | Execution rows (`DataDiscriminator` = `Trade`) are skipped when `Order` rows exist; if a real statement differs, trades could be missed or doubled. | with I-02 |
 | I-04 | Options, futures, bonds, CFDs, warrants, structured products are skipped with a WARNING (separate tax treatment, not implemented). Forex conversions are ignored. | ODV-0xx |
-| I-05 | Reverse splits and all non-forward-split corporate actions become `UNSUPPORTED` entries. | ODV-006 |
+| I-05 | IBKR corporate-action rows other than forward splits (reverse splits, mergers, spin-offs, ISIN changes) become UNSUPPORTED entries; IBKR's paired removal/addition rows are not translated into SPLIT or CONVERSION. Enter them by hand (docs/corporate-actions.md). | ODV-0xx |
 | I-06 | Withholding tax is joined to dividends only by instrument + date + currency. Late reclassifications/refunds fail loudly (`WHT_WITHOUT_DIVIDEND`, `WHT_NET_REFUND`); negative dividend reversals fail (`NEGATIVE_DIVIDEND`). | with I-02 |
 | I-07 | Dividend source country falls back to the ISIN prefix, which is the country of issue, not necessarily the paying country. | with I-02 |
 | I-08 | Incoming IBKR transfers carry no cost basis or acquisition date. Transfers between two imported accounts are paired automatically (T-04); for a sender that is not imported, the basis can only be added by editing the ledger JSON. No override mechanism exists. | ODV-005 |
 | I-09 | Several accounts in one statement: all entries use the first account number (WARNING `MULTIPLE_ACCOUNTS`). | with I-02 |
 | I-10 | Interest, securities lending and grant activity are skipped with a WARNING (they belong to other forms). | ODV-0xx |
 | I-11 | Time of day is dropped; the trade date, not the settlement date, is used. | ODV-004 (D-07) |
-| I-12 | US-entity statements identify securities by CUSIP, not ISIN: those instruments stay without ISIN (`MISSING_ISIN`). No CUSIP→ISIN mapping. | ODV-006 |
+| I-12 | US-entity statements identify securities by CUSIP, not ISIN: those instruments stay without ISIN (`MISSING_ISIN`) until the user maps the symbol to an ISIN in the instrument master. No CUSIP/ISIN database. | ODV-0xx |
 | I-13 | Trades flagged cancelled (`Ca`) are mapped with a WARNING; matching cancel/rebook pairs are not netted automatically. | with I-02 |
 | I-14 | Payment-in-lieu is treated as a dividend with a WARNING; its Slovenian tax treatment is unconfirmed. | ODV-005 |
 | I-15 | IBKR's own `Realized P/L` and `Basis` columns are ignored; they could serve as an independent cross-check of our FIFO result. | ODV-005 |
@@ -77,10 +77,10 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 | T-02 | Verified only on synthetic cases computed by hand; never compared with a real broker statement, a real filed declaration, or eDavki's own gain calculation. | ODV-007 |
 | T-03 | Sheet representation is an assumption: lots open on 1 January appear as purchase rows with their *remaining* quantity and original date/cost, prior-year sales are omitted, and in-year splits restate all rows into post-split units. Not confirmed to be what FURS expects. | ODV-007 |
 | T-04 | Transfer pairing is a heuristic (same quantity, different account, within 10 days). Unpaired outgoing transfers are assumed to leave the portfolio without a taxable event. | ODV-005 |
-| T-05 | An unsupported corporate action (anything but a forward split) excludes the instrument from the report; there is no manual override or correction mechanism. | ODV-006 |
+| T-05 | An unsupported corporate action excludes a sold instrument from the report. Replacing it with SPLIT/CONVERSION entries needs the unsupported entry removed from the ledger JSON by hand (L-13). | ODV-0xx |
 | T-06 | Doh-Div rows lack payer address and tax number (not in broker statements); payer country is the source-country proxy; dividend type is always "1". | ODV-005 |
 | T-07 | Only `PLVP` sheets are produced for sold instruments. No short/contract/share/capital-reduction sheets, no F10, no per-item foreign tax, no loss transfer; `HasForeignTax` is always false. | ODV-0xx |
-| T-08 | `IsFond` is true for ETFs and funds, false for other instruments. Assumption. | ODV-007 |
+| T-08 | `IsFond` is true for ETFs and funds, false for other instruments. Adapters guess the asset class (IBKR: ETF from the instrument type; Trading 212: name suffix); the instrument master overrides it per ISIN. Assumption. | ODV-007 |
 | T-09 | Unit values are written with 8 decimals (schema maximum), so quantity × unit value can differ from the exact total by fractions of a cent (e.g. splits or fee shares that do not divide evenly). | ODV-007 |
 | T-10 | The first error of an instrument stops processing it, so several independent problems in one instrument need several runs. Prior-year sales of an instrument only matter if it also sells in the report year. | ODV-005 |
 | T-11 | The engine has no wash-sale, 'holding period' or loss-restriction rules and no per-year loss carry-over; eDavki/FURS rules for those are not modelled. | ODV-0xx |
@@ -107,7 +107,18 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 | R-02 | The date is the UTC date of the action. A trade shortly before or after midnight UTC can fall on a different local date and rate day. | ODV-007 |
 | R-03 | Trading 212's own exchange rates and `Total`/`Result` are used only for a plausibility warning; the tax figures use the configured rate source (ECB). They differ slightly by design. | decision with X-04 |
 | R-04 | Withholding tax is taken as exported, which appears rounded up to cents per payment; the foreign tax may be overstated by up to a cent per dividend. Gross is shares x per-share, not the exported rounded `Total`. | ODV-007 |
-| R-05 | ETF detection is a name heuristic (`(Acc)`/`(Dist)`); funds without that suffix (for example physical gold ETCs) are treated as shares, so `IsFond` can be wrong (T-08). | ODV-006 |
-| R-06 | Stock splits and other corporate actions in the export carry no ratio, so they become UNSUPPORTED entries and exclude a sold instrument. Interest, lending, cashback, return of capital and bonus dividends are skipped with a warning. Sub-unit currencies other than GBX (for example ILA, ZAC) are not converted. | ODV-006 |
+| R-05 | ETF detection for Trading 212 is a name heuristic (`(Acc)`/`(Dist)`); funds without that suffix (for example physical gold ETCs) are treated as shares until corrected in the instrument master (T-08). | ODV-0xx |
+| R-06 | Stock-split rows in the Trading 212 export carry no ratio, so they become UNSUPPORTED entries and exclude a sold instrument; enter the split or conversion by hand. Interest, lending, cashback, return of capital and bonus dividends are skipped with a warning. Sub-unit currencies other than GBX (for example ILA, ZAC) are not converted. | ODV-0xx |
 | R-07 | Exports cover at most a year; a partial set of files produces `MISSING_PURCHASE_HISTORY` errors. Intended, but nothing tells the user which export period is missing. | ODV-005 |
 | T-12 | When the rate source is unreachable the report prints the same root cause once per instrument and payment instead of once. | ODV-005 |
+
+## Corporate actions and instrument master (ODV-006)
+
+| ID | Gap | Planned |
+|---|---|---|
+| C-01 | A conversion is treated as tax-neutral: lots keep acquisition date and total cost, rows are typed `E`. Not verified against ZDoh-2 or FURS instructions. | ODV-007 |
+| C-02 | The sheet of a converted instrument is issued for the final ISIN only. FURS may expect a separate sheet for the old ISIN or different row types. | ODV-007 |
+| C-03 | No cash components: mergers with cash, spin-offs, stock dividends, rights, return of capital and cash for fractional shares are not modelled. | ODV-0xx |
+| C-04 | Conversions are never inferred and only the generic CSV adapter can express them; no broker adapter translates its own corporate-action rows into them. | ODV-0xx |
+| L-13 | A ledger entry cannot be ignored or replaced except by editing the ledger JSON (for example to drop an UNSUPPORTED entry once the real event is entered by hand). | ODV-0xx |
+| M-01 | The instrument master matches exact ISINs or symbols and is maintained by hand; no instrument database, no fuzzy matching, no per-broker rules. | ODV-0xx |

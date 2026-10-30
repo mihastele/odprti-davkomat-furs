@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -37,17 +38,21 @@ public final class TaxEngine {
         Run run = new Run(year);
         LocalDate yearStart = LocalDate.of(year, 1, 1), yearEnd = LocalDate.of(year, 12, 31);
 
+        Map<String, String> conversions = conversionTargets(run, ledger, yearEnd);
         Map<String, List<LedgerEntry>> byInstrument = new LinkedHashMap<>();
         for (LedgerEntry e : ledger.entries()) {
-            if (!e.date().isAfter(yearEnd)) byInstrument.computeIfAbsent(e.instrument().key(), k -> new ArrayList<>()).add(e);
+            if (!e.date().isAfter(yearEnd)) {
+                byInstrument.computeIfAbsent(finalKey(e.instrument().key(), conversions), k -> new ArrayList<>()).add(e);
+            }
         }
 
         List<KdvpItem> items = new ArrayList<>();
-        for (List<LedgerEntry> entries : byInstrument.values()) {
+        for (Map.Entry<String, List<LedgerEntry>> group : byInstrument.entrySet()) {
+            List<LedgerEntry> entries = group.getValue();
             boolean soldInYear = entries.stream().anyMatch(e -> e instanceof Trade t && t.side() == Trade.Side.SELL
                     && !t.date().isBefore(yearStart));
             if (soldInYear) {
-                new InstrumentRun(run, entries, yearStart).process().ifPresent(items::add);
+                new InstrumentRun(run, entries, group.getKey(), yearStart).process().ifPresent(items::add);
             }
         }
         List<Dividend> dividends = dividends(run, ledger, yearStart, yearEnd);
@@ -56,6 +61,31 @@ public final class TaxEngine {
         KdvpReport kdvp = items.isEmpty() ? null : new KdvpReport(taxpayer, year, true, items);
         DivReport div = dividends.isEmpty() ? null : new DivReport(taxpayer, year, dividends);
         return new TaxResult(year, kdvp, div, List.copyOf(run.diagnostics), List.copyOf(run.matches), List.copyOf(run.rates), complete, options.includeFees());
+    }
+
+    /**
+     * Old instrument key to the key it was converted into (explicit {@link CorporateAction.Type#CONVERSION} entries up to
+     * the end of the year). An instrument converted into two different targets keeps its first target and raises an ERROR.
+     */
+    private static Map<String, String> conversionTargets(Run run, Ledger ledger, LocalDate yearEnd) {
+        Map<String, String> next = new HashMap<>();
+        for (LedgerEntry e : ledger.entries()) {
+            if (!(e instanceof CorporateAction c) || c.type() != CorporateAction.Type.CONVERSION || c.date().isAfter(yearEnd)) continue;
+            String previous = next.putIfAbsent(c.instrument().key(), c.target().key());
+            if (previous != null && !previous.equals(c.target().key())) {
+                run.diagnostics.add(Diagnostic.error("CONFLICTING_CONVERSION", c.instrument().key() + " is converted into both "
+                        + previous + " and " + c.target().key() + "; the second conversion is ignored", c.source()));
+            }
+        }
+        return next;
+    }
+
+    /** Follows conversions to the instrument holders end up with; a cycle stops at the key where it closes. */
+    private static String finalKey(String key, Map<String, String> next) {
+        Set<String> seen = new HashSet<>();
+        String current = key;
+        while (next.containsKey(current) && seen.add(current)) current = next.get(current);
+        return current;
     }
 
     /** Shared mutable collectors for one computation. */
@@ -119,6 +149,8 @@ public final class TaxEngine {
         final SourceRef source;
         final String entryId;
         final long seq;
+        /** Doh-KDVP acquisition type: "B" bought, "E" received in an exchange of capital (after a conversion). */
+        String type = "B";
         Lot(LocalDate date, BigDecimal qty, BigDecimal unitCost, SourceRef source, String entryId, long seq) {
             this.date = date; this.qty = qty; this.unitCost = unitCost; this.source = source; this.entryId = entryId; this.seq = seq;
         }
@@ -141,16 +173,30 @@ public final class TaxEngine {
         private final List<Arrived> arrivedInYear = new ArrayList<>();
         private final List<Split> splitsInYear = new ArrayList<>();
         private final Set<String> appliedSplits = new HashSet<>();
+        private final List<LocalDate> conversionsInYear = new ArrayList<>();
         private final Set<String> pairedTransfers;
         private List<Lot> snapshot;
         private long seq;
 
-        InstrumentRun(Run run, List<LedgerEntry> entries, LocalDate yearStart) {
+        InstrumentRun(Run run, List<LedgerEntry> entries, String finalKey, LocalDate yearStart) {
             this.run = run;
             this.entries = entries;
             this.yearStart = yearStart;
-            this.instrument = entries.get(0).instrument();
+            this.instrument = finalInstrument(entries, finalKey);
             this.pairedTransfers = TransferPairing.paired(entries);
+        }
+
+        /** The instrument the sheet is issued for: the latest description of the final key, else a conversion's target. */
+        private static Instrument finalInstrument(List<LedgerEntry> entries, String finalKey) {
+            Instrument latest = null, target = null;
+            for (LedgerEntry e : entries) {
+                if (e instanceof CorporateAction c && c.type() == CorporateAction.Type.CONVERSION) {
+                    if (c.target().key().equals(finalKey)) target = c.target();
+                } else if (e.instrument().key().equals(finalKey)) {
+                    latest = e.instrument();
+                }
+            }
+            return latest != null ? latest : target != null ? target : entries.get(0).instrument();
         }
 
         java.util.Optional<KdvpItem> process() {
@@ -231,22 +277,31 @@ public final class TaxEngine {
         }
 
         private void corporateAction(CorporateAction c) {
-            if (c.type() != CorporateAction.Type.SPLIT) {
+            if (c.type() == CorporateAction.Type.UNSUPPORTED) {
                 throw new Failure("UNSUPPORTED_CORPORATE_ACTION", "Corporate action on " + instrument.key() + " (" + c.description()
                         + ") is not supported; positions and cost basis cannot be derived", c.source());
             }
-            // The same split is reported by every broker holding the instrument; apply it once.
-            String key = c.date() + "|" + c.newQuantity().stripTrailingZeros() + "|" + c.oldQuantity().stripTrailingZeros();
+            boolean conversion = c.type() == CorporateAction.Type.CONVERSION;
+            // The same action is reported by every broker holding the instrument; apply it once.
+            String key = (conversion ? "CONVERSION|" + c.instrument().key() + "|" + c.target().key() + "|" : "SPLIT|") + c.date() + "|"
+                    + c.newQuantity().stripTrailingZeros() + "|" + c.oldQuantity().stripTrailingZeros();
             if (!appliedSplits.add(key)) {
-                run.diagnostics.add(Diagnostic.info("SPLIT_DUPLICATE", "Split of " + instrument.key() + " on " + c.date()
-                        + " already applied from another entry", c.source()));
+                run.diagnostics.add(Diagnostic.info(conversion ? "CONVERSION_DUPLICATE" : "SPLIT_DUPLICATE", (conversion ? "Conversion" : "Split")
+                        + " of " + c.instrument().key() + " on " + c.date() + " already applied from another entry", c.source()));
                 return;
             }
             for (Lot lot : pool) {
                 lot.qty = lot.qty.multiply(c.newQuantity()).divide(c.oldQuantity(), SCALE, RoundingMode.HALF_UP);
                 if (lot.unitCost != null) lot.unitCost = lot.unitCost.multiply(c.oldQuantity()).divide(c.newQuantity(), SCALE, RoundingMode.HALF_UP);
+                if (conversion) lot.type = "E";
             }
             if (inYear(c.date())) splitsInYear.add(new Split(c.date(), c.newQuantity(), c.oldQuantity()));
+            if (conversion) {
+                if (inYear(c.date())) conversionsInYear.add(c.date());
+                run.diagnostics.add(Diagnostic.warning("CONVERSION_ASSUMED_TAX_NEUTRAL", c.instrument().key() + " is converted into "
+                        + c.target().key() + " on " + c.date() + "; lots keep their acquisition dates and total cost (an exchange without "
+                        + "cash), which is an unverified assumption", c.source()));
+            }
         }
 
         private void transfer(SecurityTransfer s) {
@@ -294,7 +349,11 @@ public final class TaxEngine {
 
         private List<Lot> copyPool() {
             List<Lot> copy = new ArrayList<>();
-            for (Lot l : pool) copy.add(new Lot(l.date, l.qty, l.unitCost, l.source, l.entryId, l.seq));
+            for (Lot l : pool) {
+                Lot c = new Lot(l.date, l.qty, l.unitCost, l.source, l.entryId, l.seq);
+                c.type = l.type;
+                copy.add(c);
+            }
             return copy;
         }
 
@@ -309,13 +368,13 @@ public final class TaxEngine {
             List<SecurityEvent> events = new ArrayList<>();
             for (Lot l : snapshot) {
                 if (l.unitCost == null || l.qty.signum() == 0) continue;
-                events.add(purchaseEvent(l.date, l.date, l.qty, l.unitCost, l.source.toString() + " (carried into " + run.year + ")"));
+                events.add(purchaseEvent(l.date, l.date, l.qty, l.unitCost, l.type, l.source.toString() + " (carried into " + run.year + ")"));
             }
             for (Arrived a : arrivedInYear) {
                 // The row keeps the original acquisition date; quantity and cost are as stated on the day the lot arrived.
-                events.add(purchaseEvent(a.acquired(), a.arrivedOn(), a.qty(), a.unitCost(), a.source() + " (transferred in)"));
+                events.add(purchaseEvent(a.acquired(), a.arrivedOn(), a.qty(), a.unitCost(), "B", a.source() + " (transferred in)"));
             }
-            for (Bought b : boughtInYear) events.add(purchaseEvent(b.trade().date(), b.trade().date(), b.trade().quantity(), b.unitCost(), b.trade().source().toString()));
+            for (Bought b : boughtInYear) events.add(purchaseEvent(b.trade().date(), b.trade().date(), b.trade().quantity(), b.unitCost(), "B", b.trade().source().toString()));
             for (Sold s : soldInYear) {
                 Restated r = restate(s.trade().date(), s.trade().quantity(), s.unitProceeds());
                 events.add(new SecurityEvent(SecurityEvent.Kind.SALE, s.trade().date(), r.qty, r.unit, null, s.trade().source().toString()));
@@ -346,9 +405,11 @@ public final class TaxEngine {
         }
 
         /** @param restateDate splits after this day are applied to quantity and price; {@code date} is what the row shows */
-        private SecurityEvent purchaseEvent(LocalDate date, LocalDate restateDate, BigDecimal qty, BigDecimal unit, String ref) {
+        private SecurityEvent purchaseEvent(LocalDate date, LocalDate restateDate, BigDecimal qty, BigDecimal unit, String baseType, String ref) {
             Restated r = restate(restateDate, qty, unit);
-            return new SecurityEvent(SecurityEvent.Kind.PURCHASE, date, r.qty, r.unit, "B", ref);
+            // A row that predates a conversion of the year is shown as received in an exchange of capital ("E").
+            boolean exchanged = baseType.equals("E") || conversionsInYear.stream().anyMatch(d -> d.isAfter(restateDate));
+            return new SecurityEvent(SecurityEvent.Kind.PURCHASE, date, r.qty, r.unit, exchanged ? "E" : "B", ref);
         }
 
         /** The sheet's final stock must equal what the FIFO pool still holds (known-cost lots). */
