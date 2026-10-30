@@ -2,6 +2,7 @@ package si.opendavki.ledger;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.function.UnaryOperator;
 
 /**
  * A buy or sell. {@code price} is per unit in {@code currency}; {@code fee} is the total commission in
@@ -26,4 +27,8 @@ public record Trade(String id, String broker, String account, LocalDate date, So
     }
 
     @Override public int dayOrder() { return side == Side.BUY ? 2 : 3; }
+
+    @Override public LedgerEntry mapInstruments(UnaryOperator<Instrument> f) {
+        return new Trade(id, broker, account, date, source, f.apply(instrument), side, quantity, price, currency, fee, feeCurrency);
+    }
 }

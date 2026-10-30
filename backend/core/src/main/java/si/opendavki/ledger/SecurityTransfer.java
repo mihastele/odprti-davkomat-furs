@@ -2,6 +2,7 @@ package si.opendavki.ledger;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.function.UnaryOperator;
 
 /**
  * Securities moved between brokers (or in from outside the statements). A transfer-in carries the original
@@ -25,4 +26,8 @@ public record SecurityTransfer(String id, String broker, String account, LocalDa
     }
 
     @Override public int dayOrder() { return direction == Direction.IN ? 1 : 5; }
+
+    @Override public LedgerEntry mapInstruments(UnaryOperator<Instrument> f) {
+        return new SecurityTransfer(id, broker, account, date, source, f.apply(instrument), direction, quantity, acquisitionDate, costBasisPerUnit, costCurrency, counterparty);
+    }
 }

@@ -53,6 +53,10 @@ public final class LedgerChecker {
                         + "; Doh-KDVP needs it and cross-broker matching falls back to the symbol", e.source()));
             }
             String key = e.broker() + "\u0000" + e.account() + "\u0000" + ins.key();
+            if (e instanceof CorporateAction c && c.type() == CorporateAction.Type.CONVERSION) {
+                convert(c, key, positions, warnedNoIsin, out);
+                continue;
+            }
             BigDecimal pos = positions.getOrDefault(key, BigDecimal.ZERO);
             switch (e) {
                 case Trade t -> {
@@ -82,6 +86,24 @@ public final class LedgerChecker {
             }
             positions.put(key, pos);
         }
+    }
+
+    /** The position of the old instrument at this account moves, scaled by the ratio, to the target instrument. */
+    private static void convert(CorporateAction c, String oldKey, Map<String, BigDecimal> positions,
+                                Map<String, Boolean> warnedNoIsin, List<Diagnostic> out) {
+        if (c.target().isin() == null && warnedNoIsin.putIfAbsent(c.target().key(), true) == null) {
+            out.add(Diagnostic.warning("MISSING_ISIN", "No ISIN for conversion target " + c.target().symbol()
+                    + "; Doh-KDVP needs it and cross-broker matching falls back to the symbol", c.source()));
+        }
+        BigDecimal moved = positions.remove(oldKey);
+        if (moved == null || moved.signum() == 0) {
+            out.add(Diagnostic.warning("CONVERSION_WITHOUT_POSITION", "Conversion of " + c.instrument().key() + " into " + c.target().key()
+                    + " on " + c.date() + " found no position at " + c.broker() + "/" + c.account(), c.source()));
+            return;
+        }
+        String newKey = c.broker() + "\u0000" + c.account() + "\u0000" + c.target().key();
+        BigDecimal converted = moved.multiply(c.newQuantity()).divide(c.oldQuantity(), 12, RoundingMode.HALF_UP);
+        positions.merge(newKey, converted, BigDecimal::add);
     }
 
     private static Diagnostic negative(LedgerEntry e, Instrument ins, BigDecimal pos) {

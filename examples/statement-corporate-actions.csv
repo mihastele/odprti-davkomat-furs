@@ -1,0 +1,10 @@
+# Synthetic statement: a reverse split, a conversion (share exchange / ISIN change) and an instrument without ISIN. Not real data.
+type,date,broker,account,id,isin,symbol,name,asset_class,quantity,price,currency,split_new,split_old,new_isin,new_symbol,new_name
+BUY,2023-01-02,brokerA,main,,US0378331005,REVX,Reverse Co,STOCK,100,10,EUR,,,,,
+SPLIT,2024-03-01,brokerA,main,,US0378331005,REVX,Reverse Co,STOCK,,,,1,10,,,
+SELL,2024-04-01,brokerA,main,,US0378331005,REVX,Reverse Co,STOCK,5,120,EUR,,,,,
+BUY,2022-05-02,brokerA,main,,US5949181045,OLDX,Old Co,STOCK,10,100,EUR,,,,,
+CONVERSION,2024-06-01,brokerA,main,,US5949181045,OLDX,Old Co,STOCK,,,,2,1,DE0007164600,NEWX,New Co
+SELL,2024-09-01,brokerA,main,,DE0007164600,NEWX,New Co,STOCK,5,60,EUR,,,,,
+BUY,2023-02-01,brokerA,main,,,CUSIPX,Statement identifies this by CUSIP,STOCK,3,50,EUR,,,,,
+SELL,2024-07-01,brokerA,main,,,CUSIPX,Statement identifies this by CUSIP,STOCK,1,70,EUR,,,,,

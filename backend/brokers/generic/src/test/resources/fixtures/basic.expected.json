@@ -241,7 +241,7 @@
   }, {
     "severity" : "ERROR",
     "code" : "UNKNOWN_TYPE",
-    "message" : "Unknown row type 'BOGUS' (expected BUY, SELL, DIVIDEND, SPLIT, CORPORATE_ACTION, TRANSFER_IN, TRANSFER_OUT)",
+    "message" : "Unknown row type 'BOGUS' (expected BUY, SELL, DIVIDEND, SPLIT, CONVERSION, CORPORATE_ACTION, TRANSFER_IN, TRANSFER_OUT)",
     "source" : {
       "adapter" : "generic",
       "file" : "basic.csv",

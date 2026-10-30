@@ -104,6 +104,7 @@ public final class Main implements Callable<Integer> {
         @Parameters(arity = "1..*", description = "Statement files") List<Path> statements;
         @Option(names = "--adapter", description = "Adapter id for all files (default: auto-detect per file)") String adapterId;
         @Option(names = {"-o", "--out"}, required = true, description = "Ledger JSON file to write") Path out;
+        @Option(names = "--env-file", defaultValue = ".env", description = "Settings file (see .env.example)") Path envFile;
 
         @Override public Integer call() throws IOException {
             List<LedgerEntry> all = new ArrayList<>();
@@ -127,9 +128,22 @@ public final class Main implements Callable<Integer> {
             }
             Ledger.MergeResult merged = Ledger.merge(all);
             diags.addAll(merged.diagnostics());
-            diags.addAll(LedgerChecker.check(merged.ledger()));
-            Files.writeString(out, si.opendavki.json.Json.MAPPER.writeValueAsString(merged.ledger()) + "\n", StandardCharsets.UTF_8);
-            return printDiagnostics(diags, merged.ledger().entries().size() + " ledger entries written to " + out);
+            Ledger ledger = merged.ledger();
+            try {
+                java.util.Optional<si.opendavki.ledger.InstrumentMaster> master =
+                        si.opendavki.ledger.InstrumentMaster.fromEnvironment(si.opendavki.fx.DotEnv.environment(envFile));
+                if (master.isPresent()) {
+                    si.opendavki.ledger.InstrumentMaster.Result r = master.get().apply(ledger);
+                    ledger = r.ledger();
+                    diags.addAll(r.diagnostics());
+                }
+            } catch (IllegalArgumentException e) {
+                System.err.println("Instrument master error: " + e.getMessage());
+                return INPUT_ERROR;
+            }
+            diags.addAll(LedgerChecker.check(ledger));
+            Files.writeString(out, si.opendavki.json.Json.MAPPER.writeValueAsString(ledger) + "\n", StandardCharsets.UTF_8);
+            return printDiagnostics(diags, ledger.entries().size() + " ledger entries written to " + out);
         }
     }
 
@@ -163,6 +177,9 @@ public final class Main implements Callable<Integer> {
                 fxConfig = si.opendavki.fx.FxConfig.from(env);
                 options = si.opendavki.tax.TaxOptions.from(env);
                 ledger = si.opendavki.json.Json.MAPPER.readValue(ledgerFile.toFile(), Ledger.class);
+                java.util.Optional<si.opendavki.ledger.InstrumentMaster> master =
+                        si.opendavki.ledger.InstrumentMaster.fromEnvironment(env);
+                if (master.isPresent()) ledger = master.get().apply(ledger).ledger(); // idempotent if `import` already applied it
             } catch (IllegalArgumentException | com.fasterxml.jackson.core.JsonProcessingException e) {
                 System.err.println("Input error: " + e.getMessage());
                 return INPUT_ERROR;

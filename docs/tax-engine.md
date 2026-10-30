@@ -18,7 +18,7 @@ an audit trail. CLI: `opendavki report ledger.json --year 2024 --tax-number 1234
    use the previous rate and say so). Every rate used is recorded (`RateUse`). Gains and unit values keep 12 decimals.
 4. **Fees** (`OPENDAVKI_INCLUDE_FEES`, default `true`): the fee share per unit is added to the purchase cost and deducted
    from the sale value. *Assumption (T-01).*
-5. **Splits** multiply lot quantities and divide unit costs. The same split reported by several brokers is applied once.
+5. **Splits, reverse splits and conversions** restate lots (quantity x new/old, unit cost / (new/old)); conversions also move them to the new instrument and carry dates and total cost over. The same action reported by several brokers is applied once. See [corporate-actions.md](corporate-actions.md).
 6. **Transfers.** An outgoing and an incoming transfer of the same quantity between different accounts within 10 days are
    paired and change nothing (lots keep their original date and cost). An unpaired incoming transfer needs acquisition
    date and cost basis (`SecurityTransfer.acquisitionDate/costBasisPerUnit`) or its lot has unknown cost and a sale that
@@ -36,8 +36,8 @@ an audit trail. CLI: `opendavki report ledger.json --year 2024 --tax-number 1234
 The first error of an instrument excludes that instrument from the report (`INSTRUMENT_EXCLUDED`); the same for a
 dividend (`DIVIDEND_EXCLUDED`). The result is then `complete = false` and the CLI refuses to write XML unless
 `--allow-incomplete` is given. Errors: `MISSING_PURCHASE_HISTORY`, `SALE_USES_UNKNOWN_COST`, `UNSUPPORTED_CORPORATE_ACTION`,
-`RATE_UNAVAILABLE`, `MISSING_ISIN`, `INVALID_ISIN`, `NEGATIVE_UNIT_VALUE`, `MISSING_COUNTRY`, `INTERNAL_INCONSISTENCY`.
-Warnings: `TRANSFER_BASIS_MISSING`, `TRANSFER_OUT_UNPAIRED`, `PAYER_DETAILS_MISSING`, `NAME_TRUNCATED`.
+`RATE_UNAVAILABLE`, `MISSING_ISIN`, `INVALID_ISIN`, `NEGATIVE_UNIT_VALUE`, `MISSING_COUNTRY`, `CONFLICTING_CONVERSION`, `INTERNAL_INCONSISTENCY`.
+Warnings: `CONVERSION_ASSUMED_TAX_NEUTRAL`, `TRANSFER_BASIS_MISSING`, `TRANSFER_OUT_UNPAIRED`, `PAYER_DETAILS_MISSING`, `NAME_TRUNCATED`.
 
 ## Outputs of `report`
 

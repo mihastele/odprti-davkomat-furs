@@ -3,6 +3,7 @@ package si.opendavki.ledger;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.time.LocalDate;
+import java.util.function.UnaryOperator;
 
 /**
  * A normalized, broker-independent record. Amounts keep their original currency; EUR conversion is a separate,
@@ -26,4 +27,7 @@ public sealed interface LedgerEntry permits Trade, DividendPayment, CorporateAct
 
     /** Same-day processing order: splits first, then incoming positions, buys, sells, outgoing transfers. */
     int dayOrder();
+
+    /** The same entry with every instrument it refers to replaced by {@code f(instrument)} (used by the instrument master). */
+    LedgerEntry mapInstruments(UnaryOperator<Instrument> f);
 }

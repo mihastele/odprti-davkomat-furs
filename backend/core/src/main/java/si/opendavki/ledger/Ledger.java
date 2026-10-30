@@ -72,7 +72,7 @@ public record Ledger(int formatVersion, List<LedgerEntry> entries) {
             case DividendPayment d -> new DividendPayment(d.id(), d.broker(), d.account(), d.date(), null, d.instrument(),
                     d.gross(), d.withholdingTax(), d.currency(), d.sourceCountry());
             case CorporateAction c -> new CorporateAction(c.id(), c.broker(), c.account(), c.date(), null, c.instrument(),
-                    c.type(), c.newQuantity(), c.oldQuantity(), c.description());
+                    c.type(), c.newQuantity(), c.oldQuantity(), c.description(), c.target());
             case SecurityTransfer s -> new SecurityTransfer(s.id(), s.broker(), s.account(), s.date(), null, s.instrument(),
                     s.direction(), s.quantity(), s.acquisitionDate(), s.costBasisPerUnit(), s.costCurrency(), s.counterparty());
         };
