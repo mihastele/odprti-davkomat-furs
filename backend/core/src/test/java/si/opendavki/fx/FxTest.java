@@ -117,6 +117,13 @@ class FxTest {
         assertFalse(Files.exists(dir.resolve("ecb-hist.xml")));
     }
 
+    @Test void unreachableSourceIsTriedOncePerService(@TempDir Path dir) {
+        AtomicInteger attempts = new AtomicInteger();
+        FxService s = new FxService(cfg(Map.of("OPENDAVKI_FX_CACHE_DIR", dir.toString())), uri -> { attempts.incrementAndGet(); throw new IOException("offline"); });
+        for (int i = 0; i < 5; i++) assertThrows(RateUnavailableException.class, () -> s.rate("USD", MAR1));
+        assertEquals(1, attempts.get());
+    }
+
     @Test void conflictingDuplicateRatesAreRejected() {
         assertThrows(IOException.class, () -> RateTable.parseCsv("date,currency,rate\n2024-03-01,USD,1.08\n2024-03-01,USD,1.09\n"));
         assertThrows(IOException.class, () -> RateTable.parseCsv("a,b,c\n"));

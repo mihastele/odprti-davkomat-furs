@@ -43,6 +43,7 @@ Principles:
 | Broker adapter framework (one module per broker, no lost rows, fixture test kit) | ✅ |
 | Generic CSV adapter | ✅ |
 | Interactive Brokers (Activity Statement CSV) | 🟡 implemented, **unverified on real statements** |
+| Trading 212 (history CSV) | 🟡 implemented; layout and arithmetic checked against one real export ([docs](docs/trading212.md)) |
 | Exchange rates: ECB (default) / Bank of Slovenia / own CSV, configured in `.env` | 🟡 implemented and used by the tax engine; ECB download untested live |
 | Tax engine: cross-broker FIFO, EUR conversion, fees, splits, ledger → Doh-KDVP/Doh-Div, audit trail | 🟡 implemented ([docs](docs/tax-engine.md)), verified only on hand-computed synthetic cases |
 | Audit report: every gain traced to sale and lot statement lines, every rate and dividend listed (Markdown + JSON) | 🟡 implemented ([docs](docs/tax-engine.md)); open-lot rows not itemised yet |
@@ -103,7 +104,8 @@ Details, and why ECB is the default, in [docs/fx.md](docs/fx.md).
 | Priority | Platforms | Adapter |
 |---|---|---|
 | P0 | Interactive Brokers | 🟡 `ibkr` ([docs](docs/ibkr.md)) |
-| P0 | Trading 212, Revolut, Trade Republic, eToro, XTB, DEGIRO, Lightyear, N26 | ⬜ |
+| P0 | Trading 212 | 🟡 `trading212` ([docs](docs/trading212.md)) |
+| P0 | Revolut, Trade Republic, eToro, XTB, DEGIRO, Lightyear, N26 | ⬜ |
 | any | anything you can convert to the flat format | ✅ `generic` ([format](docs/generic-csv.md)) |
 
 Listing a platform means statement-import support is planned, not that it accepts Slovenian customers.
@@ -136,7 +138,7 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**.
 - **Tax engine unverified**: FIFO, EUR conversion, fee treatment and the sheet layout (open lots carried into the year, split restating) follow assumptions that are not confirmed against ZDoh-2/FURS and were tested only on hand-computed synthetic cases (T-01 to T-03, T-08, T-09).
 - **Tax engine gaps**: only plain `PLVP` sheets; no F10, per-item foreign tax or loss transfer; Doh-Div lacks payer address and tax number; an unsupported corporate action or a missing purchase excludes the instrument (T-04 to T-07, T-10, T-11).
 - **Never validated end to end**: generated XML has not been imported into eDavki or compared with a hand-prepared declaration (D-01).
-- **Importers unverified**: written from published layouts and tested only on synthetic statements; no real or officially documented sample exists for any broker (I-01, I-02, S-01, [docs/sample-data.md](docs/sample-data.md)).
+- **Importers barely verified**: Trading 212 was checked against one real export (not committed), IBKR only against a synthetic statement written from its documented layout; no other broker has a sample (I-01, I-02, R-01 to R-07, S-01, [docs/sample-data.md](docs/sample-data.md)).
 - **Exchange rates**: the ECB reference rates are the source the maintainers state FURS recommends, but the FURS document was not read; the Bank of Slovenia source has no default URL, the ECB download was never run live, and the rate-date and rounding rules are undecided (X-02 to X-05).
 - **Corporate actions**: only forward splits are applied; reverse splits, mergers, spin-offs and ISIN changes need manual handling (L-04, I-05).
 - **Incoming transfers from a broker that is not imported have no cost basis** unless the ledger is edited by hand (I-08).

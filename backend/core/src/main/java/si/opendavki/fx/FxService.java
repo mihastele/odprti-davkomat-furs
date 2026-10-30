@@ -30,6 +30,8 @@ public final class FxService {
     private final FxConfig config;
     private final Fetcher fetcher;
     private RateTable table;
+    /** A failed load is remembered for the lifetime of the service so an unreachable source is tried once, not per entry. */
+    private RateUnavailableException loadFailure;
 
     public FxService(FxConfig config) {
         this(config, HTTP);
@@ -59,6 +61,7 @@ public final class FxService {
     }
 
     private RateTable table(LocalDate needed) {
+        if (loadFailure != null) throw loadFailure;
         if (table != null && (table.lastDate().isPresent() && !needed.isAfter(table.lastDate().get()) || config.source() == FxSource.FILE)) {
             return table;
         }
@@ -79,7 +82,8 @@ public final class FxService {
             };
             return table;
         } catch (IOException e) {
-            throw new RateUnavailableException("Cannot load " + config.source() + " rates: " + e.getMessage(), e);
+            loadFailure = new RateUnavailableException("Cannot load " + config.source() + " rates: " + e.getMessage(), e);
+            throw loadFailure;
         }
     }
 

@@ -97,4 +97,17 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 
 | ID | Gap | Planned |
 |---|---|---|
-| S-01 | No real or officially documented sample statement exists for any broker. Every importer is written from published layouts and tested on synthetic fixtures; see docs/sample-data.md for how to obtain verified samples (paper/demo accounts, anonymised donations, open-source test files). | ongoing |
+| S-01 | Only one real sample has been seen (a Trading 212 export, not committed); no other broker has a real or officially documented sample. Importers are tested on synthetic fixtures; see docs/sample-data.md for how to obtain verified samples (paper/demo accounts, anonymised donations, open-source test files). | ongoing |
+
+## Trading 212 adapter
+
+| ID | Gap | Planned |
+|---|---|---|
+| R-01 | Checked against one real export (one EUR account, Jan to Apr 2026). Older or newer export versions, other account currencies, other fee columns (stamp duty, French transaction tax, ...) and other actions (limit/stop orders, stock splits, lending, cashback) are untested; unknown ones are reported, not guessed. | with more samples |
+| R-02 | The date is the UTC date of the action. A trade shortly before or after midnight UTC can fall on a different local date and rate day. | ODV-007 |
+| R-03 | Trading 212's own exchange rates and `Total`/`Result` are used only for a plausibility warning; the tax figures use the configured rate source (ECB). They differ slightly by design. | decision with X-04 |
+| R-04 | Withholding tax is taken as exported, which appears rounded up to cents per payment; the foreign tax may be overstated by up to a cent per dividend. Gross is shares x per-share, not the exported rounded `Total`. | ODV-007 |
+| R-05 | ETF detection is a name heuristic (`(Acc)`/`(Dist)`); funds without that suffix (for example physical gold ETCs) are treated as shares, so `IsFond` can be wrong (T-08). | ODV-006 |
+| R-06 | Stock splits and other corporate actions in the export carry no ratio, so they become UNSUPPORTED entries and exclude a sold instrument. Interest, lending, cashback, return of capital and bonus dividends are skipped with a warning. Sub-unit currencies other than GBX (for example ILA, ZAC) are not converted. | ODV-006 |
+| R-07 | Exports cover at most a year; a partial set of files produces `MISSING_PURCHASE_HISTORY` errors. Intended, but nothing tells the user which export period is missing. | ODV-005 |
+| T-12 | When the rate source is unreachable the report prints the same root cause once per instrument and payment instead of once. | ODV-005 |
