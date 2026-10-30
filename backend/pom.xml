@@ -13,6 +13,7 @@
     <module>core</module>
     <module>brokers/generic</module>
     <module>brokers/ibkr</module>
+    <module>brokers/trading212</module>
     <module>cli</module>
   </modules>
 
@@ -43,6 +44,11 @@
       <dependency>
         <groupId>si.opendavki</groupId>
         <artifactId>opendavki-broker-ibkr</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>si.opendavki</groupId>
+        <artifactId>opendavki-broker-trading212</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

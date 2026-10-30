@@ -1,0 +1,444 @@
+{
+  "entries" : [ {
+    "type" : "TRADE",
+    "id" : "EOF0001",
+    "broker" : "trading212",
+    "account" : "default",
+    "date" : "2025-03-03",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 2
+    },
+    "instrument" : {
+      "isin" : "US0378331005",
+      "symbol" : "AAPL",
+      "name" : "Apple",
+      "assetClass" : "STOCK"
+    },
+    "side" : "BUY",
+    "quantity" : 2.5000000000,
+    "price" : 200.0000000000,
+    "currency" : "USD",
+    "fee" : 0.71,
+    "feeCurrency" : "EUR"
+  }, {
+    "type" : "TRADE",
+    "id" : "EOF0002",
+    "broker" : "trading212",
+    "account" : "default",
+    "date" : "2025-03-04",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 3
+    },
+    "instrument" : {
+      "isin" : "DE0007164600",
+      "symbol" : "SAP",
+      "name" : "SAP",
+      "assetClass" : "STOCK"
+    },
+    "side" : "BUY",
+    "quantity" : 3.0000000000,
+    "price" : 150.0000000000,
+    "currency" : "EUR",
+    "fee" : 0,
+    "feeCurrency" : "EUR"
+  }, {
+    "type" : "TRADE",
+    "id" : "EOF0003",
+    "broker" : "trading212",
+    "account" : "default",
+    "date" : "2025-06-02",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 4
+    },
+    "instrument" : {
+      "isin" : "US0378331005",
+      "symbol" : "AAPL",
+      "name" : "Apple",
+      "assetClass" : "STOCK"
+    },
+    "side" : "SELL",
+    "quantity" : 1.0000000000,
+    "price" : 220.0000000000,
+    "currency" : "USD",
+    "fee" : 0.30,
+    "feeCurrency" : "EUR"
+  }, {
+    "type" : "TRADE",
+    "id" : "EOF0004",
+    "broker" : "trading212",
+    "account" : "default",
+    "date" : "2025-03-05",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 5
+    },
+    "instrument" : {
+      "isin" : "GB00BN7SWP63",
+      "symbol" : "GSK",
+      "name" : "GSK",
+      "assetClass" : "STOCK"
+    },
+    "side" : "BUY",
+    "quantity" : 10.0000000000,
+    "price" : 18.000000000000,
+    "currency" : "GBP",
+    "fee" : 0.31,
+    "feeCurrency" : "EUR"
+  }, {
+    "type" : "TRADE",
+    "id" : "EOF0005",
+    "broker" : "trading212",
+    "account" : "default",
+    "date" : "2025-03-06",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 6
+    },
+    "instrument" : {
+      "isin" : "IE00B3XXRP09",
+      "symbol" : "VUSA",
+      "name" : "Vanguard S&P 500 (Dist)",
+      "assetClass" : "ETF"
+    },
+    "side" : "BUY",
+    "quantity" : 10.0000000000,
+    "price" : 85.0000000000,
+    "currency" : "GBP",
+    "fee" : 1.48,
+    "feeCurrency" : "EUR"
+  }, {
+    "type" : "TRADE",
+    "id" : "EOF0006",
+    "broker" : "trading212",
+    "account" : "default",
+    "date" : "2025-07-01",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 7
+    },
+    "instrument" : {
+      "isin" : "IE00B3XXRP09",
+      "symbol" : "VUSA",
+      "name" : "Vanguard S&P 500 (Dist)",
+      "assetClass" : "ETF"
+    },
+    "side" : "SELL",
+    "quantity" : 4.0000000000,
+    "price" : 90.5000000000,
+    "currency" : "GBP",
+    "fee" : 0.64,
+    "feeCurrency" : "EUR"
+  }, {
+    "type" : "TRADE",
+    "id" : "EOF0007",
+    "broker" : "trading212",
+    "account" : "default",
+    "date" : "2025-03-07",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 8
+    },
+    "instrument" : {
+      "isin" : "IE00BFMXXD54",
+      "symbol" : "VUAA",
+      "name" : "Vanguard S&P 500 (Acc)",
+      "assetClass" : "ETF"
+    },
+    "side" : "BUY",
+    "quantity" : 1.5000000000,
+    "price" : 110.0000000000,
+    "currency" : "EUR",
+    "fee" : 0,
+    "feeCurrency" : "EUR"
+  }, {
+    "type" : "TRADE",
+    "id" : "EOF0008",
+    "broker" : "trading212",
+    "account" : "default",
+    "date" : "2025-03-08",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 9
+    },
+    "instrument" : {
+      "isin" : "IE00BFMXXD54",
+      "symbol" : "VUAG",
+      "name" : "Vanguard S&P 500 (Acc)",
+      "assetClass" : "ETF"
+    },
+    "side" : "BUY",
+    "quantity" : 2.0000000000,
+    "price" : 95.0000000000,
+    "currency" : "GBP",
+    "fee" : 0.33,
+    "feeCurrency" : "EUR"
+  }, {
+    "type" : "DIVIDEND",
+    "id" : "t212-0a30acd41ab4a44c",
+    "broker" : "trading212",
+    "account" : "default",
+    "date" : "2025-05-15",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 10
+    },
+    "instrument" : {
+      "isin" : "US0378331005",
+      "symbol" : "AAPL",
+      "name" : "Apple",
+      "assetClass" : "STOCK"
+    },
+    "gross" : 0.3750000000000000,
+    "withholdingTax" : 0.06,
+    "currency" : "USD",
+    "sourceCountry" : "US"
+  }, {
+    "type" : "DIVIDEND",
+    "id" : "t212-844eb621cd8d7e89",
+    "broker" : "trading212",
+    "account" : "default",
+    "date" : "2025-05-16",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 11
+    },
+    "instrument" : {
+      "isin" : "US5949181045",
+      "symbol" : "MSFT",
+      "name" : "Microsoft",
+      "assetClass" : "STOCK"
+    },
+    "gross" : 1.5000000000000000,
+    "withholdingTax" : 0.23,
+    "currency" : "USD",
+    "sourceCountry" : "US"
+  }, {
+    "type" : "DIVIDEND",
+    "id" : "t212-2e1389d2c469bf61",
+    "broker" : "trading212",
+    "account" : "default",
+    "date" : "2025-06-10",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 12
+    },
+    "instrument" : {
+      "isin" : "IE00BQZJBM26",
+      "symbol" : "DGSE",
+      "name" : "WisdomTree Emerging Markets SmallCap Dividend (Dist)",
+      "assetClass" : "ETF"
+    },
+    "gross" : 0.2000000000000000,
+    "withholdingTax" : 0.00,
+    "currency" : "EUR",
+    "sourceCountry" : "IE"
+  }, {
+    "type" : "DIVIDEND",
+    "id" : "t212-cdb6b5fdde0ab0be",
+    "broker" : "trading212",
+    "account" : "default",
+    "date" : "2025-06-11",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 13
+    },
+    "instrument" : {
+      "isin" : "IE00B7N3YW49",
+      "symbol" : "SSHY",
+      "name" : "PIMCO Short-Term High Yield (Dist)",
+      "assetClass" : "ETF"
+    },
+    "gross" : 1.0500000000000000,
+    "withholdingTax" : 0.00,
+    "currency" : "GBP",
+    "sourceCountry" : "IE"
+  }, {
+    "type" : "CORPORATE_ACTION",
+    "id" : "t212-f337b479b8350607",
+    "broker" : "trading212",
+    "account" : "default",
+    "date" : "2025-09-01",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 20
+    },
+    "instrument" : {
+      "isin" : "US0378331005",
+      "symbol" : "AAPL",
+      "name" : "Apple",
+      "assetClass" : "STOCK"
+    },
+    "type" : "UNSUPPORTED",
+    "description" : "Stock split open (2.5000000000 shares)"
+  }, {
+    "type" : "TRADE",
+    "id" : "EOF0009",
+    "broker" : "trading212",
+    "account" : "default",
+    "date" : "2025-03-09",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 21
+    },
+    "instrument" : {
+      "isin" : "US5949181045",
+      "symbol" : "MSFT",
+      "name" : "Microsoft",
+      "assetClass" : "STOCK"
+    },
+    "side" : "BUY",
+    "quantity" : 1.0000000000,
+    "price" : 100.0000000000,
+    "currency" : "USD",
+    "fee" : 0,
+    "feeCurrency" : "USD"
+  } ],
+  "diagnostics" : [ {
+    "severity" : "WARNING",
+    "code" : "PAYMENT_IN_LIEU",
+    "message" : "Manufactured payment for US5949181045 (paid instead of a dividend on lent shares) is treated as a dividend; confirm its tax treatment",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 11
+    }
+  }, {
+    "severity" : "WARNING",
+    "code" : "UNSUPPORTED_DIVIDEND_TYPE",
+    "message" : "Dividend type 'Return of capital' is not imported (return of capital, bonus and similar are not plain dividend income); declare it by hand",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 14
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "CASH_MOVEMENT",
+    "message" : "'Deposit' moves cash only",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 15
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "CASH_MOVEMENT",
+    "message" : "'Withdrawal' moves cash only",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 16
+    }
+  }, {
+    "severity" : "WARNING",
+    "code" : "UNSUPPORTED_ACTION",
+    "message" : "Interest income belongs to a different tax form (not supported yet)",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 17
+    }
+  }, {
+    "severity" : "INFO",
+    "code" : "CASH_MOVEMENT",
+    "message" : "'Currency conversion' moves cash only",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 18
+    }
+  }, {
+    "severity" : "WARNING",
+    "code" : "UNKNOWN_ACTION",
+    "message" : "Action 'Frobnicate' is not recognised",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 19
+    }
+  }, {
+    "severity" : "WARNING",
+    "code" : "TOTAL_MISMATCH",
+    "message" : "Trading 212 reports a total of 105.00 EUR but shares x price / exchange rate + fee gives 100.00; check the row",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 21
+    }
+  }, {
+    "severity" : "ERROR",
+    "code" : "INVALID_NUMBER",
+    "message" : "'No. of shares' is not a number: 'abc'",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 22
+    }
+  }, {
+    "severity" : "ERROR",
+    "code" : "INVALID_ISIN",
+    "message" : "ISIN is empty or malformed: ''",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 23
+    }
+  }, {
+    "severity" : "ERROR",
+    "code" : "COLUMN_COUNT",
+    "message" : "Expected 19 columns, found 3",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 24
+    }
+  } ],
+  "stats" : {
+    "rowsRead" : 23,
+    "rowsMapped" : 14,
+    "rowsSkipped" : 6,
+    "rowsFailed" : 3
+  }
+}

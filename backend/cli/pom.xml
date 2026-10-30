@@ -25,6 +25,10 @@
       <artifactId>opendavki-broker-ibkr</artifactId>
     </dependency>
     <dependency>
+      <groupId>si.opendavki</groupId>
+      <artifactId>opendavki-broker-trading212</artifactId>
+    </dependency>
+    <dependency>
       <groupId>info.picocli</groupId>
       <artifactId>picocli</artifactId>
     </dependency>

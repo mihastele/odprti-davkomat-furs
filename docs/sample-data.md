@@ -29,5 +29,8 @@ maintainers what it looks like instead.
 | Broker | Layout source | Sample available |
 |---|---|---|
 | Interactive Brokers | IBKR's documented Activity Statement layout | synthetic only |
-| Trading 212 | community descriptions of the History CSV (Action, Time, ISIN, Ticker, Name, No. of shares, Price / share, Currency, Exchange rate, Total, Withholding tax, ...); not an official reference | none |
+| Trading 212 | a real 217-row export supplied by a maintainer (not committed) plus community descriptions; see [trading212.md](trading212.md) | synthetic fixture mirroring the real layout |
 | Revolut, Trade Republic, eToro, XTB, DEGIRO, Lightyear, N26 | not yet researched | none |
+
+A maintainer's own export may be used locally to verify an adapter without being committed; only a synthetic fixture with
+the same structure goes into the repository.
