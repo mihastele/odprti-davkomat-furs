@@ -252,12 +252,18 @@ public final class Main implements Callable<Integer> {
     @Command(name = "describe", description = "Summarise a CSV statement's layout (column names, value shapes) without its contents; safe to share after you read it.")
     static final class Describe implements Callable<Integer> {
         @Parameters(index = "0", description = "Statement file") Path file;
-        @Option(names = "--values", split = ",", description = "Also list the distinct values of these columns (by header name)") List<String> valueColumns = new ArrayList<>();
+        @Option(names = {"--values", "--keep"}, split = ",", description = "CSV: also list the distinct values of these columns (by header name). PDF: also show these words unmasked") List<String> valueColumns = new ArrayList<>();
         @Option(names = "--profile", description = "Check the file against this profile and say what is missing") Path profile;
         @Option(names = {"-o", "--out"}, description = "Write the description to a file instead of stdout") Path out;
 
         @Override public Integer call() throws IOException {
             StatementSource src = StatementSource.read(file);
+            if (PdfDescriber.isPdf(src.content())) {
+                if (profile != null) { System.err.println("--profile applies to CSV files only."); return INPUT_ERROR; }
+                String described = PdfDescriber.describe(src.name(), src.content(), valueColumns);
+                if (out != null) Files.writeString(out, described, StandardCharsets.UTF_8); else System.out.print(described);
+                return 0;
+            }
             StringBuilder md = new StringBuilder(si.opendavki.broker.StatementDescriber.describe(src, valueColumns));
             int exit = 0;
             if (profile != null) {

@@ -32,6 +32,10 @@ appear. Read the output, then paste it into an issue: it is enough to write or c
 ([profiles.md](profiles.md)), although not to prove the tax semantics. `--values "Column A,Column B"` adds the distinct values
 of columns you choose; identifier-looking values are never listed.
 
+`describe` also reads **PDF** statements (N26 Invest, Trade Republic, Lightyear and Revolut mostly provide PDFs): every digit becomes 9
+and every word is masked except a built-in vocabulary of financial terms (buy, sell, dividend, tax, fee, ... in several
+languages), currency codes and the words you pass with `--keep`. Names, addresses and company names never appear. Read it, then share it.
+
 ## Status of broker formats
 
 | Broker | Layout source | Sample available |
