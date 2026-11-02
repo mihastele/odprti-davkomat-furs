@@ -42,7 +42,24 @@ public final class Main implements Callable<Integer> {
     static final int VALIDATION_FAILED = 1, INPUT_ERROR = 2, SCHEMA_MISSING = 3;
 
     public static void main(String[] args) {
-        System.exit(new CommandLine(new Main()).execute(args));
+        System.exit(commandLine().execute(args));
+    }
+
+    /** Command line with short messages for the failures a user causes (missing or unreadable files). */
+    static CommandLine commandLine() {
+        CommandLine cmd = new CommandLine(new Main());
+        cmd.setExecutionExceptionHandler((e, c, parse) -> {
+            if (e instanceof java.nio.file.NoSuchFileException || e instanceof java.io.FileNotFoundException) {
+                System.err.println("File not found: " + e.getMessage());
+                return INPUT_ERROR;
+            }
+            if (e instanceof IOException || e instanceof InputException) {
+                System.err.println("Error: " + e.getMessage());
+                return INPUT_ERROR;
+            }
+            throw e;
+        });
+        return cmd;
     }
 
     @Override public Integer call() {
@@ -109,17 +126,6 @@ public final class Main implements Callable<Integer> {
         @Option(names = "--profile", description = "Profile JSON describing a CSV layout (repeatable); see docs/profiles.md") List<Path> profiles = new ArrayList<>();
 
         @Override public Integer call() throws IOException {
-            List<LedgerEntry> all = new ArrayList<>();
-            List<Diagnostic> diags = new ArrayList<>();
-            List<si.opendavki.ledger.StatementCoverage.Coverage> coverage = new ArrayList<>();
-            java.util.Map<String, String> env = si.opendavki.fx.DotEnv.environment(envFile);
-            si.opendavki.broker.AdapterContext context;
-            try {
-                context = si.opendavki.broker.AdapterContext.from(env);
-            } catch (IllegalArgumentException e) {
-                System.err.println("Configuration error: " + e.getMessage());
-                return INPUT_ERROR;
-            }
             List<BrokerAdapter> extra = new ArrayList<>();
             for (Path profile : profiles) {
                 try {
@@ -129,46 +135,26 @@ public final class Main implements Callable<Integer> {
                     return INPUT_ERROR;
                 }
             }
-            List<BrokerAdapter> candidates = new ArrayList<>(BrokerAdapters.all());
-            candidates.addAll(extra);
-            for (Path p : statements) {
-                StatementSource src = StatementSource.read(p);
-                BrokerAdapter adapter;
-                if (adapterId != null) {
-                    adapter = candidates.stream().filter(a -> a.id().equals(adapterId)).findFirst().orElse(null);
-                    if (adapter == null) { System.err.println("Unknown adapter '" + adapterId + "'. See `adapters`."); return INPUT_ERROR; }
-                } else {
-                    List<BrokerAdapter> matching = candidates.stream().filter(a -> a.accepts(src)).toList();
-                    if (matching.size() > 1) { System.err.println(p + " matches several adapters " + matching.stream().map(BrokerAdapter::id).toList() + "; choose one with --adapter"); return INPUT_ERROR; }
-                    if (matching.isEmpty()) { System.err.println("No adapter recognises " + p + "; run `describe` on it, or pass --adapter / --profile."); return INPUT_ERROR; }
-                    adapter = matching.get(0);
-                }
-                ImportResult r = adapter.read(src, context);
-                si.opendavki.ledger.StatementCoverage.Coverage cov = si.opendavki.ledger.StatementCoverage.Coverage.of(p.getFileName().toString(), adapter.id(), r.entries());
-                System.err.printf("%s [%s]: %d rows read, %d mapped, %d skipped, %d failed%s%n", p, adapter.id(),
-                        r.stats().rowsRead(), r.stats().rowsMapped(), r.stats().rowsSkipped(), r.stats().rowsFailed(),
-                        cov == null ? "" : ", entries from " + cov.first() + " to " + cov.last());
-                if (cov != null) coverage.add(cov);
-                all.addAll(r.entries());
-                diags.addAll(r.diagnostics());
-            }
-            Ledger.MergeResult merged = Ledger.merge(all);
-            diags.addAll(merged.diagnostics());
-            Ledger ledger = merged.ledger();
+            List<StatementSource> sources = new ArrayList<>();
+            for (Path p : statements) sources.add(StatementSource.read(p));
+            ImportRunner.Outcome outcome;
             try {
-                ledger = applyCorrections(ledger, env, diags);
-            } catch (IllegalArgumentException e) {
-                System.err.println("Correction file error: " + e.getMessage());
+                outcome = ImportRunner.run(sources, adapterId, extra, si.opendavki.fx.DotEnv.environment(envFile));
+            } catch (InputException e) {
+                System.err.println(e.getMessage());
                 return INPUT_ERROR;
             }
-            diags.addAll(si.opendavki.ledger.StatementCoverage.gaps(coverage));
-            diags.addAll(LedgerChecker.check(ledger));
-            if (strict && diags.stream().anyMatch(d -> d.severity() == Diagnostic.Severity.ERROR)) {
-                printDiagnostics(diags, "NOT written (--strict): " + ledger.entries().size() + " ledger entries");
+            for (ImportRunner.FileSummary f : outcome.files()) {
+                System.err.printf("%s [%s]: %d rows read, %d mapped, %d skipped, %d failed%s%n", f.file(), f.adapter(), f.rowsRead(), f.rowsMapped(),
+                        f.rowsSkipped(), f.rowsFailed(), f.first() == null ? "" : ", entries from " + f.first() + " to " + f.last());
+            }
+            Ledger ledger = outcome.ledger();
+            if (strict && outcome.hasErrors()) {
+                printDiagnostics(outcome.diagnostics(), "NOT written (--strict): " + ledger.entries().size() + " ledger entries");
                 return VALIDATION_FAILED;
             }
             Files.writeString(out, si.opendavki.json.Json.MAPPER.writeValueAsString(ledger) + "\n", StandardCharsets.UTF_8);
-            return printDiagnostics(diags, ledger.entries().size() + " ledger entries written to " + out);
+            return printDiagnostics(outcome.diagnostics(), ledger.entries().size() + " ledger entries written to " + out);
         }
     }
 
@@ -192,60 +178,43 @@ public final class Main implements Callable<Integer> {
         @Option(names = "--allow-incomplete", description = "Write XML even if some instruments/payments were left out because of errors (NOT for filing)") boolean allowIncomplete;
 
         @Override public Integer call() throws IOException {
-            si.opendavki.model.Taxpayer taxpayer;
-            si.opendavki.fx.FxConfig fxConfig;
-            si.opendavki.tax.TaxOptions options;
             Ledger ledger;
-            List<Diagnostic> correctionDiagnostics = new ArrayList<>();
+            ReportRunner.Output o;
             try {
-                taxpayer = new si.opendavki.model.Taxpayer(taxNumber, "FO");
-                java.util.Map<String, String> env = si.opendavki.fx.DotEnv.environment(envFile);
-                fxConfig = si.opendavki.fx.FxConfig.from(env);
-                options = si.opendavki.tax.TaxOptions.from(env);
                 ledger = si.opendavki.json.Json.MAPPER.readValue(ledgerFile.toFile(), Ledger.class);
-                ledger = applyCorrections(ledger, env, correctionDiagnostics); // idempotent if `import` already applied them
-            } catch (IllegalArgumentException | com.fasterxml.jackson.core.JsonProcessingException e) {
+                o = ReportRunner.run(ledger, year, taxNumber, si.opendavki.fx.DotEnv.environment(envFile), schemaDir, allowIncomplete);
+            } catch (InputException | IllegalArgumentException | com.fasterxml.jackson.core.JsonProcessingException e) {
                 System.err.println("Input error: " + e.getMessage());
                 return INPUT_ERROR;
             }
-
-            si.opendavki.tax.TaxResult result = new si.opendavki.tax.TaxEngine(new si.opendavki.fx.FxService(fxConfig), options)
-                    .compute(ledger, year, taxpayer, correctionDiagnostics);
             Files.createDirectories(outDir);
             Path audit = outDir.resolve("audit-" + year + ".json");
-            Files.writeString(audit, si.opendavki.json.Json.MAPPER.writeValueAsString(result.audit()) + "\n", StandardCharsets.UTF_8);
-            Files.writeString(outDir.resolve("audit-" + year + ".md"), si.opendavki.tax.AuditReport.markdown(result.audit()), StandardCharsets.UTF_8);
-            printGains(result);
-            int exit = printDiagnostics(result.diagnostics(), "Audit trail written to " + audit + " and audit-" + year + ".md (" + result.lotMatches().size()
-                    + " lot matches, " + result.rates().size() + " rates)");
-            if (!result.complete() && !allowIncomplete) {
+            Files.writeString(audit, o.auditJson(), StandardCharsets.UTF_8);
+            Files.writeString(outDir.resolve("audit-" + year + ".md"), o.auditMarkdown(), StandardCharsets.UTF_8);
+            o.gains().forEach(g -> System.err.printf("  gain %-14s %s EUR%n", g.instrument(), g.gainEur().toPlainString()));
+            int exit = printDiagnostics(o.result().diagnostics(), "Audit trail written to " + audit + " and audit-" + year + ".md ("
+                    + o.result().lotMatches().size() + " lot matches, " + o.result().rates().size() + " rates)");
+            if (o.xmlWithheld()) {
                 System.err.println("REFUSING to write XML: the result is incomplete. Fix the errors above, or use --allow-incomplete to inspect partial output.");
                 return VALIDATION_FAILED;
             }
-            if (!result.complete()) System.err.println("WARNING: incomplete result written because of --allow-incomplete. Do not file it.");
-            if (result.kdvp() == null && result.div() == null) {
+            if (!o.result().complete()) System.err.println("WARNING: incomplete result written because of --allow-incomplete. Do not file it.");
+            if (o.kdvpXml() == null && o.divXml() == null) {
                 System.err.println("Nothing to declare for " + year + ".");
                 return exit;
             }
-            if (result.kdvp() != null) {
-                exit = Math.max(exit, writeAndValidate(FormType.KDVP, new KdvpXmlWriter().write(result.kdvp()), outDir.resolve("kdvp-" + year + ".xml")));
-            }
-            if (result.div() != null) {
-                exit = Math.max(exit, writeAndValidate(FormType.DIV, new DivXmlWriter().write(result.div()), outDir.resolve("div-" + year + ".xml")));
-            }
+            if (o.kdvpXml() != null) exit = Math.max(exit, write(FormType.KDVP, o.kdvpXml(), o.kdvpValidation(), outDir.resolve("kdvp-" + year + ".xml")));
+            if (o.divXml() != null) exit = Math.max(exit, write(FormType.DIV, o.divXml(), o.divValidation(), outDir.resolve("div-" + year + ".xml")));
             return exit;
         }
 
-        private int writeAndValidate(FormType form, String xml, Path file) throws IOException {
+        private static int write(FormType form, String xml, ReportRunner.Validation v, Path file) throws IOException {
             Files.writeString(file, xml, StandardCharsets.UTF_8);
-            return report(form, xml, schemaDir, file);
-        }
-
-        /** Per-instrument realised result in EUR, rounded to cents for reading only: eDavki computes the declared figures itself. */
-        private static void printGains(si.opendavki.tax.TaxResult r) {
-            java.util.Map<String, java.math.BigDecimal> gains = new java.util.TreeMap<>();
-            for (si.opendavki.tax.LotMatch m : r.lotMatches()) gains.merge(m.instrument(), m.gainEur(), java.math.BigDecimal::add);
-            gains.forEach((k, v) -> System.err.printf("  gain %-14s %s EUR%n", k, v.setScale(2, java.math.RoundingMode.HALF_UP).toPlainString()));
+            if (!v.schemaAvailable()) { System.err.println(v.message()); return SCHEMA_MISSING; }
+            v.issues().forEach(i -> System.err.println("  " + i));
+            if (v.valid()) { System.err.println("VALID against " + form.xsdFileName + " (" + file + ")"); return 0; }
+            System.err.println("INVALID against " + form.xsdFileName + ": " + v.issues().size() + " issue(s)");
+            return VALIDATION_FAILED;
         }
     }
 
@@ -366,26 +335,6 @@ public final class Main implements Callable<Integer> {
                 return SCHEMA_MISSING;
             }
         }
-    }
-
-    /**
-     * Applies the user's correction files: ignored entries first (so a master row cannot resurrect them), then the
-     * instrument master. Both are idempotent, so `report` can apply them again to a ledger written by `import`.
-     */
-    static Ledger applyCorrections(Ledger ledger, java.util.Map<String, String> env, List<Diagnostic> diags) throws IOException {
-        java.util.Optional<si.opendavki.ledger.LedgerOverrides> overrides = si.opendavki.ledger.LedgerOverrides.fromEnvironment(env);
-        if (overrides.isPresent()) {
-            si.opendavki.ledger.LedgerOverrides.Result r = overrides.get().apply(ledger);
-            ledger = r.ledger();
-            diags.addAll(r.diagnostics());
-        }
-        java.util.Optional<si.opendavki.ledger.InstrumentMaster> master = si.opendavki.ledger.InstrumentMaster.fromEnvironment(env);
-        if (master.isPresent()) {
-            si.opendavki.ledger.InstrumentMaster.Result r = master.get().apply(ledger);
-            ledger = r.ledger();
-            diags.addAll(r.diagnostics());
-        }
-        return ledger;
     }
 
     /** Prints diagnostics (INFO hidden unless there is nothing else) and returns 1 if any is an ERROR. */
