@@ -3,6 +3,7 @@ package si.opendavki.tax;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
@@ -344,5 +345,17 @@ class TaxEngineTest {
         TaxResult ok = run(2024, buy("2023-01-01", "1", "10"), sell("2024-01-01", "1", "12"));
         assertTrue(ok.complete());
         assertTrue(ok.diagnostics().stream().noneMatch(d -> d.code().equals("SHEET_WITHOUT_SALE")));
+    }
+
+    @Test void aSuspiciousRateIsWarnedAboutInTheAudit() throws Exception {
+        Path rates = Files.createTempFile("rates", ".csv");
+        rates.toFile().deleteOnExit();
+        Files.writeString(rates, "date,currency,rate\n2023-02-28,USD,1.10\n2023-03-01,USD,1.50\n2024-03-01,USD,1.50\n");
+        FxService fx = new FxService(FxConfig.from(Map.of("OPENDAVKI_FX_SOURCE", "FILE", "OPENDAVKI_FX_FILE", rates.toString())));
+        TaxResult r = new TaxEngine(fx, TaxOptions.defaults()).compute(Ledger.of(List.of(
+                trade("A", Trade.Side.BUY, "2023-03-01", "1", "150", "USD", "0", AAPL), trade("A", Trade.Side.SELL, "2024-03-01", "1", "180", "USD", "0", AAPL))), 2024, TP);
+        assertTrue(r.complete(), r.diagnostics().toString());
+        assertEquals(1, r.diagnostics().stream().filter(d -> d.code().equals("RATE_JUMP")).count()); // 1.10 -> 1.50 on the purchase date; the sale's rate repeats
+        assertNum("20", r.lotMatches().get(0).gainEur());                                            // 180/1.5 - 150/1.5, unaffected
     }
 }

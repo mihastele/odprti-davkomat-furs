@@ -29,7 +29,6 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 
 | ID | Gap | Planned |
 |---|---|---|
-| L-03 | `LedgerChecker` does not yet detect: duplicate entries across brokers or files that carry no ids and differ only in formatting, implausible exchange-rate jumps, wash-trade patterns, or dividends on instruments with no position. Missing export periods are reported as `STATEMENT_GAP`. | ODV-0xx |
 | L-12 | The `SUSPICIOUS_PRICE` thresholds (4× the median split-adjusted price, at least 3 trades) and the 10-day transfer pairing window are heuristics chosen without data; they may miss real errors or flag normal moves. | ODV-005 |
 | L-04 | Corporate actions: splits (forward and reverse) and explicit conversions are applied. Mergers with cash, spin-offs, stock dividends, rights, return of capital and the cash for fractional shares after a reverse split are not; they exclude a sold instrument (see C-03). | ODV-0xx |
 | L-05 | The instrument master is a user-maintained file (M-01); there is no automatic detection of renamed symbols or changed ISINs, so a conversion must be entered by hand (C-04). | ODV-0xx |

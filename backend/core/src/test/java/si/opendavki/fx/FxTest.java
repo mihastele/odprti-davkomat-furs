@@ -129,4 +129,24 @@ class FxTest {
         assertThrows(IOException.class, () -> RateTable.parseCsv("a,b,c\n"));
         assertThrows(IOException.class, () -> RateTable.parseCsv("date,currency,rate\n2024-03-01,USD,0\n"));
     }
+
+    /** 1.10 -> 1.40 is +27.27 %: over the 25 % threshold. 1.10 -> 1.20 is +9.09 %: normal. */
+    @Test void aJumpInTheRateFileIsFlaggedOnTheRateThatUsesIt() throws Exception {
+        String csv = "date,currency,rate\n2024-03-01,USD,1.10\n2024-03-04,USD,1.40\n2024-03-05,USD,1.50\n2024-03-06,USD,1.65\n";
+        FxService s = new FxService(cfg(Map.of("OPENDAVKI_FX_SOURCE", "FILE", "OPENDAVKI_FX_FILE", writeTemp(csv).toString())));
+        assertNull(s.rate("USD", MAR1).warning());                                         // first rate: nothing to compare with
+        String warning = s.rate("USD", LocalDate.parse("2024-03-04")).warning();
+        assertNotNull(warning);
+        assertTrue(warning.contains("27.3 %"), warning);                                   // 1.40 / 1.10 - 1 = 0.272727
+        assertNull(s.rate("USD", LocalDate.parse("2024-03-05")).warning());                // +7.14 %
+        assertNull(s.rate("USD", LocalDate.parse("2024-03-06")).warning());                // +10 %
+        assertNotNull(s.rate("USD", LocalDate.parse("2024-03-04")).toEur(BigDecimal.TEN));  // the conversion itself is unchanged
+    }
+
+    private static Path writeTemp(String content) throws IOException {
+        Path f = Files.createTempFile("rates", ".csv");
+        f.toFile().deleteOnExit();
+        Files.writeString(f, content);
+        return f;
+    }
 }

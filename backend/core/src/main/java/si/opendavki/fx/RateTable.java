@@ -33,6 +33,23 @@ public final class RateTable {
         return Optional.empty();
     }
 
+    /**
+     * The relative change from the previous rate of this currency if it is larger than {@code threshold} (for example 0.25 =
+     * 25 %), else empty. ECB reference rates move by a few percent a day at most, so a big jump is a sign of a broken source file.
+     */
+    public Optional<BigDecimal> jumpAt(String currency, LocalDate date, BigDecimal threshold) {
+        BigDecimal now = byDate.getOrDefault(date, Map.of()).get(currency);
+        if (now == null) return Optional.empty();
+        for (LocalDate d : byDate.headMap(date, false).descendingKeySet()) {
+            BigDecimal before = byDate.get(d).get(currency);
+            if (before != null) {
+                BigDecimal change = now.divide(before, 6, java.math.RoundingMode.HALF_UP).subtract(BigDecimal.ONE).abs();
+                return change.compareTo(threshold) > 0 ? Optional.of(change) : Optional.empty();
+            }
+        }
+        return Optional.empty();
+    }
+
     public Optional<LocalDate> lastDate() {
         return byDate.isEmpty() ? Optional.empty() : Optional.of(byDate.lastKey());
     }

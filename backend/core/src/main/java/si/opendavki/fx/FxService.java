@@ -3,6 +3,7 @@ package si.opendavki.fx;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
@@ -48,7 +49,7 @@ public final class FxService {
         if (currency.equals("EUR")) return new Rate(config.source(), "EUR", date, date, java.math.BigDecimal.ONE);
         RateTable t = table(date);
         Optional<java.math.BigDecimal> exact = t.exact(currency, date);
-        if (exact.isPresent()) return new Rate(config.source(), currency, date, date, exact.get());
+        if (exact.isPresent()) return new Rate(config.source(), currency, date, date, exact.get(), jumpWarning(t, currency, date));
         if (config.missingDay() == FxConfig.MissingDayPolicy.FAIL) {
             throw new RateUnavailableException("No " + config.source() + " rate for " + currency + " on " + date
                     + " (OPENDAVKI_FX_MISSING_DAY=FAIL)");
@@ -57,7 +58,14 @@ public final class FxService {
         LocalDate found = t.latestOnOrBefore(currency, date, earliest).orElseThrow(() -> new RateUnavailableException(
                 "No " + config.source() + " rate for " + currency + " on " + date + " or in the " + config.maxLookbackDays()
                         + " days before it"));
-        return new Rate(config.source(), currency, date, found, t.exact(currency, found).orElseThrow());
+        return new Rate(config.source(), currency, date, found, t.exact(currency, found).orElseThrow(), jumpWarning(t, currency, found));
+    }
+
+    private static final BigDecimal JUMP_THRESHOLD = new BigDecimal("0.25");
+
+    private static String jumpWarning(RateTable t, String currency, LocalDate date) {
+        return t.jumpAt(currency, date, JUMP_THRESHOLD).map(c -> "the " + currency + " rate of " + date + " differs by "
+                + c.multiply(new BigDecimal("100")).setScale(1, java.math.RoundingMode.HALF_UP).toPlainString() + " % from the previous rate").orElse(null);
     }
 
     private RateTable table(LocalDate needed) {

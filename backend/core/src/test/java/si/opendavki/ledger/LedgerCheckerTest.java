@@ -110,4 +110,33 @@ class LedgerCheckerTest {
         var in = transfer(SecurityTransfer.Direction.IN, "B", "2024-01-11", "10");
         assertEquals(1, check("TRANSFER_UNPAIRED", out1, out2, in).size());
     }
+
+    private DividendPayment dividend(String broker, String date) {
+        return new DividendPayment("d" + (++line), broker, "acc", LocalDate.parse(date), ref(), AAPL, BigDecimal.ONE, BigDecimal.ZERO, "EUR", "US");
+    }
+
+    @Test void dividendOnAnInstrumentNotHeldIsWarnedAbout() {
+        // held 2023-01-01 .. sold 2023-06-01; dividends on 2023-03-01 (held) and 2023-09-01 (sold) and at another broker (never held there)
+        Trade buy = buy("2023-01-01", "5", "10", "EUR");
+        Trade sell = new Trade("s1", "A", "acc", LocalDate.parse("2023-06-01"), ref(), AAPL, Trade.Side.SELL, new BigDecimal("5"), BigDecimal.TEN, "EUR", null, null);
+        List<Diagnostic> d = check("DIVIDEND_WITHOUT_POSITION", buy, dividend("A", "2023-03-01"), sell, dividend("A", "2023-09-01"), dividend("B", "2023-03-01"));
+        assertEquals(2, d.size());
+        assertTrue(d.stream().anyMatch(x -> x.message().contains("2023-09-01")));
+        assertTrue(d.stream().anyMatch(x -> x.message().contains("at B/acc")));
+        assertEquals(0, check("DIVIDEND_WITHOUT_POSITION", buy, dividend("A", "2023-03-01")).size());
+    }
+
+    private Trade fill(String id, String file, String price) {
+        return new Trade(id, "A", "acc", LocalDate.parse("2024-01-02"), new SourceRef("t", file, "00", ++line), AAPL, Trade.Side.BUY,
+                new BigDecimal("2"), new BigDecimal(price), "EUR", null, null);
+    }
+
+    @Test void theSameTradeInTwoFilesUnderDifferentIdsIsReported() {
+        List<Diagnostic> d = check("POSSIBLE_DUPLICATE", fill("x1", "a.csv", "10.00"), fill("x2", "b.csv", "10"));
+        assertEquals(1, d.size());
+        assertTrue(d.get(0).message().contains("b.csv") && d.get(0).message().contains("a.csv"));
+        assertEquals(0, check("POSSIBLE_DUPLICATE", fill("x1", "a.csv", "10"), fill("x2", "a.csv", "10")).size());   // two fills in one file are normal
+        assertEquals(0, check("POSSIBLE_DUPLICATE", fill("x1", "a.csv", "10"), fill("x2", "b.csv", "11")).size());   // different price
+        assertEquals(0, check("POSSIBLE_DUPLICATE", fill("x1", "a.csv", "10"), fill("x1", "b.csv", "10")).size());   // same id: merging handles it
+    }
 }

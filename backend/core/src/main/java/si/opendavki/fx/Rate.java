@@ -10,8 +10,13 @@ import java.time.LocalDate;
  * @param unitsPerEur   foreign units for 1 EUR (1 for EUR itself)
  * @param requestedDate the transaction date
  * @param rateDate      the date the rate was published for (earlier than requested if the day had no rate)
+ * @param warning       set when the rate looks wrong (a jump of more than 25 % from the previous rate), else null
  */
-public record Rate(FxSource source, String currency, LocalDate requestedDate, LocalDate rateDate, BigDecimal unitsPerEur) {
+public record Rate(FxSource source, String currency, LocalDate requestedDate, LocalDate rateDate, BigDecimal unitsPerEur, String warning) {
+
+    public Rate(FxSource source, String currency, LocalDate requestedDate, LocalDate rateDate, BigDecimal unitsPerEur) {
+        this(source, currency, requestedDate, rateDate, unitsPerEur, null);
+    }
 
     public boolean isFallback() {
         return !rateDate.equals(requestedDate);

@@ -37,6 +37,7 @@ public final class LedgerChecker {
         transfers(ledger, out);
         prices(ledger, out);
         quantityPrecision(ledger, out);
+        possibleDuplicates(ledger, out);
         return out;
     }
 
@@ -82,7 +83,13 @@ public final class LedgerChecker {
                                 e.source()));
                     }
                 }
-                case DividendPayment d -> { }
+                case DividendPayment d -> {
+                    if (pos.signum() == 0) {
+                        out.add(Diagnostic.warning("DIVIDEND_WITHOUT_POSITION", "Dividend of " + ins.key() + " on " + d.date() + " at " + e.broker() + "/"
+                                + e.account() + " but no shares held there on that day according to the imported history (shares sold before the pay date, "
+                                + "or a purchase is missing)", e.source()));
+                    }
+                }
             }
             positions.put(key, pos);
         }
@@ -183,6 +190,29 @@ public final class LedgerChecker {
     private static BigDecimal median(List<BigDecimal> sorted) {
         int n = sorted.size();
         return n % 2 == 1 ? sorted.get(n / 2) : sorted.get(n / 2 - 1).add(sorted.get(n / 2)).divide(BigDecimal.valueOf(2), 12, RoundingMode.HALF_UP);
+    }
+
+    // ---- duplicates ---------------------------------------------------------------------------------------------
+
+    /**
+     * The same trade (broker, account, instrument, date, side, quantity, price, currency) in two different statement files under
+     * different ids: most likely the same fill exported twice with formatting that defeated the id derivation. Merging only
+     * removes entries with equal ids, so these would be counted twice.
+     */
+    private static void possibleDuplicates(Ledger ledger, List<Diagnostic> out) {
+        Map<String, Trade> first = new LinkedHashMap<>();
+        for (LedgerEntry e : ledger.entries()) {
+            if (!(e instanceof Trade t)) continue;
+            String key = String.join("|", t.broker(), t.account(), t.instrument().key(), t.date().toString(), t.side().name(),
+                    t.quantity().stripTrailingZeros().toPlainString(), t.price().stripTrailingZeros().toPlainString(), t.currency());
+            Trade other = first.putIfAbsent(key, t);
+            if (other != null && !other.id().equals(t.id()) && other.source() != null && t.source() != null
+                    && !other.source().file().equals(t.source().file())) {
+                out.add(Diagnostic.warning("POSSIBLE_DUPLICATE", "The trade at " + t.source() + " is identical to the one at " + other.source()
+                        + " (same broker, instrument, day, side, quantity and price) but has a different id; if it is the same fill exported twice, "
+                        + "ignore one of them with the overrides file", t.source()));
+            }
+        }
     }
 
     // ---- quantity precision -----------------------------------------------------------------------------------

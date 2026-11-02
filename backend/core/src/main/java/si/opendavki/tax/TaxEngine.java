@@ -142,6 +142,9 @@ public final class TaxEngine {
         }
         if (!currency.equals("EUR")) {
             run.rates.add(new RateUse(e.id(), e.source(), what, currency, r.requestedDate(), r.rateDate(), r.unitsPerEur(), r.source()));
+            if (r.warning() != null) {
+                run.diagnostics.add(Diagnostic.warning("RATE_JUMP", "Suspicious exchange rate: " + r.warning() + "; check the rate source file", e.source()));
+            }
             if (r.isFallback()) {
                 run.diagnostics.add(Diagnostic.info("RATE_FALLBACK", "No " + r.source() + " rate for " + currency + " on " + date
                         + "; used the rate of " + r.rateDate(), e.source()));
