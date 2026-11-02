@@ -35,7 +35,7 @@ import si.opendavki.model.KdvpReport;
 @Command(name = "opendavki", mixinStandardHelpOptions = true, version = "0.1.0",
         description = "Open-source, local-first FURS eDavki XML tooling.",
         subcommands = {Main.Generate.class, Main.Validate.class, Main.Schemas.class, Main.Adapters.class,
-                Main.Import.class, Main.Check.class, Main.Fx.class, Main.Report.class, Main.Audit.class, Main.Describe.class, Main.Profiles.class})
+                Main.Import.class, Main.Check.class, Main.Fx.class, Main.Report.class, Main.Audit.class, Main.Describe.class, Main.Profiles.class, Main.Serve.class})
 public final class Main implements Callable<Integer> {
 
     /** Exit codes: 0 ok, 1 XSD validation failed, 2 usage/input error, 3 schema missing. */
@@ -227,28 +227,14 @@ public final class Main implements Callable<Integer> {
 
         @Override public Integer call() throws IOException {
             StatementSource src = StatementSource.read(file);
-            if (PdfDescriber.isPdf(src.content())) {
-                if (profile != null) { System.err.println("--profile applies to CSV files only."); return INPUT_ERROR; }
-                String described = PdfDescriber.describe(src.name(), src.content(), valueColumns);
+            boolean csv = !PdfDescriber.isPdf(src.content()) && !si.opendavki.broker.XlsxSheets.isXlsx(src.content());
+            if (!csv && profile != null) { System.err.println("--profile applies to CSV files only."); return INPUT_ERROR; }
+            if (!csv) {
+                String described = DescribeRunner.describe(src, valueColumns);
                 if (out != null) Files.writeString(out, described, StandardCharsets.UTF_8); else System.out.print(described);
                 return 0;
             }
-            if (si.opendavki.broker.XlsxSheets.isXlsx(src.content())) {
-                if (profile != null) { System.err.println("--profile applies to CSV files only."); return INPUT_ERROR; }
-                StringBuilder sheets = new StringBuilder();
-                try {
-                    for (java.util.Map.Entry<String, List<List<String>>> sheet : si.opendavki.broker.XlsxSheets.read(src.content()).entrySet()) {
-                        sheets.append(si.opendavki.broker.StatementDescriber.describe(StatementSource.ofText(src.name() + ", sheet \"" + sheet.getKey() + "\"",
-                                si.opendavki.broker.XlsxSheets.toCsv(sheet.getValue())), valueColumns)).append('\n');
-                    }
-                } catch (IOException e) {
-                    System.err.println("Cannot read " + file + " as an Excel workbook: " + e.getMessage());
-                    return INPUT_ERROR;
-                }
-                if (out != null) Files.writeString(out, sheets.toString(), StandardCharsets.UTF_8); else System.out.print(sheets);
-                return 0;
-            }
-            StringBuilder md = new StringBuilder(si.opendavki.broker.StatementDescriber.describe(src, valueColumns));
+            StringBuilder md = new StringBuilder(DescribeRunner.describe(src, valueColumns));
             int exit = 0;
             if (profile != null) {
                 try {
@@ -267,6 +253,26 @@ public final class Main implements Callable<Integer> {
             }
             if (out != null) Files.writeString(out, md.toString(), StandardCharsets.UTF_8); else System.out.print(md);
             return exit;
+        }
+    }
+
+    @Command(name = "serve", description = "Start the local web interface (this computer only; nothing leaves it).")
+    static final class Serve implements Callable<Integer> {
+        @Option(names = "--port", defaultValue = "0", description = "Port on 127.0.0.1 (0 = pick a free one)") int port;
+        @Option(names = "--web-dir", defaultValue = "frontend/dist", description = "Built web interface (npm --prefix frontend run build)") Path webDir;
+        @Option(names = "--env-file", defaultValue = ".env", description = "Settings file (see .env.example)") Path envFile;
+        @Option(names = "--schema-dir", defaultValue = DEFAULT_SCHEMA_DIR, description = "Directory with official XSDs") Path schemaDir;
+
+        @Override public Integer call() throws Exception {
+            si.opendavki.cli.web.WebServer server = new si.opendavki.cli.web.WebServer(port, webDir, envFile, schemaDir);
+            server.start();
+            System.err.println("OpenDavki web interface (this computer only). Open:\n\n    " + server.url() + "\n\nThe address contains a one-time key; keep it private. Press Ctrl-C to stop.");
+            if (!server.hasUi()) {
+                System.err.println("\nNOTE: the web interface is not built (" + webDir + " not found). Run: npm --prefix frontend ci && npm --prefix frontend run build");
+            }
+            Runtime.getRuntime().addShutdownHook(new Thread(server::close));
+            Thread.currentThread().join();
+            return 0;
         }
     }
 

@@ -28,14 +28,14 @@ import si.opendavki.tax.TaxResult;
  * Computes the declarations of a year and renders everything derived from them (XML, XSD validation, audit). Shared by the
  * command line and the local web server; prints nothing and writes nothing.
  */
-final class ReportRunner {
+public final class ReportRunner {
     private ReportRunner() {}
 
     /** @param schemaAvailable false if the XSD was missing (then {@code message} says so); {@code issues} are XSD findings */
-    record Validation(boolean schemaAvailable, boolean valid, List<String> issues, String message) {}
+    public record Validation(boolean schemaAvailable, boolean valid, List<String> issues, String message) {}
 
     /** Realised result of one instrument in EUR, rounded to cents for reading only; eDavki computes the declared figures. */
-    record Gain(String instrument, String symbol, BigDecimal gainEur) {}
+    public record Gain(String instrument, String symbol, BigDecimal gainEur) {}
 
     /**
      * @param xmlWithheld true if the result is incomplete and the caller did not allow partial output: no XML is produced then

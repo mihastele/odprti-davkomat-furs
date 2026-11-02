@@ -11,11 +11,16 @@ public final class ProfileLoader {
     private ProfileLoader() {}
 
     public static Profile load(Path file) throws IOException {
+        return parse(Files.readString(file), file.toString());
+    }
+
+    /** @param name used in error messages (a file name or an upload name) */
+    public static Profile parse(String json, String name) {
         try {
-            return Json.MAPPER.readValue(Files.readString(file), Profile.class);
+            return Json.MAPPER.readValue(json, Profile.class);
         } catch (JsonProcessingException | IllegalArgumentException e) {
             Throwable cause = e.getCause() != null && e.getCause() instanceof IllegalArgumentException ? e.getCause() : e;
-            throw new IllegalArgumentException(file + ": " + cause.getMessage().lines().findFirst().orElse("invalid profile"), e);
+            throw new IllegalArgumentException(name + ": " + cause.getMessage().lines().findFirst().orElse("invalid profile"), e);
         }
     }
 }

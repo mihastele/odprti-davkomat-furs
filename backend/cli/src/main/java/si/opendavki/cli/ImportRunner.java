@@ -22,12 +22,12 @@ import si.opendavki.ledger.StatementCoverage;
  * Reads statements into one checked ledger. Shared by the command line and the local web server so both behave identically;
  * it prints nothing and writes nothing.
  */
-final class ImportRunner {
+public final class ImportRunner {
     private ImportRunner() {}
 
-    record FileSummary(String file, String adapter, int rowsRead, int rowsMapped, int rowsSkipped, int rowsFailed, LocalDate first, LocalDate last) {}
+    public record FileSummary(String file, String adapter, int rowsRead, int rowsMapped, int rowsSkipped, int rowsFailed, LocalDate first, LocalDate last) {}
 
-    record Outcome(Ledger ledger, List<FileSummary> files, List<Diagnostic> diagnostics) {
+    public record Outcome(Ledger ledger, List<FileSummary> files, List<Diagnostic> diagnostics) {
         boolean hasErrors() {
             return diagnostics.stream().anyMatch(d -> d.severity() == Diagnostic.Severity.ERROR);
         }
