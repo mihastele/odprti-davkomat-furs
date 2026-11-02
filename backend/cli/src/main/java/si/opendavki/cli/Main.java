@@ -264,6 +264,21 @@ public final class Main implements Callable<Integer> {
                 if (out != null) Files.writeString(out, described, StandardCharsets.UTF_8); else System.out.print(described);
                 return 0;
             }
+            if (si.opendavki.broker.XlsxSheets.isXlsx(src.content())) {
+                if (profile != null) { System.err.println("--profile applies to CSV files only."); return INPUT_ERROR; }
+                StringBuilder sheets = new StringBuilder();
+                try {
+                    for (java.util.Map.Entry<String, List<List<String>>> sheet : si.opendavki.broker.XlsxSheets.read(src.content()).entrySet()) {
+                        sheets.append(si.opendavki.broker.StatementDescriber.describe(StatementSource.ofText(src.name() + ", sheet \"" + sheet.getKey() + "\"",
+                                si.opendavki.broker.XlsxSheets.toCsv(sheet.getValue())), valueColumns)).append('\n');
+                    }
+                } catch (IOException e) {
+                    System.err.println("Cannot read " + file + " as an Excel workbook: " + e.getMessage());
+                    return INPUT_ERROR;
+                }
+                if (out != null) Files.writeString(out, sheets.toString(), StandardCharsets.UTF_8); else System.out.print(sheets);
+                return 0;
+            }
             StringBuilder md = new StringBuilder(si.opendavki.broker.StatementDescriber.describe(src, valueColumns));
             int exit = 0;
             if (profile != null) {
