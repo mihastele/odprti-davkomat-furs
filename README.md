@@ -44,6 +44,8 @@ Principles:
 | Generic CSV adapter | ✅ |
 | Interactive Brokers (Activity Statement CSV) | 🟡 implemented, **unverified on real statements** |
 | Trading 212 (history CSV) | 🟡 implemented; layout and arithmetic checked against one real export ([docs](docs/trading212.md)) |
+| Revolut, DEGIRO (trades) | 🟠 **DRAFT** profiles recalled from memory, never seen a real file ([docs](docs/profiles.md)) |
+| Broker profiles: add a CSV broker with a JSON file, `describe` a layout without exposing data | ✅ engine; profiles themselves are drafts |
 | Exchange rates: ECB (default) / Bank of Slovenia / own CSV, configured in `.env` | 🟡 implemented and used by the tax engine; ECB download untested live |
 | Tax engine: cross-broker FIFO, EUR conversion, fees, splits, reverse splits, conversions, ledger → Doh-KDVP/Doh-Div, audit trail | 🟡 implemented ([docs](docs/tax-engine.md)), verified only on hand-computed synthetic cases |
 | Audit report: every gain traced to sale and lot statement lines, every rate and dividend listed (Markdown + JSON) | 🟡 implemented ([docs](docs/tax-engine.md)); open-lot rows not itemised yet |
@@ -61,6 +63,8 @@ J="java -jar cli/target/opendavki.jar"
 $J adapters                                  # importers on the classpath
 $J import statement.csv -o ledger.json       # read, de-duplicate, check (exit code 1 on errors)
 $J check ledger.json
+$J describe statement.csv                      # layout of a statement without its contents (safe to share)
+$J import statement.csv --profile my-profile.json -o ledger.json   # a CSV broker described by a JSON profile
 $J fx USD 2024-03-01 100                     # rate the configured source gives, and 100 USD in EUR
 
 # ledger -> declarations for a tax year (XML validated against the XSDs, plus audit-<year>.json and audit-<year>.md)
@@ -108,7 +112,8 @@ Details, and why ECB is the default, in [docs/fx.md](docs/fx.md).
 |---|---|---|
 | P0 | Interactive Brokers | 🟡 `ibkr` ([docs](docs/ibkr.md)) |
 | P0 | Trading 212 | 🟡 `trading212` ([docs](docs/trading212.md)) |
-| P0 | Revolut, Trade Republic, eToro, XTB, DEGIRO, Lightyear, N26 | ⬜ |
+| P0 | Revolut, DEGIRO | 🟠 draft profiles |
+| P0 | Trade Republic, eToro, XTB, Lightyear, N26 | ⬜ blocked on a sample, see [docs/BLOCKERS.md](docs/BLOCKERS.md) |
 | any | anything you can convert to the flat format | ✅ `generic` ([format](docs/generic-csv.md)) |
 
 Listing a platform means statement-import support is planned, not that it accepts Slovenian customers.
@@ -141,6 +146,7 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**.
 - **Tax engine unverified**: FIFO, EUR conversion, fee treatment and the sheet layout (open lots carried into the year, split restating) follow assumptions that are not confirmed against ZDoh-2/FURS and were tested only on hand-computed synthetic cases (T-01 to T-03, T-08, T-09).
 - **Tax engine gaps**: only plain `PLVP` sheets; no F10, per-item foreign tax or loss transfer; Doh-Div lacks payer address and tax number; an unsupported corporate action or a missing purchase excludes the instrument (T-04 to T-07, T-10, T-11).
 - **Never validated end to end**: generated XML has not been imported into eDavki or compared with a hand-prepared declaration (D-01).
+- **Draft importers**: the Revolut and DEGIRO profiles were written from memory and have never met a real file; every report that uses them says so (P-01 to P-04).
 - **Importers barely verified**: Trading 212 was checked against one real export (not committed), IBKR only against a synthetic statement written from its documented layout; no other broker has a sample (I-01, I-02, R-01 to R-06, S-01, [docs/sample-data.md](docs/sample-data.md)).
 - **Exchange rates**: the ECB reference rates are the source the maintainers state FURS recommends, but the FURS document was not read; the Bank of Slovenia source has no default URL, the ECB download was never run live, and the rate-date and rounding rules are undecided (X-02 to X-05).
 - **Corporate actions**: splits (forward and reverse) and hand-entered conversions are applied ([docs](docs/corporate-actions.md)); the tax-neutral treatment of conversions is unverified, mergers with cash, spin-offs and similar are not modelled, and broker adapters do not produce conversions themselves (L-04, I-05, C-01 to C-04).

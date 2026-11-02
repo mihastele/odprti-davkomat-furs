@@ -1,0 +1,3 @@
+Date,Time,Product,ISIN,Reference exchange,Venue,Quantity,Price,,Local value,,Value EUR,Exchange rate,Transaction and/or third party fees EUR,,Total EUR,Order ID
+05-03-2023,09:00,VANGUARD S&P 500 UCITS ETF,IE00B3XXRP09,XAMS,XAMS,10,"75,00",EUR,"-750,00",EUR,"-750,00",,"-1,00",EUR,"-751,00",synthetic-1
+20-02-2024,09:00,VANGUARD S&P 500 UCITS ETF,IE00B3XXRP09,XAMS,XAMS,-4,"85,00",EUR,"340,00",EUR,"340,00",,"-1,00",EUR,"339,00",synthetic-2

@@ -112,3 +112,12 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 | C-03 | No cash components: mergers with cash, spin-offs, stock dividends, rights, return of capital and cash for fractional shares are not modelled. | ODV-0xx |
 | C-04 | Conversions are never inferred and only the generic CSV adapter can express them; no broker adapter translates its own corporate-action rows into them. | ODV-0xx |
 | M-01 | The instrument master matches exact ISINs or symbols and is maintained by hand; no instrument database, no fuzzy matching, no per-broker rules. | ODV-0xx |
+
+## Broker profiles (draft importers)
+
+| ID | Gap | Planned |
+|---|---|---|
+| P-01 | The Revolut and DEGIRO profiles are DRAFTs written from recalled layouts; neither has met a real file. Their semantics (sign of quantities, whether totals include fees, the date a statement shows) are unchecked. | with a real file or `describe` output |
+| P-02 | The profile engine handles one-row-per-event CSV only: no joined files (DEGIRO's Account statement with dividends), no multi-row events, no spreadsheets, no PDFs, no values parsed out of free text. | Java adapters per broker |
+| P-03 | Revolut dividends are skipped because the statement is believed to show them net of withholding; the gross amount and foreign tax must be entered by hand from Revolut's tax report. | with a real statement |
+| P-04 | No importer exists for Trade Republic, eToro, XTB, Lightyear or N26 (N26 Invest appears to offer PDF documents only). Nothing could be written without a layout or sample. | docs/BLOCKERS.md |

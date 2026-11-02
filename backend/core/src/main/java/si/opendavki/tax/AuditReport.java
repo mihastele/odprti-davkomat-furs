@@ -30,6 +30,10 @@ public final class AuditReport {
             md.append("**Status: INCOMPLETE.** At least one instrument or payment was left out because of an error (see ")
                     .append("[Diagnostics](#diagnostics)). Do not file the declarations as they stand.\n\n");
         }
+        List<String> drafts = a.diagnostics().stream().filter(d -> d.code().equals("DRAFT_SOURCE_USED")).map(Diagnostic::message).toList();
+        if (!drafts.isEmpty()) {
+            md.append("> **Contains data from DRAFT importers.** ").append(drafts.get(0)).append("\n\n");
+        }
         md.append("Fees ").append(a.feesIncluded() ? "are" : "are **not**")
                 .append(" included in purchase cost and sale value. Gains below are an audit cross-check: eDavki computes the ")
                 .append("declared figures itself from the sheet rows. Rates and rules are listed so each number can be re-derived.\n\n");

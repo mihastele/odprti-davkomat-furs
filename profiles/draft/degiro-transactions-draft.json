@@ -1,0 +1,26 @@
+{
+  "formatVersion": 1,
+  "id": "degiro-transactions-draft",
+  "displayName": "DEGIRO Transactions export (CSV, English headers)",
+  "status": "DRAFT",
+  "note": "layout recalled from memory (unnamed currency columns after Price and fees, decimal comma, dd-MM-yyyy dates); never checked against a real file. Trades only: dividends are in DEGIRO's separate Account statement, which this profile does not read.",
+  "broker": "degiro",
+  "account": "default",
+  "delimiter": ",",
+  "requiredColumns": ["Date", "Product", "ISIN", "Quantity", "Price", "Order ID"],
+  "date": { "column": "Date", "patterns": ["dd-MM-uuuu"] },
+  "number": { "decimalSeparator": ",", "groupSeparator": ".", "currencyAffix": false },
+  "instrument": { "isinColumn": "ISIN", "symbolColumn": "Product", "nameColumn": "Product" },
+  "action": { "column": null, "signDetermines": true, "buy": [], "sell": [], "dividend": [], "skip": [], "unsupported": [] },
+  "trade": {
+    "quantityColumn": "Quantity",
+    "priceColumn": "Price",
+    "currencyColumn": "after:Price",
+    "feeColumn": "Transaction and/or third party fees EUR",
+    "feeCurrencyColumn": null,
+    "feeCurrency": "EUR",
+    "totalColumn": null,
+    "totalCheck": "NONE"
+  },
+  "dividend": null
+}

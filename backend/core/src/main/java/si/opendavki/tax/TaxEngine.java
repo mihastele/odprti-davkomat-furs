@@ -66,6 +66,12 @@ public final class TaxEngine {
         KdvpReport kdvp = items.isEmpty() ? null : new KdvpReport(taxpayer, year, true, items);
         DivReport div = dividends.isEmpty() ? null : new DivReport(taxpayer, year, dividends);
         run.diagnostics.addAll(DeclarationChecker.check(kdvp, div));
+        for (String adapter : run.adapters) {
+            if (adapter.endsWith("-draft")) {
+                run.diagnostics.add(Diagnostic.warning("DRAFT_SOURCE_USED", "The report contains data from the DRAFT importer '" + adapter
+                        + "', which was written without a real statement. Verify every figure that comes from it against the broker's own documents.", null));
+            }
+        }
         boolean complete = run.diagnostics.stream().noneMatch(d -> d.severity() == Diagnostic.Severity.ERROR);
         return new TaxResult(year, kdvp, div, List.copyOf(run.diagnostics), List.copyOf(run.matches), List.copyOf(run.rates), complete, options.includeFees());
     }
@@ -101,6 +107,8 @@ public final class TaxEngine {
         final List<Diagnostic> diagnostics = new ArrayList<>();
         final List<LotMatch> matches = new ArrayList<>();
         final List<RateUse> rates = new ArrayList<>();
+        /** Adapters that produced entries which ended up in the report (draft ones are called out). */
+        final Set<String> adapters = new java.util.TreeSet<>();
         Run(int year) { this.year = year; }
 
         /**
@@ -227,6 +235,7 @@ public final class TaxEngine {
                 if (snapshot == null) snapshot = copyPool();
                 KdvpItem item = buildSheet();
                 run.matches.addAll(matches);
+                entries.forEach(e -> run.adapters.add(e.source().adapter()));
                 return java.util.Optional.of(item);
             } catch (Failure f) {
                 // keep this instrument's INFO/WARNING trail but drop its rates and matches: nothing of it is reported
@@ -458,6 +467,7 @@ public final class TaxEngine {
                         : eur(run, d.withholdingTax(), d.currency(), d.date(), d, "withholding tax");
                 String name = d.instrument().name() != null ? d.instrument().name() : d.instrument().symbol();
                 out.add(new Dividend(d.date(), null, name, null, d.sourceCountry(), "1", gross, tax, d.sourceCountry(), null, d.source().toString()));
+                run.adapters.add(d.source().adapter());
                 if (noted.add(d.instrument().key())) {
                     run.diagnostics.add(Diagnostic.warning("PAYER_DETAILS_MISSING", "Payer address and tax number of "
                             + d.instrument().key() + " are not in broker statements; complete them in eDavki", d.source()));

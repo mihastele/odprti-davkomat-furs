@@ -24,13 +24,22 @@ Where files go: `backend/brokers/<id>/src/test/resources/fixtures/`, with the ex
 (AGENTS.md "Testing"). **Never commit an unredacted statement.** If in doubt, keep it out of the repository and tell the
 maintainers what it looks like instead.
 
+## Sharing a layout without sharing your data
+
+`opendavki describe statement.csv` prints the column names, how each value is written (digits shown as 9, capitals as A) and,
+only for categorical columns (type, action, currency, ...), the distinct values. No names, ISINs, ids, dates or amounts
+appear. Read the output, then paste it into an issue: it is enough to write or correct a broker profile
+([profiles.md](profiles.md)), although not to prove the tax semantics. `--values "Column A,Column B"` adds the distinct values
+of columns you choose; identifier-looking values are never listed.
+
 ## Status of broker formats
 
 | Broker | Layout source | Sample available |
 |---|---|---|
 | Interactive Brokers | IBKR's documented Activity Statement layout | synthetic only |
 | Trading 212 | a real 217-row export supplied by a maintainer (not committed) plus community descriptions; see [trading212.md](trading212.md) | synthetic fixture mirroring the real layout |
-| Revolut, Trade Republic, eToro, XTB, DEGIRO, Lightyear, N26 | not yet researched | none |
+| Revolut, DEGIRO | recalled layouts, shipped as DRAFT profiles ([profiles.md](profiles.md)) | synthetic only |
+| Trade Republic, eToro, XTB, Lightyear, N26 | documentation could not be reached; N26 Invest appears to provide PDFs | none |
 
 A maintainer's own export may be used locally to verify an adapter without being committed; only a synthetic fixture with
 the same structure goes into the repository.

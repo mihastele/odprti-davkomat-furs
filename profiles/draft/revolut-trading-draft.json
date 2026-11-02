@@ -1,0 +1,37 @@
+{
+  "formatVersion": 1,
+  "id": "revolut-trading-draft",
+  "displayName": "Revolut trading account statement (CSV)",
+  "status": "DRAFT",
+  "note": "layout recalled from memory, never checked against a real file; Revolut statements have had different layouts over time. Trades only: Revolut dividends appear net of withholding, so they are not imported.",
+  "broker": "revolut",
+  "account": "default",
+  "delimiter": ",",
+  "requiredColumns": ["Date", "Ticker", "Type", "Quantity", "Price per share", "Total Amount", "Currency"],
+  "date": {
+    "column": "Date",
+    "patterns": ["uuuu-MM-dd'T'HH:mm:ss.SSSX", "uuuu-MM-dd'T'HH:mm:ssX", "uuuu-MM-dd HH:mm:ss", "uuuu-MM-dd"]
+  },
+  "number": { "decimalSeparator": ".", "groupSeparator": ",", "currencyAffix": true },
+  "instrument": { "isinColumn": null, "symbolColumn": "Ticker", "nameColumn": null },
+  "action": {
+    "column": "Type",
+    "signDetermines": false,
+    "buy": ["BUY - MARKET", "BUY - LIMIT", "BUY - STOP", "BUY - STOP LIMIT"],
+    "sell": ["SELL - MARKET", "SELL - LIMIT", "SELL - STOP", "SELL - STOP LIMIT"],
+    "dividend": ["DIVIDEND"],
+    "skip": ["CASH TOP-UP", "CASH WITHDRAWAL", "CUSTODY FEE"],
+    "unsupported": ["STOCK SPLIT"]
+  },
+  "trade": {
+    "quantityColumn": "Quantity",
+    "priceColumn": "Price per share",
+    "currencyColumn": "Currency",
+    "feeColumn": null,
+    "feeCurrencyColumn": null,
+    "feeCurrency": null,
+    "totalColumn": "Total Amount",
+    "totalCheck": "QTY_PRICE"
+  },
+  "dividend": { "amountIs": "NET", "grossColumn": null, "withholdingColumn": null, "currencyColumn": "Currency" }
+}

@@ -1,0 +1,3 @@
+# Draft Revolut statements carry no ISIN; the master supplies it (see docs/instrument-master.md).
+match,isin,asset_class,name
+AAPL,US0378331005,STOCK,Apple Inc.

@@ -35,7 +35,7 @@ import si.opendavki.model.KdvpReport;
 @Command(name = "opendavki", mixinStandardHelpOptions = true, version = "0.1.0",
         description = "Open-source, local-first FURS eDavki XML tooling.",
         subcommands = {Main.Generate.class, Main.Validate.class, Main.Schemas.class, Main.Adapters.class,
-                Main.Import.class, Main.Check.class, Main.Fx.class, Main.Report.class, Main.Audit.class})
+                Main.Import.class, Main.Check.class, Main.Fx.class, Main.Report.class, Main.Audit.class, Main.Describe.class, Main.Profiles.class})
 public final class Main implements Callable<Integer> {
 
     /** Exit codes: 0 ok, 1 XSD validation failed, 2 usage/input error, 3 schema missing. */
@@ -106,6 +106,7 @@ public final class Main implements Callable<Integer> {
         @Option(names = {"-o", "--out"}, required = true, description = "Ledger JSON file to write") Path out;
         @Option(names = "--env-file", defaultValue = ".env", description = "Settings file (see .env.example)") Path envFile;
         @Option(names = "--strict", description = "Do not write the ledger if any ERROR was found") boolean strict;
+        @Option(names = "--profile", description = "Profile JSON describing a CSV layout (repeatable); see docs/profiles.md") List<Path> profiles = new ArrayList<>();
 
         @Override public Integer call() throws IOException {
             List<LedgerEntry> all = new ArrayList<>();
@@ -119,16 +120,28 @@ public final class Main implements Callable<Integer> {
                 System.err.println("Configuration error: " + e.getMessage());
                 return INPUT_ERROR;
             }
+            List<BrokerAdapter> extra = new ArrayList<>();
+            for (Path profile : profiles) {
+                try {
+                    extra.add(new si.opendavki.broker.profile.ProfileAdapter(si.opendavki.broker.profile.ProfileLoader.load(profile)));
+                } catch (IllegalArgumentException e) {
+                    System.err.println("Profile error: " + e.getMessage());
+                    return INPUT_ERROR;
+                }
+            }
+            List<BrokerAdapter> candidates = new ArrayList<>(BrokerAdapters.all());
+            candidates.addAll(extra);
             for (Path p : statements) {
                 StatementSource src = StatementSource.read(p);
                 BrokerAdapter adapter;
                 if (adapterId != null) {
-                    adapter = BrokerAdapters.byId(adapterId).orElse(null);
+                    adapter = candidates.stream().filter(a -> a.id().equals(adapterId)).findFirst().orElse(null);
                     if (adapter == null) { System.err.println("Unknown adapter '" + adapterId + "'. See `adapters`."); return INPUT_ERROR; }
                 } else {
-                    try { adapter = BrokerAdapters.detect(src).orElse(null); }
-                    catch (IllegalStateException e) { System.err.println(e.getMessage()); return INPUT_ERROR; }
-                    if (adapter == null) { System.err.println("No adapter recognises " + p + "; pass --adapter."); return INPUT_ERROR; }
+                    List<BrokerAdapter> matching = candidates.stream().filter(a -> a.accepts(src)).toList();
+                    if (matching.size() > 1) { System.err.println(p + " matches several adapters " + matching.stream().map(BrokerAdapter::id).toList() + "; choose one with --adapter"); return INPUT_ERROR; }
+                    if (matching.isEmpty()) { System.err.println("No adapter recognises " + p + "; run `describe` on it, or pass --adapter / --profile."); return INPUT_ERROR; }
+                    adapter = matching.get(0);
                 }
                 ImportResult r = adapter.read(src, context);
                 si.opendavki.ledger.StatementCoverage.Coverage cov = si.opendavki.ledger.StatementCoverage.Coverage.of(p.getFileName().toString(), adapter.id(), r.entries());
@@ -233,6 +246,57 @@ public final class Main implements Callable<Integer> {
             java.util.Map<String, java.math.BigDecimal> gains = new java.util.TreeMap<>();
             for (si.opendavki.tax.LotMatch m : r.lotMatches()) gains.merge(m.instrument(), m.gainEur(), java.math.BigDecimal::add);
             gains.forEach((k, v) -> System.err.printf("  gain %-14s %s EUR%n", k, v.setScale(2, java.math.RoundingMode.HALF_UP).toPlainString()));
+        }
+    }
+
+    @Command(name = "describe", description = "Summarise a CSV statement's layout (column names, value shapes) without its contents; safe to share after you read it.")
+    static final class Describe implements Callable<Integer> {
+        @Parameters(index = "0", description = "Statement file") Path file;
+        @Option(names = "--values", split = ",", description = "Also list the distinct values of these columns (by header name)") List<String> valueColumns = new ArrayList<>();
+        @Option(names = "--profile", description = "Check the file against this profile and say what is missing") Path profile;
+        @Option(names = {"-o", "--out"}, description = "Write the description to a file instead of stdout") Path out;
+
+        @Override public Integer call() throws IOException {
+            StatementSource src = StatementSource.read(file);
+            StringBuilder md = new StringBuilder(si.opendavki.broker.StatementDescriber.describe(src, valueColumns));
+            int exit = 0;
+            if (profile != null) {
+                try {
+                    si.opendavki.broker.profile.ProfileAdapter a = new si.opendavki.broker.profile.ProfileAdapter(si.opendavki.broker.profile.ProfileLoader.load(profile));
+                    boolean ok = a.accepts(src);
+                    md.append("## Profile `").append(a.id()).append("`\n\n").append(ok ? "The header contains every required column.\n" : "The header does NOT contain every required column.\n");
+                    if (!ok) {
+                        ImportResult r = a.read(src);
+                        r.diagnostics().forEach(d -> md.append("- ").append(d.message()).append('\n'));
+                        exit = VALIDATION_FAILED;
+                    }
+                } catch (IllegalArgumentException e) {
+                    System.err.println("Profile error: " + e.getMessage());
+                    return INPUT_ERROR;
+                }
+            }
+            if (out != null) Files.writeString(out, md.toString(), StandardCharsets.UTF_8); else System.out.print(md);
+            return exit;
+        }
+    }
+
+    @Command(name = "profiles", description = "Validate profile files and show what each expects.")
+    static final class Profiles implements Callable<Integer> {
+        @Parameters(arity = "1..*", description = "Profile JSON files") List<Path> files;
+
+        @Override public Integer call() {
+            int bad = 0;
+            for (Path f : files) {
+                try {
+                    si.opendavki.broker.profile.Profile p = si.opendavki.broker.profile.ProfileLoader.load(f);
+                    System.out.printf("%-28s %-8s %s%n  requires columns: %s%n", p.id(), p.status(), p.displayName(), p.requiredColumns());
+                    if (p.note() != null) System.out.println("  note: " + p.note());
+                } catch (IOException | IllegalArgumentException e) {
+                    System.err.println("INVALID " + e.getMessage());
+                    bad++;
+                }
+            }
+            return bad == 0 ? 0 : INPUT_ERROR;
         }
     }
 
