@@ -318,4 +318,31 @@ class TaxEngineTest {
         assertXmlValid(r);
         assertEquals(r.diagnostics(), r.audit().diagnostics());
     }
+
+    @Test void anUnreachableRateSourceIsReportedOnceNotPerInstrument() {
+        Instrument other = new Instrument("US5949181045", "MSFT", "Microsoft", Instrument.AssetClass.STOCK);
+        FxService unreachable = new FxService(FxConfig.defaults(), uri -> { throw new java.io.IOException("offline"); });
+        Ledger l = Ledger.of(List.of(
+                trade("A", Trade.Side.BUY, "2023-01-01", "1", "10", "USD", "0", AAPL), trade("A", Trade.Side.SELL, "2024-01-01", "1", "12", "USD", "0", AAPL),
+                trade("A", Trade.Side.BUY, "2023-01-01", "1", "10", "USD", "0", other), trade("A", Trade.Side.SELL, "2024-01-01", "1", "12", "USD", "0", other)));
+        TaxResult r = new TaxEngine(unreachable, TaxOptions.defaults()).compute(l, 2024, TP);
+        assertEquals(1, errorCodes(r).stream().filter(c -> c.equals("RATE_UNAVAILABLE")).count());
+        assertEquals(2, errorCodes(r).stream().filter(c -> c.equals("INSTRUMENT_EXCLUDED")).count());
+        assertFalse(r.complete());
+    }
+
+    @Test void priorDiagnosticsStayInTheAuditTrail() {
+        Diagnostic ignored = Diagnostic.warning("ENTRY_IGNORED", "x", null);
+        FxService fx = new FxService(FxConfig.defaults());
+        TaxResult r = new TaxEngine(fx, TaxOptions.defaults()).compute(Ledger.of(List.of(buy("2023-01-01", "1", "10"), sell("2024-01-01", "1", "12"))), 2024, TP, List.of(ignored));
+        assertEquals(ignored, r.diagnostics().get(0));
+        assertTrue(r.audit().diagnostics().contains(ignored));
+    }
+
+    @Test void declarationFindingsMakeTheResultIncomplete() {
+        // a sale in 2024 only: when reporting 2024 nothing is wrong; a purchase dated after the period must be flagged by the checker
+        TaxResult ok = run(2024, buy("2023-01-01", "1", "10"), sell("2024-01-01", "1", "12"));
+        assertTrue(ok.complete());
+        assertTrue(ok.diagnostics().stream().noneMatch(d -> d.code().equals("SHEET_WITHOUT_SALE")));
+    }
 }

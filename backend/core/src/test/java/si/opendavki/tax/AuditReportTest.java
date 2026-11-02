@@ -89,4 +89,19 @@ class AuditReportTest {
     @Test void outputIsDeterministic() {
         assertEquals(AuditReport.markdown(audit(true, sample)), AuditReport.markdown(audit(true, sample)));
     }
+
+    /** buy 10 @100.2 (carried-style row) and sell 10: the sheet rows are listed with their ids, stock and statement lines. */
+    @Test void sheetRowsAreListedWithStockAndSourceLines() {
+        String md = AuditReport.markdown(audit(true, sample));
+        assertTrue(md.contains("## Doh-KDVP sheet rows as written to the XML"), md);
+        assertTrue(md.contains("| 0 | purchase | 2023-03-01 | 10.00000000 | 100.20000000 | B | 10.00000000 | `stmt.csv:3 (carried into 2024)` |"), md);
+        assertTrue(md.contains("| 1 | sale | 2024-03-01 | 10.00000000 | 109.89000000 |  | 0.00000000 | `stmt.csv:7`"), md);
+    }
+
+    @Test void informationalNotesAreListedNotJustCounted() {
+        String md = AuditReport.markdown(audit(true, List.of(trade(Trade.Side.BUY, "2023-03-04", 3, "10", "110", "0"),
+                trade(Trade.Side.SELL, "2024-03-01", 7, "10", "121", "0"))));
+        assertTrue(md.contains("<details><summary>1 informational note(s)</summary>"), md);
+        assertTrue(md.contains("- `RATE_FALLBACK` at `stmt.csv:3`"), md);
+    }
 }

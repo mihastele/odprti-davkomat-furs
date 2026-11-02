@@ -140,4 +140,11 @@ class GenericCsvAdapterTest {
         assertEquals(0, new java.math.BigDecimal("50").compareTo(result.lotMatches().get(0).gainEur()));
         assertEquals("US5949181045", result.kdvp().items().get(0).security().isin());
     }
+
+    @Test void dottedDatesAreAccepted() {
+        var r = adapter.read(StatementSource.ofText("d.csv", csv("BUY,5.3.2024,b,x,,US0378331005,AAPL,,STOCK,1,10,USD",
+                "BUY,15.03.2024,b,x,,US0378331005,AAPL,,STOCK,2,10,USD", "BUY,31.02.2024,b,x,,US0378331005,AAPL,,STOCK,2,10,USD")));
+        assertEquals(List.of("2024-03-05", "2024-03-15"), r.entries().stream().map(e -> e.date().toString()).toList());
+        assertEquals("INVALID_DATE", r.diagnostics().get(0).code());
+    }
 }

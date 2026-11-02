@@ -36,6 +36,7 @@ public final class AuditReport {
 
         summary(md, a);
         sales(md, a);
+        sheets(md, a);
         dividends(md, a);
         rates(md, a);
         diagnostics(md, a);
@@ -94,6 +95,24 @@ public final class AuditReport {
         }
     }
 
+    private static void sheets(StringBuilder md, TaxResult.Audit a) {
+        if (a.sheets().isEmpty()) return;
+        md.append("## Doh-KDVP sheet rows as written to the XML\n\n")
+                .append("Every row of every sheet with the statement line it comes from. Rows of lots that were not sold in the year ")
+                .append("(carried in from earlier years or bought and unsold) appear here too. Stock = F8 after the row.\n\n");
+        for (TaxResult.SheetAudit s : a.sheets()) {
+            md.append("### ").append(s.isin()).append(s.symbol() != null ? " " + s.symbol() : "").append(s.name() != null ? " - " + cell(s.name()) : "")
+                    .append("\n\n| Row | Kind | Date | Quantity | Unit EUR | Acq. | Stock after | Source |\n|---:|---|---|---:|---:|---|---:|---|\n");
+            for (TaxResult.SheetRow r : s.rows()) {
+                md.append("| ").append(r.id()).append(" | ").append(r.kind().toLowerCase()).append(" | ").append(r.date()).append(" | ")
+                        .append(unit(r.quantity())).append(" | ").append(unit(r.unitPriceEur())).append(" | ")
+                        .append(r.acquisitionType() == null ? "" : r.acquisitionType()).append(" | ").append(unit(r.stockAfter())).append(" | `")
+                        .append(r.source()).append("` |\n");
+            }
+            md.append('\n');
+        }
+    }
+
     private static void dividends(StringBuilder md, TaxResult.Audit a) {
         md.append("## Dividends (Doh-Div)\n\n");
         if (a.dividends().isEmpty()) {
@@ -147,7 +166,16 @@ public final class AuditReport {
             md.append('\n');
         }
         if (!any) md.append("No errors or warnings.\n\n");
-        if (info > 0) md.append(info).append(" informational note(s) (e.g. paired transfers, rate fallbacks) are in the audit JSON.\n");
+        if (info > 0) {
+            md.append("<details><summary>").append(info).append(" informational note(s)</summary>\n\n");
+            for (Diagnostic d : a.diagnostics()) {
+                if (d.severity() != Diagnostic.Severity.INFO) continue;
+                md.append("- `").append(d.code()).append('`');
+                if (d.source() != null) md.append(" at `").append(d.source()).append('`');
+                md.append(": ").append(d.message().replace("\n", " ")).append('\n');
+            }
+            md.append("\n</details>\n");
+        }
     }
 
     // ---- formatting -------------------------------------------------------------------------------------------

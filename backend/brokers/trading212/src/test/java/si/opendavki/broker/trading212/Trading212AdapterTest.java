@@ -195,4 +195,29 @@ class Trading212AdapterTest {
         assertNum("8.939809523810", result.lotMatches().get(0).gainEur());
         assertNum("190.760190476190", result.lotMatches().get(0).unitCostEur());
     }
+
+    private static final String TZ_HEAD = "Action,Time (UTC),ISIN,Ticker,Name,Notes,ID,No. of shares,Price / share,Currency (Price / share),Exchange rate,Total,Currency (Total)\n";
+
+    /** 23:30 UTC on 3 March is 00:30 on 4 March in Ljubljana (CET = UTC+1 in winter); 23:30 UTC on 1 July is 01:30 on 2 July (CEST = UTC+2). */
+    @Test void theDateCanBeTakenInAnotherTimeZone() {
+        String csv = TZ_HEAD
+                + "Market buy,2025-03-03 23:30:00+00:00,US0378331005,AAPL,Apple,,EOF1,1,100,EUR,1,100.00,EUR\n"
+                + "Market buy,2025-07-01 23:30:00+00:00,US0378331005,AAPL,Apple,,EOF2,1,100,EUR,1,100.00,EUR\n"
+                + "Market buy,2025-07-01 21:30:00+00:00,US0378331005,AAPL,Apple,,EOF3,1,100,EUR,1,100.00,EUR\n";
+        var utc = adapter.read(StatementSource.ofText("z.csv", csv));
+        assertEquals(List.of("2025-03-03", "2025-07-01", "2025-07-01"), utc.entries().stream().map(e -> e.date().toString()).toList());
+        var local = adapter.read(StatementSource.ofText("z.csv", csv), si.opendavki.broker.AdapterContext.from(Map.of("OPENDAVKI_TIMEZONE", "Europe/Ljubljana")));
+        assertEquals(List.of("2025-03-04", "2025-07-02", "2025-07-01"), local.entries().stream().map(e -> e.date().toString()).toList()); // 21:30 UTC is 23:30 CEST: same day
+    }
+
+    @Test void timestampsWithoutOffsetAreTakenAsUtc() {
+        var r = adapter.read(StatementSource.ofText("z.csv", TZ_HEAD + "Market buy,2025-03-03 23:30:00,US0378331005,AAPL,Apple,,EOF1,1,100,EUR,1,100.00,EUR\n"),
+                si.opendavki.broker.AdapterContext.from(Map.of("OPENDAVKI_TIMEZONE", "Europe/Ljubljana")));
+        assertEquals("2025-03-04", r.entries().get(0).date().toString());
+    }
+
+    @Test void anUnknownTimeZoneIsRejected() {
+        assertThrows(IllegalArgumentException.class, () -> si.opendavki.broker.AdapterContext.from(Map.of("OPENDAVKI_TIMEZONE", "Mars/Olympus")));
+        assertEquals("UTC", si.opendavki.broker.AdapterContext.from(Map.of()).zone().getId());
+    }
 }

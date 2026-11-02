@@ -15,27 +15,23 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 | ID | Gap | Planned |
 |---|---|---|
 | D-01 | Generated Doh-KDVP/Doh-Div files have never been imported into eDavki or compared with a hand-prepared declaration. Schema-valid ≠ accepted ≠ correct. | ODV-007 (golden files) |
-| D-03 | Only the schema versions `Doh_KDVP_9`, `Doh_Div_3`, `EDP-Common-1` are known; `FormType` hard-codes names/namespaces. No version detection or update procedure when FURS revises them. | ODV-007 |
 | D-04 | Only the original filing is produced (`DocumentWorkflowID` = `O`). Corrections, self-reports and late submissions are only partly modelled (Doh-Div `selfReport`, `SubseqSubmission` pass-through). | ODV-007 |
-| D-05 | No semantic validation beyond the XSD: acquisition-type (F2) rules, F10/F11/F5 applicability, `HasLossTransfer` vs `TaxBaseDecrease` consistency, loss carry-over, field length limits are only caught by the schema (or not at all). | ODV-005 |
 | D-06 | Country handling is raw: KDVP wants 3-digit FURS country codes, Doh-Div free-text ISO alpha-2. No code tables or lookup. | ODV-004 |
 | D-07 | Same-day ordering: purchases are placed before sales because the model has only dates, not times. True FIFO order within a day may differ. | ODV-004 |
 | D-09 | Not generated: other eDavki forms (interest Doh-Obr, derivatives/CFD, crypto, rent, ...). Only the sheets inside Doh-KDVP/Doh-Div that the models cover. | ODV-0xx |
 | D-10 | Non-resident filers, partial-year periods and exemption claims (`Remission`) are modelled but untested against real cases. | ODV-007 |
 | D-11 | No signing or submission to eDavki; the output is an import file only. Intentional. | — |
-| D-13 | `schemas fetch` downloads over HTTPS but does not verify the file against `schemas/SHA256SUMS`; `schemas status` only prints hashes. | ODV-007 |
 
 ## Ledger and adapter framework (ODV-002)
 
 | ID | Gap | Planned |
 |---|---|---|
-| L-03 | `LedgerChecker` does not yet detect: duplicate entries across brokers or files that carry no ids and differ only in formatting, implausible exchange rates (day-over-day jumps), wash-trade patterns, or dividends on instruments with no position. | ODV-005 |
+| L-03 | `LedgerChecker` does not yet detect: duplicate entries across brokers or files that carry no ids and differ only in formatting, implausible exchange-rate jumps, wash-trade patterns, or dividends on instruments with no position. Missing export periods are reported as `STATEMENT_GAP`. | ODV-0xx |
 | L-12 | The `SUSPICIOUS_PRICE` thresholds (4× the median split-adjusted price, at least 3 trades) and the 10-day transfer pairing window are heuristics chosen without data; they may miss real errors or flag normal moves. | ODV-005 |
 | L-04 | Corporate actions: splits (forward and reverse) and explicit conversions are applied. Mergers with cash, spin-offs, stock dividends, rights, return of capital and the cash for fractional shares after a reverse split are not; they exclude a sold instrument (see C-03). | ODV-0xx |
 | L-05 | The instrument master is a user-maintained file (M-01); there is no automatic detection of renamed symbols or changed ISINs, so a conversion must be entered by hand (C-04). | ODV-0xx |
 | L-06 | No cash, interest, fee or FX entries in the ledger (only trades, dividends, corporate actions, transfers). | ODV-0xx |
-| L-07 | Ledger JSON `formatVersion` is 1 with no migration path. Entries from `import` are written even when errors exist (exit code 1 signals it). | ODV-005 |
-| L-08 | Generic CSV: no decimal comma, no alternative date formats, no time-of-day. | when needed |
+| L-08 | Generic CSV: no decimal comma and no time of day (dates may be `yyyy-MM-dd` or `dd.MM.yyyy`). Decimal commas are ambiguous (`1,234`), so they are not guessed. | when needed |
 | L-09 | Statement hashes use raw bytes; fixtures depend on LF line endings (`.gitattributes` enforces it for `*.csv`/`*.json`). | — |
 | L-10 | No CI configuration (build + tests on push) and no LICENSE file yet. | ODV-008 |
 | L-11 | Frontend (Vue 3) and the local-only server it needs are not started. | ODV-009 |
@@ -77,7 +73,6 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 | T-02 | Verified only on synthetic cases computed by hand; never compared with a real broker statement, a real filed declaration, or eDavki's own gain calculation. | ODV-007 |
 | T-03 | Sheet representation is an assumption: lots open on 1 January appear as purchase rows with their *remaining* quantity and original date/cost, prior-year sales are omitted, and in-year splits restate all rows into post-split units. Not confirmed to be what FURS expects. | ODV-007 |
 | T-04 | Transfer pairing is a heuristic (same quantity, different account, within 10 days). Unpaired outgoing transfers are assumed to leave the portfolio without a taxable event. | ODV-005 |
-| T-05 | An unsupported corporate action excludes a sold instrument from the report. Replacing it with SPLIT/CONVERSION entries needs the unsupported entry removed from the ledger JSON by hand (L-13). | ODV-0xx |
 | T-06 | Doh-Div rows lack payer address and tax number (not in broker statements); payer country is the source-country proxy; dividend type is always "1". | ODV-005 |
 | T-07 | Only `PLVP` sheets are produced for sold instruments. No short/contract/share/capital-reduction sheets, no F10, no per-item foreign tax, no loss transfer; `HasForeignTax` is always false. | ODV-0xx |
 | T-08 | `IsFond` is true for ETFs and funds, false for other instruments. Adapters guess the asset class (IBKR: ETF from the instrument type; Trading 212: name suffix); the instrument master overrides it per ISIN. Assumption. | ODV-007 |
@@ -90,8 +85,6 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 | ID | Gap | Planned |
 |---|---|---|
 | A-01 | The audit report is Markdown only and English only; no HTML/PDF, no localisation. | ODV-009 |
-| A-02 | The report itemises sales and the lots they consumed, but not the Doh-KDVP rows of lots that stay open (carried into the year or bought and unsold), nor a row-by-row reconciliation of the XML to source lines. | ODV-005 |
-| A-03 | INFO diagnostics (paired transfers, rate fallbacks, split duplicates) are only counted in the Markdown, not listed; the JSON has them. | ODV-005 |
 
 ## Sample data
 
@@ -104,13 +97,11 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 | ID | Gap | Planned |
 |---|---|---|
 | R-01 | Checked against one real export (one EUR account, Jan to Apr 2026). Older or newer export versions, other account currencies, other fee columns (stamp duty, French transaction tax, ...) and other actions (limit/stop orders, stock splits, lending, cashback) are untested; unknown ones are reported, not guessed. | with more samples |
-| R-02 | The date is the UTC date of the action. A trade shortly before or after midnight UTC can fall on a different local date and rate day. | ODV-007 |
+| R-02 | Trading 212 dates default to the UTC date. `OPENDAVKI_TIMEZONE` converts them (for example `Europe/Ljubljana`), but which zone FURS regards as decisive for a trade near midnight is not confirmed, so the default is unchanged. Maintainer decision, see docs/BLOCKERS.md. | maintainer decision |
 | R-03 | Trading 212's own exchange rates and `Total`/`Result` are used only for a plausibility warning; the tax figures use the configured rate source (ECB). They differ slightly by design. | decision with X-04 |
 | R-04 | Withholding tax is taken as exported, which appears rounded up to cents per payment; the foreign tax may be overstated by up to a cent per dividend. Gross is shares x per-share, not the exported rounded `Total`. | ODV-007 |
 | R-05 | ETF detection for Trading 212 is a name heuristic (`(Acc)`/`(Dist)`); funds without that suffix (for example physical gold ETCs) are treated as shares until corrected in the instrument master (T-08). | ODV-0xx |
 | R-06 | Stock-split rows in the Trading 212 export carry no ratio, so they become UNSUPPORTED entries and exclude a sold instrument; enter the split or conversion by hand. Interest, lending, cashback, return of capital and bonus dividends are skipped with a warning. Sub-unit currencies other than GBX (for example ILA, ZAC) are not converted. | ODV-0xx |
-| R-07 | Exports cover at most a year; a partial set of files produces `MISSING_PURCHASE_HISTORY` errors. Intended, but nothing tells the user which export period is missing. | ODV-005 |
-| T-12 | When the rate source is unreachable the report prints the same root cause once per instrument and payment instead of once. | ODV-005 |
 
 ## Corporate actions and instrument master (ODV-006)
 
@@ -120,5 +111,4 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 | C-02 | The sheet of a converted instrument is issued for the final ISIN only. FURS may expect a separate sheet for the old ISIN or different row types. | ODV-007 |
 | C-03 | No cash components: mergers with cash, spin-offs, stock dividends, rights, return of capital and cash for fractional shares are not modelled. | ODV-0xx |
 | C-04 | Conversions are never inferred and only the generic CSV adapter can express them; no broker adapter translates its own corporate-action rows into them. | ODV-0xx |
-| L-13 | A ledger entry cannot be ignored or replaced except by editing the ledger JSON (for example to drop an UNSUPPORTED entry once the real event is entered by hand). | ODV-0xx |
 | M-01 | The instrument master matches exact ISINs or symbols and is maintained by hand; no instrument database, no fuzzy matching, no per-broker rules. | ODV-0xx |

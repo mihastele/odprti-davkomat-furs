@@ -11,7 +11,11 @@ finding is a diagnostic with the statement line it concerns.
 | `UNSUPPORTED_CORPORATE_ACTION` | WARNING | Anything but a forward split; positions and cost basis may be wrong. |
 | `TRANSFER_UNPAIRED` | WARNING | A transfer has no counterpart of the same quantity at another account within 10 days (`TransferPairing`). Import the other broker's statement or supply acquisition date and cost basis. |
 | `SUSPICIOUS_PRICE` | WARNING | A trade price is more than 4× above or below the median split-adjusted price of the same instrument and currency (needs at least 3 trades; zero prices are skipped). Usually a split missing from the ledger or a price/quantity unit error. Thresholds are heuristic (BACKLOG L-12). |
+| `STATEMENT_GAP` | WARNING | `import` only: two statements of one adapter leave more than 31 days between them (a forgotten export). |
 | `QUANTITY_PRECISION` | WARNING | A quantity has more than 8 decimals, the most the declaration can carry. |
 
 Merging adds `DUPLICATE_ENTRY` (WARNING, repeat dropped) and `CONFLICTING_DUPLICATE` (ERROR, same id but different content).
 The tax engine adds its own diagnostics, see [tax-engine.md](tax-engine.md).
+
+`import` also prints the period each statement covers and, with `--strict`, writes no ledger when an ERROR was found.
+Ledger corrections: [instrument-master.md](instrument-master.md), [overrides.md](overrides.md).

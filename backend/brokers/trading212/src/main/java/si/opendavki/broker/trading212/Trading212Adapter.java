@@ -2,6 +2,9 @@ package si.opendavki.broker.trading212;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import si.opendavki.broker.AdapterContext;
 import si.opendavki.broker.BrokerAdapter;
 import si.opendavki.broker.Csv;
 import si.opendavki.broker.EntryIds;
@@ -41,7 +45,6 @@ public final class Trading212Adapter implements BrokerAdapter {
     private static final Pattern ISIN = Pattern.compile("[A-Z]{2}[A-Z0-9]{9}\\d");
     private static final Pattern TRADE = Pattern.compile("^(?:Market|Limit|Stop|Stop limit) (buy|sell)$", Pattern.CASE_INSENSITIVE);
     private static final Pattern DIVIDEND = Pattern.compile("^Dividend \\((.+)\\)$");
-    private static final Pattern DATE = Pattern.compile("^(\\d{4}-\\d{2}-\\d{2})[ T]");
     private static final Pattern ETF_NAME = Pattern.compile("\\((Acc|Dist)\\)\\s*$");
 
     private static final List<String> REQUIRED = List.of("Action", "ISIN", "Ticker", "No. of shares", "Price / share");
@@ -105,6 +108,10 @@ public final class Trading212Adapter implements BrokerAdapter {
     }
 
     @Override public ImportResult read(StatementSource source) {
+        return read(source, AdapterContext.defaults());
+    }
+
+    @Override public ImportResult read(StatementSource source, AdapterContext context) {
         ImportResult.Builder out = ImportResult.builder(source, ID);
         List<Csv.Row> rows;
         try {
@@ -130,7 +137,7 @@ public final class Trading212Adapter implements BrokerAdapter {
                 if (r.cells().size() != header.size()) {
                     throw new RowError("COLUMN_COUNT", "Expected " + header.size() + " columns, found " + r.cells().size());
                 }
-                handle(new Fields(r, col), timeColumn(header), r.line(), out, ids, unknownFeeColumns);
+                handle(new Fields(r, col), timeColumn(header), r.line(), out, ids, unknownFeeColumns, context.zone());
             } catch (RowError e) {
                 out.failed(r.line(), e.code, e.getMessage());
             } catch (IllegalArgumentException e) {
@@ -147,24 +154,24 @@ public final class Trading212Adapter implements BrokerAdapter {
         return n.contains("fee") || n.contains("tax") || n.contains("duty");
     }
 
-    private void handle(Fields f, String timeColumn, int line, ImportResult.Builder out, EntryIds ids, List<String> unknownFeeColumns) {
+    private void handle(Fields f, String timeColumn, int line, ImportResult.Builder out, EntryIds ids, List<String> unknownFeeColumns, ZoneId zone) {
         String action = f.require("Action");
         String lower = action.toLowerCase(Locale.ROOT);
 
         Matcher trade = TRADE.matcher(action);
         if (trade.matches()) {
-            trade(f, timeColumn, line, out, ids, trade.group(1).equalsIgnoreCase("buy"), unknownFeeColumns);
+            trade(f, timeColumn, line, out, ids, trade.group(1).equalsIgnoreCase("buy"), unknownFeeColumns, zone);
             return;
         }
         Matcher dividend = DIVIDEND.matcher(action);
         if (dividend.matches()) {
-            dividend(f, timeColumn, line, out, ids, dividend.group(1));
+            dividend(f, timeColumn, line, out, ids, dividend.group(1), zone);
             return;
         }
         if (CASH_ACTIONS.contains(lower)) {
             out.skipped(line, "CASH_MOVEMENT", "'" + action + "' moves cash only");
         } else if (lower.contains("split")) {
-            corporateAction(f, timeColumn, line, out, ids, action);
+            corporateAction(f, timeColumn, line, out, ids, action, zone);
         } else {
             String why = lower.contains("interest") ? "Interest income belongs to a different tax form (not supported yet)"
                     : "Action '" + action + "' is not recognised";
@@ -174,9 +181,9 @@ public final class Trading212Adapter implements BrokerAdapter {
 
     // ---- trades -----------------------------------------------------------------------------------------------
 
-    private void trade(Fields f, String timeColumn, int line, ImportResult.Builder out, EntryIds ids, boolean buy, List<String> unknownFeeColumns) {
+    private void trade(Fields f, String timeColumn, int line, ImportResult.Builder out, EntryIds ids, boolean buy, List<String> unknownFeeColumns, ZoneId zone) {
         Instrument ins = instrument(f);
-        LocalDate date = date(f.require(timeColumn), timeColumn);
+        LocalDate date = date(f.require(timeColumn), timeColumn, zone);
         BigDecimal qty = f.number("No. of shares", true);
         if (qty.signum() <= 0) throw new RowError("INVALID_QUANTITY", "No. of shares must be positive, got " + qty.toPlainString());
         BigDecimal rawPrice = f.number("Price / share", true);
@@ -225,7 +232,7 @@ public final class Trading212Adapter implements BrokerAdapter {
 
     // ---- dividends --------------------------------------------------------------------------------------------
 
-    private void dividend(Fields f, String timeColumn, int line, ImportResult.Builder out, EntryIds ids, String label) {
+    private void dividend(Fields f, String timeColumn, int line, ImportResult.Builder out, EntryIds ids, String label, ZoneId zone) {
         String lowerLabel = label.toLowerCase(Locale.ROOT);
         if (!DIVIDEND_LABELS.contains(lowerLabel)) {
             out.skipped(line, "UNSUPPORTED_DIVIDEND_TYPE", "Dividend type '" + label + "' is not imported (return of capital, bonus and "
@@ -234,7 +241,7 @@ public final class Trading212Adapter implements BrokerAdapter {
         }
         Instrument ins = instrument(f);
         if (ins.isin() == null) throw new RowError("MISSING_ISIN", "Dividend row without a valid ISIN");
-        LocalDate date = date(f.require(timeColumn), timeColumn);
+        LocalDate date = date(f.require(timeColumn), timeColumn, zone);
         BigDecimal qty = f.number("No. of shares", true);
         BigDecimal perShare = f.number("Price / share", true);
         String rawCurrency = f.require("Currency (Price / share)");
@@ -282,9 +289,9 @@ public final class Trading212Adapter implements BrokerAdapter {
 
     // ---- corporate actions ------------------------------------------------------------------------------------
 
-    private void corporateAction(Fields f, String timeColumn, int line, ImportResult.Builder out, EntryIds ids, String action) {
+    private void corporateAction(Fields f, String timeColumn, int line, ImportResult.Builder out, EntryIds ids, String action, ZoneId zone) {
         Instrument ins = instrument(f);
-        LocalDate date = date(f.require(timeColumn), timeColumn);
+        LocalDate date = date(f.require(timeColumn), timeColumn, zone);
         String description = action + (f.get("No. of shares").isEmpty() ? "" : " (" + f.get("No. of shares") + " shares)");
         // The export does not give the ratio, so a split cannot be applied automatically: carry it as unsupported.
         CorporateAction a = new CorporateAction(ids.derive("CA", f.get(timeColumn), ins.key(), action, f.get("No. of shares")), BROKER, ACCOUNT,
@@ -304,14 +311,21 @@ public final class Trading212Adapter implements BrokerAdapter {
         return new Instrument(isin, f.get("Ticker").isEmpty() ? isin : f.get("Ticker"), name.isEmpty() ? null : name, cls);
     }
 
-    /** The UTC date of the action (the export is in UTC). */
-    private static LocalDate date(String raw, String column) {
-        Matcher m = DATE.matcher(raw.trim() + " ");
-        if (!m.find()) throw new RowError("INVALID_DATE", "'" + column + "' must start with yyyy-MM-dd, got '" + raw + "'");
+    /**
+     * The date of the action in {@code zone}. The export is in UTC (an offset such as +00:00 is honoured if present, a
+     * timestamp without offset is taken as UTC); with the default zone UTC this is simply the statement's date.
+     */
+    private static LocalDate date(String raw, String column, ZoneId zone) {
+        String s = raw.trim().replace(' ', 'T');
         try {
-            return LocalDate.parse(m.group(1));
-        } catch (DateTimeParseException e) {
-            throw new RowError("INVALID_DATE", "'" + column + "' is not a valid date: '" + raw + "'");
+            if (s.length() > 19 && (s.endsWith("Z") || s.matches(".*[+-]\\d{2}:?\\d{2}$"))) {
+                return OffsetDateTime.parse(s.matches(".*[+-]\\d{4}$") ? s.substring(0, s.length() - 2) + ":" + s.substring(s.length() - 2) : s)
+                        .atZoneSameInstant(zone).toLocalDate();
+            }
+            if (s.length() >= 19) return LocalDateTime.parse(s.substring(0, 19)).atZone(ZoneId.of("UTC")).withZoneSameInstant(zone).toLocalDate();
+            return LocalDate.parse(s.substring(0, 10));
+        } catch (DateTimeParseException | StringIndexOutOfBoundsException e) {
+            throw new RowError("INVALID_DATE", "'" + column + "' is not a valid timestamp: '" + raw + "'");
         }
     }
 }

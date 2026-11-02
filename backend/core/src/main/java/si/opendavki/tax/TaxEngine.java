@@ -35,7 +35,13 @@ public final class TaxEngine {
     }
 
     public TaxResult compute(Ledger ledger, int year, Taxpayer taxpayer) {
+        return compute(ledger, year, taxpayer, List.of());
+    }
+
+    /** @param priorDiagnostics findings from before the computation (for example ignored entries), kept in the audit trail */
+    public TaxResult compute(Ledger ledger, int year, Taxpayer taxpayer, List<Diagnostic> priorDiagnostics) {
         Run run = new Run(year);
+        run.diagnostics.addAll(priorDiagnostics);
         LocalDate yearStart = LocalDate.of(year, 1, 1), yearEnd = LocalDate.of(year, 12, 31);
 
         Map<String, String> conversions = conversionTargets(run, ledger, yearEnd);
@@ -57,9 +63,10 @@ public final class TaxEngine {
         }
         List<Dividend> dividends = dividends(run, ledger, yearStart, yearEnd);
 
-        boolean complete = run.diagnostics.stream().noneMatch(d -> d.severity() == Diagnostic.Severity.ERROR);
         KdvpReport kdvp = items.isEmpty() ? null : new KdvpReport(taxpayer, year, true, items);
         DivReport div = dividends.isEmpty() ? null : new DivReport(taxpayer, year, dividends);
+        run.diagnostics.addAll(DeclarationChecker.check(kdvp, div));
+        boolean complete = run.diagnostics.stream().noneMatch(d -> d.severity() == Diagnostic.Severity.ERROR);
         return new TaxResult(year, kdvp, div, List.copyOf(run.diagnostics), List.copyOf(run.matches), List.copyOf(run.rates), complete, options.includeFees());
     }
 
@@ -95,6 +102,16 @@ public final class TaxEngine {
         final List<LotMatch> matches = new ArrayList<>();
         final List<RateUse> rates = new ArrayList<>();
         Run(int year) { this.year = year; }
+
+        /**
+         * A rate source that cannot be reached fails every entry for the same reason; report that cause once and let the
+         * per-instrument INSTRUMENT_EXCLUDED lines say what it affected.
+         */
+        void addOnce(Diagnostic d) {
+            boolean repeatedCause = d.code().equals("RATE_UNAVAILABLE") && diagnostics.stream()
+                    .anyMatch(x -> x.code().equals("RATE_UNAVAILABLE") && x.message().equals(d.message()));
+            if (!repeatedCause) diagnostics.add(d);
+        }
     }
 
     /** Signals the first problem of an instrument; the instrument is then excluded. */
@@ -213,7 +230,7 @@ public final class TaxEngine {
                 return java.util.Optional.of(item);
             } catch (Failure f) {
                 // keep this instrument's INFO/WARNING trail but drop its rates and matches: nothing of it is reported
-                run.diagnostics.add(f.diagnostic);
+                run.addOnce(f.diagnostic);
                 while (run.rates.size() > rateStart) run.rates.remove(run.rates.size() - 1);
                 run.diagnostics.add(Diagnostic.error("INSTRUMENT_EXCLUDED", instrument.key()
                         + " is left out of the Doh-KDVP because of the error above", f.diagnostic.source()));
@@ -446,7 +463,7 @@ public final class TaxEngine {
                             + d.instrument().key() + " are not in broker statements; complete them in eDavki", d.source()));
                 }
             } catch (Failure f) {
-                run.diagnostics.add(f.diagnostic);
+                run.addOnce(f.diagnostic);
                 run.diagnostics.add(Diagnostic.error("DIVIDEND_EXCLUDED", "Dividend of " + d.instrument().key() + " on " + d.date()
                         + " is left out of the Doh-Div because of the error above", d.source()));
             }

@@ -20,6 +20,7 @@ import si.opendavki.ledger.*;
  */
 public final class GenericCsvAdapter implements BrokerAdapter {
     public static final String ID = "generic";
+    private static final java.time.format.DateTimeFormatter DOTTED = java.time.format.DateTimeFormatter.ofPattern("d.M.uuuu").withResolverStyle(java.time.format.ResolverStyle.STRICT);
     private static final List<String> REQUIRED = List.of("type", "date", "isin", "symbol", "quantity", "price", "currency");
 
     @Override public String id() { return ID; }
@@ -112,8 +113,11 @@ public final class GenericCsvAdapter implements BrokerAdapter {
         LocalDate date(String name, boolean required) {
             String v = required ? require(name) : get(name);
             if (v.isEmpty()) return null;
-            try { return LocalDate.parse(v); }
-            catch (DateTimeParseException e) { throw new RowError("INVALID_DATE", "'" + name + "' must be yyyy-MM-dd, got '" + v + "'"); }
+            try {
+                return v.matches("\\d{1,2}\\.\\d{1,2}\\.\\d{4}") ? LocalDate.parse(v, DOTTED) : LocalDate.parse(v);
+            } catch (DateTimeParseException e) {
+                throw new RowError("INVALID_DATE", "'" + name + "' must be yyyy-MM-dd or dd.MM.yyyy, got '" + v + "'");
+            }
         }
 
         BigDecimal number(String name, boolean required) {

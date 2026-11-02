@@ -26,8 +26,8 @@ CONVERSION,2024-06-01,brokerA,main,US5949181045,OLDX,Old Co,2,1,DE0007164600,NEW
 SPLIT,2024-03-01,brokerA,main,US0378331005,REVX,Reverse Co,1,10,,,
 ```
 
-If the broker file already produced an `UNSUPPORTED` entry for the same event, remove that entry from the ledger JSON
-(BACKLOG L-13); there is no ignore mechanism yet. See `examples/statement-corporate-actions.csv`.
+If the broker file already produced an `UNSUPPORTED` entry for the same event, ignore that entry with the overrides file
+([overrides.md](overrides.md)). See `examples/statement-corporate-actions.csv`.
 
 ## Not supported
 

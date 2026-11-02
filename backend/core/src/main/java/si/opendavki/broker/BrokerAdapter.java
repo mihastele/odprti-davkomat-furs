@@ -18,4 +18,9 @@ public interface BrokerAdapter {
     boolean accepts(StatementSource source);
 
     ImportResult read(StatementSource source);
+
+    /** Like {@link #read(StatementSource)} with run settings; adapters that need none inherit this. */
+    default ImportResult read(StatementSource source, AdapterContext context) {
+        return read(source);
+    }
 }

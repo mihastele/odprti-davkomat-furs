@@ -37,13 +37,14 @@ The first error of an instrument excludes that instrument from the report (`INST
 dividend (`DIVIDEND_EXCLUDED`). The result is then `complete = false` and the CLI refuses to write XML unless
 `--allow-incomplete` is given. Errors: `MISSING_PURCHASE_HISTORY`, `SALE_USES_UNKNOWN_COST`, `UNSUPPORTED_CORPORATE_ACTION`,
 `RATE_UNAVAILABLE`, `MISSING_ISIN`, `INVALID_ISIN`, `NEGATIVE_UNIT_VALUE`, `MISSING_COUNTRY`, `CONFLICTING_CONVERSION`, `INTERNAL_INCONSISTENCY`.
+Declaration checks (`DeclarationChecker`, run on the finished report): ERRORs `DUPLICATE_SHEET`, `FIELD_TOO_LONG`, `SALE_OUTSIDE_PERIOD`, `SALE_BEFORE_ANY_PURCHASE`, `PURCHASE_AFTER_PERIOD`, `DIVIDEND_OUTSIDE_PERIOD`; WARNINGs `SHEET_WITHOUT_SALE`, `FOREIGN_TAX_EXCEEDS_GROSS`, `FOREIGN_TAX_HIGH`.
 Warnings: `CONVERSION_ASSUMED_TAX_NEUTRAL`, `TRANSFER_BASIS_MISSING`, `TRANSFER_OUT_UNPAIRED`, `PAYER_DETAILS_MISSING`, `NAME_TRUNCATED`.
 
 ## Outputs of `report`
 
 `kdvp-<year>.xml`, `div-<year>.xml` (validated against the XSDs), `audit-<year>.json` with every lot match, every rate
 used, every dividend and every diagnostic, and `audit-<year>.md`, the same trail as a readable report: status banner,
-per-instrument summary, each sale with the lots it consumed and the statement line of each, dividends, every exchange
+per-instrument summary, each sale with the lots it consumed and the statement line of each, every row of every Doh-KDVP sheet with its stock after the row and statement line (including lots that stay open), dividends, every exchange
 rate with its transaction date and rate date, and all errors and warnings. `opendavki audit audit-<year>.json` renders
 the Markdown again from the JSON. Money is rounded to cents (`HALF_UP`) and unit values to 8 decimals for reading only;
 the JSON keeps 12 decimals.

@@ -140,7 +140,7 @@ public final class KdvpXmlWriter {
 
         int rowId = 0;
         BigDecimal held = BigDecimal.ZERO;
-        for (SecurityEvent e : sorted(s)) {
+        for (SecurityEvent e : ordered(s.events())) {
             if (shortForm && (e.reducedUnitPrice() != null || e.art97Rule() != null)) {
                 throw new IllegalArgumentException(s.isin() + " on " + e.date()
                         + ": F10/F11 are not available on short sheets [" + e.sourceRef() + "]");
@@ -232,8 +232,8 @@ public final class KdvpXmlWriter {
     }
 
     /** Chronological; on the same day purchases precede sales so same-day round trips are never negative. */
-    private static List<SecurityEvent> sorted(Security s) {
-        List<SecurityEvent> l = new ArrayList<>(s.events());
+    public static List<SecurityEvent> ordered(List<SecurityEvent> events) {
+        List<SecurityEvent> l = new ArrayList<>(events);
         l.sort((a, b) -> {
             int c = a.date().compareTo(b.date());
             return c != 0 ? c : a.kind().compareTo(b.kind());

@@ -96,6 +96,8 @@ Copy [`.env.example`](.env.example) to `.env` (git-ignored). Real environment va
 | `OPENDAVKI_FX_CACHE_DIR` | `.opendavki/cache/fx` | download cache |
 | `OPENDAVKI_FX_ECB_URL`, `_BSI_URL`, `_FILE` | ECB history URL, empty, empty | source locations |
 | `OPENDAVKI_INSTRUMENTS_FILE` | empty | CSV that fixes missing ISINs and asset classes ([docs/instrument-master.md](docs/instrument-master.md)) |
+| `OPENDAVKI_OVERRIDES_FILE` | empty | CSV that drops individual ledger entries, each with a reason ([docs/overrides.md](docs/overrides.md)) |
+| `OPENDAVKI_TIMEZONE` | `UTC` | zone used to turn timestamps with an offset into dates (Trading 212) |
 | `OPENDAVKI_INCLUDE_FEES` | `true` | add broker fees to purchase cost and deduct them from sale value (unverified rule, see docs/tax-engine.md) |
 
 Details, and why ECB is the default, in [docs/fx.md](docs/fx.md).
@@ -139,13 +141,13 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**.
 - **Tax engine unverified**: FIFO, EUR conversion, fee treatment and the sheet layout (open lots carried into the year, split restating) follow assumptions that are not confirmed against ZDoh-2/FURS and were tested only on hand-computed synthetic cases (T-01 to T-03, T-08, T-09).
 - **Tax engine gaps**: only plain `PLVP` sheets; no F10, per-item foreign tax or loss transfer; Doh-Div lacks payer address and tax number; an unsupported corporate action or a missing purchase excludes the instrument (T-04 to T-07, T-10, T-11).
 - **Never validated end to end**: generated XML has not been imported into eDavki or compared with a hand-prepared declaration (D-01).
-- **Importers barely verified**: Trading 212 was checked against one real export (not committed), IBKR only against a synthetic statement written from its documented layout; no other broker has a sample (I-01, I-02, R-01 to R-07, S-01, [docs/sample-data.md](docs/sample-data.md)).
+- **Importers barely verified**: Trading 212 was checked against one real export (not committed), IBKR only against a synthetic statement written from its documented layout; no other broker has a sample (I-01, I-02, R-01 to R-06, S-01, [docs/sample-data.md](docs/sample-data.md)).
 - **Exchange rates**: the ECB reference rates are the source the maintainers state FURS recommends, but the FURS document was not read; the Bank of Slovenia source has no default URL, the ECB download was never run live, and the rate-date and rounding rules are undecided (X-02 to X-05).
-- **Corporate actions**: splits (forward and reverse) and hand-entered conversions are applied ([docs](docs/corporate-actions.md)); the tax-neutral treatment of conversions is unverified, mergers with cash, spin-offs and similar are not modelled, and broker adapters do not produce conversions themselves (L-04, I-05, C-01 to C-04, L-13).
+- **Corporate actions**: splits (forward and reverse) and hand-entered conversions are applied ([docs](docs/corporate-actions.md)); the tax-neutral treatment of conversions is unverified, mergers with cash, spin-offs and similar are not modelled, and broker adapters do not produce conversions themselves (L-04, I-05, C-01 to C-04).
 - **Incoming transfers from a broker that is not imported have no cost basis** unless the ledger is edited by hand (I-08).
 - **Out of scope for now**: options, futures, CFDs, interest (Doh-Obr), crypto, other eDavki forms, signing/submission (D-09, I-04, I-10, D-11).
 - **Only original filings** are produced; corrections and late submissions are partly modelled (D-04).
-- **Audit report** is Markdown/English only and does not itemise the sheet rows of lots that stay open (A-01 to A-03).
+- **Audit report** is Markdown/English only (A-01).
 - **No browser interface, CI or license file yet** (L-10, L-11).
 <!-- KNOWN-LIMITATIONS:END -->
 

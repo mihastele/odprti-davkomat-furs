@@ -105,10 +105,20 @@ public final class Main implements Callable<Integer> {
         @Option(names = "--adapter", description = "Adapter id for all files (default: auto-detect per file)") String adapterId;
         @Option(names = {"-o", "--out"}, required = true, description = "Ledger JSON file to write") Path out;
         @Option(names = "--env-file", defaultValue = ".env", description = "Settings file (see .env.example)") Path envFile;
+        @Option(names = "--strict", description = "Do not write the ledger if any ERROR was found") boolean strict;
 
         @Override public Integer call() throws IOException {
             List<LedgerEntry> all = new ArrayList<>();
             List<Diagnostic> diags = new ArrayList<>();
+            List<si.opendavki.ledger.StatementCoverage.Coverage> coverage = new ArrayList<>();
+            java.util.Map<String, String> env = si.opendavki.fx.DotEnv.environment(envFile);
+            si.opendavki.broker.AdapterContext context;
+            try {
+                context = si.opendavki.broker.AdapterContext.from(env);
+            } catch (IllegalArgumentException e) {
+                System.err.println("Configuration error: " + e.getMessage());
+                return INPUT_ERROR;
+            }
             for (Path p : statements) {
                 StatementSource src = StatementSource.read(p);
                 BrokerAdapter adapter;
@@ -120,9 +130,12 @@ public final class Main implements Callable<Integer> {
                     catch (IllegalStateException e) { System.err.println(e.getMessage()); return INPUT_ERROR; }
                     if (adapter == null) { System.err.println("No adapter recognises " + p + "; pass --adapter."); return INPUT_ERROR; }
                 }
-                ImportResult r = adapter.read(src);
-                System.err.printf("%s [%s]: %d rows read, %d mapped, %d skipped, %d failed%n", p, adapter.id(),
-                        r.stats().rowsRead(), r.stats().rowsMapped(), r.stats().rowsSkipped(), r.stats().rowsFailed());
+                ImportResult r = adapter.read(src, context);
+                si.opendavki.ledger.StatementCoverage.Coverage cov = si.opendavki.ledger.StatementCoverage.Coverage.of(p.getFileName().toString(), adapter.id(), r.entries());
+                System.err.printf("%s [%s]: %d rows read, %d mapped, %d skipped, %d failed%s%n", p, adapter.id(),
+                        r.stats().rowsRead(), r.stats().rowsMapped(), r.stats().rowsSkipped(), r.stats().rowsFailed(),
+                        cov == null ? "" : ", entries from " + cov.first() + " to " + cov.last());
+                if (cov != null) coverage.add(cov);
                 all.addAll(r.entries());
                 diags.addAll(r.diagnostics());
             }
@@ -130,18 +143,17 @@ public final class Main implements Callable<Integer> {
             diags.addAll(merged.diagnostics());
             Ledger ledger = merged.ledger();
             try {
-                java.util.Optional<si.opendavki.ledger.InstrumentMaster> master =
-                        si.opendavki.ledger.InstrumentMaster.fromEnvironment(si.opendavki.fx.DotEnv.environment(envFile));
-                if (master.isPresent()) {
-                    si.opendavki.ledger.InstrumentMaster.Result r = master.get().apply(ledger);
-                    ledger = r.ledger();
-                    diags.addAll(r.diagnostics());
-                }
+                ledger = applyCorrections(ledger, env, diags);
             } catch (IllegalArgumentException e) {
-                System.err.println("Instrument master error: " + e.getMessage());
+                System.err.println("Correction file error: " + e.getMessage());
                 return INPUT_ERROR;
             }
+            diags.addAll(si.opendavki.ledger.StatementCoverage.gaps(coverage));
             diags.addAll(LedgerChecker.check(ledger));
+            if (strict && diags.stream().anyMatch(d -> d.severity() == Diagnostic.Severity.ERROR)) {
+                printDiagnostics(diags, "NOT written (--strict): " + ledger.entries().size() + " ledger entries");
+                return VALIDATION_FAILED;
+            }
             Files.writeString(out, si.opendavki.json.Json.MAPPER.writeValueAsString(ledger) + "\n", StandardCharsets.UTF_8);
             return printDiagnostics(diags, ledger.entries().size() + " ledger entries written to " + out);
         }
@@ -171,22 +183,21 @@ public final class Main implements Callable<Integer> {
             si.opendavki.fx.FxConfig fxConfig;
             si.opendavki.tax.TaxOptions options;
             Ledger ledger;
+            List<Diagnostic> correctionDiagnostics = new ArrayList<>();
             try {
                 taxpayer = new si.opendavki.model.Taxpayer(taxNumber, "FO");
                 java.util.Map<String, String> env = si.opendavki.fx.DotEnv.environment(envFile);
                 fxConfig = si.opendavki.fx.FxConfig.from(env);
                 options = si.opendavki.tax.TaxOptions.from(env);
                 ledger = si.opendavki.json.Json.MAPPER.readValue(ledgerFile.toFile(), Ledger.class);
-                java.util.Optional<si.opendavki.ledger.InstrumentMaster> master =
-                        si.opendavki.ledger.InstrumentMaster.fromEnvironment(env);
-                if (master.isPresent()) ledger = master.get().apply(ledger).ledger(); // idempotent if `import` already applied it
+                ledger = applyCorrections(ledger, env, correctionDiagnostics); // idempotent if `import` already applied them
             } catch (IllegalArgumentException | com.fasterxml.jackson.core.JsonProcessingException e) {
                 System.err.println("Input error: " + e.getMessage());
                 return INPUT_ERROR;
             }
 
             si.opendavki.tax.TaxResult result = new si.opendavki.tax.TaxEngine(new si.opendavki.fx.FxService(fxConfig), options)
-                    .compute(ledger, year, taxpayer);
+                    .compute(ledger, year, taxpayer, correctionDiagnostics);
             Files.createDirectories(outDir);
             Path audit = outDir.resolve("audit-" + year + ".json");
             Files.writeString(audit, si.opendavki.json.Json.MAPPER.writeValueAsString(result.audit()) + "\n", StandardCharsets.UTF_8);
@@ -272,6 +283,26 @@ public final class Main implements Callable<Integer> {
         }
     }
 
+    /**
+     * Applies the user's correction files: ignored entries first (so a master row cannot resurrect them), then the
+     * instrument master. Both are idempotent, so `report` can apply them again to a ledger written by `import`.
+     */
+    static Ledger applyCorrections(Ledger ledger, java.util.Map<String, String> env, List<Diagnostic> diags) throws IOException {
+        java.util.Optional<si.opendavki.ledger.LedgerOverrides> overrides = si.opendavki.ledger.LedgerOverrides.fromEnvironment(env);
+        if (overrides.isPresent()) {
+            si.opendavki.ledger.LedgerOverrides.Result r = overrides.get().apply(ledger);
+            ledger = r.ledger();
+            diags.addAll(r.diagnostics());
+        }
+        java.util.Optional<si.opendavki.ledger.InstrumentMaster> master = si.opendavki.ledger.InstrumentMaster.fromEnvironment(env);
+        if (master.isPresent()) {
+            si.opendavki.ledger.InstrumentMaster.Result r = master.get().apply(ledger);
+            ledger = r.ledger();
+            diags.addAll(r.diagnostics());
+        }
+        return ledger;
+    }
+
     /** Prints diagnostics (INFO hidden unless there is nothing else) and returns 1 if any is an ERROR. */
     static int printDiagnostics(List<Diagnostic> diags, String summary) {
         diags.stream().filter(d -> d.severity() != Diagnostic.Severity.INFO).forEach(d -> System.err.println("  " + d));
@@ -286,17 +317,25 @@ public final class Main implements Callable<Integer> {
     static final class Schemas implements Runnable {
         @Override public void run() { CommandLine.usage(this, System.out); }
 
-        @Command(name = "status", description = "Show which XSDs are present and their SHA-256.")
+        @Command(name = "status", description = "Verify the XSDs against SHA256SUMS and show which required ones are present.")
         static final class Status implements Callable<Integer> {
             @Option(names = "--schema-dir", defaultValue = DEFAULT_SCHEMA_DIR) Path schemaDir;
             @Override public Integer call() throws Exception {
-                int missing = 0;
+                int problems = 0;
                 for (FormType f : FormType.values()) {
-                    Path p = schemaDir.resolve(f.xsdFileName);
-                    if (Files.isRegularFile(p)) System.out.println("OK       " + f.xsdFileName + "  sha256=" + sha256(Files.readAllBytes(p)));
-                    else { System.out.println("MISSING  " + f.xsdFileName); missing++; }
+                    if (!Files.isRegularFile(schemaDir.resolve(f.xsdFileName))) { System.out.println("MISSING   " + f.xsdFileName); problems++; }
                 }
-                return missing == 0 ? 0 : SCHEMA_MISSING;
+                try {
+                    for (si.opendavki.furs.SchemaChecksums.Entry e : si.opendavki.furs.SchemaChecksums.verify(schemaDir)) {
+                        System.out.printf("%-9s %s  sha256=%s%s%n", e.status(), e.name(), e.actual() != null ? e.actual() : e.expected(),
+                                e.status() == si.opendavki.furs.SchemaChecksums.Status.MISMATCH ? "  (expected " + e.expected() + ")" : "");
+                        if (e.status() != si.opendavki.furs.SchemaChecksums.Status.OK) problems++;
+                    }
+                } catch (IOException e) {
+                    System.err.println(e.getMessage());
+                    problems++;
+                }
+                return problems == 0 ? 0 : SCHEMA_MISSING;
             }
         }
 
@@ -311,13 +350,30 @@ public final class Main implements Callable<Integer> {
                 HttpResponse<byte[]> r = HttpClient.newHttpClient().send(
                         HttpRequest.newBuilder(url).GET().build(), HttpResponse.BodyHandlers.ofByteArray());
                 if (r.statusCode() != 200) { System.err.println("HTTP " + r.statusCode()); return INPUT_ERROR; }
+                String actual = sha256(r.body());
+                java.util.Optional<String> expected;
+                try {
+                    expected = si.opendavki.furs.SchemaChecksums.expected(schemaDir, fileName);
+                } catch (IOException e) {
+                    expected = java.util.Optional.empty();
+                }
+                if (expected.isPresent() && !expected.get().equals(actual)) {
+                    System.err.println("REFUSED: " + fileName + " from " + url + " has sha256=" + actual + " but " + SchemaChecksumsFile + " lists " + expected.get()
+                            + ". Either FURS published a new version (add it under its new name, update FormType and the writers) or the download is wrong.");
+                    return SCHEMA_MISSING;
+                }
                 Files.createDirectories(schemaDir);
                 Files.write(schemaDir.resolve(fileName), r.body());
-                System.out.println("Saved " + fileName + " sha256=" + sha256(r.body()) + " from " + url);
+                System.out.println("Saved " + fileName + " sha256=" + actual + " from " + url);
+                if (expected.isEmpty()) {
+                    System.err.println("WARNING: " + fileName + " is not listed in " + SchemaChecksumsFile + "; verify it against the official FURS page, then add the line above to it.");
+                }
                 return 0;
             }
         }
     }
+
+    static final String SchemaChecksumsFile = si.opendavki.furs.SchemaChecksums.FILE_NAME;
 
     static String sha256(byte[] b) throws Exception {
         return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(b));
