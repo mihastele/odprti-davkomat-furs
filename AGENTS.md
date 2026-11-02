@@ -113,7 +113,8 @@ in its docs and in the README status table.
 ## Git
 
 - Work on the branch you were assigned; small, focused commits with an imperative subject ("Add X", "Fix Y") and a body
-  explaining *why*. Do not rewrite shared history. Do not open a pull request unless asked.
+  explaining *why*. Do not rewrite shared history, except to remove sensitive data with the maintainer's explicit approval
+  (procedure: [docs/removing-sensitive-data.md](docs/removing-sensitive-data.md)). Do not open a pull request unless asked.
 - Run the full build before committing. Do not commit generated output (`target/`, `*.out.xml`), `.env`, caches or
   anything under `private/` (personal financial data).
 - Do not weaken or delete a test to get green. Fix the code or, if the test is wrong, fix it with an independent
