@@ -141,7 +141,7 @@ sheet) are rejected instead of dropped, and a sale larger than the held quantity
      When you find a new gap, add it to both. Delete the whole section when the backlog has no open items. -->
 ## Known limitations
 
-Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**.
+Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**. What is blocked on a decision, a document or a file of yours, and what to do about it: **[docs/BLOCKERS.md](docs/BLOCKERS.md)**.
 
 - **Tax engine unverified**: FIFO, EUR conversion, fee treatment and the sheet layout (open lots carried into the year, split restating) follow assumptions that are not confirmed against ZDoh-2/FURS and were tested only on hand-computed synthetic cases (T-01 to T-03, T-08, T-09).
 - **Tax engine gaps**: only plain `PLVP` sheets; no F10, per-item foreign tax or loss transfer; Doh-Div lacks payer address and tax number; an unsupported corporate action or a missing purchase excludes the instrument (T-04 to T-07, T-10, T-11).

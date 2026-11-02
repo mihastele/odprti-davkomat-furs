@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      # Builds every module and runs every test, including the XSD validation against schemas/ and the SHA256SUMS check.
+      - name: Build and test
+        working-directory: backend
+        run: mvn -B -ntp install
+      - name: Smoke test the command line on the synthetic example
+        run: |
+          J="java -jar backend/cli/target/opendavki.jar"
+          $J schemas status --schema-dir schemas
+          $J import examples/statement-generic.csv -o ledger.json
+          $J report ledger.json --year 2024 --tax-number 12345678 --out-dir out --env-file examples/synthetic.env --schema-dir schemas
+          test -s out/kdvp-2024.xml && test -s out/div-2024.xml && test -s out/audit-2024.md

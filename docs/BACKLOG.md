@@ -4,6 +4,9 @@ Everything known to be missing, simplified or unverified. Nothing here is hidden
 the situation it reports a diagnostic or refuses to continue. Items are grouped by area; `Planned` names the ticket
 that is meant to close it (tickets beyond ODV-003 are provisional). Update this file whenever a gap is found or closed.
 
+**Blocked items** (they need a decision, a document, a file or network access) are collected, with exact steps for the maintainer,
+in [BLOCKERS.md](BLOCKERS.md).
+
 **Housekeeping rule:** when a gap is fixed, delete its row here *and* its line in the README's "Known limitations"
 section in the same change. When a new gap is found, add it to both.
 
