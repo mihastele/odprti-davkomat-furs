@@ -128,7 +128,7 @@ class WebServerTest {
         assertFalse(r.get("xmlWithheld").asBoolean());
         assertTrue(r.get("kdvpValidation").get("valid").asBoolean(), r.get("kdvpValidation").toString());
         assertTrue(r.get("kdvpXml").asText().contains("<ISIN>US0378331005</ISIN>"));
-        assertEquals(0, new java.math.BigDecimal("120.00").compareTo(r.get("gains").get(0).get("gainEur").decimalValue())); // 4 x (130 - 100)
+        assertEquals("120.00", r.get("gains").get(0).get("gainEur").asText()); // 4 x (130 - 100), as text so the page keeps the cents
         assertTrue(r.get("auditMarkdown").asText().contains("# Audit report 2024"));
         assertTrue(absentOrNull(r, "divXml"));
     }

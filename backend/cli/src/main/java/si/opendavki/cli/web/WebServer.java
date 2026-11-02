@@ -267,7 +267,9 @@ public final class WebServer implements AutoCloseable {
         out.put("xmlWithheld", o.xmlWithheld());
         out.put("draftData", o.result().diagnostics().stream().anyMatch(d -> d.code().equals("DRAFT_SOURCE_USED")));
         out.put("diagnostics", o.result().diagnostics());
-        out.put("gains", o.gains());
+        // amounts travel as text so the page shows exactly what the server computed (JSON numbers would lose "58.00" -> 58)
+        out.put("gains", o.gains().stream().map(g -> Map.of("instrument", g.instrument(), "symbol", g.symbol() == null ? "" : g.symbol(),
+                "gainEur", g.gainEur().toPlainString())).toList());
         out.put("kdvpXml", o.kdvpXml());
         out.put("divXml", o.divXml());
         out.put("kdvpValidation", o.kdvpValidation());

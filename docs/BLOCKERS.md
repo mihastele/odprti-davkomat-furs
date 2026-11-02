@@ -125,4 +125,5 @@ sure Actions are enabled and look at the first run; send me the log if it is red
 - [ ] B3 the rate source works from your machine.
 - [ ] B4 every broker you use has a verified importer (no `DRAFT_IMPORTER`/`DRAFT_SOURCE_USED` warning in your report).
 - [ ] `report` finishes with `0 error(s)` and the audit report banner says *complete*.
+- [ ] You tried `serve` on your own machine with your own statements and nothing in it confused or surprised you (tell me what did).
 - [ ] B5 licence chosen (only matters for publishing).

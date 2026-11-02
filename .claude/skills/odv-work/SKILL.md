@@ -22,7 +22,7 @@ Drive OpenDavki forward one verified increment at a time. `AGENTS.md` is the sta
      IBKR cross-check against IBKR's own realized P/L (I-15).
   3. **ODV-006** is done for splits, reverse splits, conversions and the instrument master (docs/corporate-actions.md); open: cash components (C-03), adapter-generated conversions (C-04, I-05, R-06), (ignoring entries is done: docs/overrides.md).
   4. **ODV-007** golden files (D-01, D-04, D-10).
-  5. **ODV-008** CI and licence (L-10). **ODV-009** Vue 3 UI on a local-only backend (L-11).
+  5. **ODV-008** CI is in place; the licence needs the maintainer (docs/BLOCKERS.md B5). **ODV-009** the web interface is done (docs/web-interface.md; U-xx rows are polish).
   6. More brokers in README order, one module each.
 - **Items that need the maintainer, not code**: I-02/S-01 (real or paper-account statements, see docs/sample-data.md),
   D-01 (a real eDavki import), X-04 (rate date and rounding). Do not fake these. Prepare everything around them and ask.

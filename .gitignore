@@ -14,3 +14,6 @@ dist/
 
 # raw broker exports (personal financial data): Trading 212 names its files from_<date>_to_<date>_*.csv
 from_*_to_*.csv
+
+# web interface
+frontend/e2e/out/

@@ -16,10 +16,12 @@ never guess.
 ```
 backend/core            ledger, broker adapter SPI, FX rates, tax engine, FURS XML writers + XSD validator (si.opendavki.*)
 backend/brokers/<id>    one Maven module per broker adapter; depends only on core
-backend/cli             picocli command line, shaded jar, discovers adapters with ServiceLoader
+backend/cli             picocli command line, local web server (`serve`), shaded jar, discovers adapters with ServiceLoader
+frontend/               Vue 3 web interface (built with Vite, served by `opendavki serve`); `npm test`, `node e2e/smoke.cjs`
+profiles/draft/         DRAFT broker profiles (JSON) for the generic profile engine
 schemas/                official FURS XSDs, byte-for-byte, with SHA256SUMS. Never edit.
 examples/               synthetic report inputs
-docs/                   adapters.md, generic-csv.md, ibkr.md, fx.md, tax-engine.md, BACKLOG.md
+docs/                   adapters.md, profiles.md, generic-csv.md, ibkr.md, trading212.md, fx.md, tax-engine.md, web-interface.md, BACKLOG.md, BLOCKERS.md
 .env.example            every configuration key with its default
 ```
 
@@ -29,6 +31,7 @@ Java 21, Maven. From `backend/`:
 
 ```bash
 mvn -q -B install                      # build + all tests of all modules (run before every commit)
+npm --prefix ../frontend ci && npm --prefix ../frontend test   # when touching frontend/
 mvn -q -B install -pl core -DskipTests # refresh core when testing one broker module alone
 mvn -q -B test -pl brokers/ibkr        # one module
 java -jar cli/target/opendavki.jar --help

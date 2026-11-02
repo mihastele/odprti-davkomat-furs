@@ -50,7 +50,7 @@ Principles:
 | Tax engine: cross-broker FIFO, EUR conversion, fees, splits, reverse splits, conversions, ledger → Doh-KDVP/Doh-Div, audit trail | 🟡 implemented ([docs](docs/tax-engine.md)), verified only on hand-computed synthetic cases |
 | Audit report: every gain traced to sale and lot statement lines, every rate and dividend listed (Markdown + JSON) | 🟡 implemented ([docs](docs/tax-engine.md)); open-lot rows not itemised yet |
 | Trading 212, Revolut, Trade Republic, eToro, XTB, DEGIRO, Lightyear, N26 | ⬜ planned |
-| Vue 3 browser interface | ⬜ planned |
+| Vue 3 browser interface (local server, nothing uploaded) | 🟡 implemented ([docs](docs/web-interface.md)), tried in Chromium only |
 
 ## Quick start
 
@@ -60,6 +60,7 @@ Requires Java 21 and Maven.
 cd backend && mvn install
 J="java -jar cli/target/opendavki.jar"
 
+$J serve                                     # browser interface on this computer (build it once: npm --prefix ../frontend ci && npm --prefix ../frontend run build)
 $J adapters                                  # importers on the classpath
 $J import statement.csv -o ledger.json       # read, de-duplicate, check (exit code 1 on errors)
 $J check ledger.json
@@ -124,7 +125,9 @@ Adding a broker means adding one module that depends only on `core`: see [docs/a
 ```
 backend/core            ledger, adapter SPI, exchange rates, tax engine, FURS XML writers and XSD validator
 backend/brokers/<id>    one Maven module per broker adapter
-backend/cli             command-line tool (shaded jar)
+backend/cli             command-line tool and local web server (shaded jar)
+frontend/               Vue 3 web interface
+profiles/draft/         DRAFT broker profiles (JSON)
 schemas/                official FURS XSDs, byte-for-byte, with SHA256SUMS
 examples/               synthetic report inputs
 docs/                   adapter guide, format docs, FX, tax engine, backlog
@@ -153,8 +156,8 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**. 
 - **Incoming transfers from a broker that is not imported have no cost basis** unless the ledger is edited by hand (I-08).
 - **Out of scope for now**: options, futures, CFDs, interest (Doh-Obr), crypto, other eDavki forms, signing/submission (D-09, I-04, I-10, D-11).
 - **Only original filings** are produced; corrections and late submissions are partly modelled (D-04).
-- **Audit report** is Markdown/English only (A-01).
-- **No browser interface, CI or license file yet** (L-10, L-11).
+- **Audit report and web interface** are English only; the audit is Markdown shown as text (A-01, U-01 to U-04).
+- **No license file yet; CI has not run yet** (L-10, see [BLOCKERS](docs/BLOCKERS.md)).
 <!-- KNOWN-LIMITATIONS:END -->
 
 ## Roadmap
@@ -169,7 +172,7 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**. 
 | ODV-006 | Splits, reverse splits, conversions, instrument master | done (cash components and adapter support open) |
 | ODV-007 | Golden files against eDavki, schema versioning | |
 | ODV-008 | CI, license | |
-| ODV-009 | Vue 3 interface on a local-only backend | |
+| ODV-009 | Vue 3 interface on a local-only backend | done (Chromium-tested) |
 | later | More brokers, other forms | |
 
 ## Contributing

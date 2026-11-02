@@ -37,7 +37,6 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 | L-08 | Generic CSV: no decimal comma and no time of day (dates may be `yyyy-MM-dd` or `dd.MM.yyyy`). Decimal commas are ambiguous (`1,234`), so they are not guessed. | when needed |
 | L-09 | Statement hashes use raw bytes; fixtures depend on LF line endings (`.gitattributes` enforces it for `*.csv`/`*.json`). | — |
 | L-10 | No CI configuration (build + tests on push) and no LICENSE file yet. | ODV-008 |
-| L-11 | Frontend (Vue 3) and the local-only server it needs are not started. | ODV-009 |
 
 ## Interactive Brokers adapter (ODV-003)
 
@@ -87,7 +86,7 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 
 | ID | Gap | Planned |
 |---|---|---|
-| A-01 | The audit report is Markdown only and English only; no HTML/PDF, no localisation. | ODV-009 |
+| A-01 | The audit report is Markdown only and English only; the web interface shows it as plain text. No HTML/PDF, no localisation. | ODV-0xx |
 
 ## Sample data
 
@@ -125,3 +124,12 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 | P-03 | Revolut dividends are skipped because the statement is believed to show them net of withholding; the gross amount and foreign tax must be entered by hand from Revolut's tax report. | with a real statement |
 | P-05 | `describe` can read PDF statements (masked text layout) but there are no PDF adapters; writing one needs a sample layout. PDFBox prints font-cache warnings on first use. | with a PDF layout |
 | P-04 | No importer exists for Trade Republic, eToro, XTB, Lightyear or N26 (N26 Invest appears to offer PDF documents only). Nothing could be written without a layout or sample. | docs/BLOCKERS.md |
+
+## Web interface (ODV-009)
+
+| ID | Gap | Planned |
+|---|---|---|
+| U-01 | English only (no Slovenian translation), and not audited for accessibility beyond labels, roles and keyboard use. | ODV-0xx |
+| U-02 | Settings (`.env`) cannot be edited in the interface; only shown. Profiles can be added per import but not saved. | ODV-0xx |
+| U-03 | The browser test (`frontend/e2e/smoke.cjs`) needs Playwright's Chromium and is not run in CI; only Chromium was tried. The 64 MB request limit has no test. | ODV-0xx |
+| U-04 | The server keeps only the latest five imported ledgers in memory and forgets them on restart; no sessions, no persistence by design. | — |
