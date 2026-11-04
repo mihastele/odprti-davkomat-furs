@@ -1,0 +1,7 @@
+{
+  "taxpayer": {"taxNumber": "12345678", "taxpayerType": "FO"},
+  "year": 2025,
+  "interest": [
+    {"date": "2025-02-03", "payerName": "Example Broker Ltd", "payerCountry": "IE", "value": 1.24, "foreignTax": 0, "sourceCountry": "IE", "sourceRef": "synthetic:i1"}
+  ]
+}

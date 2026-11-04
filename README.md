@@ -103,6 +103,7 @@ Copy [`.env.example`](.env.example) to `.env` (git-ignored). Real environment va
 | `OPENDAVKI_INSTRUMENTS_FILE` | empty | CSV that fixes missing ISINs and asset classes ([docs/instrument-master.md](docs/instrument-master.md)) |
 | `OPENDAVKI_OVERRIDES_FILE` | empty | CSV that drops individual ledger entries, each with a reason ([docs/overrides.md](docs/overrides.md)) |
 | `OPENDAVKI_TIMEZONE` | `UTC` | zone used to turn timestamps with an offset into dates (Trading 212) |
+| `OPENDAVKI_INTEREST_TYPE_CODE` | _(unset)_ | Doh-Obr interest type code written on every interest row; unset omits it with a warning (unverified, D-12) |
 | `OPENDAVKI_INCLUDE_FEES` | `true` | add broker fees to purchase cost and deduct them from sale value (unverified rule, see docs/tax-engine.md) |
 
 Details, and why ECB is the default, in [docs/fx.md](docs/fx.md).
@@ -154,7 +155,7 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**. 
 - **Exchange rates**: the ECB reference rates are the source the maintainers state FURS recommends, but the FURS document was not read; the Bank of Slovenia source has no default URL, the ECB download was never run live, and the rate-date and rounding rules are undecided (X-02 to X-05).
 - **Corporate actions**: splits (forward and reverse) and hand-entered conversions are applied ([docs](docs/corporate-actions.md)); the tax-neutral treatment of conversions is unverified, mergers with cash, spin-offs and similar are not modelled, and broker adapters do not produce conversions themselves (L-04, I-05, C-01 to C-04).
 - **Incoming transfers from a broker that is not imported have no cost basis** unless the ledger is edited by hand (I-08).
-- **Out of scope for now**: options, futures, CFDs, interest (Doh-Obr), crypto, other eDavki forms, signing/submission (D-09, I-04, I-10, D-11).
+- **Out of scope for now**: options, futures, CFDs, crypto, other eDavki forms, signing/submission (D-09, I-04, I-10, D-11); interest (Doh-Obr) is generated but its type code and payer details are unverified (D-12).
 - **Only original filings** are produced; corrections and late submissions are partly modelled (D-04).
 - **Audit report and web interface** are English only; the audit is Markdown shown as text (A-01, U-01 to U-04).
 - **No license file yet; CI has not run yet** (L-10, see [BLOCKERS](docs/BLOCKERS.md)).

@@ -47,7 +47,7 @@ class IbkrActivityAdapterTest {
     @Test void executionLotForexAndOptionRowsAreNotSilentlyLost() throws Exception {
         var c = codes(fixture());
         assertTrue(c.containsAll(List.of("EXECUTION_DETAIL", "LOT_DETAIL", "FOREX_TRADE", "UNSUPPORTED_ASSET_CATEGORY",
-                "CANCELLED_TRADE", "TOTAL_ROW", "UNSUPPORTED_SECTION", "NOT_TAX_RELEVANT")), c.toString());
+                "CANCELLED_TRADE", "TOTAL_ROW", "NOT_TAX_RELEVANT")), c.toString());
         var option = fixture().diagnostics().stream().filter(d -> d.code().equals("UNSUPPORTED_ASSET_CATEGORY")).findFirst().orElseThrow();
         assertEquals(Diagnostic.Severity.WARNING, option.severity());
     }

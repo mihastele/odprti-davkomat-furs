@@ -73,6 +73,8 @@ public record Ledger(int formatVersion, List<LedgerEntry> entries) {
                     d.gross(), d.withholdingTax(), d.currency(), d.sourceCountry());
             case CorporateAction c -> new CorporateAction(c.id(), c.broker(), c.account(), c.date(), null, c.instrument(),
                     c.type(), c.newQuantity(), c.oldQuantity(), c.description(), c.target());
+            case InterestPayment i -> new InterestPayment(i.id(), i.broker(), i.account(), i.date(), null, i.gross(), i.withholdingTax(),
+                    i.currency(), i.payer(), i.sourceCountry(), i.description());
             case SecurityTransfer s -> new SecurityTransfer(s.id(), s.broker(), s.account(), s.date(), null, s.instrument(),
                     s.direction(), s.quantity(), s.acquisitionDate(), s.costBasisPerUnit(), s.costCurrency(), s.counterparty());
         };

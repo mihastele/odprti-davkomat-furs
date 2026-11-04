@@ -49,6 +49,9 @@ You do: ask the FURS information service or a Slovenian tax adviser (send them t
 I then: change the defaults and the `T-`/`C-`/`X-`/`R-` rows accordingly (`OPENDAVKI_TIMEZONE`, `OPENDAVKI_INCLUDE_FEES` already
 exist as switches).
 
+Interest (Doh-Obr, D-12): ask also (a) which interest type code ("Šifra vrste obresti") applies to interest on broker cash balances and
+(b) whether payer name, address, country and tax number are mandatory for a foreign broker. Then set `OPENDAVKI_INTEREST_TYPE_CODE`.
+
 ## B3. Exchange rates from the real sources (X-02, X-03)
 
 Why: the sandbox cannot reach ecb.europa.eu or bsi.si, so the ECB download was never run live, and I found no official Bank of
@@ -95,16 +98,13 @@ Why: a licence is the owner's decision. There is no LICENSE file, so legally nob
 You do: pick one and tell me. My suggestion: **Apache-2.0** (permissive, patent grant, easy for contributors and companies) or
 **AGPL-3.0** (anyone offering a modified hosted version must publish it; fits a privacy-first tool). I add the file and headers.
 
-## B6. Other eDavki forms (D-09, T-07, I-04, I-10, L-06)
+## B6. Other eDavki forms (D-09, T-07, I-04, L-06)
 
-Why: only Doh-KDVP and Doh-Div schemas are in the repository. Interest on cash or lent shares (Doh-Obr), derivatives/CFDs and
-crypto have other forms; I do not have their XSDs.
+Why: you supplied the full XSD collection. Doh-KDVP, Doh-Div and **Doh-Obr (interest)** are now generated and validated. Not done:
+derivatives/CFDs (Doh-IFI / D_IFI), crypto and others, because I do not know whether you have such income and cannot verify the rules.
 
-You do: tell me which of these you have income from. Download the matching XSD(s) from the eDavki XML schema page
-(`https://edavki.durs.si/EdavkiPortal/OpenPortal/Pages/Technicals/FormsXml.aspx`) into `schemas/`, add their SHA-256 to
-`schemas/SHA256SUMS` (`sha256sum`), and commit.
-
-I then: add the model, writer, adapters' mapping and tests for those forms.
+You do: tell me which of these you have income from (and send a `describe` summary of the statement). I then add the model, writer,
+adapter mapping and tests.
 
 ## B7. Special cases (D-04, D-10)
 

@@ -221,6 +221,8 @@ public final class WebServer implements AutoCloseable {
         String what = switch (e) {
             case si.opendavki.ledger.Trade t -> t.side() + " " + plain(t.quantity()) + " @ " + plain(t.price()) + " " + t.currency()
                     + (t.fee().signum() > 0 ? " (fee " + plain(t.fee()) + " " + t.feeCurrency() + ")" : "");
+            case si.opendavki.ledger.InterestPayment i -> "interest " + plain(i.gross()) + " " + i.currency()
+                    + (i.withholdingTax().signum() > 0 ? ", tax withheld " + plain(i.withholdingTax()) : "");
             case si.opendavki.ledger.DividendPayment d -> "dividend " + plain(d.gross()) + " " + d.currency()
                     + (d.withholdingTax().signum() > 0 ? ", tax withheld " + plain(d.withholdingTax()) : "");
             case si.opendavki.ledger.SecurityTransfer s -> "transfer " + s.direction() + " " + plain(s.quantity())
@@ -231,8 +233,8 @@ public final class WebServer implements AutoCloseable {
         Map<String, String> m = new java.util.LinkedHashMap<>();
         m.put("date", e.date().toString());
         m.put("broker", e.broker());
-        m.put("instrument", e.instrument().key());
-        m.put("name", e.instrument().symbol() == null ? "" : e.instrument().symbol());
+        m.put("instrument", e.subject());
+        m.put("name", e.instrument() == null || e.instrument().symbol() == null ? "" : e.instrument().symbol());
         m.put("what", what);
         m.put("source", e.source() == null ? "" : e.source().toString());
         return m;
@@ -272,8 +274,10 @@ public final class WebServer implements AutoCloseable {
                 "gainEur", g.gainEur().toPlainString())).toList());
         out.put("kdvpXml", o.kdvpXml());
         out.put("divXml", o.divXml());
+        out.put("obrXml", o.obrXml());
         out.put("kdvpValidation", o.kdvpValidation());
         out.put("divValidation", o.divValidation());
+        out.put("obrValidation", o.obrValidation());
         out.put("auditMarkdown", o.auditMarkdown());
         out.put("auditJson", o.auditJson());
         return out;

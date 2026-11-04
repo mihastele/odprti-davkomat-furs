@@ -168,6 +168,10 @@ public final class Trading212Adapter implements BrokerAdapter {
             dividend(f, timeColumn, line, out, ids, dividend.group(1), zone);
             return;
         }
+        if (lower.equals("interest on cash")) {
+            interest(f, timeColumn, line, out, ids, zone);
+            return;
+        }
         if (CASH_ACTIONS.contains(lower)) {
             out.skipped(line, "CASH_MOVEMENT", "'" + action + "' moves cash only");
         } else if (lower.contains("split")) {
@@ -285,6 +289,18 @@ public final class Trading212Adapter implements BrokerAdapter {
                     + " EUR but shares x dividend per share x exchange rate gives "
                     + expected.setScale(2, java.math.RoundingMode.HALF_UP).toPlainString() + "; check the row", out.ref(line)));
         }
+    }
+
+    // ---- interest ---------------------------------------------------------------------------------------------
+
+    /** Interest on cash: the amount is the {@code Total} in the account currency; Trading 212 does not state the paying entity's country. */
+    private void interest(Fields f, String timeColumn, int line, ImportResult.Builder out, EntryIds ids, ZoneId zone) {
+        LocalDate date = date(f.require(timeColumn), timeColumn, zone);
+        BigDecimal total = f.number("Total", true);
+        String currency = f.require("Currency (Total)");
+        if (total.signum() < 0) throw new RowError("NEGATIVE_INTEREST", "Interest on cash is negative (" + total.toPlainString() + "); handle manually");
+        String id = f.get("ID").isEmpty() ? ids.derive("INT", f.get(timeColumn), total.toPlainString(), currency) : f.get("ID");
+        out.mapped(line, new InterestPayment(id, BROKER, ACCOUNT, date, out.ref(line), total, BigDecimal.ZERO, currency, "Trading 212", null, "Interest on cash"));
     }
 
     // ---- corporate actions ------------------------------------------------------------------------------------

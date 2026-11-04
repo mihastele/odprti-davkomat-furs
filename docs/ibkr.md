@@ -28,7 +28,8 @@ header fails with `COLUMN_COUNT` (relevant sections) rather than being guessed a
 | Corporate Actions, forward split (`Split N for M`, N > M, quantity > 0) | `CorporateAction` SPLIT |
 | Corporate Actions, anything else (reverse split, merger, spin-off, ISIN change, ...) | `CorporateAction` UNSUPPORTED; `LedgerChecker` warns |
 | Transfers, `Stocks` | `SecurityTransfer` IN/OUT; incoming transfers get WARNING `TRANSFER_IN_NO_COST_BASIS` |
-| Interest, securities lending, grants | skipped, WARNING `UNSUPPORTED_SECTION` (separate tax forms) |
+| Interest (credit lines) | `InterestPayment` for Doh-Obr, payer = broker name from the Statement section; debit interest skipped (INFO `DEBIT_INTEREST`); Total rows skipped. Fixture is synthetic: unverified against a real statement |
+| Securities lending, grants | skipped, WARNING `UNSUPPORTED_SECTION` (separate tax forms) |
 | `Total` / `SubTotal` rows | skipped, `TOTAL_ROW` |
 | Everything else (NAV, cash report, open positions, ...) | skipped, `NOT_TAX_RELEVANT`; `Statement`, `Account Information`, `Financial Instrument Information` are `METADATA` |
 

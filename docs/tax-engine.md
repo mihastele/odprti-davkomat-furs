@@ -53,3 +53,11 @@ the JSON keeps 12 decimals.
 
 Other sheet types, F10, per-item foreign tax, loss transfer, time-of-day ordering, corporate actions other than forward
 splits, payer address/tax number: see BACKLOG.
+
+## Interest (Doh-Obr)
+
+`InterestPayment` entries of the report year are converted to EUR at the payment date's rate (same lookback rules as dividends) and
+written as one `Interest` row each in `obr-<year>.xml`, validated against `Doh_Obr_2.xsd`. Amounts are not netted against dividends
+or gains. `OPENDAVKI_INTEREST_TYPE_CODE` fills the optional type field; unset means omitted plus WARNING `INTEREST_TYPE_CODE_UNSET`.
+Payer country/address are not on broker statements: WARNING `INTEREST_PAYER_DETAILS_MISSING`. A conversion failure excludes the row
+(ERROR `INTEREST_EXCLUDED`, result incomplete). Whether and how this interest must be declared is unverified (BACKLOG D-12).

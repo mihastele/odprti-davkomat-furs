@@ -11,6 +11,7 @@ import java.util.TreeMap;
 import si.opendavki.furs.DivXmlWriter;
 import si.opendavki.furs.FormType;
 import si.opendavki.furs.KdvpXmlWriter;
+import si.opendavki.furs.ObrXmlWriter;
 import si.opendavki.furs.SchemaValidator;
 import si.opendavki.fx.FxConfig;
 import si.opendavki.fx.FxService;
@@ -40,8 +41,8 @@ public final class ReportRunner {
     /**
      * @param xmlWithheld true if the result is incomplete and the caller did not allow partial output: no XML is produced then
      */
-    record Output(TaxResult result, boolean xmlWithheld, String kdvpXml, String divXml, Validation kdvpValidation, Validation divValidation,
-                  String auditMarkdown, String auditJson, List<Gain> gains) {}
+    record Output(TaxResult result, boolean xmlWithheld, String kdvpXml, String divXml, String obrXml, Validation kdvpValidation,
+                  Validation divValidation, Validation obrValidation, String auditMarkdown, String auditJson, List<Gain> gains) {}
 
     static Output run(Ledger ledger, int year, String taxNumber, Map<String, String> env, Path schemaDir, boolean allowIncomplete) throws IOException {
         Taxpayer taxpayer;
@@ -62,13 +63,14 @@ public final class ReportRunner {
         String auditMarkdown = AuditReport.markdown(result.audit());
         List<Gain> gains = gains(result);
         boolean withheld = !result.complete() && !allowIncomplete;
-        if (withheld) return new Output(result, true, null, null, null, null, auditMarkdown, auditJson, gains);
+        if (withheld) return new Output(result, true, null, null, null, null, null, null, auditMarkdown, auditJson, gains);
 
         String kdvp = result.kdvp() == null ? null : new KdvpXmlWriter().write(result.kdvp());
         String div = result.div() == null ? null : new DivXmlWriter().write(result.div());
+        String obr = result.obr() == null ? null : new ObrXmlWriter().write(result.obr());
         SchemaValidator validator = new SchemaValidator(schemaDir);
-        return new Output(result, false, kdvp, div, kdvp == null ? null : validate(validator, FormType.KDVP, kdvp),
-                div == null ? null : validate(validator, FormType.DIV, div), auditMarkdown, auditJson, gains);
+        return new Output(result, false, kdvp, div, obr, kdvp == null ? null : validate(validator, FormType.KDVP, kdvp),
+                div == null ? null : validate(validator, FormType.DIV, div), obr == null ? null : validate(validator, FormType.OBR, obr), auditMarkdown, auditJson, gains);
     }
 
     private static Validation validate(SchemaValidator validator, FormType form, String xml) {

@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import si.opendavki.ledger.Diagnostic;
 import si.opendavki.model.Dividend;
+import si.opendavki.model.InterestRow;
 
 /**
  * Renders the audit trail as Markdown so every figure can be followed back to a statement line: per-instrument summary,
@@ -42,6 +43,7 @@ public final class AuditReport {
         sales(md, a);
         sheets(md, a);
         dividends(md, a);
+        interest(md, a);
         rates(md, a);
         diagnostics(md, a);
         return md.toString();
@@ -132,6 +134,20 @@ public final class AuditReport {
             md.append("| ").append(d.date()).append(" | ").append(cell(d.payerName())).append(" | ").append(d.payerCountry())
                     .append(" | ").append(eur(d.grossValue())).append(" | ").append(eur(d.foreignTax())).append(" | `")
                     .append(d.sourceRef()).append("` |\n");
+        }
+        md.append("| **Total** | | | ").append(eur(gross)).append(" | ").append(eur(tax)).append(" | |\n\n");
+    }
+
+    private static void interest(StringBuilder md, TaxResult.Audit a) {
+        if (a.interest().isEmpty()) return;
+        md.append("## Interest (Doh-Obr)\n\nInterest is reported separately from dividends and capital gains.\n\n")
+                .append("| Date | Payer | Country | Gross EUR | Foreign tax EUR | Source line |\n|---|---|---|---:|---:|---|\n");
+        BigDecimal gross = BigDecimal.ZERO, tax = BigDecimal.ZERO;
+        for (InterestRow r : a.interest()) {
+            gross = gross.add(r.value());
+            tax = tax.add(r.foreignTax());
+            md.append("| ").append(r.date()).append(" | ").append(cell(r.payerName())).append(" | ").append(r.payerCountry() == null ? "?" : r.payerCountry())
+                    .append(" | ").append(eur(r.value())).append(" | ").append(eur(r.foreignTax())).append(" | `").append(r.sourceRef()).append("` |\n");
         }
         md.append("| **Total** | | | ").append(eur(gross)).append(" | ").append(eur(tax)).append(" | |\n\n");
     }

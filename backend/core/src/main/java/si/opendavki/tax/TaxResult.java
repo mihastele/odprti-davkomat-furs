@@ -10,16 +10,16 @@ import si.opendavki.model.*;
 import si.opendavki.model.KdvpReport;
 
 /**
- * Output of {@link TaxEngine}. {@code kdvp}/{@code div} are null when there is nothing to declare. If {@code complete}
+ * Output of {@link TaxEngine}. {@code kdvp}/{@code div}/{@code obr} are null when there is nothing to declare. If {@code complete}
  * is false, at least one instrument or payment was left out because of an ERROR diagnostic: the reports must not be
  * filed as they stand.
  */
-public record TaxResult(int year, KdvpReport kdvp, DivReport div, List<Diagnostic> diagnostics,
+public record TaxResult(int year, KdvpReport kdvp, DivReport div, ObrReport obr, List<Diagnostic> diagnostics,
                         List<LotMatch> lotMatches, List<RateUse> rates, boolean complete, boolean feesIncluded) {
 
     /** The audit trail as a serialisable document. */
     public record Audit(int year, boolean complete, boolean feesIncluded, List<LotMatch> lotMatches,
-                        List<SheetAudit> sheets, List<Dividend> dividends, List<RateUse> rates, List<Diagnostic> diagnostics) {}
+                        List<SheetAudit> sheets, List<Dividend> dividends, List<InterestRow> interest, List<RateUse> rates, List<Diagnostic> diagnostics) {}
 
     /** One Doh-KDVP sheet exactly as written to the XML: {@code id} is the row ID, {@code source} the statement line behind it. */
     public record SheetAudit(String isin, String symbol, String name, List<SheetRow> rows) {}
@@ -28,7 +28,8 @@ public record TaxResult(int year, KdvpReport kdvp, DivReport div, List<Diagnosti
                            BigDecimal stockAfter, String source) {}
 
     public Audit audit() {
-        return new Audit(year, complete, feesIncluded, lotMatches, sheets(), div == null ? List.of() : div.dividends(), rates, diagnostics);
+        return new Audit(year, complete, feesIncluded, lotMatches, sheets(), div == null ? List.of() : div.dividends(),
+                obr == null ? List.of() : obr.interest(), rates, diagnostics);
     }
 
     private List<SheetAudit> sheets() {

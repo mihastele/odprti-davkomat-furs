@@ -133,6 +133,14 @@ public final class GenericCsvAdapter implements BrokerAdapter {
         LocalDate date = f.date("date", true);
         String broker = orDefault(f.get("broker"), "generic");
         String account = orDefault(f.get("account"), "default");
+        if (type.equals("INTEREST")) {
+            BigDecimal gross = f.number("gross", true), wht = f.number("withholding", false);
+            String country = f.get("source_country").toUpperCase(Locale.ROOT);
+            String interestId = f.get("id");
+            if (interestId.isEmpty()) interestId = ids.derive(broker, account, type, date.toString(), f.get("currency").toUpperCase(Locale.ROOT), gross.toPlainString());
+            return new LedgerEntry[]{new InterestPayment(interestId, broker, account, date, ref, gross, wht, f.get("currency").toUpperCase(Locale.ROOT),
+                    f.get("name").isEmpty() ? null : f.get("name"), country.isEmpty() ? null : country, f.get("description"))};
+        }
         Instrument.AssetClass cls;
         try {
             cls = f.get("asset_class").isEmpty() ? Instrument.AssetClass.OTHER
@@ -188,7 +196,7 @@ public final class GenericCsvAdapter implements BrokerAdapter {
                         basis, basis == null ? null : currency, f.get("counterparty").isEmpty() ? null : f.get("counterparty"))};
             }
             default -> throw new RowError("UNKNOWN_TYPE", "Unknown row type '" + type
-                    + "' (expected BUY, SELL, DIVIDEND, SPLIT, CONVERSION, CORPORATE_ACTION, TRANSFER_IN, TRANSFER_OUT)");
+                    + "' (expected BUY, SELL, DIVIDEND, INTEREST, SPLIT, CONVERSION, CORPORATE_ACTION, TRANSFER_IN, TRANSFER_OUT)");
         }
     }
 

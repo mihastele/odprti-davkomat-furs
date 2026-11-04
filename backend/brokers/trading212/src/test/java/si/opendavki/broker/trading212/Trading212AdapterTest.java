@@ -47,8 +47,8 @@ class Trading212AdapterTest {
     @Test void everyRowIsAccountedFor() throws Exception {
         var s = fixture().stats();
         assertEquals(23, s.rowsRead());
-        assertEquals(14, s.rowsMapped()); // 8 trades, 4 dividends, 1 split, 1 trade that only trips the plausibility warning
-        assertEquals(6, s.rowsSkipped());
+        assertEquals(15, s.rowsMapped()); // 8 trades, 4 dividends, 1 split, 1 interest, 1 trade that only trips the plausibility warning
+        assertEquals(5, s.rowsSkipped());
         assertEquals(3, s.rowsFailed());
     }
 
@@ -119,13 +119,23 @@ class Trading212AdapterTest {
         assertTrue(r.diagnostics().stream().anyMatch(d -> d.code().equals("PAYMENT_IN_LIEU") && d.source().line() == 11));
     }
 
+    @Test void interestOnCashBecomesAnInterestPayment() throws Exception {
+        var i = fixture().entries().stream().filter(e -> e instanceof si.opendavki.ledger.InterestPayment)
+                .map(e -> (si.opendavki.ledger.InterestPayment) e).toList();
+        assertEquals(1, i.size());
+        assertEquals(17, i.get(0).source().line());
+        assertNum("0.12", i.get(0).gross());
+        assertEquals("EUR", i.get(0).currency());
+        assertEquals("Trading 212", i.get(0).payer());
+        assertEquals(java.time.LocalDate.parse("2025-08-02"), i.get(0).date());
+    }
+
     @Test void skippedRowsExplainThemselves() throws Exception {
         ImportResult r = fixture();
         assertEquals(3, codes(r).stream().filter(c -> c.equals("CASH_MOVEMENT")).count());
         Map<String, Diagnostic.Severity> sev = new java.util.HashMap<>();
         r.diagnostics().forEach(d -> sev.put(d.code(), d.severity()));
         assertEquals(Diagnostic.Severity.WARNING, sev.get("UNSUPPORTED_DIVIDEND_TYPE")); // return of capital
-        assertEquals(Diagnostic.Severity.WARNING, sev.get("UNSUPPORTED_ACTION"));        // interest on cash
         assertEquals(Diagnostic.Severity.WARNING, sev.get("UNKNOWN_ACTION"));            // "Frobnicate"
         assertEquals(Diagnostic.Severity.INFO, sev.get("CASH_MOVEMENT"));
     }
@@ -187,7 +197,7 @@ class Trading212AdapterTest {
      */
     @Test void importedTradesFlowThroughTheTaxEngine() throws Exception {
         List<LedgerEntry> entries = fixture().entries().stream()
-                .filter(e -> e.instrument().isin() != null && e.instrument().isin().equals("US0378331005") && e instanceof Trade).toList();
+                .filter(e -> e.instrument() != null && e.instrument().isin() != null && e.instrument().isin().equals("US0378331005") && e instanceof Trade).toList();
         FxService fx = new FxService(FxConfig.from(Map.of("OPENDAVKI_FX_SOURCE", "FILE", "OPENDAVKI_FX_FILE", "src/test/resources/fixtures/rates.csv")));
         TaxResult result = new TaxEngine(fx, TaxOptions.defaults()).compute(Ledger.of(entries), 2025, new Taxpayer("12345678", "FO"));
         assertTrue(result.complete(), result.diagnostics().toString());

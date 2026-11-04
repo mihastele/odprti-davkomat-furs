@@ -71,7 +71,7 @@ public final class Main implements Callable<Integer> {
 
     @Command(name = "generate", description = "Generate XML from a JSON input file and validate it against the XSD.")
     static final class Generate implements Callable<Integer> {
-        @Parameters(index = "0", description = "Form: KDVP or DIV") FormType form;
+        @Parameters(index = "0", description = "Form: KDVP, DIV or OBR") FormType form;
         @Parameters(index = "1", description = "Input JSON file (synthetic or normalized ledger export)") Path input;
         @Option(names = {"-o", "--out"}, description = "Output XML file (default: stdout)") Path out;
         @Option(names = "--schema-dir", defaultValue = DEFAULT_SCHEMA_DIR, description = "Directory with official XSDs") Path schemaDir;
@@ -83,6 +83,7 @@ public final class Main implements Callable<Integer> {
                 xml = switch (form) {
                     case KDVP -> new KdvpXmlWriter().write(si.opendavki.json.Json.MAPPER.readValue(input.toFile(), KdvpReport.class));
                     case DIV -> new DivXmlWriter().write(si.opendavki.json.Json.MAPPER.readValue(input.toFile(), DivReport.class));
+                    case OBR -> new si.opendavki.furs.ObrXmlWriter().write(si.opendavki.json.Json.MAPPER.readValue(input.toFile(), si.opendavki.model.ObrReport.class));
                 };
             } catch (IllegalArgumentException | com.fasterxml.jackson.core.JsonProcessingException e) {
                 System.err.println("Input error: " + e.getMessage());
@@ -99,7 +100,7 @@ public final class Main implements Callable<Integer> {
 
     @Command(name = "validate", description = "Validate an existing XML file against the official XSD.")
     static final class Validate implements Callable<Integer> {
-        @Parameters(index = "0", description = "Form: KDVP or DIV") FormType form;
+        @Parameters(index = "0", description = "Form: KDVP, DIV or OBR") FormType form;
         @Parameters(index = "1", description = "XML file") Path xmlFile;
         @Option(names = "--schema-dir", defaultValue = DEFAULT_SCHEMA_DIR, description = "Directory with official XSDs") Path schemaDir;
 
@@ -172,7 +173,7 @@ public final class Main implements Callable<Integer> {
         @Parameters(index = "0", description = "Ledger JSON file (from `import`)") Path ledgerFile;
         @Option(names = "--year", required = true, description = "Tax year") int year;
         @Option(names = "--tax-number", required = true, description = "Your 8-digit tax number (davčna številka)") String taxNumber;
-        @Option(names = "--out-dir", defaultValue = ".", description = "Where to write kdvp-<year>.xml, div-<year>.xml, audit-<year>.json and .md") Path outDir;
+        @Option(names = "--out-dir", defaultValue = ".", description = "Where to write kdvp-<year>.xml, div-<year>.xml, obr-<year>.xml, audit-<year>.json and .md") Path outDir;
         @Option(names = "--env-file", defaultValue = ".env", description = "Settings file (see .env.example)") Path envFile;
         @Option(names = "--schema-dir", defaultValue = DEFAULT_SCHEMA_DIR, description = "Directory with official XSDs") Path schemaDir;
         @Option(names = "--allow-incomplete", description = "Write XML even if some instruments/payments were left out because of errors (NOT for filing)") boolean allowIncomplete;
@@ -199,12 +200,13 @@ public final class Main implements Callable<Integer> {
                 return VALIDATION_FAILED;
             }
             if (!o.result().complete()) System.err.println("WARNING: incomplete result written because of --allow-incomplete. Do not file it.");
-            if (o.kdvpXml() == null && o.divXml() == null) {
+            if (o.kdvpXml() == null && o.divXml() == null && o.obrXml() == null) {
                 System.err.println("Nothing to declare for " + year + ".");
                 return exit;
             }
             if (o.kdvpXml() != null) exit = Math.max(exit, write(FormType.KDVP, o.kdvpXml(), o.kdvpValidation(), outDir.resolve("kdvp-" + year + ".xml")));
             if (o.divXml() != null) exit = Math.max(exit, write(FormType.DIV, o.divXml(), o.divValidation(), outDir.resolve("div-" + year + ".xml")));
+            if (o.obrXml() != null) exit = Math.max(exit, write(FormType.OBR, o.obrXml(), o.obrValidation(), outDir.resolve("obr-" + year + ".xml")));
             return exit;
         }
 

@@ -200,6 +200,23 @@
     "quantity" : 200,
     "counterparty" : "Another Broker"
   }, {
+    "type" : "INTEREST",
+    "id" : "ibkr-2284424dbfdd9ba5",
+    "broker" : "ibkr",
+    "account" : "U1234567",
+    "date" : "2024-02-05",
+    "source" : {
+      "adapter" : "ibkr",
+      "file" : "activity-basic.csv",
+      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
+      "line" : 47
+    },
+    "gross" : 0.12,
+    "withholdingTax" : 0,
+    "currency" : "EUR",
+    "payer" : "Interactive Brokers Ireland Limited",
+    "description" : "EUR Credit Interest for Jan-2024"
+  }, {
     "type" : "DIVIDEND",
     "id" : "ibkr-fee4978956fb3959",
     "broker" : "ibkr",
@@ -487,19 +504,9 @@
       "line" : 45
     }
   }, {
-    "severity" : "WARNING",
-    "code" : "UNSUPPORTED_SECTION",
-    "message" : "'Interest' is tax-relevant but not supported yet; declare it separately",
-    "source" : {
-      "adapter" : "ibkr",
-      "file" : "activity-basic.csv",
-      "fileSha256" : "39adc8c697bd51ce9681b021fc241ca2a143535f96a0aec088287aa74c0521ec",
-      "line" : 47
-    }
-  }, {
     "severity" : "INFO",
     "code" : "TOTAL_ROW",
-    "message" : "Total line in 'Interest'",
+    "message" : "Currency total line in 'Interest'",
     "source" : {
       "adapter" : "ibkr",
       "file" : "activity-basic.csv",
@@ -569,8 +576,8 @@
   } ],
   "stats" : {
     "rowsRead" : 39,
-    "rowsMapped" : 14,
-    "rowsSkipped" : 23,
+    "rowsMapped" : 15,
+    "rowsSkipped" : 22,
     "rowsFailed" : 2
   }
 }

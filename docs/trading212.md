@@ -27,7 +27,8 @@ Looked up by name, so order and extra columns do not matter: `Action`, `Time (UT
 | `Dividend (Dividend manufactured payment)` | same, plus WARNING `PAYMENT_IN_LIEU` (paid instead of a dividend on lent shares). |
 | other `Dividend (...)` (return of capital, bonus, ...) | skipped, WARNING `UNSUPPORTED_DIVIDEND_TYPE` |
 | `Deposit`, `Withdrawal`, `Currency conversion`, `Card debit/credit` | skipped, INFO `CASH_MOVEMENT` |
-| anything with `interest` in the name | skipped, WARNING `UNSUPPORTED_ACTION` (other tax form) |
+| `Interest on cash` | `InterestPayment` (Doh-Obr) from `Total`, payer "Trading 212"; negative amount fails the row (`NEGATIVE_INTEREST`) |
+| other `interest` actions (lending) | skipped, WARNING `UNSUPPORTED_ACTION` (other tax form) |
 | anything with `split` in the name | `CorporateAction` UNSUPPORTED (the export has no ratio); the tax engine then excludes a sold instrument |
 | any other action | skipped, WARNING `UNKNOWN_ACTION` |
 

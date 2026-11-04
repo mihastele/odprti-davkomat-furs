@@ -91,11 +91,16 @@ function badge(v) {
           Doh-Div <span v-if="badge(result.divValidation)" class="badge" :class="badge(result.divValidation).cls">{{ badge(result.divValidation).text }}</span>
           <div v-for="(i, n) in result.divValidation?.issues ?? []" :key="n" class="small"><code>{{ i }}</code></div>
         </li>
-        <li v-if="!result.kdvpXml && !result.divXml" class="muted">No declaration files.</li>
+        <li v-if="result.obrXml">
+          Doh-Obr (interest) <span v-if="badge(result.obrValidation)" class="badge" :class="badge(result.obrValidation).cls">{{ badge(result.obrValidation).text }}</span>
+          <div v-for="(i, n) in result.obrValidation?.issues ?? []" :key="n" class="small"><code>{{ i }}</code></div>
+        </li>
+        <li v-if="!result.kdvpXml && !result.divXml && !result.obrXml" class="muted">No declaration files.</li>
       </ul>
       <div class="actions">
         <button v-if="result.kdvpXml" class="primary" type="button" @click="download(`kdvp-${year}.xml`, result.kdvpXml, 'application/xml')">Download Doh-KDVP XML</button>
         <button v-if="result.divXml" class="primary" type="button" @click="download(`div-${year}.xml`, result.divXml, 'application/xml')">Download Doh-Div XML</button>
+        <button v-if="result.obrXml" class="primary" type="button" @click="download(`obr-${year}.xml`, result.obrXml, 'application/xml')">Download Doh-Obr XML</button>
         <button class="secondary" type="button" @click="download(`audit-${year}.md`, result.auditMarkdown, 'text/markdown')">Download audit report</button>
         <button class="secondary" type="button" @click="download(`audit-${year}.json`, result.auditJson, 'application/json')">Download audit data (JSON)</button>
       </div>

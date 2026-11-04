@@ -19,7 +19,8 @@ public final class Services {
 
     public static ReportOutcome runReport(Ledger ledger, int year, String taxNumber, Map<String, String> env, Path schemaDir, boolean allowIncomplete) throws IOException {
         ReportRunner.Output o = ReportRunner.run(ledger, year, taxNumber, env, schemaDir, allowIncomplete);
-        return new ReportOutcome(o.result(), o.xmlWithheld(), o.kdvpXml(), o.divXml(), o.kdvpValidation(), o.divValidation(), o.auditMarkdown(), o.auditJson(), o.gains());
+        return new ReportOutcome(o.result(), o.xmlWithheld(), o.kdvpXml(), o.divXml(), o.obrXml(), o.kdvpValidation(), o.divValidation(), o.obrValidation(),
+                o.auditMarkdown(), o.auditJson(), o.gains());
     }
 
     public static String describe(StatementSource src, List<String> keep) throws IOException {
@@ -28,6 +29,7 @@ public final class Services {
 
     public record ImportOutcome(Ledger ledger, List<ImportRunner.FileSummary> files, List<si.opendavki.ledger.Diagnostic> diagnostics, boolean hasErrors) {}
 
-    public record ReportOutcome(si.opendavki.tax.TaxResult result, boolean xmlWithheld, String kdvpXml, String divXml, ReportRunner.Validation kdvpValidation,
-                                ReportRunner.Validation divValidation, String auditMarkdown, String auditJson, List<ReportRunner.Gain> gains) {}
+    public record ReportOutcome(si.opendavki.tax.TaxResult result, boolean xmlWithheld, String kdvpXml, String divXml, String obrXml,
+                                ReportRunner.Validation kdvpValidation, ReportRunner.Validation divValidation, ReportRunner.Validation obrValidation,
+                                String auditMarkdown, String auditJson, List<ReportRunner.Gain> gains) {}
 }

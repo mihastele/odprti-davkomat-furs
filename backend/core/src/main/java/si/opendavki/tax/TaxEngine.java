@@ -47,7 +47,7 @@ public final class TaxEngine {
         Map<String, String> conversions = conversionTargets(run, ledger, yearEnd);
         Map<String, List<LedgerEntry>> byInstrument = new LinkedHashMap<>();
         for (LedgerEntry e : ledger.entries()) {
-            if (!e.date().isAfter(yearEnd)) {
+            if (!e.date().isAfter(yearEnd) && e.instrument() != null) {
                 byInstrument.computeIfAbsent(finalKey(e.instrument().key(), conversions), k -> new ArrayList<>()).add(e);
             }
         }
@@ -62,10 +62,12 @@ public final class TaxEngine {
             }
         }
         List<Dividend> dividends = dividends(run, ledger, yearStart, yearEnd);
+        List<InterestRow> interest = interest(run, ledger, yearStart, yearEnd);
 
         KdvpReport kdvp = items.isEmpty() ? null : new KdvpReport(taxpayer, year, true, items);
         DivReport div = dividends.isEmpty() ? null : new DivReport(taxpayer, year, dividends);
-        run.diagnostics.addAll(DeclarationChecker.check(kdvp, div));
+        ObrReport obr = interest.isEmpty() ? null : new ObrReport(taxpayer, year, true, interest);
+        run.diagnostics.addAll(DeclarationChecker.check(kdvp, div, obr));
         for (String adapter : run.adapters) {
             if (adapter.endsWith("-draft")) {
                 run.diagnostics.add(Diagnostic.warning("DRAFT_SOURCE_USED", "The report contains data from the DRAFT importer '" + adapter
@@ -73,7 +75,7 @@ public final class TaxEngine {
             }
         }
         boolean complete = run.diagnostics.stream().noneMatch(d -> d.severity() == Diagnostic.Severity.ERROR);
-        return new TaxResult(year, kdvp, div, List.copyOf(run.diagnostics), List.copyOf(run.matches), List.copyOf(run.rates), complete, options.includeFees());
+        return new TaxResult(year, kdvp, div, obr, List.copyOf(run.diagnostics), List.copyOf(run.matches), List.copyOf(run.rates), complete, options.includeFees());
     }
 
     /**
@@ -269,6 +271,7 @@ public final class TaxEngine {
                 case CorporateAction c -> corporateAction(c);
                 case SecurityTransfer s -> transfer(s);
                 case DividendPayment d -> { /* dividends are handled separately */ }
+                case InterestPayment i -> { /* interest is handled separately */ }
             }
         }
 
@@ -480,6 +483,39 @@ public final class TaxEngine {
                 run.diagnostics.add(Diagnostic.error("DIVIDEND_EXCLUDED", "Dividend of " + d.instrument().key() + " on " + d.date()
                         + " is left out of the Doh-Div because of the error above", d.source()));
             }
+        }
+        return out;
+    }
+
+    // ---- interest ---------------------------------------------------------------------------------------------
+
+    /**
+     * Interest of the year for Doh-Obr: each payment converted at its own date, gross and foreign tax separately. Payer country,
+     * address and tax number are never invented; the interest type code comes from {@code OPENDAVKI_INTEREST_TYPE_CODE}.
+     */
+    private List<InterestRow> interest(Run run, Ledger ledger, LocalDate from, LocalDate to) {
+        List<InterestRow> out = new ArrayList<>();
+        Set<String> noted = new HashSet<>();
+        for (LedgerEntry e : ledger.entries()) {
+            if (!(e instanceof InterestPayment i) || i.date().isBefore(from) || i.date().isAfter(to)) continue;
+            try {
+                BigDecimal gross = eur(run, i.gross(), i.currency(), i.date(), i, "interest");
+                BigDecimal tax = i.withholdingTax().signum() == 0 ? BigDecimal.ZERO : eur(run, i.withholdingTax(), i.currency(), i.date(), i, "withholding tax on interest");
+                String payer = i.payer() != null ? i.payer() : i.broker();
+                out.add(new InterestRow(i.date(), payer, null, i.sourceCountry(), options.interestTypeCode(), gross, tax, i.sourceCountry(), i.source().toString()));
+                run.adapters.add(i.source().adapter());
+                if (noted.add(payer)) {
+                    run.diagnostics.add(Diagnostic.warning("INTEREST_PAYER_DETAILS_MISSING", "Payer address, tax number" + (i.sourceCountry() == null ? " and country" : "")
+                            + " of '" + payer + "' are not in broker statements; complete them in eDavki", i.source()));
+                }
+            } catch (Failure f) {
+                run.addOnce(f.diagnostic);
+                run.diagnostics.add(Diagnostic.error("INTEREST_EXCLUDED", "Interest of " + i.date() + " is left out of the Doh-Obr because of the error above", i.source()));
+            }
+        }
+        if (!out.isEmpty() && options.interestTypeCode() == null) {
+            run.diagnostics.add(Diagnostic.warning("INTEREST_TYPE_CODE_UNSET", "The Doh-Obr interest type code is not set (OPENDAVKI_INTEREST_TYPE_CODE): the schema "
+                    + "does not list the codes, so the field is left empty; look up the code in the FURS instructions", null));
         }
         return out;
     }

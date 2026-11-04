@@ -39,7 +39,7 @@ public final class IbkrActivityAdapter implements BrokerAdapter {
     private static final Pattern DATE = Pattern.compile("^(\\d{4}-\\d{2}-\\d{2})");
 
     /** Tax-relevant sections we recognise but do not convert: reported as WARNING per row. */
-    private static final Set<String> UNSUPPORTED_SECTIONS = Set.of("Interest", "Securities Lent",
+    private static final Set<String> UNSUPPORTED_SECTIONS = Set.of("Securities Lent",
             "Stock Yield Enhancement Program Securities Lent Activity",
             "Stock Yield Enhancement Program Securities Lent Interest Details", "Grant Activity");
 
@@ -120,10 +120,11 @@ public final class IbkrActivityAdapter implements BrokerAdapter {
             recs.add(new Rec(row.line(), section, kind, fields, problem));
         }
 
-        String account = null;
+        String account = null, brokerName = null;
         Map<String, Fii> fii = new HashMap<>();
         for (Rec r : recs) {
             if (r.fields() == null || !r.kind().equals("Data")) continue;
+            if (r.section().equals("Statement") && r.get("Field Name").equals("BrokerName") && brokerName == null) brokerName = r.get("Field Value");
             if (r.section().equals("Account Information") && r.get("Field Name").equals("Account")) {
                 if (account == null) account = r.get("Field Value");
                 else if (!account.equals(r.get("Field Value"))) {
@@ -150,7 +151,7 @@ public final class IbkrActivityAdapter implements BrokerAdapter {
         // Pass 2: row by row.
         for (Rec r : recs) {
             try {
-                handle(r, out, account, fii, ids, hasOrderRows, dividends, withholdings);
+                handle(r, out, account, brokerName, fii, ids, hasOrderRows, dividends, withholdings);
             } catch (RowError e) {
                 out.failed(r.line(), e.code, e.getMessage());
             } catch (IllegalArgumentException e) {
@@ -161,7 +162,7 @@ public final class IbkrActivityAdapter implements BrokerAdapter {
         return out.build(recs.size());
     }
 
-    private void handle(Rec r, ImportResult.Builder out, String account, Map<String, Fii> fii, EntryIds ids,
+    private void handle(Rec r, ImportResult.Builder out, String account, String brokerName, Map<String, Fii> fii, EntryIds ids,
                         boolean hasOrderRows, List<Pending> dividends, List<Pending> withholdings) {
         String section = r.section();
         switch (r.kind()) {
@@ -172,7 +173,7 @@ public final class IbkrActivityAdapter implements BrokerAdapter {
         }
 
         boolean relevant = Set.of("Trades", "Dividends", "Payment In Lieu Of Dividends", "Withholding Tax",
-                "Corporate Actions", "Transfers").contains(section);
+                "Corporate Actions", "Transfers", "Interest").contains(section);
         if (!relevant) {
             if (UNSUPPORTED_SECTIONS.contains(section)) {
                 if (r.fields() != null && r.get("Currency").startsWith("Total")) {
@@ -203,6 +204,7 @@ public final class IbkrActivityAdapter implements BrokerAdapter {
             }
             case "Corporate Actions" -> corporateAction(r, out, account, fii, ids);
             case "Transfers" -> transfer(r, out, account, fii, ids);
+            case "Interest" -> interest(r, out, account, ids, brokerName);
             default -> throw new IllegalStateException(section);
         }
     }
@@ -332,6 +334,31 @@ public final class IbkrActivityAdapter implements BrokerAdapter {
                         + w.currency() + " to attach this withholding tax to (reclassification or late adjustment?)");
             }
         }
+    }
+
+    // ---- Interest ---------------------------------------------------------------------------------------------
+
+    /**
+     * Credit interest (positive amounts) becomes an InterestPayment paid by the broker entity named in the statement. Interest
+     * charged to the account (negative) is not income and is skipped; per-currency totals are skipped. The payer's country is
+     * not stated and is not inferred from the entity's name.
+     */
+    private void interest(Rec r, ImportResult.Builder out, String account, EntryIds ids, String brokerName) {
+        String currency = r.get("Currency");
+        if (!currency.matches("[A-Z]{3}")) {
+            out.skipped(r.line(), "TOTAL_ROW", "Currency total line in 'Interest'");
+            return;
+        }
+        LocalDate date = date(require(r, "Date"), "Date");
+        BigDecimal amount = number(require(r, "Amount"), "Amount");
+        String description = require(r, "Description");
+        if (amount.signum() <= 0) {
+            out.skipped(r.line(), amount.signum() < 0 ? "DEBIT_INTEREST" : "ZERO_INTEREST", amount.signum() < 0
+                    ? "Interest charged to the account is not income: " + description : "Zero interest: " + description);
+            return;
+        }
+        out.mapped(r.line(), new InterestPayment(ids.derive(account, "INT", date.toString(), currency, amount.toPlainString(), description), BROKER, account, date,
+                out.ref(r.line()), amount, BigDecimal.ZERO, currency, brokerName, null, description));
     }
 
     // ---- Corporate actions and transfers ---------------------------------------------------------------------

@@ -21,7 +21,8 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 | D-04 | Only the original filing is produced (`DocumentWorkflowID` = `O`). Corrections, self-reports and late submissions are only partly modelled (Doh-Div `selfReport`, `SubseqSubmission` pass-through). | ODV-007 |
 | D-06 | Country handling is raw: KDVP wants 3-digit FURS country codes, Doh-Div free-text ISO alpha-2. No code tables or lookup. | ODV-004 |
 | D-07 | Same-day ordering: purchases are placed before sales because the model has only dates, not times. True FIFO order within a day may differ. | ODV-004 |
-| D-09 | Not generated: other eDavki forms (interest Doh-Obr, derivatives/CFD, crypto, rent, ...). Only the sheets inside Doh-KDVP/Doh-Div that the models cover. | ODV-0xx |
+| D-09 | Not generated: other eDavki forms (derivatives/CFD Doh-IFI/D_IFI, crypto, rent, ...). Only Doh-KDVP, Doh-Div and Doh-Obr are produced. | ODV-0xx |
+| D-12 | Doh-Obr: the interest type code (`OPENDAVKI_INTEREST_TYPE_CODE`) has no default because the correct code for broker cash interest is unverified (BLOCKERS B2); payer country/address/tax number are not on broker statements and are left out (WARNING INTEREST_PAYER_DETAILS_MISSING). The rule that bank/broker interest is reported here at all is unverified. | ODV-0xx |
 | D-10 | Non-resident filers, partial-year periods and exemption claims (`Remission`) are modelled but untested against real cases. | ODV-007 |
 | D-11 | No signing or submission to eDavki; the output is an import file only. Intentional. | — |
 
@@ -32,7 +33,7 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 | L-12 | The `SUSPICIOUS_PRICE` thresholds (4× the median split-adjusted price, at least 3 trades) and the 10-day transfer pairing window are heuristics chosen without data; they may miss real errors or flag normal moves. | ODV-005 |
 | L-04 | Corporate actions: splits (forward and reverse) and explicit conversions are applied. Mergers with cash, spin-offs, stock dividends, rights, return of capital and the cash for fractional shares after a reverse split are not; they exclude a sold instrument (see C-03). | ODV-0xx |
 | L-05 | The instrument master is a user-maintained file (M-01); there is no automatic detection of renamed symbols or changed ISINs, so a conversion must be entered by hand (C-04). | ODV-0xx |
-| L-06 | No cash, interest, fee or FX entries in the ledger (only trades, dividends, corporate actions, transfers). | ODV-0xx |
+| L-06 | No cash, fee or FX entries in the ledger (only trades, dividends, interest, corporate actions, transfers). | ODV-0xx |
 | L-08 | Generic CSV: no decimal comma and no time of day (dates may be `yyyy-MM-dd` or `dd.MM.yyyy`). Decimal commas are ambiguous (`1,234`), so they are not guessed. | when needed |
 | L-09 | Statement hashes use raw bytes; fixtures depend on LF line endings (`.gitattributes` enforces it for `*.csv`/`*.json`). | — |
 | L-10 | No CI configuration (build + tests on push) and no LICENSE file yet. | ODV-008 |
@@ -50,7 +51,7 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 | I-07 | Dividend source country falls back to the ISIN prefix, which is the country of issue, not necessarily the paying country. | with I-02 |
 | I-08 | Incoming IBKR transfers carry no cost basis or acquisition date. Transfers between two imported accounts are paired automatically (T-04); for a sender that is not imported, the basis can only be added by editing the ledger JSON. No override mechanism exists. | ODV-005 |
 | I-09 | Several accounts in one statement: all entries use the first account number (WARNING `MULTIPLE_ACCOUNTS`). | with I-02 |
-| I-10 | Interest, securities lending and grant activity are skipped with a WARNING (they belong to other forms). | ODV-0xx |
+| I-10 | Securities lending income, debit interest and grant activity are skipped with a WARNING/INFO (other forms or not income). IBKR withholding lines on interest are not matched to the interest row. | ODV-0xx |
 | I-11 | Time of day is dropped; the trade date, not the settlement date, is used. | ODV-004 (D-07) |
 | I-12 | US-entity statements identify securities by CUSIP, not ISIN: those instruments stay without ISIN (`MISSING_ISIN`) until the user maps the symbol to an ISIN in the instrument master. No CUSIP/ISIN database. | ODV-0xx |
 | I-13 | Trades flagged cancelled (`Ca`) are mapped with a WARNING; matching cancel/rebook pairs are not netted automatically. | with I-02 |
@@ -102,7 +103,7 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 | R-03 | Trading 212's own exchange rates and `Total`/`Result` are used only for a plausibility warning; the tax figures use the configured rate source (ECB). They differ slightly by design. | decision with X-04 |
 | R-04 | Withholding tax is taken as exported, which appears rounded up to cents per payment; the foreign tax may be overstated by up to a cent per dividend. Gross is shares x per-share, not the exported rounded `Total`. | ODV-007 |
 | R-05 | ETF detection for Trading 212 is a name heuristic (`(Acc)`/`(Dist)`); funds without that suffix (for example physical gold ETCs) are treated as shares until corrected in the instrument master (T-08). | ODV-0xx |
-| R-06 | Stock-split rows in the Trading 212 export carry no ratio, so they become UNSUPPORTED entries and exclude a sold instrument; enter the split or conversion by hand. Interest, lending, cashback, return of capital and bonus dividends are skipped with a warning. Sub-unit currencies other than GBX (for example ILA, ZAC) are not converted. | ODV-0xx |
+| R-06 | Stock-split rows in the Trading 212 export carry no ratio, so they become UNSUPPORTED entries and exclude a sold instrument; enter the split or conversion by hand. Lending interest, cashback, return of capital and bonus dividends are skipped with a warning. Sub-unit currencies other than GBX (for example ILA, ZAC) are not converted. | ODV-0xx |
 
 ## Corporate actions and instrument master (ODV-006)
 

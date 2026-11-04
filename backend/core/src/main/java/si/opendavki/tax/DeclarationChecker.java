@@ -18,10 +18,28 @@ public final class DeclarationChecker {
     private DeclarationChecker() {}
 
     public static List<Diagnostic> check(KdvpReport kdvp, DivReport div) {
+        return check(kdvp, div, null);
+    }
+
+    public static List<Diagnostic> check(KdvpReport kdvp, DivReport div, ObrReport obr) {
         List<Diagnostic> out = new ArrayList<>();
         if (kdvp != null) checkKdvp(kdvp, out);
         if (div != null) checkDiv(div, out);
+        if (obr != null) checkObr(obr, out);
         return out;
+    }
+
+    private static void checkObr(ObrReport r, List<Diagnostic> out) {
+        LocalDate start = LocalDate.of(r.year(), 1, 1), end = LocalDate.of(r.year(), 12, 31);
+        for (InterestRow i : r.interest()) {
+            if (!inPeriod(i.date(), start, end)) {
+                out.add(Diagnostic.error("INTEREST_OUTSIDE_PERIOD", "Interest of " + i.payerName() + " on " + i.date() + " is outside " + r.year() + " [" + i.sourceRef() + "]", null));
+            }
+            if (i.foreignTax().compareTo(i.value()) > 0) {
+                out.add(Diagnostic.warning("FOREIGN_TAX_EXCEEDS_GROSS", "Foreign tax " + i.foreignTax().toPlainString() + " EUR is larger than the interest "
+                        + i.value().toPlainString() + " EUR on " + i.date() + " [" + i.sourceRef() + "]", null));
+            }
+        }
     }
 
     private static void checkKdvp(KdvpReport r, List<Diagnostic> out) {

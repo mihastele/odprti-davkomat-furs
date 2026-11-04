@@ -280,6 +280,23 @@
     "currency" : "GBP",
     "sourceCountry" : "IE"
   }, {
+    "type" : "INTEREST",
+    "id" : "t212-ffee0e132cfd0ed4",
+    "broker" : "trading212",
+    "account" : "default",
+    "date" : "2025-08-02",
+    "source" : {
+      "adapter" : "trading212",
+      "file" : "history-basic.csv",
+      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
+      "line" : 17
+    },
+    "gross" : 0.12,
+    "withholdingTax" : 0,
+    "currency" : "EUR",
+    "payer" : "Trading 212",
+    "description" : "Interest on cash"
+  }, {
     "type" : "CORPORATE_ACTION",
     "id" : "t212-f337b479b8350607",
     "broker" : "trading212",
@@ -365,16 +382,6 @@
       "line" : 16
     }
   }, {
-    "severity" : "WARNING",
-    "code" : "UNSUPPORTED_ACTION",
-    "message" : "Interest income belongs to a different tax form (not supported yet)",
-    "source" : {
-      "adapter" : "trading212",
-      "file" : "history-basic.csv",
-      "fileSha256" : "0d02bddf3f09cad17eaf316c820ec3bdd456b358c2e6f1b3d8bcd4bd22943132",
-      "line" : 17
-    }
-  }, {
     "severity" : "INFO",
     "code" : "CASH_MOVEMENT",
     "message" : "'Currency conversion' moves cash only",
@@ -437,8 +444,8 @@
   } ],
   "stats" : {
     "rowsRead" : 23,
-    "rowsMapped" : 14,
-    "rowsSkipped" : 6,
+    "rowsMapped" : 15,
+    "rowsSkipped" : 5,
     "rowsFailed" : 3
   }
 }

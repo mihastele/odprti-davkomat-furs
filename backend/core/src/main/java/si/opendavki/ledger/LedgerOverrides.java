@@ -87,7 +87,7 @@ public final class LedgerOverrides {
             } else {
                 for (LedgerEntry e : matches) {
                     removed.add(e);
-                    diags.add(Diagnostic.warning("ENTRY_IGNORED", e.getClass().getSimpleName() + " " + e.id() + " of " + e.instrument().key()
+                    diags.add(Diagnostic.warning("ENTRY_IGNORED", e.getClass().getSimpleName() + " " + e.id() + " of " + e.subject()
                             + " on " + e.date() + " is ignored (" + where + "): " + r.reason(), e.source()));
                 }
             }

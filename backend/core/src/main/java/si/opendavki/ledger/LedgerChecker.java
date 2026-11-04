@@ -48,6 +48,7 @@ public final class LedgerChecker {
         Map<String, Boolean> warnedNoIsin = new HashMap<>();
 
         for (LedgerEntry e : ledger.entries()) {
+            if (e instanceof InterestPayment) continue; // not about an instrument: no position, no ISIN
             Instrument ins = e.instrument();
             if (ins.isin() == null && warnedNoIsin.putIfAbsent(ins.key(), true) == null) {
                 out.add(Diagnostic.warning("MISSING_ISIN", "No ISIN for " + ins.symbol()
@@ -83,6 +84,7 @@ public final class LedgerChecker {
                                 e.source()));
                     }
                 }
+                case InterestPayment i -> { }
                 case DividendPayment d -> {
                     if (pos.signum() == 0) {
                         out.add(Diagnostic.warning("DIVIDEND_WITHOUT_POSITION", "Dividend of " + ins.key() + " on " + d.date() + " at " + e.broker() + "/"
