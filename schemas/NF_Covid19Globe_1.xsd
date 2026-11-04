@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/NF_Covid19Globe_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/NF_Covid19Globe_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Data"/>
+              <xs:element ref="Beneficiaries" minOccurs="0" maxOccurs="unbounded"  />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+<!--Vloga za vračilo COVID 19 glob-->
+  <xs:element name="Data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Period" type="xs:string" minOccurs="0" />
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0" />        
+        <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0" /> <!--Telefonska številka-->
+        <xs:element name="Email" type="xs:string" minOccurs="0" /> <!--Elektronski naslov-->
+        <xs:element name="Sum" type="xs:decimal" minOccurs="0" /> <!--Sum-->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Podatki o upravičencih do vračila globe-->
+  <xs:element name="Beneficiaries">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Type" type="xs:string" minOccurs="0" /> <!-- 'F', 'P' ali 'T' -->
+        <xs:element name="EMSO" type="xs:string" minOccurs="0" /> <!--EMŠO-->
+        <xs:element name="DateOfBirth" type="xs:date" minOccurs="0" /> <!--Datum rojstva-->
+        <xs:element name="ID" type="xs:string" minOccurs="0" /> <!--Matična številka-->
+        <xs:element name="Name" type="xs:string" minOccurs="0" /> <!--Ime in priimek/Naziv-->
+        <xs:element name="Address" type="xs:string" minOccurs="0" /> <!--Naslov / Sedež-->
+        <xs:element name="Account" type="xs:string" minOccurs="0" /> <!--Transakcijski račun / Podatek za izplačilo-->
+        <xs:element name="DateOfContract" type="xs:date" minOccurs="0" /> <!--Datum odločbe-->
+        <xs:element name="NumberOfContract" type="xs:string" minOccurs="0" /> <!--Številka odločbe-->
+        <xs:element name="Amount" type="xs:decimal" minOccurs="0" /> <!--Znesek-->
+        <xs:element name="SeqNum" type="xs:int" minOccurs="0" /> <!--interni stevec za napake-->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

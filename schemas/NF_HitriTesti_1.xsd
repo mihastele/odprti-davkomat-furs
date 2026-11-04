@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/NF_HitriTesti_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/NF_HitriTesti_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="HitriTesti"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="HitriTesti">
+    <xs:complexType>
+      <xs:sequence>
+        <!-- Za obdobje od ... do ... -->
+        <xs:element name="PeriodFrom_1_1" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>1.1 Za obdobje od</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PeriodTo_1_1" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>1.1 do</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <!-- Podatki o upravičencu -->
+        <xs:element name="TestType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Testi za zaposlene / Testi za športnike</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="ZAP">
+                <xs:annotation>
+                  <xs:documentation>Testi za zaposlene</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="SPO">
+                <xs:annotation>
+                  <xs:documentation>Testi za športnike</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Number_1_5" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>1.5 Število zaposlenih ...</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Number_1_6_1" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>1.6.1 Število športnikov in osebja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Number_1_6_2" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>1.6.2 Število hitrih testov za športnike in osebje</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Number_1_6_2a" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>1.6.2a Število PCR testov za športnike in osebje</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Amount_1_6_3" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>1.6.3 Višina pomoči za nakup testov za športnike in osebje</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Amount_1_7" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>1.7 Višina pomoči za izvedbo hitrih testov za zaposlene in zavarovane</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Amount_1_8" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>1.8 Skupna višina pomoči za teste</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <!-- V skladu z določbami ... izjavljam, da: -->
+        <xs:element name="Statement_2_1" type="xs:boolean" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>2.1 sem pravna ali fizična oseba, ...</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Statement_2_2" type="xs:boolean" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>2.2 sem nacionalna panožna športna zveza, ...</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Statement_2_3" type="xs:boolean" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>2.3 sem odgovoren za namensko porabo sredstev, ...</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Statement_2_4" type="xs:boolean" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>2.4 na dan oddaje vloge nimam neporavnanih zapadlih davčnih obveznosti ...</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <!-- Pomoč mi izplačajte na -->
+        <xs:element name="AccountNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>transakcijski račun (2.9 / 2.10)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="AccountType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>tip transakcijskega računa (2.9 / 2.10)</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="own">
+                <xs:annotation>
+                  <xs:documentation>lasten transakcijski račun (2.9)</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="other">
+                <xs:annotation>
+                  <xs:documentation>drug transakcijski račun (IBAN) (2.10)</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

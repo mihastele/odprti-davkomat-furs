@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/DMV_N_1.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://edavki.durs.si/Documents/Schemas/DMV_N_1.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+             schemaLocation="EDP-Common-1.xsd"/>
+
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="DMV_N"/>
+              <xs:element ref="Vehicle" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element ref="Attachment" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+   
+  <xs:element name="DMV_N">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Email" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Elektronski naslov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Vehicle">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Vozilo</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="SequenceNumber" type="xs:positiveInteger">
+          <xs:annotation>
+            <xs:documentation>Zaporedna številka zapisa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="BillNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Številka pogodbe/računa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PurchaseDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum pridobitve (nakupa)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SellerTaxNumber" type="edp:TaxNumberType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčna št. prodajalca</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SellerIdNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>ID št. prodajalca</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SellerName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv/ime in priimek prodajalca</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VehicleType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta vozila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VehicleMake" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znamka motornega vozila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VehicleModel" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Tip in model motornega vozila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CodeVIN" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Identifikacijska številka vozila (VIN številka)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SupplyCountry" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Koda države uvoza/pridobitve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SupplyCountryName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Ime države uvoza/pridobitve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ManufacturedYear" type="Year_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Leto izdelave</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="FirstRegistrationYear" type="Year_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Leto prve registracije</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DistanceKm" type="Integer9_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Število prevoženih kilometrov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="FuelTypeCode" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Koda vrste goriva</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="FuelTypeName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv vrste goriva</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EnginePower" type="Decimal3_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Moč motorja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EngineVolume" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prostornina motorja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EngineWorkingModeCode" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Koda načina delovanja motorja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EngineWorkingModeName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv načina delovanja motorja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CO2Emission " type="Integer3_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Izpust CO2</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="HeavyPartsEmission " type="Decimal1_5Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Izpust trdih delcev</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EuroEmissionRateCode" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Koda stopnje izpusta Euro</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EuroEmissionRateName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv stopnje izpusta Euro</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SeatCount" type="Integer2_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Število sedežev</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VehicleWeight" type="Integer5_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Teža vozila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DriverWeightIncluded" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Teža voznika vključena</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VehiclePrice" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Cena vozila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VehicleDamaged" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vozilo poškodovano</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ExpertReport" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Cenilni zapisnik priložen</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ExpertName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv cenilca</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AssessmentBase" type="AssessmentBase_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Osnova za odmero DMV</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CorrectedPrice" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Popravljena cena</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PricingDescription" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obrazložitev cenitve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ExemptionRefundCode" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Koda oprostitve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ExemptionRefundName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv oprostitve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="FinancialOfficeCode" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Koda finančnega urada</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="FinancialOfficeName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv finančnega urada</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VehicleLocation" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vozilo se nahaja (lokacija – naslov)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VehiclePayment" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Plačilo vozila (kako in komu)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VehicleAcquisition" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prevzem vozila (kje in kdo)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AcquisitionPurpose" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Namen pridobitve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Attachment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Hash" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="Decimal3_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,3}(\.\d{1,2})?" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Decimal1_5Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,1}(\.\d{1,5})?" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Decimal7_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,7}(\.\d{1,2})?" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Integer5_Type">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:pattern value="[0-9]{0,5}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Integer2_Type">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:pattern value="[0-9]{0,2}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Integer3_Type">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:pattern value="[0-9]{0,3}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Integer8_Type">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:pattern value="[0-9]{0,8}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Integer9_Type">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:pattern value="[0-9]{0,9}" />
+    </xs:restriction>
+  </xs:simpleType>  <xs:simpleType name="Year_Type">
+    <xs:restriction base="xs:int">
+      <xs:pattern value="[1-9][0-9]{3}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="AssessmentBase_Type">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Cena vozila"/>
+      <xs:enumeration value="Popravljena cena"/>
+      <xs:enumeration value="Oprostitev"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

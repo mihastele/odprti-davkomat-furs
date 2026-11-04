@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/DB_Unovcitev_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" xmlns:fu="http://edavki.durs.si/Documents/Schemas/FU_Imported_Types_1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/DB_Unovcitev_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/FU_Imported_Types_1.xsd" schemaLocation="FU_Imported_Types_1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="Data"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:element name="Data">
+    <xs:complexType>
+      <xs:sequence>
+	  
+        <xs:element name="PurchaseDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum nakupa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="BillNumber" type="fu:IdentifierType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Številka računa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="PurchaseAmountSum" type="Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vsota vseh plačil (digitalni bon)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="Purchases" type="PurchasesType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Tabela s podrobnostmi plačila (digitalni bon)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="PurchasesType">
+    <xs:sequence>
+      <xs:element name="PurchaseDetails" type="PurchaseDetailsType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Vrstica s podrobnostmi plačila (digitalni bon)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="PurchaseDetailsType">
+    <xs:sequence>
+      <xs:element name="Id" type="xs:int" >
+        <xs:annotation>
+          <xs:documentation>ID vrstice</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="VoucherTypeId" type="xs:long" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Tip digitalnega bona (ID)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="VoucherTypeName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Tip digitalnega bona (naziv)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="FirstName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Ime</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="LastName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Priimek</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="Emso" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>EMŠO</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="TaxPayerId" type="xs:int" minOccurs="0" >
+        <xs:annotation>
+          <xs:documentation>Davčna številka</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="Amount" type="Decimal14_2Type" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Vrednost</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="PurchaseTypeId" type="xs:long" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Vrsta nakupa (ID)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="PurchaseTypeName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Vrsta nakupa (naziv)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="PurchasePurposeId" type="xs:long" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Namen (ID)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="PurchasePurposeName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Namen (naziv)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="Decimal14_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,14}(\.\d{1,2})?" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

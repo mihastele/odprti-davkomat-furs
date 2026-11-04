@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/eVrocanje_POS_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/eVrocanje_POS_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="eVrocanje_POS"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:element name="eVrocanje_POS">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CustodianNotes" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Opombe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianSubmitDate" type="xs:date" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Datum prijave</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="Action"  minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Prijava/Sprememba/Odjava (Velja za dokumente, ki niso še pripravljeni za odpremo.)</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType >
+            <xs:restriction base="xs:string" >
+              <xs:enumeration value="add" >
+                <xs:annotation>
+                  <xs:documentation>Prijava</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="update" >
+                <xs:annotation>
+                  <xs:documentation>Sprememba</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="remove" >
+                <xs:annotation>
+                  <xs:documentation>Odjava</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        
+        <xs:element name="EmailList" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>
+              Elektronski naslov
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Email" minOccurs="0" type="xs:string" />
+              <xs:element name="Status" minOccurs="0" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

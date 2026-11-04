@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/PD_O_1.xsd" elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/PD_O_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" id="EDP-Common-1" />
+  <xs:element name="PD_O">
+    <xs:complexType>
+      <xs:sequence>
+        
+        <xs:element name="PeriodStart" type="xs:date">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Začetek obdobja (datum): YYYY-MM-DD</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="PeriodEnd" type="xs:date">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Konec obdobja (datum): YYYY-MM-DD</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="PeriodYear" type="xs:int">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Leto obdobja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="PeriodMonth" type="xs:int">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Mesec obdobja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="f13_Name" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Odgovorna oseba.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="f13_TaxNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Davčna številka odgovorne osebe.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="f14" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Kontaktna oseba.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="f15" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Telefonska številka.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        
+        <xs:element name="A" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Podatki o dobavah blaga in storitev za tekoče obdobje.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="f22_TaxNumber" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Številka za DDV (brez kode države).</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="f23" type="typeNegativeDecimalPos17_0" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Skupna vrednost dobave blaga in storitev.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="f24" type="typeNegativeDecimalPos17_0" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Skupna vrednost vseh dobav in storitev.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="B" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Popravki podatkov za pretekla obdobja.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="f31_Year" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Obdobje (leto).</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="f31_Month" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Obdobje (mesec).</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="f32_TaxNumber" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Številka za DDV (brez kode države).</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="f33" type="typeNegativeDecimalPos17_0" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Nova skupna vrednost dobave blaga in storitev.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element ref="PD_O" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="typeNegativeDecimalPos17_0">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="[\-+]?\d{1,17}" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+</xs:schema>

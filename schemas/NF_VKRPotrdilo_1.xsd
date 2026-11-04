@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/NF_VKRPotrdilo_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/NF_VKRPotrdilo_1.xsd"
+  elementFormDefault="qualified">
+
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Data"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DU" type="xs:string"  minOccurs="0" />
+        <xs:element name="Address1" type="xs:string"  minOccurs="0"/>
+        <xs:element name="City" type="xs:string" minOccurs="0"/>
+        <xs:element name="PostNumber" type="xs:string" minOccurs="0"/>
+        <xs:element name="PostName" type="xs:string" minOccurs="0"/>
+        <xs:element name="ConfirmationDate" type="xs:date"/>
+        <xs:element name="VKR" minOccurs="0"  maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SerialNumberIssuer" type="xs:string"/>
+              <xs:element name="SerialNumberVKR" type="xs:string"/>
+              <xs:element name="Delete" type="xs:boolean" minOccurs="0"/>
+              <xs:element name="NewSerialNumberIssuer" type="xs:string" minOccurs="0"/>
+              <xs:element name="NewSerialNumberVKR" type="xs:string" minOccurs="0"/>
+              <xs:element name="Comment" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

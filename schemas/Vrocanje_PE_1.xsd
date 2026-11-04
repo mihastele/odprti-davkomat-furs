@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/Vrocanje_PE_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/Vrocanje_PE_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="Vrocanje_PE"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:element name="Vrocanje_PE">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CustodianNotes" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Opombe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianSubmitDate" type="xs:date" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Datum prijave</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Withdrawal" type="xs:boolean" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Izbris pooblaščenca</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VpoID" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>VPO_ID</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AuthorizedPerson"  minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Za namene vročanja pooblaščam:</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TaxPayerID" type="xs:int" minOccurs="0" >
+                <xs:annotation>
+                  <xs:documentation>Davčna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxPayerType" type="edp:taxpayerTypeType" minOccurs="0" >
+                <xs:annotation>
+                  <xs:documentation>Tip davčnega zavezanca</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Name" type="xs:string" minOccurs="0" >
+                <xs:annotation>
+                  <xs:documentation>Firma / Ime priimek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ActivityID" type="xs:string" minOccurs="0" >
+                <xs:annotation>
+                  <xs:documentation>Dejavnost</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ActivityDescription" type="xs:string" minOccurs="0" >
+                <xs:annotation>
+                  <xs:documentation>Opis dejavnosti</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="VpoID" type="xs:string" minOccurs="0" >
+                <xs:annotation>
+                  <xs:documentation>VPO_ID</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Case"  minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Zadeva</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="EpisId" type="xs:string" minOccurs="0" >
+                <xs:annotation>
+                  <xs:documentation>EPIS ID</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Tax"  minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Skupina/Davek</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="RelationGroup" type="xs:string" minOccurs="0" >
+                <xs:annotation>
+                  <xs:documentation>Nivo: vsi davki/skupina/davek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxId" type="xs:string" minOccurs="0" >
+                <xs:annotation>
+                  <xs:documentation>Davek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxGroup" type="xs:string" minOccurs="0" >
+                <xs:annotation>
+                  <xs:documentation>Skupina</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Name" type="xs:string" minOccurs="0" >
+                <xs:annotation>
+                  <xs:documentation>Naziv</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="DateFrom" type="xs:date" minOccurs="0" >
+                <xs:annotation>
+                  <xs:documentation>Datum Od</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="DateTo" type="xs:date" minOccurs="0" >
+                <xs:annotation>
+                  <xs:documentation>Datum Do</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="GeneralAuthorization" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Splošni pooblaščenec</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Authorized" type="xs:boolean" minOccurs="0" >
+                <xs:annotation>
+                  <xs:documentation>Pooblaščen</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="DateFrom" type="xs:date" minOccurs="0" >
+                <xs:annotation>
+                  <xs:documentation>Datum Od</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="DateTo" type="xs:date" minOccurs="0" >
+                <xs:annotation>
+                  <xs:documentation>Datum Do</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

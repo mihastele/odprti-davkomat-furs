@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/DDD_NorOd_1.xsd" elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/DDD_NorOd_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" id="EDP-Common-1" />
+
+
+  <!--tabela: Priloge -->
+  <xs:element name="DDD_NorOd_Attachment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="F01" type="xs:positiveInteger" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Zaporedna številka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F02" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Ime priloge
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element >
+
+  <xs:element name="DDD_NorOd_Data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TaxYear" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Koledarsko leto
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxYearNext" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Naslednje koledarsko leto
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="RegistrationDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Datum vpisa
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Income" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Prihodek iz dejavnosti zadnjih zaporednih 12 mesecev
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
+  <xs:element name="DDD_NorOd_TaxPayerData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DocumentWorkflowID" type="edp:DocumentIDType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DocumentWorkflowName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - naziv</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PhoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Telefonska številka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Email" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Elektronski naslov
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ActivityCode" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Šifra dejavnosti po SKD
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="RegistrationOffice" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Registracijski urad
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="RegistrationId" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Zaporedna številka vpisa v razvidu ali evidenci urada
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>      
+        <xs:element name="TaxOfficeID" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Šifra davčnega urada</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxOfficeName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv davčnega urada</xs:documentation>
+          </xs:annotation>
+        </xs:element>       
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--glavna zgradba dokumenta-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="DDD_NorOd_TaxPayerData"  />
+              <xs:element ref="DDD_NorOd_Data"  minOccurs="0" maxOccurs="1"/>
+              <xs:element ref="DDD_NorOd_Attachment" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

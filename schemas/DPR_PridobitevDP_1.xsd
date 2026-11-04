@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/DPR_PridobitevDP_1.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+           targetNamespace="http://edavki.durs.si/Documents/Schemas/DPR_PridobitevDP_1.xsd"
+           elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="PridobitevDP"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="PridobitevDP">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DocumentWorkflowID" type="edp:DocumentIDType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DocumentWorkflowName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - ime</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="RequiredNumber" type="xs:int" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Število zahtevanih potrdil</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EmailAddress" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Obvestilo o prispelih referenčnih številkah in geslih za prevzem digitalnih potrdil mi sporočite na naslednji elektronski naslov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

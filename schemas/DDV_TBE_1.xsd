@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/DDV_TBE_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/DDV_TBE_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="DDV_TBE"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:element name="DDV_TBE">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="PeriodYear" type="xs:int" minOccurs="0" />
+
+        <xs:element name="Services" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Opravljene storitve</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+
+              <xs:element name="CountryID" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>EU država, razen Slovenije.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CountryName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>EU država, razen Slovenije.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CountrySum" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Skupna vrednost opravljenih storitev</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="TotalSum" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vsota</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Deposition" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Izjavljam, da imam sedež oz. da imam stalno ali običajno prebivališče ...</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

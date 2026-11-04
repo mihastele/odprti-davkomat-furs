@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/EDP_Del_1.xsd" elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/EDP_Del_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+    <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+    <xs:element name="EDP-Del">
+        <xs:complexType>
+            <xs:sequence>
+              <xs:element name="employee" type="edp:taxPayerType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Envelope">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="edp:Header" />
+                <xs:element ref="edp:Signatures" />
+                <xs:element name="body">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="edp:bodyContent" />
+                            <xs:element ref="EDP-Del" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

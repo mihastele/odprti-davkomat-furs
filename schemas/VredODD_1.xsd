@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/VredODD_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/VredODD_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="VredODD"/>
+              <xs:element ref="Documents" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  
+  <xs:element name="VredODD">
+    <xs:complexType>
+      <xs:sequence>
+        <!--Referenčni podatki-->
+        <xs:element name="R10" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>ID zahtevka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="R30" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Za mesec (MM.YYYY)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="R40" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum predložitve naloga za plačilo</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="R50" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Način plačila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="R55" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Upravna enota</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="R60" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Številka blagajniškega prejemka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="R65" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Številka postavke</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <!--Podatki o vlagatelju zahtevka/zavezancu za prispevke-->
+        <xs:element name="V20" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Ime in priimek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="V40" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Ulica in hišna številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="V50" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naselje</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="V60" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Poštna številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="V70" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv pošte</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="V80" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Tip vlagatelja</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="1">
+                <xs:annotation>
+                  <xs:documentation>Naročnik osebnega dopolnilnega dela</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="2">
+                <xs:annotation>
+                  <xs:documentation>Izvajalec osebnega dopolnilnega dela</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+
+        <!--Podatki o izvajalcu osebnega dopolnilnega dela/zavarovancu-->
+        <xs:element name="I10" type="edp:TaxNumberType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčna številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="I20" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Priimek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="I30" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Ime</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="I40" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Kontaktni podatek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="I80" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>AJPES številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <!--Podatki o osebnem dopolnilnem delu-->
+        <xs:element name="ODD" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Podatki o osebnem dopolnilnem delu</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="O10" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Šifra ODD</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="O20" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naziv ODD</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!--Obračun in plačilo prispevkov za socialno varnost-->
+        <xs:element name="P10" type="Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevki za pokojninsko in invalidsko zavarovanje</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="P20" type="Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevki za obvezno zdravstveno zavarovanje</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="P30" type="Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevki skupaj</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="P40" type="Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Provizija</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Documents">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Document"  type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="Decimal14_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="[\-+]?\d{1,14}(\.\d{1,2})?" />
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

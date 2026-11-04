@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/DR_Racun_1.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://edavki.durs.si/Documents/Schemas/DR_Racun_1.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+	           schemaLocation="EDP-Common-1.xsd"/>
+  <xs:element name="DR_Racun">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Email"
+				            type="xs:string"
+				            minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Elektronski naslov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TelephoneNumber"
+				            type="xs:string"
+				            minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Account"
+				            minOccurs="0"
+				            maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>Račun</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element name="SequenceNumber"
+							            type="xs:positiveInteger"
+							            minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Zaporedna številka zapisa</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="AccountNumber"
+							            type="xs:string"
+							            minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Številka računa</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="BankName"
+							            type="xs:string"
+							            minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naziv banke ali hranilnice</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="SwiftBic"
+							            type="xs:string"
+							            minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>SWIFT/BIC</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="BankId"
+							            type="xs:string"
+							            minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Druga identifikacija banke</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Country"
+							            type="xs:string"
+							            minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Država</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="OpenDate"
+							            type="xs:date"
+							            minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Datum odprtja</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Closing"
+							            type="xs:boolean"
+							            default="false"
+							            minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Zaprtje računa</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CloseDate"
+							            type="xs:date"
+							            minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Datum zaprtja</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IsForActivity"
+							            type="xs:boolean"
+							            default="false"
+							            minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Za dejavnost</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IsFromRDZ"
+							            type="xs:boolean"
+							            default="false"
+							            minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Račun predizpolnjen iz RDZ</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="VirTipRacuna"
+							            type="xs:string"
+							            minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Tip računa</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="VirId"
+							            type="xs:string"
+							            minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Vir podatkov</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Attachment"
+				            minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Hash"
+							            type="xs:string"
+							            minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="DR_Racun"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

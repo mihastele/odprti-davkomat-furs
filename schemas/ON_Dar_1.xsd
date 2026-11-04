@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/ON_Dar_1.xsd" 
+           elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/ON_Dar_1.xsd" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:ds="http://www.w3.org/2000/09/xmldsig#" 
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" id="EDP-Common-1" />
+  
+  <!--glavna zgradba dokumenta-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+
+              <xs:element name="ON_Dar">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element ref="ONDarHeader" />                   
+                    <xs:element ref="DonatorInformation"  minOccurs="0" />
+                    <xs:element ref="DonatedBuildingRealEstatePropertyInformation" minOccurs="0" />
+                    <xs:element ref="DonatedRealEstatePropertyInformation" minOccurs="0" />
+                    <xs:element ref="DonatedGoodsAndChattelsPropertyAndOtherRightsInformation" minOccurs="0"/>
+                    <xs:element ref="FecalCostsDebtsAndBurdensByTheDonatedProperty" minOccurs="0" />
+                    <xs:element ref="AlreadyReceivedGiftsFromTheSameDonorWithinOneYear" minOccurs="0" />                    
+                    <xs:element ref="TaxPayerComments" minOccurs="0" />
+                    <xs:element ref="Custodian" minOccurs="0" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ONDarHeader">
+    <xs:annotation>
+      <xs:documentation xml:lang="sl">
+        Podatki o obdarjencu
+      </xs:documentation>
+    </xs:annotation>
+
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DocumentWorkflowID" type="edp:DocumentIDType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>DocumentWorkflow ID</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DocumentWorkflowName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>DocumentWorkflowName</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>CorrectionForDocument</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        
+        <xs:element name="Resident" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Rezident republike Slovenije
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ResidentCountry" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Država rezidentstva
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="Email" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Elektronski naslov
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PhoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Telefonska številka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="TaxPeriod" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Perioda
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element  name="TransmissionOffice" type="xs:string" minOccurs="1" >
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Urad pošiljanja
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        
+        <xs:element name="ExemptionTaxClaim"  type="xs:string" minOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Uveljavljam oprostitev, ker sem:
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        
+        <xs:element name="ExemptionTaxClaimTypeBecauseOfGiftSubject" minOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Uveljavljam oprostitev, ker je predmet darila:
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="SumDonatedBuildingRealEstatePropertyInformation"             type="Decimal12_2Type" minOccurs="0" />
+        <xs:element name="SumDonatedRealEstatePropertyInformation"                     type="Decimal12_2Type" minOccurs="0" />
+        <xs:element name="SumDonatedGoodsAndChattelsPropertyAndOtherRightsInformation" type="Decimal12_2Type" minOccurs="0"/>
+        <xs:element name="SumFecalCostsDebtsAndBurdensByTheDonatedProperty"            type="Decimal12_2Type" minOccurs="0" />
+        <xs:element name="SumAlreadyReceivedGiftsFromTheSameDonorWithinOneYear"        type="Decimal12_2Type" minOccurs="0" />
+        
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--prva tabela: Podatki o darovalcu / darovalcih-->
+  <xs:element name="DonatorInformation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="DonatorInformationItem"  minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="DonatorInformationItem">
+    <xs:complexType >
+      <xs:sequence>
+        <xs:element name="Id" type="xs:positiveInteger" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Zaporedna številka vrstice
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Name" type="Text100Type" minOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Ime priimek oz. naziv pravne osebe
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Address" type="Text100Type" minOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Podatki o prebivališču oz. sedežu (naselje, ulica, hišna številka, pošta)
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Country" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Država
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxNumber" type="Text10Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Davčna ali indentifikacijska številka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="BloodRelationship" type="xs:string" minOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Sorodstveno razmerje (obdarjenca do obdarovalca)
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element >
+
+  <!--druga tabela: opis podarjenega mepremičnega premoženja zmeljišča - stavbe -->
+  <xs:element name="DonatedBuildingRealEstatePropertyInformation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="DonatedBuildingRealEstatePropertyInformationItem"  minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="DonatedBuildingRealEstatePropertyInformationItem">
+    <xs:annotation>
+      <xs:documentation xml:lang="sl">
+        Opis podarjenega nepremičnega premoženja zmeljišča - stavbe
+      </xs:documentation>
+    </xs:annotation>
+
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Id" type="xs:positiveInteger" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Zaporedna številka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Address" type="Text100Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Naslov
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Municipality" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Občina
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>		
+		<xs:element name="CadastralMunicipality" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Katastrska občina
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>				
+        <xs:element name="RealEstateType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Vrsta nepremičnine
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="BuildingNumber" type="Text10Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Št. stavbe
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PartBuildingNumber" type="Text10Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Št. dela stavbe
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="UsableArea" type="Decimal9_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Uporabna površina
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Value" type="Decimal12_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Vrednost
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element >
+
+  <!-- tretja tabela:  -->
+  <xs:element name="DonatedRealEstatePropertyInformation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="DonatedRealEstatePropertyInformationItem"  minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="DonatedRealEstatePropertyInformationItem">
+    <xs:annotation>
+      <xs:documentation xml:lang="sl">
+        Opis podarjenega nepremičnega premoženja - zemljišča
+      </xs:documentation>
+    </xs:annotation>
+
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Id" type="xs:positiveInteger" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Zaporedna številka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="RealEstateType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Vrsta nepremičnine
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CadastralMunicipality" type="Text50Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Katastrska občina
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ParcelNumber" type="Text10Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Parcelna številka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Surface" type="Decimal9_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Površina (v m2)
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Value" type="Decimal12_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Vrednost
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+
+  </xs:element >
+
+  <!-- četrta tabela:  -->
+  <xs:element name="DonatedGoodsAndChattelsPropertyAndOtherRightsInformation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="DonatedGoodsAndChattelsPropertyAndOtherRightsInformationItem"  minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="DonatedGoodsAndChattelsPropertyAndOtherRightsInformationItem">
+    <xs:annotation>
+      <xs:documentation xml:lang="sl">
+        Opis podarjenega premičnega premoženja ter premoženjskih in drugih stvarnih pravic
+      </xs:documentation>
+    </xs:annotation>
+
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Id" type="xs:positiveInteger" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Zaporedna številka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Description" type="Text100Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Opis
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Value" type="Decimal12_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Vrednost
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+
+  </xs:element >
+
+  <!-- peta tabela:  -->
+  <xs:element name="FecalCostsDebtsAndBurdensByTheDonatedProperty">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="FecalCostsDebtsAndBurdensByTheDonatedPropertyItem"  minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="FecalCostsDebtsAndBurdensByTheDonatedPropertyItem">
+    <xs:annotation>
+      <xs:documentation xml:lang="sl">
+        Stroški, dolgovi in bremena, ki odpadejo na podarjeno premoženje
+      </xs:documentation>
+    </xs:annotation>
+
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Id" type="xs:positiveInteger" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Zaporedna številka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Description" type="Text100Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Opis
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Value" type="Decimal12_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Vrednost
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+
+  </xs:element >
+
+  <!-- šesta tabela:  -->
+  <xs:element name="AlreadyReceivedGiftsFromTheSameDonorWithinOneYear">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="AlreadyReceivedGiftsFromTheSameDonorWithinOneYearItem"  minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="AlreadyReceivedGiftsFromTheSameDonorWithinOneYearItem">
+    <xs:annotation>
+      <xs:documentation xml:lang="sl">
+        Že prejeta darila od istega darovalca, v roku enega leta
+      </xs:documentation>
+    </xs:annotation>
+
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Id" type="xs:positiveInteger" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Zaporedna številka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Description" type="Text100Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Opis
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Value" type="Decimal12_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Vrednost
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+
+  </xs:element >
+
+  <!-- deveta tabela-->
+  <xs:element name="TaxPayerComments">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="TaxPayerCommentsItem"  minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="TaxPayerCommentsItem">
+    <xs:annotation>
+      <xs:documentation xml:lang="sl">
+        Pripombe zavezanca
+      </xs:documentation>
+    </xs:annotation>
+
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Id" type="xs:positiveInteger" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Zaporedna številka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Description" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Opis
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+
+  </xs:element >
+
+ 
+
+  <!-- Custodian data -->
+  <xs:element name="Custodian">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CustodianNotes" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Custodian notes</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianSubmitDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Submission date</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+
+  </xs:element>
+
+  <xs:simpleType name="Decimal12_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,12}(\.\d{1,2})?" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Decimal9_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,9}(\.\d{1,2})?" />
+    </xs:restriction>
+  </xs:simpleType>
+ 
+  <xs:simpleType name="Text10Type">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="10"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Text50Type">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="50"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Text100Type">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="100"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

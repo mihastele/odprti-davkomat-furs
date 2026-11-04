@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/VATR_APPE_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" xmlns:vatr="http://edavki.durs.si/Documents/Schemas/VATR_Common_1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/VATR_APPE_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/VATR_Common_1.xsd" schemaLocation="VATR_Common_1.xsd"/>
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="VATR_APPE"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--type definitions-->
+  <xs:element name="VATR_APPE">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ValidatedType" minOccurs="0">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="VATRefundApplication"/>
+              <xs:enumeration value="ApplicationReceipt"/>
+              <xs:enumeration value="VATRefundDecision"/>
+              <xs:enumeration value="ProRataRateAdjustment"/>
+              <xs:enumeration value="AdjustmentReceipt"/>
+              <xs:enumeration value="AdjustmentResult"/>
+              <xs:enumeration value="NETPNotification"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:choice>
+          <xs:element name="VersionedReference" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="ReferenceNumber" type="xs:string" minOccurs="0"/>
+                <xs:element name="RefundingCountryCode" type="xs:string" minOccurs="0"/>
+                <xs:element name="Version" type="xs:dateTime" minOccurs="0"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="ReferenceNumber" type="xs:token" minOccurs="0"/>
+        </xs:choice>
+        <xs:element name="Report" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Status" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="accepted"/>
+                    <xs:enumeration value="rejected"/>
+                    <xs:enumeration value="warning"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Remark" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Type" type="xs:int" minOccurs="0"/>
+                    <xs:element name="SubType" type="xs:int" minOccurs="0"/>
+                    <xs:element name="Details" type="xs:string" minOccurs="0"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

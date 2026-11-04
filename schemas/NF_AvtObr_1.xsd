@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/NF_AvtObr_1.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://edavki.durs.si/Documents/Schemas/NF_AvtObr_1.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+             schemaLocation="EDP-Common-1.xsd"/>
+
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="AvtObr"/>
+              <xs:element ref="Tax" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="AvtObr">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TelephoneNumber" type="String20_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Email" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Elektronski naslov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="NumberOfInstallments" type="Installment_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Število obrokov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Tax">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Podatki o davku</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Selected" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Knjižba je izbrana - da/ne</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Vktyp" type="String10_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Konto</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VktypText" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv konta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Optxt" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Opis knjižbe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Datum" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum zapadlosti</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Breme" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Breme</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Oznaka" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Oznaka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Opbel" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Opbel</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DatumAN" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>DatumAN</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DatZacOdl" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>DatZacOdl</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Vbund" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>Vbund</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="String256_Type">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="256" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String20_Type">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="20" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String10_Type">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="10" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Installment_Type">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OQ2">
+        <xs:annotation>
+          <xs:documentation>2 mesečna obroka</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OQ3">
+        <xs:annotation>
+          <xs:documentation>3 mesečni obroki</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

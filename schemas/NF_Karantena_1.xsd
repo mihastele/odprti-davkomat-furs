@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/NF_Karantena_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/NF_Karantena_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="NF_Karantena"/>
+              <xs:element ref="KarantenaDoma" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="VarstvoOtrok" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="Razlog" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="PrehodMeje" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="OdrejenaKarantena" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="ZunanjaOkoliscina" minOccurs="0" maxOccurs="unbounded" />
+
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="NF_Karantena">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="EmailAddress" type="xs:string" minOccurs="0" />
+        <xs:element name="PhoneNumber" type="xs:string" minOccurs="0" />
+        <xs:element name="Obrazlozitev" type="xs:string" minOccurs="0" />
+        <xs:element name="Soglasje" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="TRR" type="xs:string" minOccurs="0" />
+        <xs:element name="IBAN" type="xs:string" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="KarantenaDoma">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="StOdlocbe" type="xs:string" minOccurs="0" />
+        <xs:element name="DatumVrocitveOdlocbe" type="xs:date" minOccurs="0" />
+        <xs:element name="DatumKaranteneOd" type="xs:date" minOccurs="0" />
+        <xs:element name="DatumKaranteneDo" type="xs:date" minOccurs="0" />
+        <!--<xs:element ref="Razlog" minOccurs="0" maxOccurs="unbounded" />-->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Razlog">
+    <xs:complexType>
+      <xs:sequence>
+        <!--<xs:element ref="PrehodMeje" minOccurs="0" maxOccurs="unbounded" />-->
+        <xs:element name="StikZokuzenim" type="xs:boolean" minOccurs="0"/>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="PrehodMeje">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Drzava" type="xs:string" minOccurs="0" />
+        <xs:element name="OdhodIzSlo" type="xs:date" minOccurs="0" />
+        <xs:element name="PrihodvSlo" type="xs:date" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="VarstvoOtrok">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Ime" type="xs:string" minOccurs="0" />
+        <xs:element name="Priimek" type="xs:string" minOccurs="0" />
+        <xs:element name="DatumRojstva" type="xs:date" minOccurs="0" />
+        <xs:element name="DavcnaStevilka" type="xs:string" minOccurs="0" />
+        <xs:element name="SolaVrtecZavod" type="xs:string" minOccurs="0" />
+        <xs:element name="RazredOddelek" type="xs:string" minOccurs="0" />
+        <xs:element name="PosebniProgram" type="xs:boolean" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="OdrejenaKarantena">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="StOdlocbe" type="xs:string" minOccurs="0" />
+        <xs:element name="DatumVrocitveOdlocbe" type="xs:date" minOccurs="0" />
+        <xs:element name="DatumKaranteneOd" type="xs:date" minOccurs="0" />
+        <xs:element name="DatumKaranteneDo" type="xs:date" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+        <!--Datum nastanka okoliščine Opis-->
+  <xs:element name="ZunanjaOkoliscina">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DatumNastanka" type="xs:date" minOccurs="0" />
+        <xs:element name="Opis" type="xs:string" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+ 
+
+</xs:schema>

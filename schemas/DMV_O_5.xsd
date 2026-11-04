@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/DMV_O_5.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/DMV_O_5.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="DMV_O"/>
+              <xs:element ref="Vehicle" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element ref="TAttachment" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DMV_O">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Period" type="xs:string"/>
+        <xs:element name="EmailAddress" type="xs:string" minOccurs="0"/>
+        <xs:element name="PhoneNumber" type="xs:string" minOccurs="0"/>
+        <xs:element name="TotalTax" type="xs:decimal" minOccurs="0"/>
+        <xs:element name="Statement" type="xs:boolean" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Vehicle">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="SequenceNumber" type="xs:int">
+          <xs:annotation>
+            <xs:documentation>Zaporedna številka zapisa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VehicleType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta motornega vozila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VehicleMake" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znamka motornega vozila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VehicleModel" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Tip, varianta in izvedenka motornega vozila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CodeVIN" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Identifikacijska številka motornega vozila (VIN stevilka)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="FuelTypeCode" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta goriva, ki se uporablja za pogon</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="FuelTypeCodeN" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta goriva, ki se uporablja za pogon</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Co2Emission" type="Decimal3_4Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Izpust CO2 (WLTP)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SeatCount" type="Integer2_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Število sedežev</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EnginePower" type="Decimal3_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Moč motorja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EuroEmissionsStandard" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Okoljevarstvena kategorija (emisijski standard EURO)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EuroEmissionsStandardN" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Okoljevarstvena kategorija (emisijski standard EURO)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CoCDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum izdaje potrdila o skladnosti</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SupplyCountry" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Država dobave</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DateOfAcquisition" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum pridobitve (oz. proizvodnje v primeru proizvajalca)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="MaxSpeed" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Najvišja histrost</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="MPVtype" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Osebno večnamensko vozilo</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Weight" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Masa vozila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="MaxLoad" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Največja teh.dovol. masa obrem. vozila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ExemptionTaxLegalBasis" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Pravna podlaga za oprostitev ali vračilo ali znižanje davka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ExemptionTaxLegalBasisN" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Pravna podlaga za oprostitev ali vračilo ali znižanje davka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <!-- calculated -->
+        <xs:element name="Co2EmissionTax" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obveznost glede na izpust CO2</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EnginePowerTax" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obveznost glede na moč motorja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EuroEmissionsTax" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obveznost za emisijski standard EURO </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxAmount" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek davka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <!-- from idis -->
+        <xs:element name="MinCo2Amount" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Minimalni znesek po kriteriju CO2</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AddCo2Amount" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Pribitek po kriteriju CO2</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="MinPowerAmount" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Minimalni znesek po kriteriju moč motorja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AddPowerAmount" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Pribitek po kriteriju moč motorja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxReduction8SeatType" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znižanje davka za 30% (8 ali več sedežev)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxReductionMPVtype" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znižanje davka za 30% (večnamenska vozila)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="TAttachment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Hash" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:simpleType name="Decimal1_5Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,1}(\.\d{1,5})?"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Decimal2_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,2}(\.\d{1,2})?"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Decimal3_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,3}(\.\d{1,2})?"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Decimal3_4Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,3}(\.\d{1,4})?"/>
+    </xs:restriction>
+  </xs:simpleType>  
+  <xs:simpleType name="Integer3_Type">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:pattern value="[0-9]{0,3}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Integer2_Type">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:pattern value="[0-9]{0,2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

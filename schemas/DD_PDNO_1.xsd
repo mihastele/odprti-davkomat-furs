@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/DD_PDNO_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/DD_PDNO_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="DD_PDNO" minOccurs="0"/>
+              <xs:element ref="P02_VrstaTransakcije" minOccurs="0"/>
+              <xs:element ref="P03_ObracunskiDanInDatumVpisa" minOccurs="0"/>
+              <xs:element ref="P04_A_PrenosnaAliPrevzetaDruzba" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element ref="P04_B_PrevzemnaDruzba" minOccurs="0"  maxOccurs="unbounded"/>
+              <xs:element ref="P05_IzjaveOIzpolnjevanjuPogojev" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="DD_PDNO">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0" />      
+        <xs:element name="Sedez" type="xs:string" minOccurs="0"/>
+        <xs:element name="EmailAddress" type="xs:string" minOccurs="0" />
+        <xs:element name="PhoneNumber" type="xs:string" minOccurs="0" />
+        <xs:element name="PeriodYear" type="xs:int" minOccurs="0"/>
+        <xs:element name="RokZaOddajo" type="xs:date" minOccurs="0"/>
+        <xs:element name="IdStatusneSpremembe" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- II. Vrsta transakcije -->
+  <xs:element name="P02_VrstaTransakcije">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="P02_01_VrstaTransakcije" type="TransactionTypeCode" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- III. Obračunski dan in datum vpisa -->
+  <xs:element name="P03_ObracunskiDanInDatumVpisa">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="P03_01_ObracunskiDanAliDatumPrenosaPremozenja" type="xs:date" minOccurs="0"/>
+        <xs:element name="P03_02_DatumVpisaVSodniRegister" type="xs:date" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- IV. Podatki o zavezancih, ki so udeleženi v transakciji -->
+
+  <!-- IV.A Prenosna/Prevzeta družba (repeatable) -->
+  <xs:element name="P04_A_PrenosnaAliPrevzetaDruzba">
+    <xs:complexType>
+      <xs:sequence>
+        <!-- IV.1 Osnovni podatki -->
+        <xs:element name="P04_01_01_DavcnaStevilka" type="TaxNumberType" minOccurs="0"/>
+        <xs:element name="P04_01_02_Firma" type="Text200Type" minOccurs="0"/>
+        <xs:element name="P04_01_03_SedezOziromaKrajPoslovanja" type="Text200Type" minOccurs="0"/>
+        <xs:element name="P04_01_04_RezidentSlovenije" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="P04_01_05_DrzavaRezidentstva" type="CountryCodeType" minOccurs="0"/>
+
+        <!-- IV.2 Finančni podatki -->
+        <xs:element name="P04_02_01_ZnesekSkritihRezervAliSkritihIzgub" type="Amount2" minOccurs="0"/>
+        <xs:element name="P04_02_02_PrenosRezervacij" type="Amount2" minOccurs="0"/>
+        <xs:element name="P04_02_03_PrenosDavcnihIzgub" type="Amount2" minOccurs="0"/>
+        <xs:element name="P04_02_04_PreneseneOlajsave_RaziskaveInRazvoj" type="Amount2" minOccurs="0"/>
+        <xs:element name="P04_02_05_PreneseneOlajsave_Investiranje" type="Amount2" minOccurs="0"/>
+        <xs:element name="P04_02_06_PreneseneOlajsave_Donacije" type="Amount2" minOccurs="0"/>
+        <xs:element name="P04_02_07_PreneseneOlajsave_Zaposlovanje" type="Amount2" minOccurs="0"/>
+        <xs:element name="P04_02_08_PreneseneOlajsave_DigitalniInZeleniPrehod" type="Amount2" minOccurs="0"/>
+
+        <!-- IV.4 Menjalno razmerje (X:Y) -->
+        <xs:element name="P04_04_01_X" type="xs:int" minOccurs="0"/>
+        <xs:element name="P04_04_02_Y" type="xs:int" minOccurs="0"/>
+          
+        <!-- IV.3 Družbeniki -->
+        <xs:element name="P04_03_Druzbeniki" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="P04_03_Druzbenik" type="ShareholderRowType" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- IV.B Prevzemna družba (repeatable) -->
+  <xs:element name="P04_B_PrevzemnaDruzba">
+    <xs:complexType>
+      <xs:sequence>
+
+        <!-- IV.5 Osnovni podatki -->
+        <xs:element name="P04_05_01_DavcnaStevilka" type="TaxNumberType" minOccurs="0"/>
+        <xs:element name="P04_05_02_Firma" type="Text200Type" minOccurs="0"/>
+        <xs:element name="P04_05_03_SedezOziromaKrajPoslovanja" type="Text200Type" minOccurs="0"/>
+        <xs:element name="P04_05_04_RezidentSlovenije" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="P04_05_05_DrzavaRezidentstva" type="CountryCodeType" minOccurs="0"/>
+        <xs:element name="P04_05_06_StatusPrevzemneDruzbe" type="AcquirerStatusType" minOccurs="0"/>
+
+        <!-- IV.6 Metoda vrednotenja (6.1 / 6.2 as printed) -->
+        <xs:element name="P04_06_01_PoMetodiPostenihVrednosti" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="P04_06_02_PoMetodiKnjigovodskihVrednosti" type="xs:boolean" minOccurs="0"/>
+
+        <!-- IV.7 Finančni podatki -->
+        <xs:element name="P04_07_01_ZnesekSkritihRezervVPrevzetihSredstvihInObveznostih" type="Amount2" minOccurs="0"/>
+        <xs:element name="P04_07_02_PrevzemRezervacij" type="Amount2" minOccurs="0"/>
+        <xs:element name="P04_07_03_PrevzemDavcnihIzgub" type="Amount2" minOccurs="0"/>
+        <xs:element name="P04_07_04_PrevzeteOlajsave_RaziskaveInRazvoj" type="Amount2" minOccurs="0"/>
+        <xs:element name="P04_07_05_PrevzeteOlajsave_Investiranje" type="Amount2" minOccurs="0"/>
+        <xs:element name="P04_07_06_PrevzeteOlajsave_Donacije" type="Amount2" minOccurs="0"/>
+        <xs:element name="P04_07_07_PrevzeteOlajsave_Zaposlovanje" type="Amount2" minOccurs="0"/>
+        <xs:element name="P04_07_08_PrevzeteOlajsave_DigitalniInZeleniPrehod" type="Amount2" minOccurs="0"/>
+        <xs:element name="P04_07_09_OprosceniDobickiAliNepriznaneIzgubeObPrenehanjuUdelezbe" type="Amount2" minOccurs="0"/>
+
+        <!-- IV.8 Menjalno razmerje (X:Y) -->
+        <xs:element name="P04_08_01_X" type="xs:int" minOccurs="0"/>
+        <xs:element name="P04_08_02_Y" type="xs:int" minOccurs="0"/>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
+
+  <!-- V. Izjave (A..D) -->
+  <xs:element name="P05_IzjaveOIzpolnjevanjuPogojev">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="P05_A_Izjava_ZdruzitveInDelitve" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="P05_B_Izjava_IzclenitveInPrenosPremozenja" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="P05_C_Izjava_ZamenjavaKapitalskihDelezev" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="P05_D_Izjava_ResnicnostPravilnostPopolnost" type="xs:boolean" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
+
+  <!--  Simple/common types -->
+
+  <xs:simpleType name="TaxNumberType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{8}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="CountryCodeType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z]{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Amount2">
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Text200Type">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="200"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="EmailType">
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Vrsta transakcije: 1..7 -->
+  <xs:simpleType name="TransactionTypeCode">
+    <xs:restriction base="xs:int">
+      <xs:enumeration value="1"/>
+      <xs:enumeration value="2"/>
+      <xs:enumeration value="3"/>
+      <xs:enumeration value="4"/>
+      <xs:enumeration value="5"/>
+      <xs:enumeration value="6"/>
+      <xs:enumeration value="7"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="taxpayerTypeType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PO"/>
+      <xs:enumeration value="FO"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="AcquirerStatusType">
+    <xs:restriction base="xs:string">
+      <!--<xs:enumeration value="NOVOUSTANOVLJENA"/>
+      <xs:enumeration value="PREVZEMNA"/>-->
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--  Common complex types -->
+
+  <!-- Družbenik (table row) -->
+  <xs:complexType name="ShareholderRowType">
+    <xs:sequence>
+      <xs:element name="P04_03_01_DavcnaStevilka" type="TaxNumberType" minOccurs="0"/>
+      <xs:element name="P04_03_02_PravnaOsebaAliFizicnaOseba" type="taxpayerTypeType" minOccurs="0"/>
+      <xs:element name="P04_03_03_FirmaAliImeInPriimek" type="Text200Type" minOccurs="0"/>
+      <xs:element name="P04_03_04_SedezAliPodatkiOBivaliscu" type="Text200Type" minOccurs="0"/>
+      <xs:element name="P04_03_05_RezidentSlovenije" type="xs:boolean" minOccurs="0"/>
+      <xs:element name="P04_03_06_DrzavaRezidentstva" type="CountryCodeType" minOccurs="0"/>
+      <xs:element name="P04_03_07_OdlogPo100ClenuZDoh2" type="xs:boolean" minOccurs="0"/>
+      <xs:element name="P04_03_08_ZnesekPlacilaVDenarju" type="Amount2" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  
+
+
+</xs:schema>
+

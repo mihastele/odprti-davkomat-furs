@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="KP_Common_1"
+    targetNamespace="http://edavki.durs.si/Documents/Schemas/KP_Common_1.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://edavki.durs.si/Documents/Schemas/KP_Common_1.xsd"
+    xmlns:mstns="http://edavki.durs.si/Documents/Schemas/KP_Common_1.xsd"
+    xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+
+  <xs:complexType name="TransactionUserData_Type">
+    <xs:attribute name="Id" type="edp:TaxNumberType" use="required">
+      <xs:annotation>
+        <xs:documentation>Davčna številka zavezanca</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Name" type="StringNotEmpty" use="required" >
+      <xs:annotation>
+        <xs:documentation>Ime</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Surname" type="StringNotEmpty" use="required" >
+      <xs:annotation>
+        <xs:documentation>Priimek</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Resident" type="Resident_Type">
+      <xs:annotation>
+        <xs:documentation>Oznaka za status rezidentstva</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="KpdData" type="xs:boolean" default="false" use="optional">
+      <xs:annotation>
+        <xs:documentation>podatki za KPD</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="PrefillData" type="xs:boolean" default="false" use="optional">
+      <xs:annotation>
+        <xs:documentation>podatki za predizpolnitev</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="Purchase_Type">
+    <xs:annotation>
+      <xs:documentation>Pridobitev</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Date" type="xs:date">
+      <xs:annotation>
+        <xs:documentation>Datum pridobitve</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Amount" type="DecimalPos12_4_Type">
+      <xs:annotation>
+        <xs:documentation>Količina / % količine ob pridobitvi</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Value" type="DecimalPos14_4_Type">
+      <xs:annotation>
+        <xs:documentation>Nabavna vrednost ob pridobitvi (na enoto)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="LongShort" type="vpgbTranTypeLongShort">
+      <xs:annotation>
+        <xs:documentation>Vrsta posla Long/Short za PODVPGB</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="Sale_Type">
+    <xs:annotation>
+      <xs:documentation>Odsvojitev</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Date" type="xs:date">
+      <xs:annotation>
+        <xs:documentation>Datum odsvojitve</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Amount" type="DecimalPos12_4_Type">
+      <xs:annotation>
+        <xs:documentation>Količina / % količine odsvojenega deleža</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Value" type="DecimalPos14_4_Type">
+      <xs:annotation>
+        <xs:documentation>Vrednost ob odsvojitvi</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="LongShort" type="vpgbTranTypeLongShort">
+      <xs:annotation>
+        <xs:documentation>Vrsta posla Long/Short za PODVPGB</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:simpleType name="Resident_Type" >
+    <xs:annotation>
+      <xs:documentation>Status rezidentstva</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="R">
+        <xs:annotation>
+          <xs:documentation>Rezident RS</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="N">
+        <xs:annotation>
+          <xs:documentation>Nerezident RS</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Isin_Type">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9]{12}|ISIN"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Naziv_Type">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="40" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="DecimalPos14_4_Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,14}(\.\d{1,4})?" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="DecimalPos12_4_Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,12}(\.\d{1,4})?" />
+    </xs:restriction>
+  </xs:simpleType>
+
+    <xs:simpleType name="StringNotEmpty">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="vpgbTranTypeLongShort">
+    <xs:annotation>
+      <xs:documentation>Vrsta posla Long/Short za PODVPGB</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="L|S"/>
+    </xs:restriction>
+  </xs:simpleType>  
+</xs:schema>

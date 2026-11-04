@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/NF_RegresVracilo_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/NF_RegresVracilo_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="NF_RegresVracilo"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NF_RegresVracilo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Popravek Dokumenta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Period" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obdobje</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="Employee" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>V skladu s 30. členom Zakona o interventnih ukrepih za pomoč gospodarstvu in turizmu pri omilitvi posledic epidemije COVID-19 (ZIUPGT), obveščam Finančno upravo Republike Slovenije, da sem naknadno ugotovil, da sem zahteval previsok znesek pomoči za financiranje regresa za letni dopust za leto 2021 in ga za naslednje delavce želim vrniti</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalAmount" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj regres</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Employee">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>V skladu s 30. členom Zakona o interventnih ukrepih za pomoč gospodarstvu in turizmu pri omilitvi posledic epidemije COVID-19 (ZIUPGT), obveščam Finančno upravo Republike Slovenije, da sem naknadno ugotovil, da sem zahteval previsok znesek pomoči za financiranje regresa za letni dopust za leto 2021 in ga za naslednje delavce želim vrniti</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="TaxPayerID" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčna številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="FirstName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Ime</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="LastName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Priimek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Amount" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek vračila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

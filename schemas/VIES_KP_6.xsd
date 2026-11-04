@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/VIES_KP_6.xsd"
+           elementFormDefault="qualified" 
+           xmlns="http://edavki.durs.si/Documents/Schemas/VIES_KP_6.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+<xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" 
+           schemaLocation="EDP-Common-1.xsd" />
+
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:AttachmentList" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element ref="VIES_KP" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="VIES_KP">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="RepresentedForeigner" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Zastopani tujec</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="IdNumber" type="String500Type">
+                <xs:annotation>
+                  <xs:documentation>Identifikacijska številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Name" type="String500Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naziv</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Address" type="String500Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naslov</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="General">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Year" type="YearType" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Leto</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Month" type="MonthType" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Mesec</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="RPO13" type="String10Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Identifikacijska številka za DDV davčnega zastopnika</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="A13" type="edp:Decimal14_0Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Polje A13 (vsota)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="A14" type="edp:Decimal14_0Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Polje A14 (vsota)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="A15" type="edp:Decimal14_0Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Polje A15 (vsota)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="A16" type="edp:Decimal14_0Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Polje A16 (vsota)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="A17" type="edp:Decimal14_0Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Polje A17 (vsota)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="RPO17_ResponsiblePerson" type="String500Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Odgovorna oseba</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="RPO17_TaxNumber" type="String10Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka odgovorne osebe</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="RPO18" type="String500Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Kontaktna oseba</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="RPO19" type="String500Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Telefonska številka kontaktne osebe</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="A_Current">
+          <xs:annotation>
+            <xs:documentation>A. Podatki o dobavah za tekoče obdobje</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="A" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="A1" type="CountryCodeType" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Koda države (VIES koda)</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="A2" type="String12Type" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Številka za DDV, brez kode države</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="A3" type="edp:Decimal14_0Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Skupna vrednost dobav blaga</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="A4" type="edp:Decimal14_0Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Skupna vrednost dobav blaga po carinskih postopkih 42 in 63</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="A5" type="edp:Decimal14_0Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Skupna vrednost tristranskih dobav blaga</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="A6" type="edp:Decimal14_0Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Skupna vrednost opravljenih storitev</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="A7" type="edp:Decimal14_0Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Skupna vrednost dobav blaga po skladiščenju na odpoklic</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="B_PastCorrections">
+          <xs:annotation>
+            <xs:documentation>B. Popravki podatkov o dobavah za pretekla obdobja</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="B" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="B0_Y" type="YearType" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Leto</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="B0_M" type="MonthType" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Mesec</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="B1" type="CountryCodeType" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Koda države (VIES koda)</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="B2" type="String12Type" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Številka za DDV, brez kode države</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="B3" type="edp:Decimal14_0Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Nova vrednost dobav blaga</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="B4" type="edp:Decimal14_0Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Nova vrednost dobav blaga po carinskih postopkih 42 in 63</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="B5" type="edp:Decimal14_0Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Nova vrednost tristranskih dobav blaga</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="B6" type="edp:Decimal14_0Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Nova vrednost opravljenih storitev</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="B7" type="edp:Decimal14_0Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Nova vrednost dobav blaga po skladiščenju na odpoklic</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="C_TransferOfGoods">
+          <xs:annotation>
+            <xs:documentation>C. Prenos blaga v okviru ureditve skladiščenja na odpoklic</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="C" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="C0" type="CountryCodeType" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Koda države (VIES koda)</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="C1" type="String12Type" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Številka za DDV, brez kode države</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="D_ReturnOfGoods">
+          <xs:annotation>
+            <xs:documentation>D. Vračilo blaga, prenesenega v okviru ureditve skladiščenja na odpoklic</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="D" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="D0" type="CountryCodeType" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Koda države (VIES koda)</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="D1" type="String12Type" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Številka za DDV, brez kode države</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="E_Customer">
+          <xs:annotation>
+            <xs:documentation>E. Zamenjava kupca (prejemnika) blaga v okviru ureditve skladiščenja na odpoklic</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="E" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="E0" type="CountryCodeType" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Koda države (VIES koda)</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="E1" type="String12Type" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Številka za DDV, brez kode države</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="E2" type="CountryCodeType" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Koda države (VIES koda)</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="E3" type="String12Type" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Številka za DDV, brez kode države</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="F_GoodsCorrections">
+          <xs:annotation>
+            <xs:documentation>F. Popravki podatkov v zvezi s prenosom ali vračilom blaga v okviru ureditve skladiščenja na odpoklic</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="F0_Y" type="YearType" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Leto</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="F0_M" type="MonthType" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Mesec</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="F1" type="String1Type" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Tabela, ki se popravlja (C,D)</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="F2" type="String50Type" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Vrsta popravka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="F3" type="CountryCodeType" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Koda države (VIES koda)</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="F4" type="String12Type" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Številka za DDV, brez kode države</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="F5" type="CountryCodeType" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Koda države (VIES koda)</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="F6" type="String12Type" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Številka za DDV, brez kode države</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="G_CustomerCorrections">
+          <xs:annotation>
+            <xs:documentation>G. Popravki podatkov v zvezi z zamenjavo kupca (prejemnika) blaga v okviru ureditve skladiščenja na odpoklic</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="G" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="G0_Y" type="YearType" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Leto</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="G0_M" type="MonthType" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Mesec</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="G1" type="String1Type" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Tabela, ki se popravlja (E)</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="G2" type="String50Type" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Vrsta popravka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="G3" type="CountryCodeType" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Koda države (VIES koda)</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="G4" type="String12Type" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Številka za DDV, brez kode države</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="G5" type="CountryCodeType" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Koda države (VIES koda)</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="G6" type="String12Type" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Številka za DDV, brez kode države</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="YearType">
+    <xs:restriction base="xs:int">
+      <xs:pattern value="[1-9][0-9]{3}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="MonthType">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="12"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="CountryCodeType">
+    <xs:restriction base="xs:string">
+      <xs:length value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String1Type">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="String10Type">
+  <xs:restriction base="xs:string">
+    <xs:maxLength value="12" />
+  </xs:restriction>
+</xs:simpleType>
+  <xs:simpleType name="String12Type">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="12" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String50Type">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="50" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String500Type">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="500" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

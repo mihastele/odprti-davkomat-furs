@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/VATR_APPD_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" xmlns:vatr="http://edavki.durs.si/Documents/Schemas/VATR_Common_1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/VATR_APPD_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/VATR_Common_1.xsd" schemaLocation="VATR_Common_1.xsd"/>
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="VATR_APPD"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--type definitions-->
+  <xs:element name="VATR_APPD">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DecisionReference" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ReferenceNumber" type="xs:string" minOccurs="0"/>
+              <xs:element name="RefundingCountryCode" type="xs:string" minOccurs="0"/>
+              <xs:element name="Version" type="xs:dateTime" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ApplicationVersion" type="xs:dateTime" minOccurs="0"/>
+        <xs:element name="Decision" type="xs:string" minOccurs="0"/>
+        <xs:element name="DecisionDate" type="xs:dateTime" minOccurs="0"/>
+        <xs:element name="RefundInformation" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="RequestedAmount" type="vatr:MoneyAmount_Type" minOccurs="0"/>
+              <xs:element name="AcceptedAmount" type="vatr:MoneyAmount_Type" minOccurs="0"/>
+              <xs:element name="DebitBalance" type="vatr:DebitBalance_Type" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Justification" type="RefundDecisionJustification_Type" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="OfficialCopy" type="vatr:OfficialCopy_Type" minOccurs="0"  maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="RefundDecisionJustification_Type">
+    <xs:sequence>
+      <xs:element name="ReasonCode" type="xs:string" minOccurs="0"/>
+      <xs:element name="AdditionalInformation" type="xs:string" minOccurs="0"/>
+      <xs:element name="TransactionReference" type="TransactionReference_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TransactionReference_Type">
+    <xs:sequence>
+      <xs:element name="SequenceNumber" type="xs:integer" minOccurs="0"/>
+      <xs:choice>
+        <xs:element name="InvoiceReference" type="InvoiceReference_Type"/>
+        <xs:element name="ImportReference" type="ImportReference_Type"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="InvoiceReference_Type">
+    <xs:sequence>
+      <xs:element name="InvoiceReferenceNumber" type="xs:token" minOccurs="0"/>
+      <xs:element name="EUTraderID" type="vatr:EUTraderID_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ImportReference_Type">
+    <xs:choice>
+      <xs:element name="ReferenceNumber" type="xs:token" minOccurs="0"/>
+      <xs:element name="ReferenceInformation" type="xs:string" minOccurs="0"/>
+    </xs:choice>
+  </xs:complexType>
+</xs:schema>

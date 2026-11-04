@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/Dac7_1.xsd" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:stf="urn:oecd:ties:dpistf:v1"
+           xmlns:iso="urn:oecd:ties:isodpitypes:v1" 
+           xmlns:dpi="urn:oecd:ties:dpi:v1" 
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" 
+           targetNamespace="http://edavki.durs.si/Documents/Schemas/Dac7_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+	<xs:import namespace="urn:oecd:ties:isodpitypes:v1" schemaLocation="isodpitypes_v1.0.xsd"/>
+	<xs:import namespace="urn:oecd:ties:dpistf:v1" schemaLocation="oecddpitypes_v1.0.xsd"/>
+	<xs:import namespace="urn:oecd:ties:dpi:v1" schemaLocation="DPIXML_v1.08.xsd"/>
+  
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:AttachmentList" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Data" minOccurs="0" />
+              <xs:element name="OperatorData" type="OperatorData_Type" minOccurs="0" />
+              <xs:element name="TINs" type="TINs_Type" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element name="Emails" type="Emails_Type" minOccurs="0" /><!--ElectronicAddress:ElectronicAddress_Type-->
+              <xs:element name="Urls" type="Urls_Type" minOccurs="0"  />
+              <xs:element name="Countries" type="Countries_Type" minOccurs="0" />
+              <xs:element name="ReRegistration" type="ReRegistration_Type" minOccurs="0" maxOccurs="1" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:element name="Data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="PeriodYear" type="xs:int" minOccurs="0" />       
+        <xs:element name="OperatorType" type="OperatorType_Type" minOccurs="1" />
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0" />
+        <xs:element name="VATStatement" type="xs:boolean" minOccurs="0" />
+        <xs:element name="VATStatement2" type="xs:boolean" minOccurs="0" />
+        <xs:element name="VATStatement3" type="xs:boolean" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+      
+  <!--Podatki o tujem operaterju platforme
+  Podatki o izključenem operaterju platforme Podatki_o_operaterju
+  -->
+
+  <xs:complexType name="OperatorData_Type">
+    <xs:sequence>
+      <xs:element name="PlatformOperatorID" type="xs:string" minOccurs="0" />
+      <xs:element name="IIN_Regex" type="xs:string" minOccurs="0" /> 
+      <xs:element name="VAT" type="stf:StringMin1Max200_Type" minOccurs="0" />
+      <xs:element name="Address" type="Address_Type" minOccurs="0" /> 
+
+    </xs:sequence>
+  </xs:complexType>    
+
+  <xs:complexType name="Emails_Type">
+    <xs:sequence>
+      <xs:element name="Email" type="xs:string" minOccurs="0" maxOccurs="unbounded"  /> 
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Urls_Type">
+    <xs:sequence>
+      <xs:element name="Url" type="xs:string" minOccurs="0" maxOccurs="unbounded" /> 
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Countries_Type">
+    <xs:sequence>
+       <xs:element name="CountryCode" type="iso:MSCountryCode_Type" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="ReRegistration_Type">
+    <xs:sequence>
+       <xs:element name="DeRegCountry" type="iso:MSCountryCode_Type" minOccurs="0" maxOccurs="unbounded" />
+       <xs:element name="DeRegYear" type="xs:int" minOccurs="0" maxOccurs="unbounded" /> 
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="TINs_Type">
+    <xs:sequence>
+      <xs:element name="TIN" type="dpi:TIN_Type" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+	<xs:complexType name="Address_Type">
+		<xs:sequence>
+			<xs:element name="CountryCode" type="xs:string" minOccurs="0" />
+			<xs:choice>
+				<xs:element name="AddressFree" type="xs:string"  minOccurs="0" />
+				<xs:element name="AddressFix" type="AddressFix_Type"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+  
+	<!--Address Fix -->
+	<xs:complexType name="AddressFix_Type">
+		<xs:sequence>
+			<xs:element name="Street" type="xs:string" minOccurs="0"></xs:element>
+			<xs:element name="BuildingIdentifier" type="xs:string" minOccurs="0"></xs:element>
+			<xs:element name="SuiteIdentifier" type="xs:string" minOccurs="0"></xs:element>
+			<xs:element name="FloorIdentifier" type="xs:string" minOccurs="0"></xs:element>
+			<xs:element name="DistrictName" type="xs:string" minOccurs="0"></xs:element>
+			<xs:element name="POB" type="xs:string" minOccurs="0"></xs:element>
+			<xs:element name="PostCode" type="xs:string" minOccurs="0"></xs:element>
+			<xs:element name="City" type="xs:string"></xs:element>
+			<xs:element name="CountrySubentity" type="xs:string" minOccurs="0"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+  
+	<xs:simpleType name="OperatorType_Type">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FPO">
+				<xs:annotation><xs:documentation>Tuj operater platforme </xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EPO">
+				<xs:annotation><xs:documentation>Izključen operater platforme</xs:documentation></xs:annotation>
+			</xs:enumeration>  
+    </xs:restriction>
+  </xs:simpleType>
+  
+</xs:schema>

@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema 
+  xmlns="http://edavki.durs.si/Documents/Schemas/Doh_Dru_3.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" attributeFormDefault="unqualified" elementFormDefault="qualified" 
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/Doh_Dru_3.xsd" >
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"  schemaLocation="EDP-Common-1.xsd"/>
+  
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element name="DohDru">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="subversion" type="xs:int" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>podverzija sheme / 2 - ce je Datum prejema dohodka >= 1.1.2022(iz konfiguracije)</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Popravek Dokumenta</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="DocumentWorkflowID" type="edp:DocumentIDType" minOccurs="0" />
+                    <xs:element name="PaymentDate" type="xs:date" minOccurs="0" />
+                    <xs:element name="IdentificationNumber" type="xs:string" minOccurs="0" />
+                    <xs:element name="EmailAddress" type="xs:string" minOccurs="0" />
+                    <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0" />
+                    <xs:element name="Resident" type="xs:boolean" minOccurs="0" />
+                    <xs:element name="CountryID" type="xs:string" minOccurs="0" />
+                    <xs:element name="TaxRelief" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DisabledRelief" type="xs:boolean" minOccurs="0" default="false" >
+                            <xs:annotation>
+                              <xs:documentation xml:lang="sl">Olajšava za zavezanca, invalida s 100% telesno okvaro.</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="SupportedMembersRelief" type="xs:boolean" minOccurs="0" default="false" >
+                            <xs:annotation>
+                              <xs:documentation xml:lang="sl">Posebna olajšava za vzdrževane družinske člane.</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="AfterAge70Relief" type="xs:boolean" minOccurs="0" default="false">
+                            <xs:annotation>
+                              <xs:documentation>olajšava rezidentu po dopolnjenem 70. letu starosti</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="PersonalRescueServiceRelief" type="xs:boolean" minOccurs="0" default="false">
+                            <xs:annotation>
+                              <xs:documentation>osebna olajšava za osebo, ki opravlja naloge zaščite, reševanja, pomoči</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SupportedMember" minOccurs="0" maxOccurs="unbounded" >
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Name" type="xs:string" minOccurs="0" />
+                          <xs:element name="BirthYear" type="xs:int" minOccurs="0" />
+                          <xs:element name="TaxID" type="xs:int" minOccurs="0" />
+                          <xs:element name="Relationship" type="xs:string" minOccurs="0" >
+                            <xs:annotation>
+                              <xs:documentation xml:lang="sl">
+                                Sorodstveno razmerje. Glej šifrante.
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="CustodianNotes" minOccurs="0" />
+                    <xs:element name="CustodianSubmitDate" type="xs:date" minOccurs="0" />
+                    <xs:element name="IncomePayer" minOccurs="0" maxOccurs="unbounded" >
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Name" type="xs:string" minOccurs="0" />
+                          <xs:element name="Address" type="xs:string" minOccurs="0" />
+                          <xs:element name="CountryID" type="xs:string" minOccurs="0" />
+                          <xs:element name="TaxID" type="xs:int" minOccurs="0" />
+                          <xs:element name="IdentificationNumber" type="xs:string" minOccurs="0" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="OtherIncome" minOccurs="0" maxOccurs="unbounded" >
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="IncomePayer" type="xs:string" minOccurs="0" />
+                          <xs:element name="PaymentDate" type="xs:date" minOccurs="0" />
+                          <xs:element name="PaymentForMonth" type="xs:int" minOccurs="0" />
+                          <xs:element name="PaymentForYear" type="xs:int" minOccurs="0" />
+                          <xs:element name="IncomeType" type="xs:string" minOccurs="0" />
+                          <xs:element name="Income" type="edp:Decimal14_2Type" minOccurs="0" />
+                          <xs:element name="Costs" type="edp:Decimal14_2Type" minOccurs="0" />
+                          <xs:element name="UseTaxRatesAndRelief" type="xs:boolean" minOccurs="0" >
+                            <xs:annotation>
+                              <xs:documentation xml:lang="sl">Pri odmeri akontacije dohodnine uveljavljam uporabo stopenj dohodnine iz lestvice ter olajšave, pri odmeri akontacije dohodnine od drugega dohodka</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="CountryID" type="xs:string" minOccurs="0" />
+                          <xs:element name="ForeignTaxDeductionWithDoubleTaxation" type="edp:Decimal14_2Type" minOccurs="0" >
+                            <xs:annotation>
+                              <xs:documentation xml:lang="sl">Uveljavljam odbitek tujega davka v skladu z Mednarodno pogodbo o izogibanju dvojnega obdavčevanja (izpolni samo rezident)</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="ForeignTaxDeductionWithLawInfo" type="edp:Decimal14_2Type" minOccurs="0" >
+                            <xs:annotation>
+                              <xs:documentation xml:lang="sl">Odbitek tujega davka po ZDoh-2 (izpolni samo rezident)</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="ReliefStatementWithDoubleTaxation" type="xs:boolean" minOccurs="0" >
+                            <xs:annotation>
+                              <xs:documentation xml:lang="sl">Uveljavljam oprostitev plačila dohodnine v skladu z mednarodno pogodbo o izogibanju dvojnega obdavčevanja (izpolni samo nerezident)</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="NonResident" type="xs:boolean" minOccurs="0" default="false" >
+                            <xs:annotation>
+                              <xs:documentation xml:lang="sl">Potrjujem, da (izpolni samo nerezident)</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="NonRSBranch" type="xs:boolean" minOccurs="0" default="false" >
+                            <xs:annotation>
+                              <xs:documentation xml:lang="sl">Drugi dohodki ne pripadajo stalni poslovni enoti ali stalni bazi, ki jo imam v RS</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="Breakdown" minOccurs="0" maxOccurs="unbounded" >
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Description" type="xs:string" minOccurs="0" />
+                                <xs:element name="Amount" type="edp:Decimal14_2Type" minOccurs="0" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

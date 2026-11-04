@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/Dodkis_2.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/Dodkis_2.xsd"
+  elementFormDefault="qualified" >
+
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="TDodkis"/>
+              <xs:element ref="TWinner" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element ref="TMunicipalityTax" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element ref="Attachment" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:element name="TDodkis">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CustodianNotes" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Opombe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianSubmitDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum prijave</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Period" type="xs:date">
+          <xs:annotation>
+            <xs:documentation>Obdobje (DD.MM.YYYY)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="MunicipalityID" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Šifra občine</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="MunicipalityName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Občina</xs:documentation>
+          </xs:annotation>
+        </xs:element>        
+        <xs:element name="Email" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Elektronski naslov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalTax" type="Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj davek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VrstaPrireditelja" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta Prireditelja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="TWinner">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Podatki o dobitnikih in dobitkih ter izračun davka na dobitek</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="SequenceNumber" type="xs:int">
+          <xs:annotation>
+            <xs:documentation>SequenceNumber</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Country" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Država rezidentstva</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IdentificationNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčna oz. identifikacijska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Surname" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Priimek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Name" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Ime</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Address" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Ulica in hišna številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Post" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Poštna številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PostName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Pošta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="MunicipalityID" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Šifra občine</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="MunicipalityName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv občine</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PrizeType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dobitka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxBase" type="Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčna osnova</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxRate" type="Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčna stopnja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxAmount" type="Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek davka za plačilo</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="TMunicipalityTax">
+    <xs:annotation>
+      <xs:documentation>Rekapitulacija davka na dobitek po občinah</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="MunicipalityID" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Šifra občine</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="MunicipalityName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv občine</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxSubAccount" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prehodni davčni podračun</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxAmount" type="Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek davka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Attachment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Hash" type="xs:string" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="Decimal14_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,14}(\.\d{1,2})?"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

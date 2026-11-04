@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/DMV_O_1.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://edavki.durs.si/Documents/Schemas/DMV_O_1.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+             schemaLocation="EDP-Common-1.xsd"/>
+
+  <xs:element name="DMV_O">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DocumentWorkflowID" type="edp:DocumentIDType">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DocumentWorkflowName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - naziv</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Period" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>Obdobje (MM.YYYY)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalTax" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj davek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianNotes" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Opombe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianSubmitDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum prijave</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Vehicle" minOccurs="0" maxOccurs="unbounded" >
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>Vozilo</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element name="CodeVIN" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Identifikacijska številka vozila (VIN stevilka)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="SequenceNumber" type="xs:int">
+                <xs:annotation>
+                  <xs:documentation>Zaporedna številka zapisa</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="VehicleMake" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Znamka motornega vozila</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="VehicleModel" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Tip in model motornega vozila</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Conformance" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Potrdilo je izdano(true)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ConformanceDate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Datum izdaje potrdila o skladnosti</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="SupplyEUCountry" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Koda država dobave (članica EU)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="SupplyEUCountryName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ime države dobave (članica EU)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxBase" type="edp:NegativeDecimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna osnova</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxRate" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Stopnja DMV</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxAmount" type="edp:NegativeDecimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Znesek davka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Attachment" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Hash" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="DMV_O"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

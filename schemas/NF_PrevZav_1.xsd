@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema id="NF_PrevZav_1" targetNamespace="http://edavki.durs.si/Documents/Schemas/NF_PrevZav_1.xsd"
+  elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/NF_PrevZav_1.xsd"
+  xmlns:r="http://edavki.durs.si/Documents/Schemas/NF_PrevZav_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+  <xs:element name="NF_PrevZav">
+    <xs:annotation>
+      <xs:documentation xml:lang="sl">
+        Zahteva za preverjanje podatkov o davčnih zavezancih. Dokument omogoča preverjanje podatkov o davčnih zavezancih. Kot rezultat preverjanja se vrne dokument NF_PrevZavR_1.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Verify" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Element vsebuje podatke za posamezno preverjanje in se lahko večkrat ponovi.
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TaxNumber" type="xs:string">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">
+                    Davčna številka (########) je obvezen podatek za preverjanje.
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Criteria">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">
+                    Seznam pogojev (podatkov) za preverjanje.
+                  </xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Field" minOccurs="0" maxOccurs="unbounded">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="sl">
+                          Vsebina polja je podatek za preveranje. Atribut name vsebuje vrsto podatka (vsaka se 
+                          lahko pojavi največ enkrat v seznamu Criteria). Datum (BirthDate) mora biti obvezno v obliki YYYY-MM-DD.
+                        </xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="name" type="fieldType" use="required" />
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+    <xs:unique name="single">
+      <xs:selector xpath="r:Verify" />
+      <xs:field xpath="r:TaxNumber" />
+    </xs:unique>
+  </xs:element>
+  <xs:simpleType name="fieldType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="EMSO">
+        <xs:annotation>
+          <xs:documentation xml:lang="sl">
+            EMŠO (samo za fizične osebe)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BirthDate">
+        <xs:annotation>
+          <xs:documentation xml:lang="sl">
+            Datum rojstva (samo za fizične osebe)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Surname">
+        <xs:annotation>
+          <xs:documentation xml:lang="sl">
+            Priimek
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Firstname">
+        <xs:annotation>
+          <xs:documentation xml:lang="sl">
+            Ime
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MaticnaPOSP">
+        <xs:annotation>
+          <xs:documentation xml:lang="sl">
+            Matična številka (Pravne osebe, Fizične osebe z dejavnostjo))
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NamePOSP">
+        <xs:annotation>
+          <xs:documentation xml:lang="sl">
+            Naziv (Pravne osebe, Fizične osebe z dejavnostjo))
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element ref="NF_PrevZav" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

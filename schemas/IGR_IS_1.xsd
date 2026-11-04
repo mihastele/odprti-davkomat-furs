@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/IGR_IS_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/IGR_IS_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="IGR_IS"/>
+              <xs:element ref="Blagajne" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="BlagajneSum" minOccurs="0" maxOccurs="1" />
+              <xs:element ref="Dobitki" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="Stevci" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="StevciSums" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="IGR_IS">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0" />        
+        <xs:element name="EmailAddress" type="xs:string" minOccurs="0" />
+        <xs:element name="PhoneNumber" type="xs:string" minOccurs="0" />
+        <xs:element name="Obcina" type="xs:string" minOccurs="0"/>
+        <xs:element name="PeriodY" type="xs:int" minOccurs="0"/>
+        <xs:element name="PeriodM" type="xs:int" minOccurs="0"/>
+        
+        <xs:element name="VrstaPrireditelja" type="xs:string" minOccurs="0" /><!--Vrsta prireditelja-->
+        <xs:element name="NVrstaPrireditelja" type="xs:string" minOccurs="0" /><!--Vrsta prireditelja-->
+        <xs:element name="IgrSalon" type="xs:string" minOccurs="0" /><!--Igralnica/Igralni salon koda-->
+        <xs:element name="IgrSalonN" type="xs:string" minOccurs="0" /> <!--ime-->
+        
+        <!--Realizacija ?_realizacija-->
+        <xs:element name="NadzorniInfSistem" type="xs:decimal" minOccurs="0" /><!--Nadzorni inf. sistem (NIS)-->
+        <xs:element name="BlagajneSkupaj" type="xs:decimal" minOccurs="0" /><!-- Blagajne skupaj--> 
+        <xs:element name="RealBlagajneSkupaj" type="xs:decimal" minOccurs="0" /><!--Blagajna--> 
+        <xs:element name="DobitkiSkupaj" type="xs:decimal" minOccurs="0" /><!-- Dobitki skupaj--> 
+        
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <!-- Mesečna realizacija blagajn(e) ?_mes_blagajne -->
+  <xs:element name="Blagajne">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DatRealizacije" type="xs:date" minOccurs="0" /><!--Realizacija  -->
+        <xs:element name="Vplacila" type="xs:decimal" minOccurs="0" /><!-- Vplačila -->
+        <xs:element name="Izplacila" type="xs:decimal" minOccurs="0" /><!-- Izplačila -->
+        <xs:element name="Skupaj" type="xs:decimal" minOccurs="0" /><!-- Skupaj -->
+        <xs:element name="Promo" type="xs:decimal" minOccurs="0" /><!-- Promo ticket -->
+        <xs:element name="Neprevzeti" type="xs:decimal" minOccurs="0" /><!-- Neprevzeti dobitki -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>  
+
+  <xs:element name="BlagajneSum">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Vplacila" type="xs:decimal" minOccurs="0" /><!-- Vplačila -->
+        <xs:element name="Izplacila" type="xs:decimal" minOccurs="0" /><!-- Izplačila -->
+        <xs:element name="Skupaj" type="xs:decimal" minOccurs="0" /><!-- Skupaj -->
+        <xs:element name="Promo" type="xs:decimal" minOccurs="0" /><!-- Promo ticket -->
+        <xs:element name="Neprevzeti" type="xs:decimal" minOccurs="0" /><!-- Neprevzeti dobitki -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>  
+  
+  <!-- Seznam izplačanih dobitkov nad 1.000 EUR ?_nad_100 -->
+  <xs:element name="Dobitki">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DatumIzplacila" type="xs:date" minOccurs="0" /><!--Datum izplačila-->
+        <xs:element name="CasObracuna" type="xs:dateTime" minOccurs="0" /><!--Datum in ura obračuna hh:mm-->
+        <xs:element name="Pozicija" type="xs:string" minOccurs="0" /><!--Pozicija IA/izplačilo na blagajni--> 
+        <xs:element name="EvidencnaSt" type="xs:string" minOccurs="0" /><!--Evidenčna št.--> 
+        <xs:element name="Vrednost" type="xs:decimal" minOccurs="0" /><!--Vrednost-->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>  
+
+  <!-- Popis elektronskih števcev po igralnih mestih oz. avtomatih ?_real_EL -->
+  <xs:element name="Stevci">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ZapSt" type="xs:int" minOccurs="0" /><!--Zap. št.--> 
+        <xs:element name="Pit" type="xs:int" minOccurs="0" /><!--Pit--> 
+        <xs:element name="Pozicija" type="xs:string" minOccurs="0" /><!--Pozicija-->
+        <xs:element name="EvidencnaSt" type="xs:string" minOccurs="0" /><!--Evidenčna številka--> 
+        <xs:element name="Oznaka" type="xs:string" minOccurs="0" /><!--Oznaka IA ER--> 
+        <xs:element name="Proizvajalec" type="xs:string" minOccurs="0" /><!--Proizvajalec--> 
+        <xs:element name="ImeIgre" type="xs:string" minOccurs="0" /><!--Ime igre--> 
+        <xs:element name="Datum" type="xs:date" minOccurs="0" /><!--Datum--> 
+        <xs:element name="Denominacija" type="xs:decimal" minOccurs="0" /><!--Denominacija-->
+        <xs:element name="ObrModel" type="xs:string" minOccurs="0" /><!--Obr. model-->
+       
+        <xs:element name="Ti" type="xs:decimal" minOccurs="0" /><!--Stanje konec meseca-->
+        <xs:element name="To" type="xs:decimal" minOccurs="0" /><!--Stanje konec meseca-->
+        <xs:element name="Jp" type="xs:decimal" minOccurs="0" /><!--Stanje konec meseca-->
+        <xs:element name="Pjp" type="xs:decimal" minOccurs="0" /><!--Stanje konec meseca-->
+        <xs:element name="Cc" type="xs:decimal" minOccurs="0" /><!--Stanje konec meseca-->
+        <xs:element name="Bill" type="xs:decimal" minOccurs="0" /><!--Stanje konec meseca-->
+        <xs:element name="Games" type="xs:decimal" minOccurs="0" /><!--Stanje konec meseca-->
+        <xs:element name="Locked" type="xs:boolean" minOccurs="0"  default="false" /><!--not editable flag-->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>  
+        
+  <xs:element name="StevciSums">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Ti" type="xs:decimal" minOccurs="0" /><!--sums--> 
+        <xs:element name="To" type="xs:decimal" minOccurs="0" /> 
+        <xs:element name="Jp" type="xs:decimal" minOccurs="0" /> 
+        <xs:element name="Pjp" type="xs:decimal" minOccurs="0" /> 
+        <xs:element name="Cc" type="xs:decimal" minOccurs="0" /> 
+        <xs:element name="Bill" type="xs:decimal" minOccurs="0" /> 
+        <xs:element name="Games" type="xs:decimal" minOccurs="0" /> 
+        <xs:element name="IA_Ti" type="xs:decimal" minOccurs="0" /><!--sums IA--> 
+        <xs:element name="IA_To" type="xs:decimal" minOccurs="0" /> 
+        <xs:element name="IA_Jp" type="xs:decimal" minOccurs="0" /> 
+        <xs:element name="IA_Pjp" type="xs:decimal" minOccurs="0" /> 
+        <xs:element name="IA_Cc" type="xs:decimal" minOccurs="0" /> 
+        <xs:element name="IA_Bill" type="xs:decimal" minOccurs="0" /> 
+        <xs:element name="IA_Games" type="xs:decimal" minOccurs="0" /> 
+        <xs:element name="ER_Ti" type="xs:decimal" minOccurs="0" /><!--sums ER--> 
+        <xs:element name="ER_To" type="xs:decimal" minOccurs="0" /> 
+        <xs:element name="ER_Jp" type="xs:decimal" minOccurs="0" /> 
+        <xs:element name="ER_Pjp" type="xs:decimal" minOccurs="0" /> 
+        <xs:element name="ER_Cc" type="xs:decimal" minOccurs="0" /> 
+        <xs:element name="ER_Bill" type="xs:decimal" minOccurs="0" /> 
+        <xs:element name="ER_Games" type="xs:decimal" minOccurs="0" /> 
+        <xs:element name="SumIA" type="xs:decimal" minOccurs="0" />
+        <xs:element name="SumER" type="xs:decimal" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>  
+
+</xs:schema>

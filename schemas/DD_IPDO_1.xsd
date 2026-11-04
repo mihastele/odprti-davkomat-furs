@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/DD_IPDO_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/DD_IPDO_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="DD_IPDO"/>
+              <xs:element ref="CalcData"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:element name="DD_IPDO">
+    <xs:complexType>
+      <xs:sequence>
+        <!--Podatki o davčnem zavezancu-->
+        <xs:element name="SkdCode" type="xs:string" minOccurs="0" />
+        <xs:element name="SkdName" type="xs:string" minOccurs="0" />
+        <xs:element name="RegitrationDate" type="xs:date"/>
+        <xs:element name="ContactName" type="xs:string" minOccurs="0" />
+        <xs:element name="ContactLastName" type="xs:string" minOccurs="0" />
+        <xs:element name="PhoneNumber" type="xs:string" minOccurs="0" />
+        <xs:element name="EmailAddress" type="xs:string" minOccurs="0" />
+        <!--Podatki za izračun predvidene davčne osnove-->
+        <xs:element name="IPDO_PeriodStart" type="xs:date"/>
+        <xs:element name="IPDO_PeriodEnd" type="xs:date"/>
+        <xs:element name="IPDO_SettlingManner" type="xs:string" minOccurs="0" />
+        <xs:element name="IPDO_SettlingMannerN" type="xs:string" minOccurs="0" />
+        <xs:element name="IPDO_ExpectedIncome" type="xs:decimal" minOccurs="0" />
+        <xs:element name="IPDO_ExpectedExpenses" type="xs:decimal" minOccurs="0" />
+
+        <xs:element name="ExplanationText" type="xs:string" minOccurs="0" /><!--Obrazložitev izračuna predvidene davčne osnove-->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Izračunana medletna sprememba višine akontacije-->
+  <xs:element name="CalcData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="IPDO_ExpectedTaxBasis" type="xs:decimal" minOccurs="0" />
+        <xs:element name="IPDO_ExpectedTaxLoss" type="xs:decimal" minOccurs="0" />
+        <xs:element name="TaxRate" type="xs:decimal" minOccurs="0" />
+        <xs:element name="IPDO_ExpectedAdvPaymentBasis" type="xs:decimal" minOccurs="0" />
+        <xs:element name="IPDO_ExpectedYearAdvPayment" type="xs:decimal" minOccurs="0" />
+        <xs:element name="IPDO_AdvPayment" type="xs:decimal" minOccurs="0" />
+        <xs:element name="IPDO_MonthlyAdvPaymentAmount" type="xs:decimal" minOccurs="0" />
+        <xs:element name="IPDO_TriMonthlyAdvPaymentAmount" type="xs:decimal" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

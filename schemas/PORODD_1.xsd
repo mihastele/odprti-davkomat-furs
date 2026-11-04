@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/PORODD_1.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+           targetNamespace="http://edavki.durs.si/Documents/Schemas/PORODD_1.xsd"
+           elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="PORODD"/>
+              <xs:element ref="ReceiptFromFo" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element ref="ReceiptFromPoSp" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="PORODD">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DocumentWorkflowID" type="edp:DocumentIDType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DocumentWorkflowName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - ime</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PeriodFrom" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obdobje od</xs:documentation>
+          </xs:annotation>
+        </xs:element>        
+        <xs:element name="PeriodTo" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obdobje do</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EmailAddress" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Elektronski naslov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalIncome" type="edp:Decimal14_2Type" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Skupaj dosežen prihodek v obdobju poročila (v EUR)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ReceiptFromFo">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Podatki o doseženih prihodkih na podlagi izdanih računov pri FIZIČNIH OSEBAH v obdobju poročila</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Date" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum računa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Number" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Številka računa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Amount" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek računa (v EUR)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ReceiptFromPoSp">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Podatki o doseženih prihodkih na podlagi izdanih računov pri PRAVNIH OSEBAH in pri FIZIČNIH OSEBAH, KI OPRAVLJAJO DEJAVNOST v obdobju poročila</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Date" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum računa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Number" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Številka računa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Amount" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek računa (v EUR)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

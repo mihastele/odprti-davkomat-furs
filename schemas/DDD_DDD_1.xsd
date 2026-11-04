@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema id="DD_DDD_1" targetNamespace="http://edavki.durs.si/Documents/Schemas/DDD_DDD_1.xsd"
+  elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/DDD_DDD_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+  <xs:element name="DDD_DDD">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="FOData">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TaxPayerID" type="xs:int" minOccurs="0" />
+              <xs:element name="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="Address1" type="xs:string" minOccurs="0" />
+              <xs:element name="Address2" type="xs:string" minOccurs="0" />
+              <xs:element name="City" type="xs:string" minOccurs="0" />
+              <xs:element name="PostNumber" type="xs:string" minOccurs="0" />
+              <xs:element name="PostName" type="xs:string" minOccurs="0" />
+              <xs:element name="BirthDate" type="xs:date" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="General">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Year" type="xs:int" minOccurs="0" />
+              <xs:element name="PeriodStart" type="xs:date" minOccurs="0" />
+              <xs:element name="PeriodEnd" type="xs:date" minOccurs="0" />
+              <xs:element name="AccountingType" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:int">
+                    <xs:enumeration value="1">
+                      <xs:annotation>
+                        <xs:documentation>enostavno knjigovodstvo</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="2">
+                      <xs:annotation>
+                        <xs:documentation>dvostavno knjigovodstvo</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="3">
+                      <xs:annotation>
+                        <xs:documentation>evidenca prejetih in izdanih listin</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="IncomeStartDate" type="xs:date" minOccurs="0" />
+              <xs:element name="IncomeEndDate" type="xs:date" minOccurs="0" />
+              <xs:element name="TotalIncome" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ActivityCode" type="xs:string" minOccurs="0" />
+              <xs:element name="OpravilnaStevilka" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DDD">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F2" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F3" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F4" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F5" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F6" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F7" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F10" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F15" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F16" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F17" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F17a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F17b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F18" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F18a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F19" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F20" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F21" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F22" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F22a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F23" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F24" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F25" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F26" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F27" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F28" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F29" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F30" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F31" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F32" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F33" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F34" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F35" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F36" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F37" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F38" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F39" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F40" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F40Share" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F41" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F41a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F41b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F42N" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F42MM" type="xs:int" minOccurs="0" />
+              <xs:element name="F42DD" type="xs:int" minOccurs="0" />
+              <xs:element name="F42Gross" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F43N" type="xs:int" minOccurs="0" />
+              <xs:element name="F43MM" type="xs:int" minOccurs="0" />
+              <xs:element name="F43DD" type="xs:int" minOccurs="0" />
+              <xs:element name="F43Gross" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F44N" type="xs:int" minOccurs="0" />
+              <xs:element name="F44MM" type="xs:int" minOccurs="0" />
+              <xs:element name="F44DD" type="xs:int" minOccurs="0" />
+              <xs:element name="F44Gross" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F45N" type="xs:int" minOccurs="0" />
+              <xs:element name="F45MM" type="xs:int" minOccurs="0" />
+              <xs:element name="F45DD" type="xs:int" minOccurs="0" />
+              <xs:element name="F45Gross" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F46" type="xs:boolean" minOccurs="0" />
+              <xs:element name="F47" type="xs:boolean" minOccurs="0" />
+              <xs:element name="F48YY" type="xs:int" minOccurs="0" />
+              <xs:element name="F48StartDate" type="xs:date" minOccurs="0" />
+              <xs:element name="F50N" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F50MM" type="xs:int" minOccurs="0" />
+              <xs:element name="F50DD" type="xs:int" minOccurs="0" />
+              <xs:element name="F51N" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F51MM" type="xs:int" minOccurs="0" />
+              <xs:element name="F51DD" type="xs:int" minOccurs="0" />
+              <xs:element name="F52N" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F52MM" type="xs:int" minOccurs="0" />
+              <xs:element name="F52DD" type="xs:int" minOccurs="0" />
+              <xs:element name="F53N" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F53MM" type="xs:int" minOccurs="0" />
+              <xs:element name="F53DD" type="xs:int" minOccurs="0" />
+              <xs:element name="F54N" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F54MM" type="xs:int" minOccurs="0" />
+              <xs:element name="F54DD" type="xs:int" minOccurs="0" />
+              <xs:element name="F55N" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F55MM" type="xs:int" minOccurs="0" />
+              <xs:element name="F55DD" type="xs:int" minOccurs="0" />
+              <xs:element name="F56N" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F56MM" type="xs:int" minOccurs="0" />
+              <xs:element name="F56DD" type="xs:int" minOccurs="0" />
+              <xs:element name="F57N" type="xs:string" minOccurs="0" />
+              <xs:element name="F57Date" type="xs:date" minOccurs="0" />
+              <xs:element name="F58" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F59" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Account" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="BankName" type="xs:string" minOccurs="0" />
+              <xs:element name="AccountNumber" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="BalanceSheet">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F1" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F2" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F3" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F4" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F5" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F5a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F5b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F6" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F7" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F10" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F11" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F12" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F13" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F13a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F13b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F14" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F15" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="PreviousBalanceSheet">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F1" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F2" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F3" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F4" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F5" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F5a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F5b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F6" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F7" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F10" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F11" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F12" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F13" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F13a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F13b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F14" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F15" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="BusinessOutcome">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F1" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F2" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F3" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F4" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F5" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F5a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F5b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F6" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F6a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F6b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F6c" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F6d" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F7" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F7a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F7b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F8a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F8b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F10" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F10b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F11" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F12" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F13a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F13b" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="PreviousBusinessOutcome">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F1" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F2" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F3" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F4" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F5" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F5a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F5b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F6" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F6a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F6b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F6c" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F6d" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F7" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F7a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F7b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F8a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F8b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F10" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F10b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F11" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F12" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F13a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F13b" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Summary">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F4" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F5" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F6" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F7" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F10" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F11" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F12" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F13" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F14" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F15" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F16" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F17" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F18" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element ref="DDD_DDD" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

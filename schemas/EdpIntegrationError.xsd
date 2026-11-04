@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/EdpIntegrationError.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://edavki.durs.si/Documents/Schemas/EdpIntegrationError.xsd" elementFormDefault="qualified" id="EdpIntegrationErrorDS">
+	<xs:element name="EdpIntegrationError">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="edpIntegrationErrorType" type="EdpIntegrationErrorType"/>
+				<xs:element name="edpIntegrationErrorDescription" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="EdpIntegrationErrorType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="OperationFinished">
+				<xs:annotation>
+					<xs:documentation>Operacija je izvedena uspešno</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OperationFailed">
+				<xs:annotation>
+					<xs:documentation>Napaka v procesu obdelave</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ErrorInDocument">
+				<xs:annotation>
+					<xs:documentation>Napačen dokument</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WrongDocumentVersion">
+				<xs:annotation>
+					<xs:documentation>Napačna verzija dokumenta</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DocumentDoesNotExist">
+				<xs:annotation>
+					<xs:documentation>Dokument ne obstaja</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DocumentAlreadyExists">
+				<xs:annotation>
+					<xs:documentation>Dokument že obstaja</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LegacySystemMaintenance">
+				<xs:annotation>
+					<xs:documentation>Spletna storitev se trenutno vzdržuje</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EntryDoesNotExist">
+				<xs:annotation>
+					<xs:documentation>Takšen zapis ne obstaja</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EntryNotCompliant">
+				<xs:annotation>
+					<xs:documentation>Zapis ne ustreza poslovnim pravilom</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MoreThanOneEntry">
+				<xs:annotation>
+					<xs:documentation>Obstaja več zapisov</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

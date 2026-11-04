@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/Car_PE_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/Car_PE_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="Car_PE"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:element name="Car_PE">
+    <xs:complexType>
+      <xs:sequence>
+        <!-- Custodian data -->
+        <xs:element name="CustodianNotes" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Opombe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianSubmitDate" type="xs:date" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Datum prijave</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <!-- User -->
+        <xs:element name="User" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčni zavezanec, ki je pooblaščen.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TaxPayerID" type="xs:int" minOccurs="0" />
+              <xs:element name="TaxPayerType" type="edp:taxpayerTypeType" minOccurs="0" />
+              <xs:element name="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="Address" type="xs:string" minOccurs="0" />
+              <xs:element name="City" type="xs:string" minOccurs="0" />
+              <xs:element name="Post" type="xs:string" minOccurs="0" />
+              <xs:element name="PostName" type="xs:string" minOccurs="0" />
+              <xs:element name="Country" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        
+        <xs:element name="Roles">
+          <xs:annotation>
+            <xs:documentation>Pooblastila</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="RoleGroup" maxOccurs="unbounded" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Skupina pooblastil (aplikacija)</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="RoleGroupCode" type="xs:string" >
+                      <xs:annotation>
+                        <xs:documentation>Koda skupine pooblastil</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="RoleGroupDescription" type="xs:string" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Opis skupine pooblastil</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Role" maxOccurs="unbounded" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Pooblastilo</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="RoleTypeCode" type="xs:string" >
+                            <xs:annotation>
+                              <xs:documentation>Koda pooblastila</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="RoleTypeDescription" type="xs:string" minOccurs="0" >
+                            <xs:annotation>
+                              <xs:documentation>Opis pooblastila</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="IsSpecial" type="xs:boolean" >
+                            <xs:annotation>
+                              <xs:documentation>Ali je posebno pooblastilo?</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="Status" type="xs:int" >
+                            <xs:annotation>
+                              <xs:documentation>Status pooblastila</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="ValidFrom" type="xs:date" minOccurs="0" >
+                            <xs:annotation>
+                              <xs:documentation>Datum veljavnosti od</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="ValidTo" type="xs:date" minOccurs="0" >
+                            <xs:annotation>
+                              <xs:documentation>Datum veljavnosti do</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

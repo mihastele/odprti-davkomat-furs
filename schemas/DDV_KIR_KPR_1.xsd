@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/DDV_KIR_KPR_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://edavki.durs.si/Documents/Schemas/DDV_KIR_KPR_1.xsd" elementFormDefault="qualified" version="1.1">
+	<xs:annotation>
+		<xs:documentation xml:lang="en"><![CDATA[
+		Shema za posredovanje podatkov KIR in KPR
+		=== Zgodovina===
+		Verzija	1.3	22.07.2024	
+			Shema dovoljuje hkratno prisotnost Lista_KIR in Lista_KPR
+			yesNoType zamenjan z xs:boolean
+			Iz glave odstranjeno polje PREDIDDVO
+		Verzija	1.2	12.07.2024	Iz glave odstranjeno polje STORNO
+		Verzija	1.1	18.06.2024	Popravki sheme
+		Verzija	1.0	29.01.2024	Osnutek sheme
+		]]></xs:documentation>
+	</xs:annotation>
+	<xs:element name="DDV_KIR_KPR">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Glava"/>
+				<xs:element ref="Lista_KIR" minOccurs="0"/>
+				<xs:element ref="Lista_KPR" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Glava">
+		<xs:annotation>
+			<xs:documentation>Glava</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TaxPayerID" type="taxPayerIdType">
+					<xs:annotation>
+						<xs:documentation>TaxPayer (DŠ)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="TUJEC1" type="countryCodeType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>koda države zavezanca (tujec)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="TUJEC2" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>dš zavezanca (tujec)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="OBDOBJE_OD" type="xs:date">
+					<xs:annotation>
+						<xs:documentation>Datum začetka obdobja poročanja</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="OBDOBJE_DO" type="xs:date">
+					<xs:annotation>
+						<xs:documentation>Datum konca obdobja poročanja</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="KIR" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>Knjiga vsebuje KIR podatke</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="KPR" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>Knjiga vsebuje KPR podatke</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="VRACILO" type="xs:boolean" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Zahtevam Vračilo</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ODBDELEZ" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>Izračunavam odbitni delež</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="NACIN" type="nacinType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Način obravnave</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="INSPOS" type="xs:boolean" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Insolventni postopek</xs:documentation>
+					</xs:annotation>
+				</xs:element>				
+				<xs:element name="PREDLODO" type="xs:boolean" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Predložitev na podlagi odločitve davčnega organa</xs:documentation>
+					</xs:annotation>
+				</xs:element>							
+				<xs:element name="OPOMBA" type="text250Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Opomba</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Lista_KIR">
+		<xs:annotation>
+			<xs:documentation>Lista zapisov KIR</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="KIR" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Lista_KPR">
+		<xs:annotation>
+			<xs:documentation>Lista zapisov KPR</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="KPR" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="KIR">
+		<xs:annotation>
+			<xs:documentation>Listina (zapis) KIR</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ZAPST" type="xs:int">
+					<xs:annotation>
+						<xs:documentation>Zap. št.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="OBDOBJE" type="obdobjeType">
+					<xs:annotation>
+						<xs:documentation>Davčno obdobje: MMMM</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P2" type="xs:date">
+					<xs:annotation>
+						<xs:documentation>datum knjiženja listine</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P3" type="text250Type">
+					<xs:annotation>
+						<xs:documentation>številka listine</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P4" type="xs:date">
+					<xs:annotation>
+						<xs:documentation>datum listine</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P5" type="text250Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>firma/ime in sedež kupca</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P6" type="countryCodeType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>koda države članice kupca</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P6DS" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>kupčeva identifikacijska številka za DDV oziroma DŠ (brez kode države)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P7" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>vrednost dobav blaga in storitev brez DDV</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P8" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>vrednost dobav blaga in storitev v Sloveniji za samoobdavčitev</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P9" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>oproščene dobave brez pravice do odbitka DDV</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P10" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>oproščene dobave blaga in storitev znotraj Unije</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P11" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>oproščena tristranska dobava blaga znotraj unije</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P12" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>prodaja blaga na daljavo</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P13" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>prodaja blaga z montažo ali napeljavo</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P14" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>obračunan DDV po 22%</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P15" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>obračunan DDV po 9,5%</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P16" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>obračunan DDV po 5%</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P17" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>obračunan DDV po 22% za pridobitev blaga znotraj unije</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P18" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>obračunan DDV po 22% za prejete storitve znotraj unije</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P19" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>obračunan DDV po 9,5% za pridobitev blaga znotraj unije</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P20" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>obračunan DDV po 9,5% za prejete storitve znotraj unije</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P21" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>obračunan DDV po 5% za pridobitev blaga znotraj unije</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P22" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>obračunan DDV po 5% za prejete storitve znotraj unije</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P23" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>obračunan DDV po 22% na podlagi samoobdavčitve prejemnika blaga in storitev</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P24" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>obračunan DDV po 9,5% na podlagi samoobdavčitve prejemnika blaga in storitev</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P25" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>obračunan DDV po 5% na podlagi samoobdavčitve prejemnika blaga in storitev</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P26" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>obračunan DDV na podlagi samoobdavčitve od uvoza</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P27" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>vrednost dobav s pravico do odbitka DDV, pri kateri je kraj dobave zunaj Slovenije</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P28" type="text250Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Opombe</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="OBRAVNAVA" type="obravnavaType">
+					<xs:annotation>
+						<xs:documentation>Način obravnave</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="OBDOBJE88" type="mmmmllllType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Samoprijava – davčno obdobje</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DAVEK88" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Samoprijava – znesek davka</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="KPR">
+		<xs:annotation>
+			<xs:documentation>Listina (zapis) KPR</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ZAPST" type="xs:int">
+					<xs:annotation>
+						<xs:documentation>Zap. št. </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="OBDOBJE">
+					<xs:annotation>
+						<xs:documentation>Davčno obdobje: MMMM</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern value="[0-9]{4}"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="P2" type="xs:date">
+					<xs:annotation>
+						<xs:documentation>datum knjiženja listine</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P3" type="text250Type">
+					<xs:annotation>
+						<xs:documentation>številka listine</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P4" type="xs:date">
+					<xs:annotation>
+						<xs:documentation>datum prejema listine</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P5" type="xs:date">
+					<xs:annotation>
+						<xs:documentation>datum listine</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P6" type="text250Type">
+					<xs:annotation>
+						<xs:documentation>firma/ime in sedež dobavitelja</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P7" type="countryCodeType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>koda države članice dobavitelja</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P7DS" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>dobaviteljeva identifikacijska številka za DDV oziroma DŠ (brez kode države)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P8" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>vrednost nabav blaga in storitev brez DDV</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P9" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>vrednost nabav blaga in storitev v Sloveniji od samoobdavčitve</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P10" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>vrednost obdavčenih pridobitev blaga brez DDV</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P11" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>vrednost obdavčenih prejetih storitev brez DDV</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P12" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>vrednost obdavčenih nabav nepremičnin brez DDV</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P13" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>vrednost obdavčenih nabav drugih osnovnih sredstev brez DDV</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P14" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>oproščene nabave in pridobitve</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P15" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>vrednost oproščenih nabav nepremičnin brez DDV</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P16" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>vrednost oproščenih nabav drugih osnovnih sredstev brez DDV</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P17" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>DDV, ki se ne odbija</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P18" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>odbitni DDV 22 %</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P19" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>odbitni DDV 9,5 %</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P20" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>odbitni DDV 5 %</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P21" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>pavšalno nadomestilo 8 %</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="P22" type="text250Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Opombe</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="OBRAVNAVA" type="obravnavaType">
+					<xs:annotation>
+						<xs:documentation>Način obravnave</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="OBDOBJE88" type="mmmmllllType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Samoprijava – davčno obdobje</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DAVEK88" type="amountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Samoprijava – znesek davka</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="text250Type">
+		<xs:annotation>
+			<xs:documentation>besedilo do 250 znakov</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="250"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="countryCodeType">
+		<xs:annotation>
+			<xs:documentation>dvomestna koda države</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:length value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="amountType">
+		<xs:annotation>
+			<xs:documentation>znesek, do dve decimalki, lahko negativen, absolutno manjši od 5.000.000.000</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="2"/>
+			<xs:minExclusive value="-5000000000"/>
+			<xs:maxExclusive value="5000000000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="taxPayerIdType">
+		<xs:restriction base="xs:positiveInteger">
+			<xs:pattern value="[0-9]{8}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="nacinType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>samoprijava</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation>Vloga za predložitev po roku</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation>Ne bom uporabil instituta samoprijave...</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>	
+	<xs:simpleType name="obdobjeType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{4}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="obravnavaType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>obračun</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation>Samoprijava obračun in obresti (popravki napak iz preteklih obdobij)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation>samo obresti</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="mmmmllllType">
+		<xs:annotation>
+			<xs:documentation>mmmmllll</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{8}"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

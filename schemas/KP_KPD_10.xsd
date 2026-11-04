@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema id="KP_KPD_10" targetNamespace="http://edavki.durs.si/Documents/Schemas/KP_KPD_10.xsd" elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/KP_KPD_10.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+  <xs:element name="KP_KPD">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Year" type="xs:int" />
+        <xs:element name="FileType" minOccurs="0">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="Vir" />
+              <xs:enumeration value="VirDet" />
+              <xs:enumeration value="Vir41" />
+              <xs:enumeration value="VirPN1" />
+              <xs:enumeration value="VirPN2" />
+              <xs:enumeration value="VirPovp" />
+              <xs:enumeration value="VirOpr" />
+              <xs:enumeration value="Vir5200" />
+              <xs:enumeration value="VirSpr" />
+              <xs:enumeration value="VirAps" />
+              <xs:enumeration value="VirVdc" />
+              <xs:enumeration value="VirObr" />
+              <xs:enumeration value="VirOdiv" />
+              <xs:enumeration value="Vir5900" />
+              <xs:enumeration value="VirInva" /> 
+              <xs:enumeration value="VirUmik" />
+              <xs:enumeration value="VirIfi" />
+              <xs:enumeration value="VirInvk" />
+              <xs:enumeration value="VirPon" />
+              <xs:enumeration value="Zip" />
+              <xs:enumeration value="VirOprkm" />
+              <xs:enumeration value="VirSub" />
+              <xs:enumeration value="Vir6600" />
+              <xs:enumeration value="VirSkupkm" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="SubmitDate" type="xs:date" minOccurs="0" />
+        <xs:element name="ErrorList" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Error" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="SummaryCounter" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="FileType" type="xs:string" minOccurs="1" />
+              <xs:element name="IncomeTypes" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="IncomeType" type="xs:string" />
+                    <xs:element name="Count" type="xs:int" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element ref="edp:AttachmentList" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element ref="KP_KPD" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

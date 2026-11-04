@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/NF_PorObv_1.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://edavki.durs.si/Documents/Schemas/NF_PorObv_1.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+             schemaLocation="EDP-Common-1.xsd"/>
+
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element ref="PorObv" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="PorObv">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Representative" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Podatki o pooblaščencu</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Name" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ime in priimek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxNumber" type="edp:TaxNumberType" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="OutstandingLiabilitiesDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum preverjanja poravnanih obveznosti</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PaymentObligationsDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Upošteva se plačila obveznosti do datuma</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DebtSettlement" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Zvezanec želi poravnati dolg, če obstaja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Izpisodprtihpostavk" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Izpis odprtih postavk</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CertificateForAbroad" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Potrdilo za tujino</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

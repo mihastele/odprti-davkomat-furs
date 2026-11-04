@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/Dac8_Reg_1.xsd" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:stf="urn:oecd:ties:dpistf:v1"
+           xmlns:iso="urn:oecd:ties:isodpitypes:v1" 
+           xmlns:dpi="urn:oecd:ties:dpi:v1" 
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" 
+           targetNamespace="http://edavki.durs.si/Documents/Schemas/Dac8_Reg_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+	<xs:import namespace="urn:oecd:ties:isodpitypes:v1" schemaLocation="isodpitypes_v1.0.xsd"/>
+	<xs:import namespace="urn:oecd:ties:dpistf:v1" schemaLocation="oecddpitypes_v1.0.xsd"/>
+	<xs:import namespace="urn:oecd:ties:dpi:v1" schemaLocation="DPIXML_v1.08.xsd"/>
+  
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:AttachmentList" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Data" minOccurs="0" />
+              <xs:element ref="Emails" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="Urls" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="ResidentCountries" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="Jurisdikcije" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="ReRegistration"  minOccurs="0" maxOccurs="1" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="PeriodYear" type="xs:int" minOccurs="0" />       
+        <xs:element name="IIN" type="xs:string" minOccurs="0" /> 
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0" />
+        <xs:element name="IinStatement" type="xs:boolean" minOccurs="0" />        
+        <xs:element name="IsReRegistration" type="xs:boolean" minOccurs="0" />        
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="Emails">
+    <xs:complexType>
+      <xs:sequence>
+      <xs:element name="Email" type="xs:string" minOccurs="0" /> 
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>  
+
+  <xs:element name="Urls">
+    <xs:complexType>
+      <xs:sequence>
+      <xs:element name="Url" type="xs:string" minOccurs="0" /> 
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>  
+  
+  <xs:element name="ResidentCountries">
+    <xs:complexType>
+      <xs:sequence>
+       <xs:element name="CountryCode" type="xs:string" minOccurs="0"  />
+       <xs:element name="CountryName" type="xs:string" minOccurs="0"  />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>  
+
+  <xs:element name="Jurisdikcije">
+    <xs:complexType>
+      <xs:sequence>
+       <xs:element name="CountryCode" type="xs:string" minOccurs="0"  />
+       <xs:element name="CountryName" type="xs:string" minOccurs="0"  />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>  
+  
+
+  <xs:element name="ReRegistration">
+    <xs:complexType>
+      <xs:sequence>
+       <xs:element name="DeRegCountry" type="iso:MSCountryCode_Type" minOccurs="0" maxOccurs="unbounded" />
+       <xs:element name="DeRegIIN" type="xs:string" minOccurs="0" /> 
+       <xs:element name="DeRegYear" type="xs:int" minOccurs="0" maxOccurs="unbounded" /> 
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>  
+  
+</xs:schema>

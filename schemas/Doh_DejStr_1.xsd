@@ -1,0 +1,347 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/Doh_DejStr_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/Doh_DejStr_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="DejStr" />
+              <xs:element ref="PaymentInfo" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="UsualWhereabouts" minOccurs="0" maxOccurs="3" />
+              <xs:element ref="PlaceOfBusiness" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="Transport" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="Stay" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="DejStr">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Year" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Leto, za katerega se oddaja obrazec</xs:documentation>
+          </xs:annotation>
+        </xs:element>        
+        <xs:element name="EmailAddress" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Elektronski naslov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PaymentInfoIncomeSum" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Vsota prejetega dohodka iz drugega pogodbenega razmerja
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PlaceOfBusinessPublicFareSum" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Vsota: do mesta opravljanja dela / Javno prevozno sredstvo / Skupni znesek vozovnice
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PlaceOfBusinessOwnKmSum" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Vsota: do mesta opravljanja dela / Lastno prevozno sredstvo / Število km
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PlaceOfBusinessOwnAmountSum" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Vsota: do mesta opravljanja dela / Lastno prevozno sredstvo / Znesek
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TransportPublicFareSum" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Vsota: Dejanski stroški prevoza na službenem potovanju / Javno prevozno sredstvo / Skupni znesek vozovnice
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TransportOwnKmSum" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Vsota: Dejanski stroški prevoza na službenem potovanju / Lastno prevozno sredstvo / Število km
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TransportOwnAmountSum" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Vsota: Dejanski stroški prevoza na službenem potovanju / Lastno prevozno sredstvo / Znesek
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TransportOwnTollParkingSum" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Vsota: Dejanski stroški prevoza na službenem potovanju / Lastno prevozno sredstvo / Cestnina, parkirnina
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="StayAmountSum" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Vsota: Dejanski stroški nočitve / Znesek
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="PaymentInfo">
+    <xs:annotation>
+      <xs:documentation>
+        1. PODATKI O PLAČNIKU DAVKA (IZPLAČEVALCU) IN O PREJETEM DOHODKU IZ DRUGEGA POGODBENEGA RAZMERJA
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Name" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Ime in priimek oziroma firma
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Address" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naslov oziroma sedež</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxNumber" type="edp:TaxNumberType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčna številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IncomeType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Oznaka dohodka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IncomeTypeDescription" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Oznaka dohodka - opis</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Income" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Oznaka dohodka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="UsualWhereabouts">
+    <xs:annotation>
+      <xs:documentation>
+        2.1. Dejanski stroški prevoza na delo in z dela / Za prevoz z javnim/lastnim prevoznim sredstvom uveljavljam stroške prevoza od
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Address" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Naslov običajnega prebivališča (naselje, ulica, hišna številka, pošta)
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="PlaceOfBusiness">
+    <xs:annotation>
+      <xs:documentation>
+        2.1. Dejanski stroški prevoza na delo in z dela / do mesta opravljanja dela:
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Month" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Mesec</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxNumber" type="edp:TaxNumberType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Davčna številka izplačevalca
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Address" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Mesto opravljanja dela
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PublicType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Javno prevozno sredstvo / Vrsta
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PublicFare" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Javno prevozno sredstvo / Skupni znesek vozovnice
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="OwnKm" type="Int6Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Lastno prevozno sredstvo / Število km
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="OwnAmount" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Lastno prevozno sredstvo / Znesek
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Transport">
+    <xs:annotation>
+      <xs:documentation>
+        2.2. Dejanski stroški prevoza na službenem potovanju
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Date" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum izplačila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxNumber" type="edp:TaxNumberType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Davčna številka izplačevalca
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AddressStartEnd" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Mesto začetka/konca</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="WorkAddress" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Mesto opravljanja dela
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PublicType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Javno prevozno sredstvo / Vrsta
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PublicFare" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Javno prevozno sredstvo / Skupni znesek vozovnice
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="OwnKm" type="Int6Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Lastno prevozno sredstvo / Število km
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="OwnAmount" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Lastno prevozno sredstvo / Znesek
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="OwnTollParking" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Cestnina, parkirnina</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Stay">
+    <xs:annotation>
+      <xs:documentation>
+        2.3. Dejanski stroški nočitve
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TaxNumber" type="edp:TaxNumberType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Davčna številka izplačevalca
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Address" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Mesto opravljanja dela
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Nights" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Število nočitev</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Amount" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="Int6Type">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:pattern value="[0-9]{1,6}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

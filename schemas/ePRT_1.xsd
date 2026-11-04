@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/ePRT_1.xsd"
+  elementFormDefault="qualified"
+  xmlns="http://edavki.durs.si/Documents/Schemas/ePRT_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+
+              <!--Akt, ki se izpodbija-->
+              <xs:element ref="ActInfo"/>
+
+              <!--Pritožba za zavezanca/stranko-->
+              <xs:element ref="AppealForTaxPayerOrClient"/>
+
+              <!-- Podatki o vložniku -->
+              <xs:element ref="ApplicantInfo"/>
+
+              <!--Podatki o pooblaščencu za zastopanje-->
+              <xs:element ref="InformationAboutAuthorizedRepresentative" minOccurs="0"/>
+              
+              <!--Popravi pritožbo-->
+              <xs:element ref="Procedure" minOccurs="0"/>
+
+              <!--Grounds for appeal-->
+              <xs:element ref="GroundsForAppeal"/>
+              
+              <!-- Attachment list-->
+              <xs:element ref="Attachment" minOccurs="0"/>
+              
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ActInfo">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Akt, ki se izpodbija</xs:documentation>
+      </xs:annotation>
+
+      <xs:sequence>
+
+        <xs:element name="FinancialOffice" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>Številka finančnega urada</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        
+        <xs:element name="FinancialOfficeName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv finančnega urada</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="Number" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>Številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="ActDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="AppealForTaxPayerOrClient">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Pritožba za zavezanca/strank</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+
+        <xs:element name="Name" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>Naziv/ime in priimek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="TaxPayerId" type="edp:TaxNumberType">
+          <xs:annotation>
+            <xs:documentation>Davčna številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ApplicantInfo">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Podatki o vložniku</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+
+        <xs:element name="ApplicantType" type="PositiveInt_Type">
+          <xs:annotation>
+            <xs:documentation>Vrsta vložnika</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="Name" type="StringMax256"  minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv/ime in priimek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="TaxPayerId" type="edp:TaxNumberType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčna številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="TelephoneNumber" type="StringMax20" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="Email" type="StringMax256" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Elektronski naslov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="InformationAboutAuthorizedRepresentative">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Podatki o pooblaščencu za zastopanje</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+
+        <xs:element name="Name" type="StringMax256" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv/ime in priimek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="TaxPayerId" type="edp:TaxNumberType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčna številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Procedure" >
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Popravi pritožbo</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+
+        <xs:element name="ProcedureType" type="PositiveInt_Type">
+          <xs:annotation>
+            <xs:documentation>Razlog popravka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="Reason" type="StringMax1024">
+          <xs:annotation>
+            <xs:documentation>Opis razloga</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="GroundsForAppeal">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Pritožbeni razlogi</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+
+        <xs:element name="ReasonType" type="PositiveInt_Type">
+          <xs:annotation>
+            <xs:documentation>Pritožbeni razlog</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="Clarification" type="StringMax1024" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Opis razloga</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Attachment" >
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Hash" type="xs:string" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:simpleType name="PositiveInt_Type">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="StringMax20">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="20"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="StringMax256">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="256"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="StringMax1024">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="1024"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+</xs:schema>

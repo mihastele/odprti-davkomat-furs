@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/DDV_VlgPN_2.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/DDV_VlgPN_2.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="DDV_VlgPN"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:element name="DDV_VlgPN">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Popravek Dokumenta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vloga za</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="1">
+                <xs:annotation>
+                  <xs:documentation>Nova vloga</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="2">
+                <xs:annotation>
+                  <xs:documentation>Sprememba vloge</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="3">
+                <xs:annotation>
+                  <xs:documentation>Prenos vloge</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="4">
+                <xs:annotation>
+                  <xs:documentation>Razveljavitev vloge</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="CancellationDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Dan razveljavitve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PeriodYear" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčno obdobje-leto</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Language" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Jezik</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Contact" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Contact</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PhoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefon</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Email" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Elektronska pošta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IsResident" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Rezident</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IsRepresentative" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Pooblaščenec</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Representative" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Pooblaščenec</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Name" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naziv</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Address" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ulica in hišna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="City" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naselje</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Post" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Poštna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PostName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Pošta</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Country" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Država</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxNumber" type="edp:TaxNumberType" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="OnlyForDelivery" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Pooblaščenec samo za vročanje</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="A" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>A. Skupine – Kmetijski in gozdarski pridelki</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="1">
+                <xs:annotation>
+                  <xs:documentation>Pridelki živinoreje</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="2">
+                <xs:annotation>
+                  <xs:documentation>Pridelki čebelarstva</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="3">
+                <xs:annotation>
+                  <xs:documentation>Poljščine, krmne rastline ter drugi pridelki</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="4">
+                <xs:annotation>
+                  <xs:documentation>Hmelj</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="5">
+                <xs:annotation>
+                  <xs:documentation>Sveže sadje, oreščki in oljčno olje</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="6">
+                <xs:annotation>
+                  <xs:documentation>Grozdje in vino</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="7">
+                <xs:annotation>
+                  <xs:documentation>Gozdarski pridelki</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="B" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>B. Skupine – Kmetijske in gozdarske storitve</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="1">
+                <xs:annotation>
+                  <xs:documentation>Storitve v rastlinski predelavi</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="2">
+                <xs:annotation>
+                  <xs:documentation>Storitve v živinoreji</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="3">
+                <xs:annotation>
+                  <xs:documentation>Gozdarske storitve</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="Attachment" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Priloge</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="1">
+                <xs:annotation>
+                  <xs:documentation>Dokazilo o izpolnjevanju pogojev</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="2">
+                <xs:annotation>
+                  <xs:documentation>Potrdilo o članih gospodinjstva</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="3">
+                <xs:annotation>
+                  <xs:documentation>Pooblastilo za imenovanje pooblaščenca</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="4">
+                <xs:annotation>
+                  <xs:documentation>Pooblastilo za imenovanje pooblaščenca za vročitve</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="5">
+                <xs:annotation>
+                  <xs:documentation>Ostalo</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="Transfer" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prenos dovoljenja na drugega člana gospodinjstva</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Date" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Prenos na dan</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Name" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naziv</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Address" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ulica in hišna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="City" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naselje</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Post" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Poštna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PostName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Pošta</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Country" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Država</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxNumber" type="edp:TaxNumberType" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PhoneNumber" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Telefon</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Email" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Elektronska pošta</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="CommitmentA" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Izjava A</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CommitmentB" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Izjava B</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

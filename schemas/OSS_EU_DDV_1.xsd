@@ -1,0 +1,836 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSpy v2007 sp2 (http://www.altova.com) by i.v. (Hermes SoftLab d.d.) -->
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/OSS_EU_DDV_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cm="urn:ec.europa.eu:taxud:fiscalis:common:v1" xmlns:m1ss="urn:ec.europa.eu:taxud:fiscalis:m1ss:v1" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/OSS_EU_DDV_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  <xs:import namespace="urn:ec.europa.eu:taxud:fiscalis:common:v1" schemaLocation="commontypes_v3.xsd"/>
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Data"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TraderDetails" type="TraderDetails_Type" minOccurs="0"/>
+        <xs:element name="M1ssVATReturnMSCON" type="M1ssVATReturnMSCON_Type"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="M1ssVATReturnMSCON_Type">
+    <xs:sequence>
+
+      <xs:element name="VATReturnReference" type="VersionedVATReturnReference_Type" minOccurs="0"/>
+      <xs:element name="TraderID" type="TraderID_Type" minOccurs="0"/>
+      <xs:element name="ChangeDate" type="RestrictedDate_Type" minOccurs="0"/>
+      <xs:element name="Period" type="PeriodSplit_Type"/>
+      <xs:element name="SubmissionDate" type="RestrictedDate_Type" minOccurs="0"/>
+      
+      <xs:element name="Sums" type="Sums_Type" minOccurs="0"/>
+      <xs:element name="VATByCountriess" type="VATByCountriess_Type" minOccurs="0"/>
+      <xs:element name="VATByCountriesAllTabless" type="VATByCountriesAllTabless_Type" minOccurs="0"/>
+    
+      <xs:element name="Supplies" type="M1ssSupply_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="TraderDetails_Type">
+    <xs:sequence>
+      <xs:element name="Country" type="cm:CountryIsoCodeAlpha2_Type" minOccurs="0" /><!--Država sedeža podjetja--> 
+      <xs:element name="PlaceOfBusiness" type="cm:CountryIsoCodeAlpha2_Type" minOccurs="0" /><!--Država sedeža podjetja, če je ta zunaj Unije-->
+      <xs:element name="PlaceOfBusinessVAT" type="EurAmount_Type" minOccurs="0"/>
+      <xs:element name="PlaceOfBusinessID" type="VATNumber_Type" minOccurs="0"/>
+      <xs:element name="TradingName" type="xs:string" minOccurs="0" />
+      <xs:element name="NationalTaxReference" type="VATNumber_Type" minOccurs="0" />
+      <xs:element name="NationalTaxReferenceIssuedBy" type="cm:CountryIsoCodeAlpha2_Type" minOccurs="0" /><!--Država identifikacije-->
+      <xs:element name="IdSpecial" type="xs:string" minOccurs="0" />
+      <xs:element name="IdSpecialInterm" type="xs:string" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="GrandTotalMSID_Type">
+    <xs:sequence>
+      <xs:element name="Services" type="EurAmount_Type" minOccurs="0"/>
+      <xs:element name="Goods" type="EurAmount_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="GrandTotalMSEST_Type">
+    <xs:sequence>
+      <xs:element name="Services" type="EurAmount_Type" minOccurs="0"/>
+      <xs:element name="Goods" type="EurAmount_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="M1ssSupply_Type">
+    <xs:sequence>
+      <xs:element name="M1ssMSIDSupplies" type="M1ssMSIDReturnDetails_Type"/>
+      <xs:element name="M1ssMSESTSupplies" type="M1ssMSESTReturnDetails_Type" minOccurs="0"/>
+      <xs:element name="M1ssVATReturnCorrections" type="M1ssVATReturnCorrections_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="M1ssMSIDReturnDetails_Type">
+    <xs:sequence>
+      <xs:element name="M1ssVATReturnDetail" type="M1ssMSIDReturnDetail_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="M1ssMSIDReturnDetailsSum_Type">
+    <xs:sequence>
+      <xs:element name="M1ssVATReturnDetailSum" type="M1ssMSIDReturnDetailSum_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="M1ssMSESTReturnDetails_Type">
+    <xs:sequence>
+      <xs:element name="M1ssMSESTReturnDetail" type="M1ssMSESTReturnDetail_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="M1ssVATReturnCorrections_Type">
+    <xs:sequence>
+      <xs:element name="M1ssVATReturnCorrection" type="M1ssVATReturnCorrection_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="VATByCountriess_Type">
+    <xs:sequence>
+      <xs:element name="VATByCountries" type="VATByCountriesAllTables_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="VATByCountriesAllTabless_Type">
+    <xs:sequence>
+      <xs:element name="VATByCountriesAllTables" type="VATByCountriesAllTables_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="M1ssVATReturnCorrection_Type">
+    <xs:sequence>
+      <xs:element name="ReturnPeriod" type="Quarter_Type"  minOccurs="0" /><!--or Month_Type-->
+      <xs:element name="Year" type="xs:string" minOccurs="0"  />
+      <xs:element name="Country" type="cm:CountryIsoCodeAlpha2_Type" minOccurs="0"  />
+      <xs:element name="VATRate" type="VATRate_Type" minOccurs="0"  />
+      <xs:element name="VATAmount" type="EurAmount_Type" minOccurs="0"  />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="M1ssMSIDReturnDetailSum_Type">
+    <xs:sequence>
+      <xs:element name="SumByServices" type="EurAmount_Type"/>
+      <xs:element name="SumByGoods" type="EurAmount_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="M1ssMSIDReturnDetail_Type">
+    <xs:sequence>
+      <xs:element name="TypeOfSupply" type="TypeOfSupply_Type" minOccurs="0"/>
+      <xs:element name="MSCONCountryCode" type="cm:CountryIsoCodeAlpha2_Type" minOccurs="0"/>
+      <xs:element name="VATRate" type="VATRate_Type" minOccurs="0"/>
+      <xs:element name="TaxableAmount" type="EurAmountPositive_Type" minOccurs="0"/>
+      <xs:element name="VATAmount" type="EurAmount_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="M1ssMSESTReturnDetail_Type">
+    <xs:sequence>
+      <xs:element name="TypeOfSupply" type="TypeOfSupply_Type" minOccurs="0"/>
+      <xs:element name="VATIdentificationNumber" type="VATNumberOrEmpty_Type" minOccurs="0"/>
+      <xs:element name="IssuedBy" type="cm:CountryIsoCodeAlpha2_Type" minOccurs="0"/>
+      <xs:element name="MSCONCountryCode" type="cm:CountryIsoCodeAlpha2_Type" minOccurs="0"/>
+      <xs:element name="VATRate" type="VATRate_Type"/>
+      <xs:element name="TaxableAmount" type="EurAmountPositive_Type" minOccurs="0"/>
+      <xs:element name="VATAmount" type="EurAmount_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="Sums_Type">
+    <xs:sequence>
+      <xs:element name="SumVATByCountries"  type="EurAmount_Type" minOccurs="0" />
+      <xs:element name="GrandTotal"  type="EurAmount_Type" minOccurs="0" />
+      <xs:element name="GrandTotalMSIDServices" type="EurAmount_Type" minOccurs="0" />
+      <xs:element name="GrandTotalMSIDGoods" type="EurAmount_Type" minOccurs="0" />
+      <xs:element name="GrandTotalMSESTServices"  type="EurAmount_Type" minOccurs="0" />
+      <xs:element name="GrandTotalMSESTGoods" type="EurAmount_Type" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="VATByCountriesAllTables_Type">
+    <xs:sequence>
+      <xs:element name="CountryId"  type="xs:string" minOccurs="0" />
+      <xs:element name="VATSum"  type="xs:decimal" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  
+  <!-- COMPLEX TYPES -->
+  <xs:complexType name="ReturnsInformation_Type">
+    <xs:choice>
+      <xs:element name="VATReturns" type="VATReturns_Type"/>
+      <xs:element name="VATReturnReminder" type="VATReturnReminder_Type" maxOccurs="unbounded"/>
+      <xs:element name="VATReturnRequest" type="VATReturnRequest_Type"/>
+      <xs:element name="RequestedVATReturns" type="RequestedVATReturns_Type"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="VATReturnReminder_Type">
+    <xs:sequence>
+      <xs:element name="Period" type="Period_Type"/>
+      <xs:element name="RemindedDate" type="RestrictedDate_Type"/>
+      <xs:element name="TraderIDs" type="TraderIDs_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AddressFreeOrStruct_Type">
+    <xs:sequence>
+      <xs:choice>
+        <!--<xs:element name="AddressFree" type="xs:string"/>-->
+        <xs:sequence>
+          <xs:element name="AddressStruct" type="cm:AddressStruct_Type"/>
+          <xs:element name="AddressFree" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+      </xs:choice>
+      <xs:element name="Country" type="cm:CountryIsoCodeAlpha2_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="BankAccount_Type">
+    <xs:sequence>
+      <xs:element name="AccountName" type="cm:AccountName_Type" minOccurs="0"/>
+      <xs:element name="BICCode" type="cm:BIC_Type" minOccurs="0"/>
+      <xs:choice>
+        <xs:element name="IBANCode" type="cm:IBAN_Type" minOccurs="0"/>
+        <xs:element name="OBANCode" type="cm:OBAN_Type" minOccurs="0"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="BaseTrader_Type">
+    <xs:sequence>
+      <xs:element name="CompanyName" type="xs:token" minOccurs="0"/>
+      <xs:element name="Address" type="AddressFreeOrStruct_Type" minOccurs="0"/>
+      <xs:element name="TelephoneNumber" type="cm:PhoneNumber_Type" minOccurs="0"/>
+      <xs:element name="EmailAddress" type="cm:EMail_Type" minOccurs="0"/>
+      <xs:element name="WebSites" type="WebSites_Type" minOccurs="0"/>
+      <xs:element name="ContactName" type="cm:Name_Type" minOccurs="0"/>
+      <xs:element name="TradingNames" type="TradingNames_Type" minOccurs="0"/>
+      <xs:element name="PlaceOfBusiness" type="cm:CountryIsoCodeAlpha2_Type" minOccurs="0"/>
+      <xs:element name="VATGroup" type="xs:boolean" default="false" minOccurs="0"/>
+      <xs:element name="NationalTaxReference" type="NationalTaxReference_Type" minOccurs="0"/>
+      <xs:element name="BankAccount" type="BankAccount_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="BelowMinimumPayment_Type">
+    <xs:sequence>
+      <xs:element name="PaymentReference" type="VersionedPaymentReference_Type"/>
+      <xs:element name="PaymentAmount" type="EurAmount_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="BelowMinimumPayments_Type">
+    <xs:sequence>
+      <xs:element name="BelowMinimumPayment" type="BelowMinimumPayment_Type" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="EurAmount_Type">
+    <xs:simpleContent>
+      <xs:extension base="Amount_Type">
+        <xs:attribute name="currency" type="cm:MSCurrCode_Type" use="optional" fixed="EUR"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="EurAmountPositive_Type">
+    <xs:simpleContent>
+      <xs:extension base="AmountPositive_Type">
+        <xs:attribute name="currency" type="cm:MSCurrCode_Type" use="optional" fixed="EUR"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="EUTraderID_Type">
+    <xs:choice>
+      <xs:element name="VATIdentificationNumber" type="VATNumberOrEmpty_Type" minOccurs="0"/>
+      <xs:element name="TaxReferenceNumber" type="VATNumberOrTIN_Type" minOccurs="0"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="Exclusion_Type">
+    <xs:sequence>
+      <xs:element name="TraderID" type="TraderID_Type"/>
+      <xs:element name="ExclusionDetail" type="ExclusionDetails_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ExclusionDetails_Type">
+    <xs:sequence>
+      <xs:element name="Reason" type="ExclusionCode_Type" minOccurs="0"/>
+      <xs:element name="ExclusionDecisionDate" type="RestrictedDate_Type" minOccurs="0"/>
+      <xs:element name="ExclusionEffectiveDate" type="RestrictedDate_Type" minOccurs="0"/>
+      <xs:element name="NonCompliant" type="NonCompliant_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Exclusions_Type">
+    <xs:sequence>
+      <xs:element name="Exclusion" type="Exclusion_Type" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ExtendedMSESTSupplies_Type">
+    <xs:sequence>
+      <xs:element name="MSESTSupply" type="ExtendedMSESTSupply_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ExtendedMSESTSupply_Type">
+    <xs:complexContent>
+      <xs:extension base="MSESTSupply_Type">
+        <xs:sequence>
+          <xs:element name="MSCONCountryCode" type="cm:CountryIsoCodeAlpha2_Type"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="FixedEstablishments_Type">
+    <xs:sequence>
+      <xs:element name="FixedEstablishment" type="FixedEstablishment_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="FixedEstablishment_Type">
+    <xs:sequence>
+      <xs:element name="EUTraderID" type="EUTraderID_Type" minOccurs="0"/>
+      <xs:element name="TradingName" type="xs:token" minOccurs="0"/>
+      <xs:element name="Address" type="AddressFreeOrStruct_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="MSCONSupply_Type">
+    <xs:sequence>
+      <xs:element name="MSIDSupplies" type="VATReturnDetails_Type"/>
+      <xs:element name="MSESTSupplies" type="MSESTSupplies_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="MSESTSupplies_Type">
+    <xs:sequence>
+      <xs:element name="MSESTSupply" type="MSESTSupply_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="MSESTSupply_Type">
+    <xs:sequence>
+      <xs:element name="EUTraderID" type="EUTraderID_Type"/>
+      <xs:element name="VATReturnDetails" type="VATReturnDetails_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="MSESTVATReturnData_Type">
+    <xs:complexContent>
+      <xs:extension base="VATReturnData_Type">
+        <xs:sequence>
+          <xs:element name="EUTraderID" type="EUTraderID_Type"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MSESTVATReturns_Type">
+    <xs:sequence>
+      <xs:element name="MSESTVATReturnData" type="MSESTSupplies_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="NationalTaxReference_Type">
+    <xs:simpleContent>
+      <xs:extension base="xs:token">
+        <xs:attribute name="issuedBy" type="cm:CountryIsoCodeAlpha2_Type"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="NETPPayment_Type">
+    <xs:sequence>
+      <xs:element name="PaymentDateNETP" type="RestrictedDate_Type"/>
+      <xs:element name="PaymentAmount" type="EurAmount_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="OtherMSNETP_Type">
+    <xs:sequence>
+      <xs:element name="EUTraderID" type="EUTraderID_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PaymentData_Type">
+    <xs:sequence>
+      <xs:element name="VATReturnReference" type="VersionedVATReturnReference_Type"/>
+      <xs:element name="NETPPayment" type="NETPPayment_Type" maxOccurs="unbounded"/>
+      <xs:element name="PaymentDataDetails" type="PaymentDataDetails_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PaymentDataDetails_Type">
+    <xs:sequence>
+      <xs:element name="VATAmount" type="EurAmount_Type"/>
+      <xs:element name="VATAmountReceived" type="EurAmount_Type"/>
+      <xs:element name="VATAmountRetained" type="EurAmount_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PaymentID_Type">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="PaymentInformation_Type">
+    <xs:sequence>
+      <xs:element name="PaymentReference" type="VersionedPaymentReference_Type"/>
+      <xs:element name="PaymentDateMSID" type="RestrictedDate_Type"/>
+      <xs:element name="GrandTotalReceived" type="EurAmount_Type"/>
+      <xs:element name="GrandTotalTransferred" type="EurAmount_Type"/>
+      <xs:element name="GrandTotalRetained" type="EurAmount_Type" minOccurs="0"/>
+      <xs:element name="PaymentData" type="PaymentData_Type" maxOccurs="unbounded"/>
+      <xs:element name="MSCONBankAccount" type="BankAccount_Type"/>
+      <xs:element name="BelowMinimumPayments" type="BelowMinimumPayments_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PaymentReminders_Type">
+    <xs:sequence>
+      <xs:element name="RemindedDate" type="RestrictedDate_Type"/>
+      <xs:element name="VATReturnReference" type="VersionedVATReturnReference_Type" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PaymentsInformation_Type">
+    <xs:choice>
+      <xs:element name="PaymentInformation" type="PaymentInformation_Type"/>
+      <xs:element name="PaymentReminders" type="PaymentReminders_Type" maxOccurs="unbounded"/>
+      <xs:element name="ReimbursementInformation" type="ReimbursementInformation_Type"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="PaymentReimbursed_Type">
+    <xs:sequence>
+      <xs:element name="ReimbursementReference" type="VersionedReimbursementReference_Type"/>
+      <xs:element name="VATReturnReference" type="VersionedVATReturnReference_Type"/>
+      <xs:element name="VATAmountToBeReimbursed" type="EurAmount_Type"/>
+      <xs:element name="VATAmountReimbursed" type="EurAmount_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Period_Type">
+    <xs:sequence>
+      <xs:element name="Year" type="Year_Type"/>
+      <xs:element name="ReturnPeriod" type="Quarter_Type"/><!--or Month_Type-->
+      <xs:element name="NoServiceNoGoods" type="xs:boolean" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PeriodSplit_Type">
+    <xs:complexContent>
+      <xs:extension base="Period_Type">
+        <xs:sequence minOccurs="0">
+          <xs:element name="StartDate" type="RestrictedDate_Type"/>
+          <xs:element name="EndDate" type="RestrictedDate_Type"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PreviousRegistrations_Type">
+    <xs:sequence>
+      <xs:element name="TraderID" type="TraderID_Type" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Registration_Type">
+    <xs:sequence>
+      <xs:element name="TraderID" type="TraderID_Type"/>
+      <xs:element name="RegistrationDetail" type="RegistrationDetail_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RegistrationDetail_Type">
+    <xs:sequence>
+      <xs:element name="ChangeDate" type="RestrictedDate_Type" minOccurs="0"/>
+      <xs:element name="TraderDetails" type="BaseTrader_Type"/>
+      <xs:element name="SchemeDetails" type="SchemeDetails_Type" minOccurs="0"/>
+      <xs:element name="FixedEstablishments" type="FixedEstablishments_Type"/>
+      <xs:element name="OtherMSNETP" type="VATNumbers_Type"/>
+      <xs:element name="PreviousRegistrations" type="TraderIDs_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RegistrationDetailsRequest_Type">
+    <xs:sequence>
+      <xs:element name="TraderID" type="TraderID_Type" minOccurs="0"/>
+      <xs:element name="TradeDate" type="RestrictedDate_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Registrations_Type">
+    <xs:sequence>
+      <xs:element name="Registration" type="Registration_Type" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ReimbursementInformation_Type">
+    <xs:sequence>
+      <xs:element name="PaymentReimbursed" type="PaymentReimbursed_Type" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RequestedVATReturns_Type">
+    <xs:sequence>
+      <xs:element name="VATReturnRequest" type="VATReturnRequest_Type"/>
+      <xs:element name="VATReturns" type="AllReturns_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SchemeDetails_Type">
+    <xs:sequence>
+      <xs:element name="RequestDate" type="RestrictedDate_Type" minOccurs="0"/>
+      <xs:element name="DateOfCommencement" type="RestrictedDate_Type" minOccurs="0"/>
+      <xs:element name="RegistrationDecisionDate" type="RestrictedDate_Type" minOccurs="0"/>
+      <xs:element name="ExclusionDetails" type="ExclusionDetails_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TechnicalErrors_Type">
+    <xs:sequence>
+      <xs:element name="TechnicalError" type="TechnicalError_Type" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TechnicalError_Type">
+    <xs:sequence>
+      <xs:element name="Code" type="xs:token"/>
+      <xs:element name="Detail" type="xs:string" minOccurs="0"/>
+      <xs:choice minOccurs="0">
+        <xs:element name="TraderID" type="TraderID_Type"/>
+        <xs:element name="VATReturnReference" type="VersionedVATReturnReference_Type"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TextualDescription_Type">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="language" type="LanguageCode_Type" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="TraderID_Type">
+    <xs:choice>
+      <xs:element name="VATNumber" type="VATNumber_Type"/>
+      <xs:element name="VoesNumber" type="VoesNumber_Type"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="TraderIDs_Type">
+    <xs:sequence>
+      <xs:element name="TraderID" type="TraderID_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TradingNames_Type">
+    <xs:sequence>
+      <xs:element name="TradingName" type="xs:token" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="VATNumber_Type">
+    <xs:simpleContent>
+      <xs:extension base="cm:VATNumber_Type">
+        <xs:attribute name="issuedBy" type="cm:CountryIsoCodeAlpha2_Type"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+	<xs:complexType name="VATNumberOrEmpty_Type">
+		<xs:simpleContent>
+			<xs:extension base="cm:VATNumberOrEmpty_Type">
+				<xs:attribute name="issuedBy" type="cm:EUCountryIsoCodeAlpha2_Type"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+  <xs:complexType name="VATNumbers_Type">
+    <xs:sequence>
+      <xs:element name="VATNumber" type="VATNumber_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="VATNumberOrTIN_Type">
+    <xs:simpleContent>
+      <xs:extension base="cm:VATNumberOrTIN_Type">
+        <xs:attribute name="issuedBy" type="cm:CountryIsoCodeAlpha2_Type"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="VATRate_Type">
+    <xs:simpleContent>
+      <xs:extension base="Rate_Type">
+        <xs:attribute name="type" type="VATRateType_Type" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="AllReturns_Type">
+    <xs:complexContent>
+      <xs:extension base="VATReturns_Type">
+        <xs:sequence>
+          <xs:element name="NilReturns" type="NilReturns_Type" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="NilReturns_Type">
+    <xs:choice>
+      <xs:element name="NilReturn" type="VATReturn_Type" maxOccurs="unbounded"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="VATReturns_Type">
+    <xs:choice>
+      <xs:element name="VATReturnMSCON" type="VATReturnMSCON_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="VATReturnMSEST" type="VATReturnMSEST_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="VATReturn_Type">
+    <xs:sequence>
+      <xs:element name="VATReturnReference" type="VersionedVATReturnReference_Type"/>
+      <xs:element name="TraderID" type="TraderID_Type"/>
+      <xs:element name="ChangeDate" type="RestrictedDate_Type"/>
+      <xs:element name="Period" type="Period_Type"/>
+      <xs:element name="SubmissionDate" type="RestrictedDate_Type"/>
+      <xs:element name="GrandTotal" type="EurAmount_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="VATReturnData_Type">
+    <xs:sequence>
+      <xs:element name="VATReturnDetails" type="VATReturnDetails_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="VATReturnDetails_Type">
+    <xs:sequence>
+      <xs:element name="VATReturnDetail" type="VATReturnDetail_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="VATReturnDetail_Type">
+    <xs:sequence>
+      <xs:element name="VATRate" type="VATRate_Type"/>
+      <xs:element name="TaxableAmount" type="EurAmountPositive_Type"/>
+      <xs:element name="VATAmount" type="EurAmount_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="VATReturnMSCON_Type">
+    <xs:complexContent>
+      <xs:extension base="VATReturn_Type">
+        <xs:sequence>
+          <xs:element name="GrandTotalMSID" type="EurAmount_Type"/>
+          <xs:element name="GrandTotalMSEST" type="EurAmount_Type" minOccurs="0"/>
+          <xs:element name="MSCONCountryCode" type="cm:CountryIsoCodeAlpha2_Type"/>
+          <xs:element name="Supplies" type="MSCONSupply_Type"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="VATReturnMSEST_Type">
+    <xs:complexContent>
+      <xs:extension base="VATReturn_Type">
+        <xs:sequence>
+          <xs:element name="Supplies" type="ExtendedMSESTSupplies_Type"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="VATReturnRequest_Type">
+    <xs:sequence>
+      <xs:element name="TraderID" type="TraderID_Type"/>
+      <xs:element name="RequestType" type="VATReturnRequestType_Type"/>
+      <xs:element name="VATReturnReference" type="VersionedVATReturnReference_Type" minOccurs="0"/>
+      <xs:element name="Period" type="Period_Type" minOccurs="0"/>
+      <xs:element name="CountryCode" type="cm:CountryIsoCodeAlpha2_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="VersionedPaymentReference_Type">
+    <xs:sequence>
+      <xs:element name="PaymentReferenceNumber" type="PaymentReferenceNumber_Type"/>
+      <xs:element name="Version" type="RestrictedDateTime_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="VersionedReimbursementReference_Type">
+    <xs:sequence>
+      <xs:element name="ReimbursementReferenceNumber" type="ReimbursementReferenceNumber_Type"/>
+      <xs:element name="Version" type="RestrictedDateTime_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="VersionedVATReturnReference_Type">
+    <xs:sequence>
+      <xs:element name="VATReturnReferenceNumber" type="VATReturnReferenceNumber_Type"/>
+      <xs:element name="Version" type="RestrictedDateTime_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="VoesNumber_Type">
+    <xs:simpleContent>
+      <xs:extension base="EUVATID_Type">
+        <xs:attribute name="issuedBy" type="cm:CountryIsoCodeAlpha2_Type" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="WebSites_Type">
+    <xs:sequence>
+      <xs:element name="WebsiteURL" type="xs:token" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <!-- SIMPLE TYPES -->
+  <xs:simpleType name="Amount_Type">
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="2"/>
+     </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="AmountPositive_Type">
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="2"/>
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EUVATID_Type">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:pattern value="EU[0-9]{9}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ExclusionCode_Type">
+    <xs:restriction base="xs:short">
+      <xs:enumeration value="-1">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The taxable person was excluded in error</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The taxable person has notified the Member State of identification that he no longer supplies telecommunications, broadcasting or electronic services</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">It is assumed by the Member State of identification that the taxable activities of the taxable person covered by the special scheme have ceased</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="3">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The taxable person no longer meets the conditions necessary for the use of the special scheme</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="4">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The taxable person persistently fails to comply with the rules of the special scheme</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="5">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The taxable person has requested to voluntarily leave the scheme</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="6">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The taxable person has requested to be identified in a new Member State of identification</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="7">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Other</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="NonCompliant_Type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Number of quarters an NETP failed to comply with the rules of the special scheme.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:int">
+      <xs:enumeration value="1"/>
+      <xs:enumeration value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PaymentReferenceNumber_Type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">The format is M1SS.x.yyyy.MSI.MSC.zz, where x indicates if the Payment relates to EU scheme (E) or non-EU scheme (N), yyyy represents the year, MSI stands for the country code of the MSID, MSC stands for the country code of the MSCON, zz is the sequence number of the Payment (e.g. M1SS.E.2015.BE.MT.01)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="M1SS.[EN].[0-9]{4}.[A-Z]{2}.[A-Z]{2}.[0-9]{1,}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Quarter_Type">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Q1">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">January to March</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Q2">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">April to June</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Q3">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">July to September</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Q4">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">October to December</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Month_Type">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="M01"></xs:enumeration>
+      <xs:enumeration value="M02"></xs:enumeration>
+      <xs:enumeration value="M03"></xs:enumeration>
+      <xs:enumeration value="M04"></xs:enumeration>
+      <xs:enumeration value="M05"></xs:enumeration>
+      <xs:enumeration value="M06"></xs:enumeration>
+      <xs:enumeration value="M07"></xs:enumeration>
+      <xs:enumeration value="M08"></xs:enumeration>
+      <xs:enumeration value="M09"></xs:enumeration>
+      <xs:enumeration value="M10"></xs:enumeration>
+      <xs:enumeration value="M11"></xs:enumeration>
+      <xs:enumeration value="M12"></xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Rate_Type">
+    <xs:restriction base="xs:decimal">
+      <xs:maxInclusive value="100"/>
+      <xs:minInclusive value="0"/>
+      <xs:fractionDigits value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ReimbursementReferenceNumber_Type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">The format is (VAT Return Reference).number i.e. MSID/TraderID/Quarter.Year.MSCON e.g. SI/SI123456789/Q1.2015.PT</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z]{2}/\p{IsBasicLatin}*/Q[1-4][.]{1}[0-9]{4}.[A-Z]{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="RestrictedDate_Type">
+    <xs:restriction base="xs:date">
+      <xs:pattern value="\d{4}-\d{2}-\d{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="RestrictedDateTime_Type">
+    <xs:restriction base="xs:dateTime">
+      <xs:pattern value="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3}){0,1}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="VATRateType_Type">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="REDUCED">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The "Reduced" VAT Rate type</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="STANDARD">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The "Default" VAT Rate type</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="VATReturnReferenceNumber_Type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">The format is MSID/TraderID/Quarter.Year e.g. SI/SI123456789/Q1.2015</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z]{2}/[A-Za-z0-9\+\*]{1,12}/Q[1-4][.]{1}[0-9]{4}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="VATReturnRequestType_Type">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="MSEST">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">A request for information provided to the MSEST(s)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MSCON">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">A request for information provided to the MSCON(s)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Year_Type">
+    <xs:restriction base="xs:gYear">
+      <xs:pattern value="[0-9]{4}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="TypeOfSupply_Type">
+    <xs:restriction base="xs:string">
+      <!--<xs:pattern value="[A-Z][a-z]"/>-->
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="LanguageCode_Type">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-z]{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

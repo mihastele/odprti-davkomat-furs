@@ -1,0 +1,1578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2006 U (http://www.altova.com) by BostjanB (EMBRACE) -->
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/eVEM_SP_DavPod_1.xsd" 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" 
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/eVEM_SP_DavPod_1.xsd" 
+  elementFormDefault="qualified" id="eVEM_SP_DavPod_1">
+	<xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" id="EDP-Common-1"/>
+  <xs:element name="eVEM_SP_DavPod">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="XSD_version" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>0 Verzija sheme</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DR03">
+          <xs:annotation>
+            <xs:documentation>1 DR03</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TaxPayerID" type="TaxIdType">
+                <xs:annotation>
+                  <xs:documentation>1a Davčna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="FirstName">
+                <xs:annotation>
+                  <xs:documentation>1b Ime podjetnika</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="75"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="LastName">
+                <xs:annotation>
+                  <xs:documentation>1c Priimek podjetnika</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="75"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CompanyFullName" type="FirmName">
+                <xs:annotation>
+                  <xs:documentation>1d Firma oziroma ime</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CompanyShortName" type="FirmNameShort" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>1e Skrajšana firma</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="RegistrationOrgID">
+                <xs:annotation>
+                  <xs:documentation>1f Registrski organ</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="4"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="RegistrationStartDate" type="xs:date">
+                <xs:annotation>
+                  <xs:documentation>1g Datum vpisa v register oziroma začetek opravljanja dejavnosti</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="RegistrationEndDate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>1h Datum konca registracije</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="RegistrationNumber">
+                <xs:annotation>
+                  <xs:documentation>1i Registrska številka</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="30"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CentralNumber" type="CentralNumber">
+                <xs:annotation>
+                  <xs:documentation>1j Matična številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="OrganizationType">
+                <xs:annotation>
+                  <xs:documentation>1k Organizacijska oblika</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="3"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="OrganizationTypeName" type="xs:string">
+                <xs:annotation>
+                  <xs:documentation>1l Organizacijska oblika - Naziv</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="SizeRSID" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>1m Velikost po APP</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SizeRSName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>1m Naziv velikosti po APP</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="SkdID">
+                <xs:annotation>
+                  <xs:documentation>1o Dejavnost SKD - oznaka</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="6"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SkdName" type="xs:string">
+                <xs:annotation>
+                  <xs:documentation>1p Dejavnost SKD - naziv</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PayDay" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>1r Dan v mesecu za izplačilo plač</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:int">
+                    <xs:totalDigits value="2"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Contacts" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation>2 Številke telefonov in telefaksov, naslov elektronske pošte</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="ContactType" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>2a Tip (npr. 1-telefon, 4-elektronska pošta...)</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="1"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="ContactInfo" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>2b Vrednost</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="320"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Headquarters">
+                <xs:annotation>
+                  <xs:documentation>3 Sedež in naslov</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="MID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>3a MID številka naslova</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:integer">
+                          <xs:totalDigits value="22"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="CountryID" type="CountryID">
+                      <xs:annotation>
+                        <xs:documentation>3b Država - oznaka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CountryName" type="CountryName">
+                      <xs:annotation>
+                        <xs:documentation>3c Država - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="StreetID" type="StreetID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>3d Ulica - oznaka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="StreetName" type="StreetName" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>3e Ulica - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="HouseNumber" type="HouseID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>3f Hišna številka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="HouseExtra" type="HouseExtra" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>3g Dodatek k hišni številki</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="SettlementID" type="SettlementID">
+                      <xs:annotation>
+                        <xs:documentation>3h Naselje - oznaka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="SettlementName" type="SettlementName">
+                      <xs:annotation>
+                        <xs:documentation>3i Naselje - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CommunityID" type="CommunityID">
+                      <xs:annotation>
+                        <xs:documentation>3j Občina - oznaka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CommunityName" type="CommunityName">
+                      <xs:annotation>
+                        <xs:documentation>3k Občina - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="PostNumber" type="PostOfficeID">
+                      <xs:annotation>
+                        <xs:documentation>3l Pošta - številka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="PostName" type="PostOfficeName">
+                      <xs:annotation>
+                        <xs:documentation>3m Pošta - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="SKD" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation>4 Dodatne dejavnosti</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="SkdID">
+                      <xs:annotation>
+                        <xs:documentation>4a Dejavnost SKD - oznaka</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="6"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="SkdName" type="xs:string">
+                      <xs:annotation>
+                        <xs:documentation>4b Dejavnost SKD - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="RelatedPersons" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation>5 Podatki o povezanih osebah</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="TaxPayerID" type="TaxIdType">
+                      <xs:annotation>
+                        <xs:documentation>5a Davčna številka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="RelatedDate" type="xs:date">
+                      <xs:annotation>
+                        <xs:documentation>5b Datum povezave</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="RepresentativePersons" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation>6 Podatki o osebah, pooblaščenih za zastopanje</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="TaxPayerID" type="TaxIdType" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>6a Davčna številka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="PersonalNumber" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>6b EMŠO</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="13"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="CentralNumber" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>6c Matična številka (Podatek je trenutno neobvezen. V prihodnosti naj bi se uporabil pri vodenju pravnih oseb kot zastopnike)</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="10"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="Name">
+                      <xs:annotation>
+                        <xs:documentation>6d Osebno ime oz firma</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="500"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="MID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>6e MID številka naslova</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:integer">
+                          <xs:totalDigits value="22"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="CountryID" type="CountryID">
+                      <xs:annotation>
+                        <xs:documentation>6f Država - oznaka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CountryName" type="CountryName">
+                      <xs:annotation>
+                        <xs:documentation>6g Država - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="StreetID" type="StreetID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>6h Ulica - oznaka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="StreetName" type="StreetName" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>6i Ulica - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="HouseNumber" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>6j Hišna številka</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="HouseExtra" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>6k Dodatek k hišni številki</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="8"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="SettlementID" type="SettlementID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>6l Naselje - oznaka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="SettlementName" type="SettlementName">
+                      <xs:annotation>
+                        <xs:documentation>6m Naselje - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CommunityID" type="CommunityID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>6n Občina - oznaka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CommunityName" type="CommunityName" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>6o Občina - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="PostNumber" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>6p Pošta - številka</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="PostName" type="PostOfficeName">
+                      <xs:annotation>
+                        <xs:documentation>6r Pošta - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="TypeId">
+                      <xs:annotation>
+                        <xs:documentation>6s Tip zastopnika - oznaka</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="2"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="TypeName" type="xs:string">
+                      <xs:annotation>
+                        <xs:documentation>6t Tip zastopnika - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="EntranceDate" type="xs:date">
+                      <xs:annotation>
+                        <xs:documentation>6u Datum podelitve pooblastila</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Offices" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation>7 Podatki o številu lokacij poslovnih prostorov, ki se uporabljajo za opravljanje dejavnosti in pridobivanje prihodkov</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="Parcel" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Zemljišče</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="ParcelType">
+                            <xs:annotation>
+                              <xs:documentation>7a Tip parcele</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                              <xs:annotation>
+                                <xs:documentation>Tip parcele</xs:documentation>
+                              </xs:annotation>
+                              <xs:restriction base="xs:int">
+                                <xs:totalDigits value="1"/>
+                                <xs:enumeration value="0"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="CadastrialAreaID" type="CadastrialAreaID">
+                            <xs:annotation>
+                              <xs:documentation>7b Katastrska občina - oznaka</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="CadastrialAreaName" type="CadastrialAreaName">
+                            <xs:annotation>
+                              <xs:documentation>7c Katastrska občina - naziv</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="ParcelDenominatorNumber" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>7d Imenovalec parcelne številke</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                              <xs:restriction base="xs:int">
+                                <xs:totalDigits value="4"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="ParcelNominatorNumber">
+                            <xs:annotation>
+                              <xs:documentation>7e  Števec parcelne številke</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                              <xs:restriction base="xs:int">
+                                <xs:totalDigits value="4"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Building" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Stavba</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="CadastrialAreaID" type="CadastrialAreaID" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>7f Katastrska občina - oznaka</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="CadastrialAreaName" type="CadastrialAreaName" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>7g Katastrska občina - naziv</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="BuildingID" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>7h Identifikacijska številka stavbe</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                              <xs:restriction base="xs:int">
+                                <xs:totalDigits value="5"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="BuildingPartID" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>7i Identifikacijska številka dela stavbe</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                              <xs:restriction base="xs:int">
+                                <xs:totalDigits value="3"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="MID" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>7j MID številka naslova</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                              <xs:restriction base="xs:integer">
+                                <xs:totalDigits value="22"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="CountryID" type="CountryID">
+                            <xs:annotation>
+                              <xs:documentation>7k Država - oznaka</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="CountryName" type="CountryName">
+                            <xs:annotation>
+                              <xs:documentation>7l Država - naziv</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="StreetID" type="StreetID" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>7m Ulica - oznaka</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="StreetName" type="StreetName" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>7n Ulica - naziv</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="HouseNumber" type="HouseID" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>7o Hišna številka</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="HouseExtra" type="HouseExtra" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>7p Dodatek k hišni številki</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="SettlementID" type="SettlementID">
+                            <xs:annotation>
+                              <xs:documentation>7r Naselje - oznaka</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="SettlementName" type="SettlementName">
+                            <xs:annotation>
+                              <xs:documentation>7s Naselje - naziv</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="CommunityID" type="CommunityID">
+                            <xs:annotation>
+                              <xs:documentation>7t Občina - oznaka</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="CommunityName" type="CommunityName">
+                            <xs:annotation>
+                              <xs:documentation>7u Občina - naziv</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="PostNumber" type="PostOfficeID">
+                            <xs:annotation>
+                              <xs:documentation>7v Pošta - številka</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="PostName" type="PostOfficeName">
+                            <xs:annotation>
+                              <xs:documentation>7z Pošta - naziv</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="ForeignAccounts" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation>8 Podatki o številkah računov v tujini</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="AccountNumber">
+                      <xs:annotation>
+                        <xs:documentation>8a Številka deviznega računa</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="100"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="BankName" type="xs:string">
+                      <xs:annotation>
+                        <xs:documentation>8b Ime Banke</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CountryID" type="CountryID">
+                      <xs:annotation>
+                        <xs:documentation>8c Država - oznaka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CountryName" type="CountryName">
+                      <xs:annotation>
+                        <xs:documentation>8d Država - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="AccountStartDate" type="xs:date" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>8e Datum odprtja računa</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="SwiftBic" type="xs:string" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>8f Swift/BIC </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="BankId" type="xs:string" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>8g Druga identifikacija banke </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="HomeBusinessUnit" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation>9 Poslovne enote (podružnice)</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="CompanyFullName" type="FirmName">
+                      <xs:annotation>
+                        <xs:documentation>9a Popolno ime podružnice</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="RegistrationStartDate" type="xs:date">
+                      <xs:annotation>
+                        <xs:documentation>9b Datum vpisa v register oziroma začetek opravljanja dejavnosti</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CentralNumber" type="CentralNumber">
+                      <xs:annotation>
+                        <xs:documentation>9c Matična številka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="SkdID">
+                      <xs:annotation>
+                        <xs:documentation>9d Dejavnost SKD - oznaka</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="6"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="SkdName" type="xs:string">
+                      <xs:annotation>
+                        <xs:documentation>9e Dejavnost SKD - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="MID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>9f MID številka naslova</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:integer">
+                          <xs:totalDigits value="22"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="CountryID" type="CountryID">
+                      <xs:annotation>
+                        <xs:documentation>9g Država - oznaka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CountryName" type="CountryName">
+                      <xs:annotation>
+                        <xs:documentation>9h Država - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="StreetID" type="StreetID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>9i Ulica - oznaka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="StreetName" type="StreetName" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>9j Ulica - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="HouseNumber" type="HouseID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>9k Hišna številka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="HouseExtra" type="HouseExtra" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>9l Dodatek k hišni številki</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="SettlementID" type="SettlementID">
+                      <xs:annotation>
+                        <xs:documentation>9m Naselje - oznaka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="SettlementName" type="SettlementName">
+                      <xs:annotation>
+                        <xs:documentation>9n Naselje - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CommunityID" type="CommunityID">
+                      <xs:annotation>
+                        <xs:documentation>9o Občina - oznaka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CommunityName" type="CommunityName">
+                      <xs:annotation>
+                        <xs:documentation>9p Občina - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="PostNumber" type="PostOfficeID">
+                      <xs:annotation>
+                        <xs:documentation>9r Pošta - številka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="PostName" type="PostOfficeName">
+                      <xs:annotation>
+                        <xs:documentation>9s Pošta - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="RepresentativePersonsHBU" minOccurs="0" maxOccurs="unbounded">
+                      <xs:annotation>
+                        <xs:documentation>10 Podatki o osebah, pooblaščenih za zastopanje poslovne enote (podružnice)</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="TaxPayerID" type="TaxIdType" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>10a Davčna številka</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="PersonalNumber" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>10b EMŠO</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:maxLength value="13"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="CentralNumber" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>10c Matična številka (Podatek je trenutno neobvezen. V prihodnosti naj bi se uporabil pri vodenju pravnih oseb kot zastopnike)</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:maxLength value="10"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="Name">
+                            <xs:annotation>
+                              <xs:documentation>10d Osebno ime oz firma</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:maxLength value="280"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="MID" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>10e MID številka naslova</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                              <xs:restriction base="xs:integer">
+                                <xs:totalDigits value="22"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="CountryID" type="CountryID">
+                            <xs:annotation>
+                              <xs:documentation>10f Država - oznaka</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="CountryName" type="CountryName">
+                            <xs:annotation>
+                              <xs:documentation>10g Država - naziv</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="StreetID" type="StreetID" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>10h Ulica - oznaka</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="StreetName" type="StreetName" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>10i Ulica - naziv</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="HouseNumber" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>10j Hišna številka</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:maxLength value="15"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="HouseExtra" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>10k Dodatek k hišni številki</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:maxLength value="8"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="SettlementID" type="SettlementID" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>10l Naselje - oznaka</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="SettlementName" type="SettlementName">
+                            <xs:annotation>
+                              <xs:documentation>10m Naselje - naziv</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="CommunityID" type="CommunityID" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>10n Občina - oznaka</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="CommunityName" type="CommunityName" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>10o Občina - naziv</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="PostNumber" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>10p Pošta - številka</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:maxLength value="15"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="PostName" type="PostOfficeName">
+                            <xs:annotation>
+                              <xs:documentation>10r Pošta - naziv</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="TypeId">
+                            <xs:annotation>
+                              <xs:documentation>10s Tip zastopnika - oznaka</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:maxLength value="2"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="TypeName" type="xs:string">
+                            <xs:annotation>
+                              <xs:documentation>10t Tip zastopnika - naziv</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="EntranceDate" type="xs:date">
+                            <xs:annotation>
+                              <xs:documentation>10u Datum podelitve pooblastila</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SKDHBU" minOccurs="0" maxOccurs="unbounded">
+                      <xs:annotation>
+                        <xs:documentation>11 Dodatne dejavnosti poslovne enote (podružnice)</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="SkdID">
+                            <xs:annotation>
+                              <xs:documentation>11a Dejavnost SKD - oznaka</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:maxLength value="6"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="SkdName" type="xs:string">
+                            <xs:annotation>
+                              <xs:documentation>11b Dejavnost SKD - naziv</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="eVEM">
+                <xs:annotation>
+                  <xs:documentation>12 eVEM podatki</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="DokID">
+                      <xs:annotation>
+                        <xs:documentation>12a eVEM številka dokumenta</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="50"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="PostDate" type="xs:dateTime">
+                      <xs:annotation>
+                        <xs:documentation>12b Datum oddaje dokumenta na eVEM portalu</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="BookKeeping" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>13 Knjigovodstvo</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="BookKeepingTypeID" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>13a Način vodenja poslovnih knjig - oznaka</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="BookKeepingTypeName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>13b Način vodenja poslovnih knjig - naziv</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Accountant" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>14 Podatki o osebi, ki vodi poslovne knjige</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="IsOwnerAccountant" default="S">
+                      <xs:annotation>
+                        <xs:documentation>14a Način vodenja poslovnih knjig</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="1"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="TaxPayerID" type="TaxIdType" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>14b Davčna številka </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Name" type="FirmName" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>14c Firma ali osebno ime </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="MID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>14d MID številka naslova </xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:integer">
+                          <xs:totalDigits value="22"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="CountryID" type="CountryID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>14e Država - oznaka </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CountryName" type="CountryName" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>14f Država - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="StreetID" type="StreetID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>14g Ulica - oznaka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="StreetName" type="StreetName" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>14h Ulica - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="HouseNumber" type="HouseID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>14i Hišna številka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="HouseExtra" type="HouseExtra" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>14j Dodatek k hišni številki </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="SettlementID" type="SettlementID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>14k Naselje - oznaka </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="SettlementName" type="SettlementName" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>14l Naselje - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CommunityID" type="CommunityID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>14m Občina - oznaka </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CommunityName" type="CommunityName" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>14n Občina - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="PostNumber" type="PostOfficeID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>14o Pošta - številka </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="PostName" type="PostOfficeName" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>14p Pošta - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="RelatedDate" type="xs:date" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>14r Datum povezave </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="AccountBooksLocation" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>15 Lokacija poslovnih knjig (če ni sedež dejavnosti)</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="IsLocatedOnHeadquarters" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>15a Lokacija poslovnih knjig</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="1"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="MID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>15b MID številka naslova </xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:integer">
+                          <xs:totalDigits value="22"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="CountryID" type="CountryID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>15c Država - oznaka </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CountryName" type="CountryName" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>15d Država - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="StreetID" type="StreetID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>15e Ulica - oznaka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="StreetName" type="StreetName" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>15f Ulica - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="HouseNumber" type="HouseID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>15g Hišna številka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="HouseExtra" type="HouseExtra" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>15h Dodatek k hišni številki </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="SettlementID" type="SettlementID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>15i Naselje - oznaka </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="SettlementName" type="SettlementName" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>15j Naselje - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CommunityID" type="CommunityID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>15k Občina - oznaka </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CommunityName" type="CommunityName" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>15l Občina - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="PostNumber" type="PostOfficeID" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>15m Pošta - številka </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="PostName" type="PostOfficeName" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>15n Pošta - naziv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Insurance" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>16 Zavarovanje</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence minOccurs="0">
+              <xs:element name="InsuranceTypeID" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>16a Vrsta zavarovanja - oznaka</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="InsuranceTypeName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>16b Vrsta zavarovanja - naziv</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="IPDO" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>17 Akontacija</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="IPDO_SettlingManner" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17a IPDO_Način_obračuna (P - Predviden prihodki in odhodki - davčni obračun, N - Normirani odhodki)</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="IPDO_AdvPaymentID" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17b Akontacija - oznaka</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="IPDO_AdvPaymentName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17c Akontacija - naziv</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_ExpectedIncome" type="money" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17d Znesek predvidenih prihodkov</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_ExpectedIncomeCurrency" default="EUR" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17e Valuta predvidenih pridhodkov </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="3"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="IPDO_ExpectedExpenses" type="money" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17f Znesek predvidenih odhodkov</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_ExpectedExpensesCurrency" default="EUR" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17g Valuta predvidenih odhodkov</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="3"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="IPDO_StartDate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17h Datum pričetka poslovanja (po stari shemi)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_PeriodStart" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17i Datum pričetka poslovanja (IPDO Obdobje od - po novi shemi)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_PeriodEnd" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17j IPDO Obdobje do</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_PrevAdvPaymentAmount" type="money" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17k Znesek prehodne akontacija</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_PrevAdvPaymentAmountCurrency" default="EUR" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17l Valuta predhodne akontacije</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="3"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="IPDO_TaxBase" type="money" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17m Davčna osnova </xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_TaxBaseCurrency" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17n Valuta davčne osnove </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="3"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="IPDO_PeriodAdvPaymentAmount" type="money" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17o Znesek obrok predhodne akontacije </xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_PeriodAdvPaymentAmountCurrency" default="EUR" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17p Valuta obroka predhodne akontacije </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="3"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="IPDO_TriMonthlyAdvPaymentAmount" type="money" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17q IPDO_Trimesečni obrok akontacije</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_ExpectedTaxBasis" type="money" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17r IPDO_Predvidena davčna osnova</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_ExpectedTaxLoss" type="money" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17s IPDO_Predvidena davčna izguba</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_ExpectedAdvPaymentBasis" type="money" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17t IPDO_Predvidena osnova za določitev akontacije</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_ExpectedYearAdvPayment" type="money" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17u IPDO_ExpectedYearAdvPayment predvidena letna akontacije</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_AdvPayment" type="money" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17v IPDO_Akontacija</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_MonthlyAdvPaymentAmount" type="money" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17w IPDO_Mesečni obrok akontacije</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_TaxPeriodYear" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17x Leto normiranstva</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="9"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="IPDO_Izjava_I" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17.1y IPDO_Izjava_I</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_Izjava_II_1" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17.2y IPDO_Izjava_II_1</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_Izjava_II_2_A" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17.3y IPDO_Izjava_II_2_A</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_Izjava_II_2_B" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17.4y IPDO_Izjava_II_2_B</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_Izjava_III_A" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17.5y IPDO_Izjava_III_A</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IPDO_Izjava_III_B" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>17.6y IPDO_Izjava_III_B</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="eVEM_SP_DavPod"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="CountryID">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="3"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="CountryName">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="StreetID">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="4"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="StreetName">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="HouseID">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="3"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="HouseIDForeign">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="15"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="HouseExtra">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="HouseExtraForeign">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="8"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SettlementID">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="3"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SettlementName">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="CommunityID">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="3"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="CommunityName">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="PostOfficeID">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="4"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PostOfficeIDForeign">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="15"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PostOfficeName">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="CentralNumber">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="10"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SkdID">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="6"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SkdName">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="OrganizationTypeID">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="3"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="OrganizationTypeName">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="35"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="OrganizationTypeFirmID">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="3"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="OrganizationTypeFirmName">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="35"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="FirmName">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="500"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="FirmNameShort">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="350"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="CadastrialAreaID">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="4"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="CadastrialAreaName">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="money">
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Deposit">
+    <xs:restriction base="xs:decimal">
+      <xs:totalDigits value="24"/>
+      <xs:fractionDigits value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Currency">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="3"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="DateTypeShort">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(0[123456789]|[12][0123456789]|3[01]|[123456789])\.(0[123456789]|1[012]|[123456789])"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="TaxIdType">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

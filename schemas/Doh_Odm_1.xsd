@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/Doh_Odm_1.xsd" elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/Doh_Odm_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" id="EDP-Common-1" />
+  <xs:element name="IncomeTax">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="HeaderExtra">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="LanguageVariant" type="LanguageVariantType" minOccurs="0" />
+              <xs:element name="BirthDate" type="xs:date" minOccurs="0"/>
+              <xs:element name="ZPIZNr" type="ZPIZNrType" minOccurs="0" />
+              <xs:element name="Year" type="xs:int"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="A1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F09_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F09_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F09_11" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F10" type="xs:boolean" minOccurs="0" />
+              <xs:element name="F10_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F10_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F10_10b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F10_11" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F11_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F12_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F12_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F12_11" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F13_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F13_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F13_11" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F14_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F14_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F14_11" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F14_13" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F15_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F15_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F15_11" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F15_13" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F16_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F16_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F16_10b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F17_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F17_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F17_10b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F17_11" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F18_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F18_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F18_10b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F18_11" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F18_13" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="A2">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F19_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F19_9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F19_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F19_10b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F20_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F20_9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F20_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F21_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F21_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F21_11" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F31" type="xs:boolean" minOccurs="0" />
+              <xs:element name="F31_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F32_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F32_9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F32_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F32_10b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F32_11" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F33_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F33_9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F33_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F33_11" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F34_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F34_9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F34_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F34_10b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F34_11" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F35_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F35_9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F35_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F35_11" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F36_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F36_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F41" type="xs:boolean" minOccurs="0" />
+              <xs:element name="F41_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F41_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F42_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F42_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F51_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F51_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F52_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F52_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F53_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F53_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F53_10b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F54_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F54_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F54_10b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F55_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F55_9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F55_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F55_10b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F56" type="xs:boolean" minOccurs="0" />
+              <xs:element name="F56_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F56_9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F56_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F56_10b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F57" type="xs:boolean" minOccurs="0" />
+              <xs:element name="F57_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F57_9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F57_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F61_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F61_9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F61_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F61_10b" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F62_8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F62_9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F62_10a" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F62_10b" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="A3" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ID" type="xs:int" minOccurs="0"/>
+              <xs:element name="F5" type="xs:date" minOccurs="0"/>
+              <xs:element name="F6" type="xs:date" minOccurs="0" />
+              <xs:element name="F8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F11" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="B1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F1" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F2" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F3" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F4" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F5" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F6" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F7" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F10" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F11" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F12" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F13" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="B2">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F1" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F2" type="xs:boolean" minOccurs="0" />
+              <xs:element name="F3" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="B2_4" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Label" type="xs:string" minOccurs="0" />
+              <xs:element name="DateIn" type="xs:date" minOccurs="0" />
+              <xs:element name="DateOut" type="xs:date" minOccurs="0" />
+              <xs:element name="Type" type="PaymentPeriod" minOccurs="0" />
+              <xs:element name="Value" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="B3" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F0" type="xs:boolean" minOccurs="0" />
+              <xs:element name="F1" type="xs:string" minOccurs="0" />
+              <xs:element name="F2" type="xs:int" minOccurs="0" />
+              <xs:element name="F3" type="xs:int" minOccurs="0" />
+              <xs:element name="F4" type="RelationType" minOccurs="0" />
+              <xs:element name="F5" type="xs:boolean" minOccurs="0" />
+              <xs:element name="F6" type="xs:int" minOccurs="0" />
+              <xs:element name="F7" type="xs:int" minOccurs="0" />
+              <xs:element name="F8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="F9" type="xs:decimal" minOccurs="0" />
+              <xs:element name="AlimonyReason" type="AlimonyReasonType" minOccurs="0" />
+              <xs:element name="AlimonyCourtOrderId" type="xs:string" minOccurs="0" />
+              <xs:element name="AlimonyCourtOrderDate" type="xs:date" minOccurs="0" />
+              <xs:element name="AlimonyType" type="AlimonyTypeType" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="FooterExtra">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ExtraDeductionTaxPayerName" type="xs:string" minOccurs="0" />
+              <xs:element name="ExtraDeductionTaxPayer" type="xs:int" minOccurs="0" />
+              <xs:element name="ReturnAccountNumber" type="xs:string" minOccurs="0" />
+              <xs:element name="ReturnAccountBank" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>          
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="ZPIZNrType">
+    <xs:restriction base="xs:string">
+      <xs:length value="10"/>
+      <xs:pattern value="[0-9]+" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!--xs:simpleType name="AccountNumberType">
+    <xs:restriction base="xs:string">
+      <xs:length value="16"/>
+      <xs:pattern value="[0-9]{5}-[0-9]{10}"/>
+    </xs:restriction>
+  </xs:simpleType-->
+  <xs:simpleType name="LanguageVariantType">
+    <xs:restriction base="xs:int">
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>Slov</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2">
+        <xs:annotation>
+          <xs:documentation>Slov-Ital</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="3">
+        <xs:annotation>
+          <xs:documentation>Slov-Madž</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="PaymentPeriod">
+    <xs:restriction base="xs:int">
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>Mesečno</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2">
+        <xs:annotation>
+          <xs:documentation>Polletno</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="3">
+        <xs:annotation>
+          <xs:documentation>Letno</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="RelationType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="A">
+        <xs:annotation>
+          <xs:documentation>otrok oziroma posvojenec/-nka</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B">
+        <xs:annotation>
+          <xs:documentation>vnuk/-inja</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="C">
+        <xs:annotation>
+          <xs:documentation>zakonec</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D">
+        <xs:annotation>
+          <xs:documentation>starši oziroma posvojitelji</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="E">
+        <xs:annotation>
+          <xs:documentation>drugi člani kmetijskega gospodinjstva</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F">
+        <xs:annotation>
+          <xs:documentation>pastorek/-ka</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="AlimonyReasonType">
+    <xs:restriction base="xs:int">
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>sodna odločba</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2">
+        <xs:annotation>
+          <xs:documentation>sporazum</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="3">
+        <xs:annotation>
+          <xs:documentation>dogovor o preživljanju</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="AlimonyTypeType">
+    <xs:restriction base="xs:int">
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>alimony</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2">
+        <xs:annotation>
+          <xs:documentation>custodian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+    
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element ref="IncomeTax" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

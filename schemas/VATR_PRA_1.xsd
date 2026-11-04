@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/VATR_PRA_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" xmlns:vatr="http://edavki.durs.si/Documents/Schemas/VATR_Common_1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/VATR_PRA_1.xsd" elementFormDefault="qualified">
+	<xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+	<xs:import namespace="http://edavki.durs.si/Documents/Schemas/VATR_Common_1.xsd" schemaLocation="VATR_Common_1.xsd"/>
+	<!--document structure-->
+	<xs:element name="Envelope">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="edp:Header"/>
+				<xs:element ref="edp:Signatures"/>
+				<xs:element name="body">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="edp:bodyContent"/>
+							<xs:element ref="VATR_PRA"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!--type definitions-->
+	<xs:element name="VATR_PRA">
+		<xs:complexType>
+			<xs:sequence>
+				<!--Common-->
+				<xs:element name="Period" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Period</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<!-- Applicant information -->
+				<xs:element name="Applicant" type="vatr:Applicant_Type" minOccurs="0"/>
+				<!-- Adjustment Period -->
+				<xs:element name="AdjustmentPeriod" type="vatr:Period_Type" minOccurs="0"/>
+				<!-- Adjusted value -->
+				<xs:element name="AdjustedValue" type="xs:integer" minOccurs="0"/>
+				<!-- Custodian data -->
+				<xs:element name="CustodianNotes" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Custodian notes</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="CustodianSubmitDate" type="xs:date" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Submission date</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

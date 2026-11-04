@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/DIS_2.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/DIS_2.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="DIS"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <!--type definitions-->
+  <xs:element name="DIS">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CustodianNotes" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Opombe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianSubmitDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum prijave</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="OrganizerType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta prireditelja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="MunicipalityName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Občina</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Period" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obdobje</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PeriodType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta obdobja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Email" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>E-mail naslov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalPayment" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj - Vplačila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalPayout" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj - Izplačani dobitki</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalBase" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj - Osnova za davek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalTax" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj - Davek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalCalculatedTax" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj - Davek, obračunan med letom</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalDifference" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj - Razlika</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="BankAccountNo " type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>vplačilni podračun</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VrstaPrireditelja" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta Prireditelja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Obracun" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>Obracun</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element name="SequenceNumber" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Zaporedna stevilka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="GameCode" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Sifra igre</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="GameName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naziv igre</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Payment" type="xs:decimal" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Vplačilo</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Payout" type="xs:decimal" minOccurs="0">
+              <xs:annotation>
+                <xs:documentation>Izplačani dobitek</xs:documentation>
+              </xs:annotation>
+              </xs:element>
+              <xs:element name="Base" type="xs:decimal" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Osnova za davek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Rate" type="xs:decimal" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Stopnja</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Tax" type="xs:decimal" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CalculatedTax" type="xs:decimal" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davek, obračunan med letom</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Difference" type="xs:decimal" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Razlika</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/DDV_O_OP_1.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://edavki.durs.si/Documents/Schemas/DDV_O_OP_1.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+             schemaLocation="EDP-Common-1.xsd"/>
+
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="DDV_O_OP" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="DDV_O_OP">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Year" type="Year_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">za leto</xs:documentation>
+            <xs:documentation xml:lang="en">for year</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="FormCompletedBy" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Vlogo izpolnil</xs:documentation>
+            <xs:documentation xml:lang="en">Full name of the person who has completed this form</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TelephoneNumber" type="String50_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Telefonska številka</xs:documentation>
+            <xs:documentation xml:lang="en">Telephone</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Email" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Elektronski naslov</xs:documentation>
+            <xs:documentation xml:lang="en">E-mail address</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="RepresentativeTaxIdentificationNumber" type="edp:TaxNumberType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Identifikacijska številka za DDV davčnega zastopnika</xs:documentation>
+            <xs:documentation xml:lang="en">The tax identification number for the tax representative</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Return" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Obračun</xs:documentation>
+            <xs:documentation xml:lang="en">Return</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Correction" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Popravek obračun</xs:documentation>
+            <xs:documentation xml:lang="en">Correction of the return</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SelfDeclaration" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Samoprijava</xs:documentation>
+            <xs:documentation xml:lang="en">Self-declaration</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxableService" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SequenceNumber" type="xs:int">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Zaporedna številka</xs:documentation>
+                  <xs:documentation xml:lang="en">Sequence number</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TransportDateFrom" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Datum opravljanja prevoza od</xs:documentation>
+                  <xs:documentation xml:lang="en">Date of performing transport from</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TransportDateTo" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Datum opravljanja prevoza do</xs:documentation>
+                  <xs:documentation xml:lang="en">Date of performing transport to</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="RegistrationNumber" type="String20_Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Reg. št. vozila</xs:documentation>
+                  <xs:documentation xml:lang="en">Reg. number of the vehicle</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="NumTransported" type="Int3_Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Št. prepeljanih oseb</xs:documentation>
+                  <xs:documentation xml:lang="en">No. of persons transported</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="VatRate" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Stopnja DDV %</xs:documentation>
+                  <xs:documentation xml:lang="en">VAT rate %</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ValueWithoutVat" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Vrednost storitve brez DDV</xs:documentation>
+                  <xs:documentation xml:lang="en">Vrednost storitve brez DDV</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="TotalWithoutVat" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Vsota</xs:documentation>
+            <xs:documentation xml:lang="en">Total</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxBase" type="edp:Decimal14_0Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Davčna osnova</xs:documentation>
+            <xs:documentation xml:lang="en">Tax base</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalVat" type="edp:Decimal14_0Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="si">Skupaj DDV obveznost za plačilo</xs:documentation>
+            <xs:documentation xml:lang="en">Total VAT obligation for payment</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="Year_Type">
+    <xs:restriction base="xs:int">
+      <xs:pattern value="[1-9][0-9]{3}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String256_Type">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="256" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String50_Type">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="50" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String20_Type">
+      <xs:restriction base="xs:string">
+        <xs:maxLength value="20" />
+      </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Int3_Type">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="999"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DBVB_1"
+    targetNamespace="http://edavki.durs.si/Documents/Schemas/DBVB_1.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://edavki.durs.si/Documents/Schemas/DBVB_1.xsd"
+    xmlns:mstns="http://tempuri.org/DBVB_1.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+>
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0"/>
+        <xs:element ref="edp:Signatures"/>        
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="DBVB"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="DBVB">
+    <xs:annotation>
+      <xs:documentation xml:lang="sl">Obračun davka na bilančno vsoto bank</xs:documentation>
+      <xs:documentation xml:lang="en">Return for tax on total assets of banks</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="PeriodFrom" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Obdobje od</xs:documentation>
+            <xs:documentation xml:lang="en">Period from</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PeriodTo" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Obdobje do</xs:documentation>
+            <xs:documentation xml:lang="en">Period to</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Email" type="string100" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Elektronski naslov</xs:documentation>
+            <xs:documentation xml:lang="en">Electronic address</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TelephoneNumber" type="string30" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Telefonska številka</xs:documentation>
+            <xs:documentation xml:lang="en">Telephone number</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ReturnFor" minOccurs="0" type="string256">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Return for</xs:documentation>
+            <xs:documentation xml:lang="sl">Obračun za</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        
+        <xs:element name="BankHeadquarters" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Podatki o matični banki podružnice/poslovne enote-zavezanca za davek</xs:documentation>
+            <xs:documentation xml:lang="en">Data about the bank headquarters of the branch/business unit of the entity liable for tax</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="IdentificationNumber" type="string20" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Identifikacijska številka</xs:documentation>
+                  <xs:documentation xml:lang="en">Identification number</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Name" type="string256" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Naziv oz. ime in priimek</xs:documentation>
+                  <xs:documentation xml:lang="en">Name</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Street" type="string256" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Ulica</xs:documentation>
+                  <xs:documentation xml:lang="en">Street</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="BuildingIdentifier" type="string10" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Hišna številka</xs:documentation>
+                  <xs:documentation xml:lang="en">Building Identifier</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="City" type="string256" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Naselje</xs:documentation>
+                  <xs:documentation xml:lang="en">City</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PostCode" type="string10" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Poštna številka</xs:documentation>
+                  <xs:documentation xml:lang="en">Post code</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PostName" type="string256" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Pošta</xs:documentation>
+                  <xs:documentation xml:lang="en">post name</xs:documentation>
+                </xs:annotation>
+              </xs:element>              
+              <xs:element name="Country" type="string256" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Država</xs:documentation>
+                  <xs:documentation xml:lang="en">Country</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Email" type="string100" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Elektronski naslov</xs:documentation>
+                  <xs:documentation xml:lang="en">Electronic address</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TelephoneNumber" type="string30" minOccurs="0" >
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Telefonska številka</xs:documentation>
+                  <xs:documentation xml:lang="en">Telephone number</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="BookKeepingItems" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Podatki o knjigovodskih postavkah</xs:documentation>
+            <xs:documentation xml:lang="en">Data about bookkeeping items</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="JulyTotalAssets" type="Decimal18_0Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Bilančna vsota na dan 31.7.2011</xs:documentation>
+                  <xs:documentation xml:lang="en">Total assets on 31 July 2011</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PreviousTotalAssets" type="Decimal18_0Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Bilančna vsota v predhodnem obračunskem obdobju</xs:documentation>
+                  <xs:documentation xml:lang="en">Total assets in the previous return period</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CurrentTotalAssets" type="Decimal18_0Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Bilančna vsota v tekočem obračunskem obdobju</xs:documentation>
+                  <xs:documentation xml:lang="en">Total assets in the current return period</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="CreditStatus" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Podatki o stanju kreditov</xs:documentation>
+            <xs:documentation xml:lang="en">Data about the status of credits</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="JulyCredit" type="Decimal18_0Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Stanje kreditov, danih nefinančnim družbam in samostojnim podjetnikom na dan 31.7.2011</xs:documentation>
+                  <xs:documentation xml:lang="en">Status of credits, given to non-financial companies and sole proprietors on 31 July 2011</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PreviousReturnCredit" type="Decimal18_0Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Stanje kreditov, danih nefinančnim družbam in samostojnim podjetnikom, v predhodnem obračunskem obdobju</xs:documentation>
+                  <xs:documentation xml:lang="en">Status of credits, given to non-financial companies and sole proprietors in the previous return period </xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ReturnCredit" type="Decimal18_0Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Stanje kreditov, danih nefinančnim družbam in samostojnim podjetnikom, v tekočem obračunskem obdobju</xs:documentation>
+                  <xs:documentation xml:lang="en">Status of credits, given to non-financial companies and sole proprietors in the return period</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IncreaseCredit" type="Decimal5_1Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Povečanje stanja kreditov v obračunskem obdobju glede na bilančno vsoto v predhodnem obdobju</xs:documentation>
+                  <xs:documentation xml:lang="en">Increase in the status of credits in the return period in relation to the total assets in the previous period</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ShareCredit" type="Decimal5_1Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Delež stanja kreditov, danih nefinančnim družbam in samostojnim podjetnikom, v bilančni vsoto na dan 31.7.2011</xs:documentation>
+                  <xs:documentation xml:lang="en">Share of status of credits, given to non-financial companies and sole proprietors in total assets on 31 July 2011</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="TaxLiabilitiesCalculation" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Izračun davčne obveznosti</xs:documentation>
+            <xs:documentation xml:lang="en">Calculation of tax liabilities</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TaxBase" type="Decimal18_0Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Osnova za davek</xs:documentation>
+                  <xs:documentation xml:lang="en">Base for tax</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxRate" type="Decimal5_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Stopnja davka</xs:documentation>
+                  <xs:documentation xml:lang="en">Tax rate</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Tax" type="Decimal18_0Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Davek</xs:documentation>
+                  <xs:documentation xml:lang="en">Tax</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="DecreasedRateOfTax" type="Decimal6_3Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Stopnja zmanjšanja davka glede na stanje kreditov, danih nefinančnim družbam in samostojnim podjetnikom, v obračunskem obdobju</xs:documentation>
+                  <xs:documentation xml:lang="en">Rate of tax decrease in relation to the status of credits, given to non-financial companies and sole proprietors in the return period</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="DecreasedTax" type="Decimal18_0Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Zmanjšanje davka glede na stanje kreditov, danih nefinančnim družbam in samostojnim podjetnikom, v obračunskem obdobju</xs:documentation>
+                  <xs:documentation xml:lang="en">Decrease in tax in relation to the status of credits, given to non-financial companies and sole proprietors in the return period</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxLiabilities" type="Decimal18_0Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Davčna obveznost</xs:documentation>
+                  <xs:documentation xml:lang="en">Tax liabilities</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ExemptFromTax" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Zavezanec oproščen plačila davka</xs:documentation>
+                  <xs:documentation xml:lang="en">Taxpayer exempt from payment of tax</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="LiabilitiesPayment" type="Decimal18_0Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Obveznost za plačilo</xs:documentation>
+                  <xs:documentation xml:lang="en">Liabilities for payment</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
+  <xs:simpleType name="Decimal18_0Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,18}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Decimal5_1Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,5}(\.\d{1})?" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Decimal5_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,5}(\.\d{1,2})?" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Decimal6_3Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,6}(\.\d{1,3})?" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="string100">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="100"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="string10">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="10"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="string256">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="256"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="string20">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="20"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="string30">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="30"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

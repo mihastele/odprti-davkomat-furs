@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/KD_ODKD_4.xsd" elementFormDefault="qualified"
+  xmlns="http://edavki.durs.si/Documents/Schemas/KD_ODKD_4.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" >
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" id="EDP-Common-1" />
+  <xs:element name="KD_ODKD">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DocumentWorkflowID" type="edp:DocumentIDType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DocumentWorkflowName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - naziv</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="BalanceMonth" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Mesec obračuna</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="BaseAmount" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek osnove</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxShareKD" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Delež koncesijske dajavtve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxShareDKD" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Delež dodatne koncesijske dajavtve</xs:documentation>
+          </xs:annotation>
+         </xs:element>
+        <xs:element name="TaxRateKD" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Stopnja koncesijske dajavtve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxRateDKD" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Stopnja dodatne koncesijske dajavtve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PaymentAmountKD" type="edp:NegativeDecimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek za plačilo koncesijske dajavtve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PaymentAmountDKD" type="edp:NegativeDecimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek za plačilo dodatne koncesijske dajavtve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AccountNoKD" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Številka podračuna koncesijske dajatve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AccountNoDKD" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Številka podračuna dodatne koncesijske dajatve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AccountModelKD" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Referenca koncesijske dajatve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AccountModelDKD" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Referenca dodatne koncesijske dajatve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AccountRefNoKD" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Številka odobritve koncesijske dajatve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AccountRefNoDKD" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Številka odobritve dodatne koncesijske dajatve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element ref="KD_ODKD" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

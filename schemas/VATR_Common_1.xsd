@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/VATR_Common_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://edavki.durs.si/Documents/Schemas/VATR_Common_1.xsd" elementFormDefault="qualified">
+	<!-- Complex types -->
+	<xs:complexType name="Period_Type">
+		<xs:sequence>
+			<xs:element name="StartDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="EndDate" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Applicant_Type">
+		<xs:complexContent>
+			<xs:extension base="BaseTrader_Type">
+				<xs:sequence>
+					<xs:element name="CountryCode" type="xs:string" minOccurs="0"/>
+					<xs:element name="EUTraderID" type="EUTraderID_Type" minOccurs="0"/>
+					<xs:element name="EmailAddress" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EUTraderID_Type">
+		<xs:choice>
+			<xs:element name="VATIdentificationNumber" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Number" type="xs:string" minOccurs="0"/>
+						<xs:element name="issuedBy" type="xs:string" minOccurs="0"/>
+						<xs:element name="identificationType" type="xs:string" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="TaxReferenceNumber" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Number" type="xs:string" minOccurs="0"/>
+						<xs:element name="issuedBy" type="xs:string" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="BaseTrader_Type">
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string" minOccurs="0"/>
+			<xs:element name="AddressStruct" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Street" type="xs:string" minOccurs="0"/>
+						<xs:element name="BuildingIdentifier" type="xs:string" minOccurs="0"/>
+						<xs:element name="SuiteIdentifier" type="xs:string" minOccurs="0"/>
+						<xs:element name="FloorIdentifier" type="xs:string" minOccurs="0"/>
+						<xs:element name="DistrictName" type="xs:string" minOccurs="0"/>
+						<xs:element name="POB" type="xs:string" minOccurs="0"/>
+						<xs:element name="PostCode" type="xs:string" minOccurs="0"/>
+						<xs:element name="City" type="xs:string" minOccurs="0"/>
+						<xs:element name="CountrySubentity" type="xs:string" minOccurs="0"/>
+						<xs:element name="OtherLocalId" type="xs:string" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="TelephoneNumber" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MoneyAmount_Type">
+		<xs:sequence>
+			<xs:element name="Amount" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="currency" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OfficialCopy_Type">
+		<xs:sequence>
+			<xs:element name="FileType" type="xs:string" minOccurs="0"/>
+			<xs:element name="FileName" type="xs:token" minOccurs="0"/>
+      <xs:element name="FileUrl" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DebitBalance_Type">
+		<xs:sequence>
+			<xs:element name="AmountDue" type="MoneyAmount_Type" minOccurs="0"/>
+			<xs:element name="BalanceCorrection" type="BalanceCorrection_Type" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="RecoveryInformation" type="RecoveryInformation_Type" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BalanceCorrection_Type">
+		<xs:sequence>
+			<xs:element name="Amount" type="MoneyAmount_Type" minOccurs="0"/>
+			<xs:element name="Reason" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RecoveryInformation_Type">
+		<xs:sequence>
+			<xs:element name="BankAccount" type="BankAccount_Type" minOccurs="0"/>
+			<xs:element name="PaymentType" type="xs:string" minOccurs="0"/>
+			<xs:element name="PaymentReference" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BankAccount_Type">
+		<xs:sequence>
+			<xs:element name="OwnerName" type="xs:string" minOccurs="0"/>
+			<xs:element name="IBAN" type="xs:string" minOccurs="0"/>
+			<xs:element name="BIC" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

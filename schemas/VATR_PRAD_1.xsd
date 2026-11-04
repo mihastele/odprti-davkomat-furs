@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/VATR_PRAD_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" xmlns:vatr="http://edavki.durs.si/Documents/Schemas/VATR_Common_1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/VATR_PRAD_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/VATR_Common_1.xsd" schemaLocation="VATR_Common_1.xsd"/>
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="VATR_PRAD"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--type definitions-->
+  <xs:element name="VATR_PRAD">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ReferenceNumber" type="xs:string" minOccurs="0"/>
+        <xs:element name="RefundingCountryCode" type="xs:string" minOccurs="0"/>
+        <xs:element name="Decision" type="xs:string" minOccurs="0"/>
+        <xs:element name="DecisionDate" type="xs:dateTime" minOccurs="0"/>
+        <xs:element name="AcceptedRefund" type="AcceptedRefund_Type" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="Justification" type="AdjustmentResultJustification_Type" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="AdjustmentInformation" type="AdjustmentInformation_Type" minOccurs="0"/>
+        <xs:element name="OfficialCopy" type="vatr:OfficialCopy_Type" minOccurs="0"  maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="AcceptedRefund_Type">
+    <xs:sequence>
+      <xs:element name="ApplicationReference" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ReferenceNumber" type="xs:string" minOccurs="0"/>
+            <xs:element name="RefundingCountryCode" type="xs:string" minOccurs="0"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="EstimatedTotalAmount" type="vatr:MoneyAmount_Type" minOccurs="0"/>
+      <xs:element name="AdjustedTotalAmount" type="vatr:MoneyAmount_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AdjustmentResultJustification_Type">
+    <xs:sequence>
+      <xs:element name="ReasonCode" type="xs:string"/>
+      <xs:element name="AdditionalInformation" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AdjustmentInformation_Type">
+    <xs:sequence>
+      <xs:element name="TotalAmount" type="vatr:MoneyAmount_Type"/>
+      <xs:element name="DebitBalance" type="vatr:DebitBalance_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

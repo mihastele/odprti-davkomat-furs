@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/SME_Final_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/SME_Final_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  
+  <!--Poročilo o preseganju letnega prometa v Uniji-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Data" minOccurs="1" maxOccurs="1"/>
+              <xs:element ref="Period" minOccurs="1" maxOccurs="1"  />
+              <xs:element ref="Dobave" minOccurs="0" maxOccurs="unbounded"  />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+
+  <!--Podatki Data-->
+  <xs:element name="Data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="PlaceOfBusiness_CountryID" type="xs:string" minOccurs="0" />   <!--Država sedeža podjetja-->
+        <xs:element name="SME_ID" type="xs:string" minOccurs="0" />   <!--SME številka-->
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0" />
+        <xs:element name="ReferenceNumber" type="xs:string" minOccurs="0" />
+        <xs:element name="AmountTotal" type="xs:decimal" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Podatki o Periodah-->
+  <xs:element name="Period">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Year" type="Year_Type" minOccurs="0" />
+        <xs:element name="ReturnPeriod" type="Quarter_Type" minOccurs="0" />
+        <xs:element name="FinalDate"  type="xs:date" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <!--Skupna vrednost dobav-->
+  <xs:element name="Dobave">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CountryID" type="xs:string" minOccurs="0" /> <!--Država članica -->
+       <xs:element name="Sector" type="xs:string" minOccurs="0" /><!--Sektor-->
+        <xs:element name="Amount" type="xs:decimal" minOccurs="0" /> <!--Skupni znesek v državi članici-->
+        <xs:element name="Locked" type="xs:boolean" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- SIMPLE TYPES -->
+  <xs:simpleType name="Year_Type">
+    <xs:restriction base="xs:gYear">
+      <xs:pattern value="[0-9]{4}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Quarter_Type">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Q1">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">January to March</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Q2">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">April to June</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Q3">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">July to September</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Q4">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">October to December</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="RestrictedDate_Type">
+    <xs:restriction base="xs:date">
+      <xs:pattern value="\d{4}-\d{2}-\d{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="RestrictedDateTime_Type">
+    <xs:restriction base="xs:dateTime">
+      <xs:pattern value="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3}){0,1}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

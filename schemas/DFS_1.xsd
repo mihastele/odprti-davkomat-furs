@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/DFS_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/DFS_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="DFS"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:element name="DFS">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CustodianNotes" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Opombe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianSubmitDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum prijave</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Period" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Perioda dokumenta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Email" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <!-- Davčna obveznost za davčno obdobje -->
+        <xs:element name="FinancialServices" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Finančne storitve po 3. členu ZDFS</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F04" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčna osnova [04]</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F05" type="Decimal3_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Stopnja davka [05]</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F06" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek davka [06]</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F06a" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obresti, povečane za kazenske točke [06a]</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <!-- Popravki za pretekla davčna obdobja -->
+        <xs:element name="Corrections" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Popravki za pretekla davčna obdobja</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F07m" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčno obdobje[07] (mesec)</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:int">
+                    <xs:minInclusive value="1" />
+                    <xs:maxInclusive value="12" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="F07y" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčno obdobje[07] (leto)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F08" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Vrsta [08]</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="increase" />
+                    <xs:enumeration value="decrease" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="F09" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Popravek davčne osnove[09]</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F10" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Popravek zneska davka[10]</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F11" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Obresti, povečane za kazenske točke [11]</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxRate" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>stopnja davka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- Skupaj povečanje za pretekla obdobja -->
+        <xs:element name="F12" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčna osnova [12]</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F13" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek davka [13]</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F14" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obresti, povečane za kazenske točke [14]</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <!-- Skupaj zmanjšanje za pretekla obdobja -->
+        <xs:element name="F15" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčna osnova [15]</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F16" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek davka [16]</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <!-- Skupni znesek za plačilo / vračilo -->
+        <xs:element name="F17" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Plačilo [17]</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F18" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vračilo [18]</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="F19" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>TRR za vračilo [19]</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="WarnedInterestCalc" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prebral-a sem opozorilo, da izračun obresti trenutno ni mogoč.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="Decimal3_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,3}(\.\d{1,2})?"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+
+</xs:schema>

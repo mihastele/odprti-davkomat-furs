@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/NF_NarNesrece_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/NF_NarNesrece_1.xsd"
+  elementFormDefault="qualified">
+
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Data"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="PeriodMonth" type="xs:int" minOccurs="0" /> <!--Obdobje-->
+        <xs:element name="PeriodYear" type="xs:int" minOccurs="0" />
+        <xs:element name="Email" type="xs:string"  minOccurs="0" maxOccurs="1" /> <!--Elektronski naslov-->
+        <xs:element name="TelephoneNumber" type="xs:string"  minOccurs="0" maxOccurs="1" /> <!--Telefonska številka-->
+        <xs:element name="UpadPrihodkovNeposredno" type="xs:boolean"  minOccurs="0" maxOccurs="1" /> <!--pričakovani upad prihodkov bo posledica neposredne škode zaradi poplav (npr. poplavljeni prostori, poškodovana ali uničena oprema, zaloge zaloge…)-->
+        <xs:element name="UpadPrihodkovPosredno" type="xs:boolean"  minOccurs="0" maxOccurs="1" /> <!--pričakovani upad prihodkov bo posledica posredne poslovne škode nastale, ker so bili v poplavah prizadeti poslovni partnerji-->
+        <xs:element name="UpadPrihodkovDrugo" type="xs:boolean"  minOccurs="0" maxOccurs="1" /> <!--pričakovani upad prihodkov bo posledica drugih razlogov povezanih s poplavami-->
+        <xs:element name="AccountNumber" type="xs:string"  minOccurs="0" maxOccurs="1" /> <!--lasten/drug transakcijski račun-->
+        <xs:element name="AccountType" minOccurs="0"> <!--tip transakcijskega računa-->
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="own"/> <!--lastni-->
+              <xs:enumeration value="other"/> <!--drug-->
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

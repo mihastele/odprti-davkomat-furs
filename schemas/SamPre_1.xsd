@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/SamPre_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/SamPre_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Igralec"/>
+              <xs:element ref="Vlagatelj"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Igralec">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Ime" type="xs:string" minOccurs="0" />
+        <xs:element name="Priimek" type="xs:string" minOccurs="0" />
+        <xs:element name="DatumRojstva" type="xs:date" minOccurs="0"/>                   
+        <xs:element name="Ulica" type="xs:string" minOccurs="0" />
+        <xs:element name="HisnaStevilka" type="xs:string" minOccurs="0" />
+        <xs:element name="Kraj" type="xs:string" minOccurs="0" />
+        <xs:element name="PostnaStevilka" type="xs:string" minOccurs="0" />
+        <xs:element name="Posta" type="xs:string" minOccurs="0" />
+        <xs:element name="Drzava" type="xs:string" minOccurs="0"/>
+        <xs:element name="OsebniDokument" type="xs:string" minOccurs="0" />
+        <xs:element name="StOsebnegaDokumenta" type="xs:string" minOccurs="0" />
+        <xs:element name="PrepovedOd" type="xs:date" minOccurs="0" />
+        <xs:element name="PrepovedDo" type="xs:date" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Vlagatelj">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Email" type="xs:string" minOccurs="0" />
+        <xs:element name="PhoneNumber" type="xs:string" minOccurs="0" />
+        <xs:element name="DavcnaStevilka" type="xs:string" minOccurs="0" />
+        <xs:element name="Ime" type="xs:string" minOccurs="0" />
+        <xs:element name="Priimek" type="xs:string" minOccurs="0" />
+        <xs:element name="DatumVlozitve" type="xs:date" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
+</xs:schema>

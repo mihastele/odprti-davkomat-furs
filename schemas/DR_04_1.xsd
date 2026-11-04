@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/DR_04_1.xsd" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" 
+           targetNamespace="http://edavki.durs.si/Documents/Schemas/DR_04_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:AttachmentList" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Data" minOccurs="0" />
+              <xs:element name="ApplicantData" type="ApplicantDataType" minOccurs="0" /><!--Applicant data {? Applicant data}-->
+              <xs:element name="LegalEntityContact" type="LegalEntityContactType" minOccurs="0" /> <!--Legal entity contact data {?_Step1}--> 
+              <xs:element name="LegalEntityData" type="LegalEntityDataType" minOccurs="0" /> <!-- Legal entity data {?_Step2} -->
+              <xs:element name="ActivityCodes" type="ActivityCodesType" minOccurs="0" /> <!-- Activity codes and tax residency {?_Step3} -->
+              <xs:element name="FoundersPartnersMembers" type="FoundersPartnersMembersType" minOccurs="0" maxOccurs="unbounded"  /> <!-- Data on founders, partners and/or members {?_Step4}  -->
+              <xs:element name="CapitalInvestmentsAbroad" type="CapitalInvestmentsAbroadType" minOccurs="0" maxOccurs="unbounded"  /> <!-- Data on capital investments abroad (outside Republic of Slovenia) {?_Step5} -->
+              <xs:element name="AuthorisedRepresentatives" type="AuthorisedRepresentativesType" minOccurs="0" maxOccurs="unbounded"  /> <!-- Data on authorised representatives {?_Step6} -->
+              <xs:element name="AccountsAbroad" type="AccountsAbroadType" minOccurs="0" maxOccurs="unbounded"  />         <!-- Accounts abroad (outside Republic of Slovenia) {?_Step7} -->
+             
+              <xs:element name="AppDataTelephoneNumbers" type="TelephoneNumberType" minOccurs="0"  maxOccurs="unbounded"/>
+              <xs:element name="AppDataEmails" type="EmailsType" minOccurs="0"   maxOccurs="unbounded"/>
+              <xs:element name="LegalEntTelephoneNumbers" type="TelephoneNumberType" minOccurs="0"  maxOccurs="unbounded"/>
+              <xs:element name="LegalEntEmails" type="EmailsType" minOccurs="0"   maxOccurs="unbounded"/>
+              <xs:element name="AdditionalActivities" type="AdditionalActivitiesType" minOccurs="0" maxOccurs="unbounded" /><!-- Additional activities -->
+              
+              
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:element name="Data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0" />
+        <xs:element name="Other" type="xs:string" minOccurs="0" /> <!-- Other {?_Step8}  -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+      
+  <xs:complexType name="ApplicantDataType">
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string" minOccurs="0" /> <!--SI PASS naziv -->
+      <xs:element name="Email" type="xs:string" minOccurs="0" /> <!-- Potrjen e mail iz vstopa -->
+      <xs:element name="SubmittingOnBehalf" type="xs:boolean" minOccurs="0" default="false"/>
+      
+      <xs:element name="BirthDate" type="xs:date" minOccurs="0" /> <!-- Birth date [DD/MM/YYYY] -->
+      <xs:element name="Address" type="xs:string" minOccurs="0" /> <!-- Permanent residence (Address) -->
+      <xs:element name="Country" type="xs:string" minOccurs="0" /> <!-- Permanent residence (Country) -->
+    </xs:sequence>
+  </xs:complexType>    
+
+  <xs:complexType name="LegalEntityContactType">
+    <xs:sequence>
+      <xs:element name="NameOfEntity" type="xs:string" minOccurs="0" /> <!-- Name of entity -->
+      <xs:element name="ShortNameOfEntity" type="xs:string" minOccurs="0" /> <!-- Short name of entity -->
+      <xs:element name="Country" type="xs:string" minOccurs="0" /> <!-- Country -->
+      <xs:element name="StreetAndNumber" type="xs:string" minOccurs="0" /> <!-- Street and number -->
+      <xs:element name="CityOrTown" type="xs:string" minOccurs="0" /> <!-- City or town -->
+      <xs:element name="PostCode" type="xs:string" minOccurs="0" /> <!-- Post office -->
+      <xs:element name="PostName" type="xs:string" minOccurs="0" /> <!-- Post office -->
+  </xs:sequence>
+  </xs:complexType>    
+
+  <xs:complexType name="LegalEntityDataType">
+    <xs:sequence>
+      <xs:element name="RegistrationAuthorityCode" type="xs:string" minOccurs="0" /> <!-- Registration authority (code and name) -->
+      <xs:element name="RegistrationAuthorityName" type="xs:string" minOccurs="0" /> <!-- Registration authority (code and name) -->
+      <xs:element name="RegistrationNumber" type="xs:string" minOccurs="0" /> <!-- Registration number (assigned by the above registration authority) Enter Text -->
+      <xs:element name="DateEntryRegister" type="xs:date" minOccurs="0" /> <!-- Date of entry in the register or beginning of business activities*  -->
+      <xs:element name="LegalOrganisationalForm" type="xs:string" minOccurs="0" /> <!-- Legal organisational form  -->
+  </xs:sequence>
+  </xs:complexType>    
+  
+  <xs:complexType name="ActivityCodesType">
+    <xs:sequence>
+      <xs:element name="ActivityCode" type="xs:string" minOccurs="0" /> <!-- Activity code in accordance with the Standard Classification of Activities (SCA)* -->
+      <xs:element name="ActivityName" type="xs:string" minOccurs="0" />    
+
+      <xs:element name="AdditionalActivities" type="AdditionalActivitiesType" minOccurs="0" maxOccurs="unbounded" /><!-- Additional activities -->
+
+      <!-- Tax residency -->
+      <xs:element name="CountryOfResidence" type="xs:string" minOccurs="0" />              <!-- Country of residence* -->
+      <xs:element name="NumberForTaxPurposes" type="xs:string" minOccurs="0" />                <!-- Number for tax purposes in the country of residence -->
+  </xs:sequence>
+  </xs:complexType>    
+
+  <xs:complexType name="FoundersPartnersMembersType">
+    <xs:sequence>
+      <xs:element name="TaxNumber" type="xs:string" minOccurs="0" />  <!-- Tax number -->
+      <xs:element name="PersonalName" type="xs:string" minOccurs="0" /> <!-- Personal name or name of entity -->
+      <xs:element name="ResidenceAddress" type="xs:string" minOccurs="0" /> <!-- Address of residence or head office -->
+      <xs:element name="ResidenceCountry" type="xs:string" minOccurs="0" /> <!-- Country of residence or head office -->
+  </xs:sequence>
+  </xs:complexType>    
+
+  <xs:complexType name="CapitalInvestmentsAbroadType">
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string" minOccurs="0" /> <!-- Name -->
+      <xs:element name="HeadOffice" type="xs:string" minOccurs="0" /> <!-- Head office -->
+      <xs:element name="OrganisationalForm" type="xs:string" minOccurs="0" /> <!-- Organisational form of the company abroad -->
+  </xs:sequence>
+  </xs:complexType>    
+
+  <xs:complexType name="AuthorisedRepresentativesType">
+    <xs:sequence>
+      <xs:element name="TaxNumber" type="xs:string" minOccurs="0" /> <!-- Tax number -->
+      <xs:element name="PersonalName" type="xs:string" minOccurs="0" /> <!-- Personal name -->
+      <xs:element name="PersonalSurname" type="xs:string" minOccurs="0" /> <!-- Personal SurName -->
+      <xs:element name="AddressOfResidence" type="xs:string" minOccurs="0" /> <!-- Address of residence -->
+      <xs:element name="TypeOfRepresentative" type="xs:string" minOccurs="0" /> <!-- Type of representative -->
+      <xs:element name="TypeOfRepresentativeDescription" type="xs:string" minOccurs="0" /> <!-- Type of representative (description) -->
+      <xs:element name="OtherRepresentative" type="xs:string" minOccurs="0" /> <!-- Other -->
+      <xs:element name="LimitsOfAuthorisation" type="xs:string" minOccurs="0" /> <!-- Limits of authorisation -->
+      <xs:element name="LimitsOfAuthorisationDescription" type="xs:string" minOccurs="0" /> <!-- Limits of authorisation (description) -->
+      <xs:element name="OtherAuthorisation" type="xs:string" minOccurs="0" /> <!-- Other  -->
+      <xs:element name="DateOfAuthorisation" type="xs:date" minOccurs="0" />  <!-- Date of granting authorisation -->
+      <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0" /> <!-- Telephone number -->
+      <xs:element name="EmailAddress" type="xs:string" minOccurs="0" /> <!-- Email address -->
+  </xs:sequence>
+  </xs:complexType>    
+
+  <xs:complexType name="AccountsAbroadType">
+    <xs:sequence>
+      <xs:element name="Number" type="xs:string" minOccurs="0" /> <!-- Number -->
+      <xs:element name="NameOfBank" type="xs:string" minOccurs="0" /> <!-- Name of bank or savings bank -->
+      <xs:element name="SwiftBic" type="xs:string" minOccurs="0" /> <!-- SWIFT code or BIC of bank -->
+      <xs:element name="Country" type="xs:string" minOccurs="0" />  <!-- Country -->
+      <xs:element name="DateAccountOpening" type="xs:date" minOccurs="0" /> <!-- Date of account opening -->
+  </xs:sequence>
+  </xs:complexType>    
+
+
+  <!-- low level -->
+  <xs:complexType name="TelephoneNumberType">
+    <xs:sequence>
+      <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0"  /> <!-- Telephone number(s) -->
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="EmailsType">
+    <xs:sequence>
+      <xs:element name="Email" type="xs:string" minOccurs="0"  /> <!-- E-mail address(es) -->
+    </xs:sequence>
+  </xs:complexType>    
+
+  <xs:complexType name="AdditionalActivitiesType">
+    <xs:sequence>
+      <xs:element name="ActivityCode" type="xs:string" minOccurs="0" />
+      <xs:element name="ActivityName" type="xs:string" minOccurs="0" />    
+    </xs:sequence>
+  </xs:complexType>    
+
+
+
+
+</xs:schema>

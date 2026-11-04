@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/LICIS_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/LICIS_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="LICIS"/>
+              <xs:element ref="LicPersonData" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="LicCancelation" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="LICIS">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0" />        
+        <xs:element name="EmailAddress" type="xs:string" minOccurs="0" />
+        <xs:element name="PhoneNumber" type="xs:string" minOccurs="0" />
+        <xs:element name="Obcina" type="xs:string" minOccurs="0"/>
+        <xs:element name="VlogaZa" type="xs:string" minOccurs="0"/>
+        <xs:element name="VrstaPrireditelja" type="xs:string" minOccurs="0"/>
+        <xs:element name="NVrstaPrireditelja" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="LicPersonData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Ime" type="xs:string" minOccurs="0" />
+        <xs:element name="Priimek" type="xs:string" minOccurs="0" />
+        <xs:element name="DatumRojstva" type="xs:date" minOccurs="0"/>                   
+        <xs:element name="KrajRojstva" type="xs:string" minOccurs="0"/>                   
+        <xs:element name="Ulica" type="xs:string" minOccurs="0" />
+        <xs:element name="HiSt" type="xs:string" minOccurs="0" />
+        <xs:element name="Kraj" type="xs:string" minOccurs="0" />
+        <xs:element name="PostnaStevilka" type="xs:string" minOccurs="0" />
+        <xs:element name="Posta" type="xs:string" minOccurs="0" />
+        <xs:element name="Drzavljanstvo" type="xs:string" minOccurs="0"/>
+        <xs:element name="DelovnoMesto" type="xs:string" minOccurs="0" />
+        <xs:element name="DelovnoMestoN" type="xs:string" minOccurs="0" />
+        <xs:element name="Izobrazba" type="xs:string" minOccurs="0" />
+        <xs:element name="IzobrazbaN" type="xs:string" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>  
+
+  <xs:element name="LicCancelation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="LicID" type="xs:string" minOccurs="0" />
+        <xs:element name="Razlog" type="xs:string" minOccurs="0" />
+        <xs:element name="RazlogN" type="xs:string" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>  
+
+</xs:schema>

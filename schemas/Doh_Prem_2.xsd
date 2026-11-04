@@ -1,0 +1,341 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/Doh_Prem_2.xsd" elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/Doh_Prem_2.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" id="EDP-Common-1" />
+  <!--prva tabela: Podatki o premoženju in dohodku iz oddajanja premoženja v najem-->
+  <xs:element name="Doh_Prem_A">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="F1" type="xs:positiveInteger" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Zaporedna številka vrstice
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F2" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Vrsta premoženja
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F3" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Tip premoženja
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F4a" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Katastrska občina
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F4b" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Identifikator nepremičnine
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F5" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Znesek doseženega dohodka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F6" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Tuji davek (v EUR)
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F7" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Država
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F8a" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Čas oddajanja od
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F8b" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Čas oddajanja do
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F9" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Uveljavljam 40 % normirane stroške
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F10" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Znesek dejanskih stroškov vzdrževanja (v EUR)
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F11" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Znesek plačane najemnine (v EUR)
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F12" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Za dohodke iz oddajanja premoženja izjavljam...
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+	<xs:element name="F12a" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              v skladu s/z
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+	<xs:element name="F12b" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              odstavkom
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+	<xs:element name="F12c" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              sklenjene med Republiko Slovenijo in
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F13" type="String100Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Opis premoženja
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element >
+
+  <!--druga tabela: Razčlenitev dejanskih stroškov vzdrževanja premoženja-->
+  <xs:element name="Doh_Prem_B">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="F13" type="xs:positiveInteger" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Zaporedna številka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F14" type="String100Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Razčlenitev dejanskih stroškov vzdrževanja premoženja
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F15" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Znesek (v EUR)
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element >
+
+  <!--tretja tabela: Podatki o izplačevalcu dohodka-->
+  <xs:element name="Doh_Prem_C">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="F16" type="xs:positiveInteger" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Zaporedna številka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F17" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Naziv
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F18" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Naslov
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F19" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Država
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F20" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Davčna številka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F21" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Identifikacijska številka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element >
+
+    <!--peta tabela: Priloge -->
+  <xs:element name="Priloge">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="F22" type="xs:positiveInteger" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Zaporedna številka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F23" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Priloge
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element >
+
+  <xs:element name="Doh_Prem_TaxPayerData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DocumentWorkflowID" type="edp:DocumentIDType" minOccurs="1">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DocumentWorkflowName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - naziv</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Email" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Elektronski naslov
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PhoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Telefonska številka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Resident" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Rezident republike Slovenije
+            </xs:documentation>
+          </xs:annotation>
+       </xs:element>
+       <xs:element name="ResidentCountry" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Država rezidentstva
+            </xs:documentation>
+          </xs:annotation>
+       </xs:element>
+        <xs:element name="TaxPeriod" type="xs:int" minOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Perioda
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <!-- Custodian data -->
+  <xs:element name="Custodian">
+	<xs:complexType>
+	  <xs:sequence>
+		<xs:element name="CustodianNotes" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Custodian notes</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianSubmitDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Submission date</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+	  </xs:sequence>
+	</xs:complexType>
+  </xs:element>
+	<!-- end of optional fields-->
+
+        <!--glavna zgradba dokumenta-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element ref="Doh_Prem_TaxPayerData"  />              
+              <xs:element ref="Doh_Prem_A"  minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element ref="Doh_Prem_B" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element ref="Doh_Prem_C" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element ref="Priloge" minOccurs="0" maxOccurs="unbounded"/>
+			  <xs:element ref="Custodian" minOccurs="0" maxOccurs="unbounded"/>			 
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="String100Type">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="100"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

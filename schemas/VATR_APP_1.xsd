@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/VATR_APP_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" xmlns:vatr="http://edavki.durs.si/Documents/Schemas/VATR_Common_1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/VATR_APP_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/VATR_Common_1.xsd" schemaLocation="VATR_Common_1.xsd"/>
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="VATR_APP"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--type definitions-->
+  <xs:element name="VATR_APP">
+    <xs:complexType>
+      <xs:sequence>
+        <!--Common-->
+        <xs:element name="DocumentWorkflowID" type="edp:DocumentIDType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Document type - code</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DocumentWorkflowName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Document type - name</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Correction for document</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Period" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Period</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <!-- Application info -->
+        <xs:element name="ApplicationReference" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="RefundingCountryCode" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <!-- Applicant information -->
+        <xs:element name="Applicant" type="vatr:Applicant_Type" minOccurs="0"/>
+        <!-- Representative information -->
+        <xs:element name="Representative" minOccurs="0">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="vatr:BaseTrader_Type">
+                <xs:sequence>
+                  <xs:element name="CountryCode" type="xs:string" minOccurs="0"/>
+                  <xs:element name="EmailAddress" type="xs:string" minOccurs="0"/>
+                  <xs:element name="RepresentativeID" minOccurs="0">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="ID" type="xs:string" minOccurs="0"/>
+                        <xs:element name="issuedBy" type="xs:string" minOccurs="0"/>
+                        <xs:element name="identificationType" type="xs:string" minOccurs="0"/>
+                        <xs:element name="otherQlf" type="xs:string" minOccurs="0"/>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:extension>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+        <!-- Application period -->
+        <xs:element name="RefundPeriod" type="vatr:Period_Type" minOccurs="0"/>
+        <!-- Business description -->
+        <xs:element name="BusinessDescription" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Business description</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="BusinessActivity" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="TextualDescription" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Text" type="xs:string" minOccurs="0"/>
+                    <xs:element name="language" type="xs:string" minOccurs="0"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <!-- Bank account -->
+        <xs:element name="DetailedBankAccount" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Application reference</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="OwnerName" type="xs:string" minOccurs="0"/>
+              <xs:element name="OwnerType" type="xs:string" minOccurs="0"/>
+              <xs:element name="IBAN" type="xs:string" minOccurs="0"/>
+              <xs:element name="BIC" type="xs:string" minOccurs="0"/>
+              <xs:element name="Currency" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <!-- Statement: "Izjavljam, da v obdobju..." -->
+        <xs:element name="Statement" type="xs:boolean" minOccurs="0"/>
+        <!-- Rate correction -->
+        <xs:element name="RateCorrection" type="xs:decimal" minOccurs="0"/>
+        <!-- Import information -->
+        <xs:element name="ImportInformation" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Import information</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SequenceNumber" type="xs:integer" minOccurs="0"/>
+              <xs:choice>
+                <xs:element name="ReferenceNumber" type="xs:string" minOccurs="0"/>
+                <xs:element name="ReferenceInformation" type="xs:string" minOccurs="0"/>
+              </xs:choice>
+              <xs:element name="IssuingDate" type="xs:date" minOccurs="0"/>
+              <xs:element name="Supplier" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Name" type="xs:string" minOccurs="0"/>
+                    <xs:element name="AddressFree" type="xs:string" minOccurs="0"/>
+                    <xs:element name="CountryCode" type="xs:string" minOccurs="0"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="GoodsDescription" type="GoodsDescription_Type" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="TransactionDescription" type="TransactionDescription_Type" minOccurs="0"/>
+              <xs:element name="Deduction" type="Deduction_Type" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <!-- Purchase information -->
+        <xs:element name="PurchaseInformation" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Purchase information</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="simplifiedInvoice" type="xs:boolean" minOccurs="0"/>
+              <xs:element name="SequenceNumber" type="xs:integer" minOccurs="0"/>
+              <xs:element name="ReferenceNumber" type="xs:token" minOccurs="0"/>
+              <xs:element name="IssuingDate" type="xs:date" minOccurs="0"/>
+              <xs:element name="EUSupplier" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Name" type="xs:string" minOccurs="0"/>
+                    <xs:element name="AddressFree" type="xs:string" minOccurs="0"/>
+                    <xs:element name="CountryCode" type="xs:string" minOccurs="0"/>
+                    <xs:element name="EUTraderID" type="vatr:EUTraderID_Type" minOccurs="0"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="GoodsDescription" type="GoodsDescription_Type" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="TransactionDescription" type="TransactionDescription_Type" minOccurs="0"/>
+              <xs:element name="Deduction" type="Deduction_Type" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <!-- Custodian data -->
+        <xs:element name="CustodianNotes" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Custodian notes</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianSubmitDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Submission date</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <!-- end of optional fields-->
+        <xs:element name="Attachment" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Hash" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- Complex types -->
+  <xs:complexType name="Deduction_Type">
+    <xs:sequence>
+      <xs:element name="ProRataRate" type="xs:decimal" minOccurs="0"/>
+      <xs:element name="DeductibleVATAmount" type="SignedMoneyAmount_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="GoodsDescription_Type">
+    <xs:sequence>
+      <xs:element name="Code" type="xs:string" minOccurs="0"/>
+      <xs:element name="SubCode" type="xs:string" minOccurs="0"/>
+      <xs:element name="FreeText" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Text" type="xs:string" minOccurs="0"/>
+            <xs:element name="language" type="xs:string" minOccurs="0"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TransactionDescription_Type">
+    <xs:sequence>
+      <xs:element name="TaxableAmount" type="SignedMoneyAmount_Type" minOccurs="0"/>
+      <xs:element name="VATAmount" type="SignedMoneyAmount_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SignedMoneyAmount_Type">
+    <xs:sequence>
+      <xs:element name="Amount" type="xs:decimal" minOccurs="0"/>
+      <xs:element name="currency" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

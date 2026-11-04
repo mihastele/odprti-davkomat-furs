@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/NF_OdlPS_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/NF_OdlPS_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="NF_OdlPS"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Definicija vsebine -->
+  <xs:element name="NF_OdlPS">
+    <xs:complexType>
+      <xs:sequence>
+        <!-- Popravek dokumenta -->
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Popravek Dokumenta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        
+        <!-- Telefonska številka davčnega zavezanca (TTaxPayer) -->
+        <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <!-- Podatki o pooblaščencu -->
+        <xs:element name="Representative" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Podatki o pooblaščencu</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Name" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ime in priimek oz. naziv</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Street" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ulica</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="BuildingID" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Hišna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="City" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naselje</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Post" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Poštna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PostName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Pošta</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxNumber" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Telefonska številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- Podatki o zahtevku -->
+        <xs:element name="RequestData" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Podatki o zahtevku</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>
+                    Zaradi trajnejše nelikvidnosti ali izgube sposobnosti pridobivanja prihodkov iz razlogov, na katere nisem imel vpliva,
+                    mi grozi hujša gospodarska škoda, odlog oziroma obročno plačilo davka pa bi mi preprečilo hujšo gospodarsko škodo,
+                    zato prosim, da mi davčni organ davčno obveznost:
+                  </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="1">
+                      <xs:annotation>
+                        <xs:documentation>odloži za dobo N mesecev</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="2">
+                      <xs:annotation>
+                        <xs:documentation>dovoli obročno plačevanje v N mesečnih obrokih</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DeferMonths" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>doba v mesecih</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:int">
+                    <xs:minInclusive value="1"/>
+                    <xs:maxInclusive value="24"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="InstallmentMonths" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>število mesečnih obrokov</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:int">
+                    <xs:minInclusive value="1"/>
+                    <xs:maxInclusive value="24"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TypeOther" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>
+                    Če davčni organ ne bi ugodil zgoraj navedenemu zahtevku, pa podrejeno predlagam:
+                  </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="1">
+                      <xs:annotation>
+                        <xs:documentation>odlog za dobo N mesecev</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="2">
+                      <xs:annotation>
+                        <xs:documentation>obročno plačevanje v N mesečnih obrokih</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="3">
+                      <xs:annotation>
+                        <xs:documentation>nič od zgoraj navedenega</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DeferMonthsOther" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>doba v mesecih</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:int">
+                    <xs:minInclusive value="1"/>
+                    <xs:maxInclusive value="24"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="InstallmentMonthsOther" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>število mesečnih obrokov</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:int">
+                    <xs:minInclusive value="1"/>
+                    <xs:maxInclusive value="24"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TypeDecision" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>
+                    Zaradi izdanega pravnomočnega sklepa, s katerim je sodišče potrdilo sporazum o finančnem prestrukturiranju na
+                    podlagi določb zakona, ki ureja finančno poslovanje, postopke zaradi insolventnosti in prisilno prenehanje,
+                    davčni organ prosim, da mi za davčno obveznost:
+                  </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="1">
+                      <xs:annotation>
+                        <xs:documentation>dovoli obročno plačevanje v N mesečnih obrokih</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="InstallmentMonthsDecision" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>število mesečnih obrokov</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:int">
+                    <xs:minInclusive value="1"/>
+                    <xs:maxInclusive value="60"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- Podatki o davčni obveznosti -->
+        <xs:element name="TaxLiability" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>
+              Prosim, da mi davčni organ odobri zahtevek za spodaj navedene davčne obveznosti:
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TaxType" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Vrsta davka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxPeriod" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčno obdobje</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Amount" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Znesek davka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Text" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Odločba, obračun ali drugi akt, iz katerega izvira davčna obveznost</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- Podatki o opravljanju sezonske dejavnosti -->
+        <xs:element name="SeasonActivity" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Type" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="1">
+                      <xs:annotation>
+                        <xs:documentation>opravljam sezonsko dejavnost v obdobju od</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="2">
+                      <xs:annotation>
+                        <xs:documentation>ne opravljam sezonske dejavnosti</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="From" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>mesec od</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="To" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>mesec do</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- Trajnejšo nelikvidnost dokazujem z -->
+        <xs:element name="Illiquidity" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Trajnejšo nelikvidnost dokazujem z:
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="FinancialStatement" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>bilanca stanja in izkaz poslovnega izida</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="MadeOn" minOccurs="0">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:enumeration value="1">
+                            <xs:annotation>
+                              <xs:documentation>
+                                na zadnji dan predpreteklega meseca pred vložitvijo vloge
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:enumeration>
+                          <xs:enumeration value="2">
+                            <xs:annotation>
+                              <xs:documentation>
+                                za zadnje poslovno leto, saj bi bil na podlagi pravila, da se bilanca stanja in izkaz poslovnega izida sestavita na zadnji
+                                dan predpreteklega meseca pred vložitvijo vloge, izkaz poslovnega izida sestavljen za krajše obdobje od treh mesecev
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:enumeration>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="Item" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Type" minOccurs="0">
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:enumeration value="1">
+                                  <xs:annotation>
+                                    <xs:documentation>Kapital</xs:documentation>
+                                  </xs:annotation>
+                                </xs:enumeration>
+                                <xs:enumeration value="2">
+                                  <xs:annotation>
+                                    <xs:documentation>Dolgoročna sredstva</xs:documentation>
+                                  </xs:annotation>
+                                </xs:enumeration>
+                                <xs:enumeration value="3">
+                                  <xs:annotation>
+                                    <xs:documentation>Kratkoročna sredstva</xs:documentation>
+                                  </xs:annotation>
+                                </xs:enumeration>
+                                <xs:enumeration value="4">
+                                  <xs:annotation>
+                                    <xs:documentation>Kratkoročne obveznosti</xs:documentation>
+                                  </xs:annotation>
+                                </xs:enumeration>
+                                <xs:enumeration value="5">
+                                  <xs:annotation>
+                                    <xs:documentation>Rezervacije</xs:documentation>
+                                  </xs:annotation>
+                                </xs:enumeration>
+                                <xs:enumeration value="6">
+                                  <xs:annotation>
+                                    <xs:documentation>Dolgoročne pasivne časovne razmejitve</xs:documentation>
+                                  </xs:annotation>
+                                </xs:enumeration>
+                                <xs:enumeration value="7">
+                                  <xs:annotation>
+                                    <xs:documentation>Dolgoročne obveznosti</xs:documentation>
+                                  </xs:annotation>
+                                </xs:enumeration>
+                                <xs:enumeration value="8">
+                                  <xs:annotation>
+                                    <xs:documentation>Zaloge</xs:documentation>
+                                  </xs:annotation>
+                                </xs:enumeration>
+                                <xs:enumeration value="9">
+                                  <xs:annotation>
+                                    <xs:documentation>Kratkoročne finančne obveznosti</xs:documentation>
+                                  </xs:annotation>
+                                </xs:enumeration>
+                                <xs:enumeration value="10">
+                                  <xs:annotation>
+                                    <xs:documentation>Kratkoročne poslovne obveznosti</xs:documentation>
+                                  </xs:annotation>
+                                </xs:enumeration>
+                                <xs:enumeration value="11">
+                                  <xs:annotation>
+                                    <xs:documentation>Celotni prihodki</xs:documentation>
+                                  </xs:annotation>
+                                </xs:enumeration>
+                                <xs:enumeration value="12">
+                                  <xs:annotation>
+                                    <xs:documentation>Celotni odhodki</xs:documentation>
+                                  </xs:annotation>
+                                </xs:enumeration>
+                                <xs:enumeration value="13">
+                                  <xs:annotation>
+                                    <xs:documentation>Celotni poslovni izid</xs:documentation>
+                                  </xs:annotation>
+                                </xs:enumeration>
+                                <xs:enumeration value="14">
+                                  <xs:annotation>
+                                    <xs:documentation>Amortizacija</xs:documentation>
+                                  </xs:annotation>
+                                </xs:enumeration>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="Amount" type="edp:NegativeDecimal14_2Type" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>Znesek</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="AccountBalance" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>
+                    izpisi o prometu in stanju na transakcijskih računih ter z morebitnimi privarčevanimi ali 
+                    vezanimi sredstvi pri bankah ali hranilnicah za obdobje 6 mesecev pred vložitvijo vloge
+                  </xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Inflow" type="edp:Decimal14_2Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Priliv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Outflow" type="edp:Decimal14_2Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Odliv</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Balance" type="edp:NegativeDecimal14_2Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Denarna sredstva na dan vložitve vloge</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Other" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation>z drugimi dejstvi</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Description" type="xs:string" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>besedilo</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+
+        </xs:element>
+
+        <!-- Izguba sposobnosti pridobivanja prihodkov iz razlogov na katere davčni zavezanec ni imel vpliva -->
+        <xs:element name="AbilityLoss" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>
+              Kot davčni zavezanec sem izgubil sposobnost pridobivanja prihodkov iz spodaj navedenih razlogov, na katere nisem imel vpliva:
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Type" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="1">
+                      <xs:annotation>
+                        <xs:documentation>
+                          začeti stečajni postopki ali postopki prisilne poravnave pri mojih ključnih poslovnih partnerjih
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="2">
+                      <xs:annotation>
+                        <xs:documentation>
+                          ukrepi tuje države, na trgu katere ustvarjam prihodke, zaradi katerih bi prišlo do trajnejše nelikvidnosti
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="3">
+                      <xs:annotation>
+                        <xs:documentation>
+                          dlje časa trajajoča nezmožnost opravljanja dejavnosti zaradi bolezni
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="4">
+                      <xs:annotation>
+                        <xs:documentation>
+                          neizpolnjevanje pogodbenih obveznosti oziroma odpovedi pogodb ključnih pogodbenih partnerjev,
+                          saj po sodni poti uveljavljam terjatve do pogodbenih partnerjev, oziroma so taka dejanja posledica
+                          domnevnih kaznivih dejanj pogodbenih partnerjev, za katere je podan obtožni predlog v kazenskem postopku
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="5">
+                      <xs:annotation>
+                        <xs:documentation>izredni in nepredvideni dogodki na trgih, kjer ustvarjam večino prihodkov;</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="6">
+                      <xs:annotation>
+                        <xs:documentation>naravne in druge nepredvidene nesreče</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="7">
+                      <xs:annotation>
+                        <xs:documentation>drugo</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Description" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>drugo</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- Odlog oziroma obročno odplačevanje plačila davka bi omogočilo preprečitev hujše gospodarske škode -->
+        <xs:element name="Explanation" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Odlog oziroma obročno odplačevanje plačila davka bi omogočilo preprečitev hujše gospodarske škode...
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <!-- Dokazovanje upravičenosti do odloga oziroma obročnega plačila davka s sporazumom o finančnem prestrukturiranju -->
+        <xs:element name="FinancialRestructuring" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              Dokazovanje upravičenosti do odloga oziroma obročnega plačila davka s sporazumom o finančnem prestrukturiranju
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <!-- Dodatna pojasnila -->
+        <xs:element name="AdditionalExplanation" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Dodatna pojasnila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

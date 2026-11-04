@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/Doh_Zap1_4.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+           targetNamespace="http://edavki.durs.si/Documents/Schemas/Doh_Zap1_4.xsd"
+           elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="DohZap1"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:element name="DohZap1">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DocumentWorkflowID" type="edp:DocumentIDType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DocumentWorkflowName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - ime</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PaymentClassType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Napoved vlagam za:</xs:documentation>
+          </xs:annotation>
+		  <xs:simpleType>
+			  <xs:restriction base="xs:string">
+				<xs:enumeration value="D">
+				  <xs:annotation>
+					<xs:documentation>dohodke iz delovnega razmerja (plače, nadomestilo plač ali drugih dohodkov iz delovnega razmerja)</xs:documentation>
+				  </xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="P">
+				  <xs:annotation>
+					<xs:documentation>pokojnine in pokojninske rente</xs:documentation>
+				  </xs:annotation>
+				</xs:enumeration>
+			  </xs:restriction>
+			</xs:simpleType>
+        </xs:element>
+        <xs:element name="PaymentType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vlagam</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxYear" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčno leto</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PeriodMonthFrom" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Za obdobje: mesec od</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PeriodYearFrom" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Za obdobje: leto od</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PeriodMonthTo" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Za obdobje: mesec do</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PeriodYearTo" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Za obdobje: leto do</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PaymentDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum prejema dohodka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EmailAddress" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Elektronski naslov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <!-- Razlog ponovne vložitve (ReDepositReason) -->
+        <xs:element name="ReDepositReason" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Razlog ponovne vložitve</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ReDepositReasonIncomeChanged" type="xs:boolean" minOccurs="0" default="false">
+                <xs:annotation>
+                  <xs:documentation>spremenjene višine dohodka iz delovnega razmerja ali pokojnine</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ReDepositReasonOtherConditions" type="xs:boolean" minOccurs="0" default="false">
+                <xs:annotation>
+                  <xs:documentation>spremenjenih drugih pogojev, ki vplivajo na višino akontacije dohodnine od dohodka iz zaposlitve</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ReDepositReasonSocialSecurity" type="xs:boolean" minOccurs="0" default="false">
+                <xs:annotation>
+                  <xs:documentation>spremembe v zvezi z uveljavljanjem znižanja za prispevke za socialno varnost</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ReDepositReasonWorkExpenses" type="xs:boolean" minOccurs="0" default="false">
+                <xs:annotation>
+                  <xs:documentation>spremembo v zvezi z uveljavljanjem znižanja stroškov v zvezi z delom</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ReDepositReasonRelief" type="xs:boolean" minOccurs="0" default="false">
+                <xs:annotation>
+                  <xs:documentation>spremembo v zvezi z uveljavljanjem olajšav</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ReDepositReasonOther" type="xs:boolean" minOccurs="0" default="false">
+                <xs:annotation>
+                  <xs:documentation>drugo</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ReDepositReasonOtherText" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>drugo (tekst)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+       
+        <!-- Podatki o obveznem zavarovanju (CompulsoryInsurance) -->
+        <xs:element name="CompulsoryInsurance" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Podatki o obveznem zavarovanju</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NotInsured" type="xs:boolean" minOccurs="0" default="false">
+                <xs:annotation>
+                  <xs:documentation>Zavezanec ni zavarovanec po 15. ali 20. Členu ZZVZZ</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="NotPensioner" type="xs:boolean" minOccurs="0" default="false">
+                <xs:annotation>
+                  <xs:documentation>Zavezanec ni vključen v obvezno PIZ za polni delovni ali zavarovalni čas in ni upokojnenec</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="NotDomestic" type="xs:boolean" minOccurs="0" default="false">
+                <xs:annotation>
+                  <xs:documentation>Za zavezanca se glede plačila prispevkov uporablja zakonodaja druge države članice EU</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- Uveljavljam upoštevanje naslednjih olajšav (TaxRelief) -->
+        <xs:element name="TaxRelief" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Uveljavljanje olajšav pri odmeri akontacije dohodnine od dohodkov iz delovnega razmerja in pokojnine</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="GeneralRelief" type="xs:boolean" minOccurs="0" default="false">
+                <xs:annotation>
+                  <xs:documentation>namesto povečane splošne olajšave uveljavljam osnovno splošno olajšavo</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="DisabledRelief" type="xs:boolean" minOccurs="0" default="false">
+                <xs:annotation>
+                  <xs:documentation>osebna olajšava za zavezanca, invalida s 100 % telesno okvaro</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="SupportedMembersRelief" type="xs:boolean" minOccurs="0" default="false">
+                <xs:annotation>
+                  <xs:documentation>posebna olajšava za vzdrževane družinske člane</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- Podatki o vzdrževanih družinskih članih (SupportedMember) -->
+        <xs:element name="SupportedMember" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Podatki o vzdrževanih družinskih članih</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Name" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ime in priimek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="BirthYear" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Leto rojstva</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxNumber" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Relationship" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Sorodstveno razmerje</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+              
+        <!-- Podatki o izplačevalcu dohodka (IncomePayer) -->
+        <xs:element name="IncomePayer" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Podatki o izplačevalcu dohodka</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Name" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ime in priimek oziroma firma</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Address" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naslov</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CountryID" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Država</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxNumber" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IdentificationNumber" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Identifikacijska številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="OtherEmployer" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Drugi delodajalec</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="AdvanceBelowLimit" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Akontacija pri manj kot 20 EUR</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+		      	</xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- Podatki o dohodku iz delovnega razmerja in podatki o pokojnini (IncomeData) -->
+        <xs:element name="IncomeData" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Podatki o dohodku iz delovnega razmerja in podatki o pokojnini</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="IncomePayer" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Izplačevalec</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PaymentDate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Datum prejema dohodka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PaymentForMonth" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Izplačilo za mesec</xs:documentation>
+                </xs:annotation>
+              </xs:element>           
+              <xs:element name="PaymentForYear" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Izplačilo za mesec: leto</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PeriodFromMonth" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Izplačilo za obdobje (od - mesec)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PeriodFromYear" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Izplačilo za obdobje (od - leto)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PeriodToMonth" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Izplačilo za obdobje (do - mesec)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PeriodToYear" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Izplačilo za obdobje (do - leto)</xs:documentation>
+                </xs:annotation>
+              </xs:element>              
+              <xs:element name="Type" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Vrsta dohodka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="NoExemptionFromTaxBase" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Za vrste dohodkov ... ne želim izvzema iz davčne osnove ...</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Income" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Dohodek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="NumberOfPensionPaymentsInYear" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Število izplačanih pokojnin v letu</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Contribution" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Obvezni prispevki za socialno varnost</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TransportAndFoodCostsWithLawInfo" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Stroški prevoza in prehrane po 45. členu ZDoh-2</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CountryOfEmployment" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Država opravljanja zaposlitve</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CountryOrInternationalOrganisationOfIncomePayments" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Država/Mednarodna organizacija, izplačevalka dohodka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ForeighTaxReduction" type="xs:boolean" minOccurs="0" default="false">
+                <xs:annotation>
+                  <xs:documentation>V skladu z mednarodno pogodbo o izogibanju dvojnega obdavčevanja dohodka uveljavljam odbitek tujega davka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ForeighTaxReductionAmount" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>V skladu z mednarodno pogodbo o izogibanju dvojnega obdavčevanja dohodka uveljavljam odbitek tujega davka v višini</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IncomeTaxExemption" type="xs:boolean" minOccurs="0" default="false">
+                <xs:annotation>
+                  <xs:documentation>V skladu z mednarodno pogodbo o izogibanju dvojnega obdavčevanja dohodka uveljavljam oprostitev plačila dohodnine</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ForeighTaxReductionWithLawInfo" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Odbitek tujega davka po ZDoh-2</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IncomePaymentFixedPeriodOption" type="xs:boolean" minOccurs="0" default="false">
+                <xs:annotation>
+                  <xs:documentation>Dohodek se bo izplačeval za določen čas</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IncomePaymentFixedPeriodEndDate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>do vključno</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IncomePaymentIndefinatePeriodOption" type="xs:boolean" minOccurs="0" default="false">
+                <xs:annotation>
+                  <xs:documentation>Dohodek se bo izplačeval za nedoločen čas</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PaymentDayInMonth" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Dan izplačila v mesecu</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="FieldAllowance" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Terenski dodatek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="DailyAllowance" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Povračilo stroškov službene poti–dnevnice</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TransportationAllowance" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Povračilo stroškov službene poti – prevoz</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="AccommodationAllowance" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Povračilo stroškov službene poti – prenočišče</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="AbroadFoodAllowanceUnderLimit" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Povračilo stroškov prehrane v zvezi z začasno napotitvijo na delo v tujino do največ 30 dni ali 90 dni</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="AbroadFoodAllowanceOverLimit" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Povračilo stroškov prehrane v zvezi z začasno napotitvijo na delo v tujino nad 30 dni ali 90 dni</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TemporaryAbroadTransportationAllowance" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Povračilo stroškov prevoza v zvezi z začasno napotitvijo na delo v tujino</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TemporaryAbroadTransportationStartEndAllowance" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Povračilo stroškov prevoza ob začetku in koncu začasne napotitve na delo v tujino</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TemporaryAbroadAccommodationAllowance" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Povračila stroškov za prenočišče v zvezi z začasno napotitvijo na delo v tujino do največ 90 dni</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PostedToWorkAbroadWithLawInfo" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Napoten na čezmejno opravljanje dela v skladu s 45.a členom ZDoh-2</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PostedToWorkAbroadWithLawInfoDate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Datum prve napotitve na čezmejno opravljanje dela</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="MonthNumberWithLawInfo" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Zaporedna številka meseca uveljavljanja posebne davčne osnove v skladu s 45.a členom ZDoh-2</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>        
+
+      </xs:sequence>
+    </xs:complexType>
+
+  </xs:element>
+
+  <xs:simpleType name="Decimal14_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,14}(\.\d{1,2})?" />
+      <!--xs:fractionDigits value="2" />
+      <xs:totalDigits value="12" /-->
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

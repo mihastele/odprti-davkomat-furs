@@ -1,0 +1,303 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/DP_Vra_1.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://edavki.durs.si/Documents/Schemas/DP_Vra_1.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+             schemaLocation="EDP-Common-1.xsd"/>
+
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Vracilo" minOccurs="0" />
+              <xs:element ref="Contact" minOccurs="0" />
+              <xs:element ref="BankAccount" minOccurs="0" />
+              <xs:element ref="OPTData" minOccurs="0" />
+              <xs:element ref="InvoiceInfo" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element ref="VAT" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element ref="ExciseDuties" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Vracilo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="PeriodStart" type="xs:date" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>Obdobje od</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PeriodEnd" type="xs:date" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>Obdobje do</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Popravek dokumenta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Contact">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Name" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Ime in priimek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Email" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Elektronski naslov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="BankAccount">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Bančni račun</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="IBAN" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Številka bančnega računa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="OPTData">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Podatki osnovnega potrdila</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="BasicCertificateNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Številka osnovnega potrdila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TypeOfExemptionCode" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Id vrste oprostitve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TypeOfExemptionName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv vrste oprostitve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CategoryCode" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Id kategorije upravičenca</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CategoryName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv kategorije upravičenca</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="OfficeStartDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum nastopa funkcije v RS</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="InternationalAgreement" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Oprostitev po mednarodnem sporazumu</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="InvoiceInfo">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Podatki o računu</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="InvoiceId" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Zaporedna številka računa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="InvoiceNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Številka računa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="InvoiceDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum računa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="InvoiceSum" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek računa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DdvId" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>ID za DDV dobavitelja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SupplierName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv dobavitelja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxBaseSum" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek davčne osnove</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxSum" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek davka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="VAT">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Podatki o DDV</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="InvoiceId" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Zaporedna številka računa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VATId" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Zaporedna številka DDV</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="GoodsServicesDesc" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta blaga oz. storitev</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxBase" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčna osnova</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VATRate" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Stopnja davka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Tax" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek DDV</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ExciseDuties">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Trošarine</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="InvoiceId" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Zaporedna številka računa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DutiesId" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Zaporedna številka trošarine</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ProductCategoryId" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Id kategorija trošarinskega izdelka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ProductCategoryName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv kategorija trošarinskega izdelka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ProductTypeId" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Id vrsta trošarinskega izdelka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ProductTypeName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv vrsta trošarinskega izdelka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EANId" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Id Naziv / EAN koda</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EANName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv Naziv / EAN koda</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AlcoholContent" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vsebnost alkohola</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ProductQuantity" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Količina trošarinskega izdelka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="UnitId" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Id enota mere</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="UnitName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv enota mere</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="PositiveInt_Type">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

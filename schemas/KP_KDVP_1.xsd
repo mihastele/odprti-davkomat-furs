@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/KP_KDVP_1.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://edavki.durs.si/Documents/Schemas/KP_KDVP_1.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+           xmlns:kp="http://edavki.durs.si/Documents/Schemas/KP_Common_1.xsd">
+
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/KP_Common_1.xsd" schemaLocation="KP_Common_1.xsd"/>
+
+  <!-- Document types definition -->
+  <!-- Document envelope that contains the document header, signatures and its body. -->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Data" />
+              <xs:element ref="Attachment" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Popisni listi-->
+  <xs:element name="Data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Year" type="xs:int">
+          <xs:annotation>
+            <xs:documentation>Leto poročanja LLLL</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TransactionUserData" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Podatki o zavezancu, ki vsebujejo popisne liste</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="kp:TransactionUserData_Type">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                  <xs:choice>
+                    <xs:element ref="PODVP" />
+                    <xs:element ref="PODD" />
+                    <xs:element ref="PODINVK" />
+                    <xs:element ref="PODVPGB"/>
+                  </xs:choice>
+                </xs:sequence>
+                <xs:attribute name="CountryOfResidenceName" type="typeCountryName">
+                  <xs:annotation>
+                    <xs:documentation>Naziv države rezidentstva</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+              </xs:extension>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="PODVP">
+    <xs:annotation>
+      <xs:documentation>Podatki za odmero dohodnine pri transakcijah z vrednostnimi papirji</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="List_Type">
+          <xs:attribute name="ISIN" type="kp:Isin_Type" use="required">
+            <xs:annotation>
+              <xs:documentation>ISIN koda vrednostnega papirja</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="Name" type="kp:Naziv_Type" use="required">
+            <xs:annotation>
+              <xs:documentation>Naziv vrednostnega papirja</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="IsDeferral" type="xs:boolean">
+            <xs:annotation>
+              <xs:documentation>Odlog</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="PODD">
+    <xs:annotation>
+      <xs:documentation>Podatki za odmero dohodnine pri transakcijah z deleži</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="List_Type">
+          <xs:attribute name="Name" type="typeShareName" use="required">
+            <xs:annotation>
+              <xs:documentation>Oznaka deleža</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="PODINVK">
+    <xs:annotation>
+      <xs:documentation>Podatki za odmero dohodnine pri transakcijah z investicijskimi kuponi</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence maxOccurs="unbounded">
+        <xs:choice>
+          <xs:element name="Purchase" >
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="Purchase_Type_PODINVK" >
+                  <xs:sequence>
+                    <xs:element name="KPD" type="Kpd_Type" />
+                  </xs:sequence>
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Sale">
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="kp:Sale_Type" >
+                  <xs:sequence>
+                    <xs:element name="KPD" type="Kpd_Type" />
+                  </xs:sequence>
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="ISIN" type="kp:Isin_Type" use="required">
+        <xs:annotation>
+          <xs:documentation>Oznaka investicijskega kupona</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="AlternateISIN" type="string10">
+        <xs:annotation>
+          <xs:documentation>Nadomestna oznaka investicijskega kupona</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="Name" type="kp:Naziv_Type" use="required">
+        <xs:annotation>
+          <xs:documentation>Ime sklada ali podsklada</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="PODVPGB">
+    <xs:annotation>
+      <xs:documentation>Podatki za odmero dohodnine pri transakcijah z vrednostnimi papirji, ki so v gospodarjenju pri BPH</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="List_Type">
+          <xs:attribute name="ISIN" type="kp:Isin_Type" use="required">
+            <xs:annotation>
+              <xs:documentation>ISIN vrednostnega papirja</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="Name" type="kp:Naziv_Type" use="required">
+            <xs:annotation>
+              <xs:documentation>Naziv vrednostnega papirja</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="IsDeferral" type="xs:boolean">
+            <xs:annotation>
+              <xs:documentation>Odlog</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Attachment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Hash" type="xs:string" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="List_Type">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:choice>
+        <xs:element name="Purchase" type="Purchase_Type" />
+        <xs:element name="Sale" type="kp:Sale_Type" />
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Purchase_Type">
+    <xs:annotation>
+      <xs:documentation>Pridobitev</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="kp:Purchase_Type">
+        <xs:attribute name="Type" type="Gain_Type">
+          <xs:annotation>
+            <xs:documentation>Način pridobitve</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Costs" type="kp:DecimalPos14_4_Type" default="0">
+          <xs:annotation>
+            <xs:documentation>Stroški v zvezi s pridobitvijo</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="Purchase_Type_PODINVK">
+    <xs:annotation>
+      <xs:documentation>Pridobitev</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="kp:Purchase_Type">
+        <xs:attribute name="Type" type="Gain_Type_PODINVK">
+          <xs:annotation>
+            <xs:documentation>Način pridobitve</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Costs" type="kp:DecimalPos14_4_Type" default="0">
+          <xs:annotation>
+            <xs:documentation>Stroški v zvezi s pridobitvijo</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Kpd_Type">
+    <xs:annotation>
+      <xs:documentation>OSTALI KONTROLNI PODATKI PO 8. (IN 10.) ODSTAVKU 331. ČLENA ZDavP-2</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="K1" type="transactionType" use="required">
+      <xs:annotation>
+        <xs:documentation>oznaka vrste transakcije</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K2" type="stringMax50">
+      <xs:annotation>
+        <xs:documentation>ime krovnega sklada</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K3" type="string12">
+      <xs:annotation>
+        <xs:documentation>koda, prejeta ob uvrstitvi na seznam krovnih skladov pri FURS</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K4" type="xs:date">
+      <xs:annotation>
+        <xs:documentation>datum pridobitve ali zamenjave ali unovčitve ali popravka</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K5" type="Decimal12_4Type">
+      <xs:annotation>
+        <xs:documentation>količina ob pridobitvi ali zamenjavi ali unovčitvi</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K6" type="Decimal12_2Type">
+      <xs:annotation>
+        <xs:documentation>vrednost za enoto (točko) ob pridobitvi ali zamenjavi ali unovčitvi</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K7" type="couponType">
+      <xs:annotation>
+        <xs:documentation>posebna oznaka za prve pridobljene kupone po Pravilniku</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K8" type="xs:date">
+      <xs:annotation>
+        <xs:documentation>čas pridobitve investicijskega kupona po Pravilniku, razen v primeru oznake PRIV ali PRIV-NEP</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K9" type="Decimal12_2Type" >
+      <xs:annotation>
+        <xs:documentation>nabavna vrednost investicijskega kupona za enoto (točko) po Pravilniku (razen v primeru oznake PRIV ali PRIV-NEP)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K10" type="string4">
+      <xs:annotation>
+        <xs:documentation>posebna oznaka posameznega prehoda med podskladi istega krovnega sklada za zamenjane in nove investicijske kupone: PREH</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K11" type="xs:date">
+      <xs:annotation>
+        <xs:documentation>čas pridobitve novega investicijskega kupona pri zamenjavi investicijskih kuponov podsklada za investicijske kupone drugih podskladov po Pravilniku, v primeru oznake PREH</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K12" type="Decimal12_2Type">
+      <xs:annotation>
+        <xs:documentation>nabavna vrednost novega investicijskega kupona za enoto (točko) pri zamenjavi investicijskih kuponov podsklada za investicijske kupone drugih podskladov po Pravilniku (v primeru oznake PREH)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K13" type="stringMax20">
+      <xs:annotation>
+        <xs:documentation>enoznačna identifikacija posamezne zamenjave, v primeru oznake 02 in 03 (isti identifikator označuje povezanost oznak 02 in 03 pri posamezni zamenjavi</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K14" type="stringMax20">
+      <xs:annotation>
+        <xs:documentation>enoznačna identifikacija priglasitve preoblikovanja sklada, v primeru oznake 05 in 06 (isti identifikator označuje povezanost oznak 05 in 06 pri prehodu iz prenosnega na prevzemni sklad)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K15" type="stringMax20">
+      <xs:annotation>
+        <xs:documentation>enoznačna identifikacija popravka podatkov v primeru oznake 08 in 09 (isti identifikator označuje povezanost oznak 08 in 09 pri popravku starega podatka in vnosu novega podatka)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K16" type="stringMax20">
+      <xs:annotation>
+        <xs:documentation>enoznačna identifikacija zamenjave delnic investicijske družbe z investicijskimi kuponi vzajemnega sklada (isti identifikator označuje povezanost oznak 10 in 11 pri preoblikovanju investicijske družbe v vzajemni sklad)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K17" type="stringMax20">
+      <xs:annotation>
+        <xs:documentation>enoznačna identifikacija preoblikovanja podskladov krovnega sklada, v primeru oznake 12 in 13 (isti identifikator označuje povezanost oznak 12 in 13 pri preoblikovanju podskladov krovnega sklada)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K18" type="xs:date">
+      <xs:annotation>
+        <xs:documentation>datum vzpostavitve evidence za spremljanje prehodov med podskladi istega krovnega sklada</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K19" type="xs:date">
+      <xs:annotation>
+        <xs:documentation>dan izvedbe preoblikovanja sklada ali dan oblikovanja krovnega sklada ali dan oblikovanja novega podsklada obstoječega krovnega sklada</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K20" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>transakcija opravljena na organiziranem trgu vrednostnih papirjev</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K21" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>unovčitev kupona podsklada namenjena izključno poravnavi stroškov, povezanih s prehajanjem</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="K22" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>Razdelitev skupnega premoženja na podlagi sodne odločbe</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <!-- Document types definition -->
+  <xs:simpleType name="Decimal12_2Type">
+    <xs:annotation>
+      <xs:documentation>Niz je sestavljen iz desetih (12) znakov za celi del zneska in  dveh (2) znakov za cente.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,12}(\.\d{1,2})?" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Decimal12_4Type">
+    <xs:annotation>
+      <xs:documentation>V polja se vpiše količina investicijskih kuponov v strukturi 12 celih in 4 decimalna mesta brez decimalne pike ali vejice.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,12}(\.\d{1,4})?" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="typePercent_4">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,3}(\.\d{1,4})?" />
+      <xs:minInclusive value="0" />
+      <xs:maxInclusive value="100" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="typeName">
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="typeCountryName">
+    <xs:restriction base="typeName">
+      <xs:maxLength value="40" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="typeCountryCode">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]{3}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="typeShareName">
+    <xs:restriction base="typeName">
+      <xs:maxLength value="20" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Gain_Type">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="A">
+        <xs:annotation>
+          <xs:documentation>vložek kapitala</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B">
+        <xs:annotation>
+          <xs:documentation>nakup</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="C">
+        <xs:annotation>
+          <xs:documentation>povečanje kapitala družbe z lastnimi sredstvi zavezanca</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D">
+        <xs:annotation>
+          <xs:documentation>povečanje kapitala družbe iz sredstev družbe</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="E">
+        <xs:annotation>
+          <xs:documentation>zamenjava kapitala ob statusnih spremembah družbe</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F">
+        <xs:annotation>
+          <xs:documentation>dedovanje</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="G">
+        <xs:annotation>
+          <xs:documentation>darilo</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="H">
+        <xs:annotation>
+          <xs:documentation>drugo</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Gain_Type_PODINVK">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="A">
+        <xs:annotation>
+          <xs:documentation>vplačilo oziroma nakup enot premoženja</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B">
+        <xs:annotation>
+          <xs:documentation>dedovanje</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="C">
+        <xs:annotation>
+          <xs:documentation>darilo</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D">
+        <xs:annotation>
+          <xs:documentation>drugo kapitala družbe iz sredstev družbe</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="transactionType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="01">
+        <xs:annotation>
+          <xs:documentation>pridobitev</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="02">
+        <xs:annotation>
+          <xs:documentation>zamenjava izstop (zamenjani kuponi)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="03">
+        <xs:annotation>
+          <xs:documentation>zamenjava vstop (novi kuponi)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="04">
+        <xs:annotation>
+          <xs:documentation>unovčitev</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="05">
+        <xs:annotation>
+          <xs:documentation>priglasitev preoblikovanje sklada izstop (prenosni sklad)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="06">
+        <xs:annotation>
+          <xs:documentation>priglasitev preoblikovanje sklada vstop (prevzemni sklad)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="07" >
+        <xs:annotation>
+          <xs:documentation>priglasitev oblikovanje krovnega sklada ali preoblikovanje obstoječega vzajemnega sklada v podsklad obstoječega krovnega sklada</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="08" >
+        <xs:annotation>
+          <xs:documentation>popravek podatkov – star podatek</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="09" >
+        <xs:annotation>
+          <xs:documentation>popravek podatkov – nov podatek</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="10" >
+        <xs:annotation>
+          <xs:documentation>preoblikovanje investicijske družbe v vzajemni sklad – zamenjane delnice</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="11" >
+        <xs:annotation>
+          <xs:documentation>preoblikovanje investicijske družbe v vzajemni sklad – pridobljeni investicijski kuponi</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="12" >
+        <xs:annotation>
+          <xs:documentation>preoblikovanje podskladov krovnega sklada (zamenjani kuponi)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="13" >
+        <xs:annotation>
+          <xs:documentation>preoblikovanje podskladov krovnega sklada (novi kuponi)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="couponType">
+    <xs:annotation>
+      <xs:documentation>Oznake za kupone</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PRIV" />
+      <xs:enumeration value="SEKUN"/>
+      <xs:enumeration value="PRIV-NEP"/>
+      <xs:enumeration value="SEKUN-NEP"/>
+      <xs:enumeration value="P"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="stringMax20">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="20" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="string12">
+    <xs:restriction base="xs:string">
+      <xs:length value="12" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="string10">
+    <xs:restriction base="xs:string">
+      <xs:length value="10" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="string9">
+    <xs:restriction base="xs:string">
+      <xs:length value="9" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="string4">
+    <xs:restriction base="xs:string">
+      <xs:length value="4" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="string2">
+    <xs:restriction base="xs:string">
+      <xs:length value="2" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="stringMax50">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="50" />
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

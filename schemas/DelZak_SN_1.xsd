@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema id="DelZak_SN_1" targetNamespace="http://edavki.durs.si/Documents/Schemas/DelZak_SN_1.xsd"
+  elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/DelZak_SN_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+  <xs:element name="DelZak_SN">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="General">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="WorkStart" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Datum začetka dela</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="SubmitDate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Datum oddaje obrazca (izpolni DURS)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Notes" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Opomba (izpolni DURS)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="SN" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F6" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Zaporedna številka zapisa (1,2,...)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F7Name" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ime dijaka/študenta</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F7Surname" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Priimek dijaka/študenta</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F8" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka dijaka/študenta</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F9" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Status: dijak=D/študent=S</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="D">
+                      <xs:annotation>
+                        <xs:documentation>Dijak</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="S">
+                      <xs:annotation>
+                        <xs:documentation>Študent</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="F10Year" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Letnik</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="1">
+                      <xs:annotation>
+                        <xs:documentation>1</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="2">
+                      <xs:annotation>
+                        <xs:documentation>2</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="3">
+                      <xs:annotation>
+                        <xs:documentation>3</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="4">
+                      <xs:annotation>
+                        <xs:documentation>4</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="5">
+                      <xs:annotation>
+                        <xs:documentation>5</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="6">
+                      <xs:annotation>
+                        <xs:documentation>6</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="-2">
+                      <xs:annotation>
+                        <xs:documentation>absolvent</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="-1">
+                      <xs:annotation>
+                        <xs:documentation>drugo/ni podatka</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="F10Name" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naziv izobraževalne ustanove</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F11" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka organizacije, ki opravlja dejavnost posredovanja dela</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F12" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Matična številka poslovne enote organizacije, ki opravlja dejavnost posredovanja dela</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F13" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naziv organizacije, ki opravlja dejavnost posredovanja dela</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F14" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Poslovna enota organizacije, ki opravlja dejavnost posredovanja dela</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F15" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Vrsta dela</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F16" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Datum končanja dela</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element ref="DelZak_SN" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/Doh_Don_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/Doh_Don_1.xsd" elementFormDefault="qualified">
+  <!-- Import the common schema -->
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" id="EDP-Common-1" />
+  <!-- Root element of the document definition -->
+  <xs:element name="Doh_Don">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ApplicationDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum vloge zavezanca</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DepositorTaxNumber" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčna številka vlagatelja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TDoh_Don" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TaxNumber" type="xs:string" minOccurs="1">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka (NNNNNNNN)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Name" type="xs:string" minOccurs="1">
+                <xs:annotation>
+                  <xs:documentation>Ime oziroma naziv upravičenca</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Percentage" type="decimalType" minOccurs="1">
+                <xs:annotation>
+                  <xs:documentation>Odstotek (%)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- Document types definition -->
+  <!-- Document envelope that contains the document header, signatures and its body. -->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element ref="Doh_Don" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="decimalType">
+    <xs:restriction base="xs:decimal">
+      <xs:totalDigits value="2" fixed="true" />
+      <xs:fractionDigits value="1" fixed="true" />
+      <xs:minInclusive value="0.1" fixed="true" />
+      <xs:maxInclusive value="1" fixed="true" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

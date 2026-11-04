@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/Dov_3B_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/Dov_3B_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Dov_3B"/>
+              <xs:element ref="Igralnica"/>
+              <xs:element ref="Institucija" minOccurs="0" maxOccurs="1" />
+              <xs:element ref="Stroski" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="UpravnaTaksa" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="IgralniAvtomati" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="Progresiva" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="Podigra" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="SSIgra" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="ProgresivaSSIgra" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="IgralnaMiza" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="ProgresivaIgralnaMiza" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="Preizkus" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="PreizkusSSIgra" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Dov_3B">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0" />
+        <xs:element name="Vlagatelj" type="xs:string" minOccurs="0" />
+        <xs:element name="EmailAddress" type="xs:string" minOccurs="0" />
+        <xs:element name="PhoneNumber" type="xs:string" minOccurs="0" />
+        <xs:element name="VrstaPrireditelja" type="xs:string" minOccurs="0" />
+        <xs:element name="Dovoljenje" type="xs:string" minOccurs="0" /> <!--D pa Z-->
+        <xs:element name="IgralnaNapravaID" type="xs:string" minOccurs="0" />
+        <xs:element name="IgralnaNapravaName" type="xs:string" minOccurs="0" />
+        <xs:element name="PorociloPreizkus" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="PosiljateljPpin" type="xs:string" minOccurs="0" />
+        <xs:element name="Najem" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="MizeProg" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="Streznik" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="Terminal" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="Splet" type="xs:boolean" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Igralnica/igralni salon -->
+  <xs:element name="Igralnica">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Sifra" type="xs:string" minOccurs="0" /> 
+        <xs:element name="Naziv" type="xs:string" minOccurs="0" />
+        <xs:element name="Naslov" type="xs:string" minOccurs="0" />
+        <xs:element name="Obcina" type="xs:string" minOccurs="0" />
+        <xs:element name="OdgovorneOsebe" type="OdgovornaOsebaType" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Stroški-->
+  <xs:element name="Stroski">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="StPostopka" type="xs:string" minOccurs="0" />
+        <xs:element name="Naziv" type="xs:string" minOccurs="0" />
+        <xs:element name="DatumPlacila" type="xs:date" minOccurs="0" />
+        <xs:element name="Znesek" type="xs:decimal" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Upravna taksa-->
+  <xs:element name="UpravnaTaksa">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="StPostopka" type="xs:string" minOccurs="0" />
+        <xs:element name="Naziv" type="xs:string" minOccurs="0" />
+        <xs:element name="DatumPlacila" type="xs:date" minOccurs="0" />
+        <xs:element name="Znesek" type="xs:decimal" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Podatki o odgovorni osebi -->
+  <xs:complexType name="OdgovornaOsebaType">
+    <xs:sequence>
+      <xs:element name="Taxnumber" type="xs:string" minOccurs="0" /> 
+      <xs:element name="Naziv" type="xs:string" minOccurs="0" /> <!--ime in priimek-->
+      <xs:element name="FunkcijaID" type="xs:string" minOccurs="0" />
+      <xs:element name="FunkcijaNaziv" type="xs:string" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <!--Podatki o instituciji -->
+  <xs:element name="Institucija">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Name" type="xs:string" minOccurs="0"></xs:element>
+        <xs:element name="Address" type="xs:string" minOccurs="0"></xs:element>
+        <xs:element name="City" type="xs:string" minOccurs="0"></xs:element>
+        <xs:element name="Post" type="xs:string" minOccurs="0"></xs:element>
+        <xs:element name="PostName" type="xs:string" minOccurs="0"></xs:element>
+        <xs:element name="PhoneNumber" type="xs:string" minOccurs="0"></xs:element>
+        <xs:element name="Country" type="xs:string" minOccurs="0" />
+        <xs:element name="Taxnumber" type="xs:string" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Podatki o igralnih avtomatih -->
+  <xs:element name="IgralniAvtomati">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ID" type="xs:string" minOccurs="0" /> <!-- id = SerN + Proizvajalec-->
+        <xs:element name="SerN" type="xs:string" minOccurs="0" /> <!-- Serijska št. -->
+        <xs:element name="Proizvajalec" type="xs:string" minOccurs="0" /> <!--Proizvajalec-->
+        <xs:element name="ZapStIA" type="xs:int" minOccurs="0" /> <!-- Zap. št. -->
+        <xs:element name="stPIT" type="xs:string" minOccurs="0" /> <!-- Št. PIT -->
+        <xs:element name="stIA" type="xs:string" minOccurs="0" /> <!-- Št. IA -->
+        <xs:element name="IdIAvNIS" type="xs:string" minOccurs="0" /> <!-- Interna identifikacijska oznaka IA v NIS -->
+        <xs:element name="TipIA" type="xs:string" minOccurs="0" /> <!-- Tip IA -->
+        <xs:element name="stIM" type="xs:int" minOccurs="0" /> <!-- Št. IM -->
+        <xs:element name="Igra" type="xs:string" minOccurs="0" /> <!-- Igra -->
+        <xs:element name="procVracanja" type="xs:string" minOccurs="0" /> <!-- % vračanja -->
+        <xs:element name="MaxStava " type="xs:decimal" minOccurs="0" /> <!-- Max. stava  -->
+        <xs:element name="VredObrKred" type="xs:decimal" minOccurs="0" /> <!-- Vrednost obračunskega kredita -->
+        <xs:element name="Tok" type="xs:string" minOccurs="0" /> <!-- Tok -->
+        <xs:element name="BA" type="xs:string" minOccurs="0" /> <!-- Sprejemnik bankovcev -->
+        <xs:element name="LetoIzdelave" type="xs:int" minOccurs="0" /> <!-- Leto izdelave -->
+        <xs:element name="PPIN" type="xs:boolean" minOccurs="0" /> <!-- PPIN -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Progresiva za igralne avtomate -->
+  <xs:element name="Progresiva">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ID" type="xs:string" minOccurs="0" /> <!-- id -->
+        <xs:element name="ProgresivaID" type="xs:string" minOccurs="0" /> <!-- ID -->
+        <xs:element name="ZacetnaV" type="xs:decimal" minOccurs="0" /> <!-- Zacetna v. -->
+        <xs:element name="procV" type="xs:decimal" minOccurs="0" /> <!-- %V -->
+        <xs:element name="procS" type="xs:decimal" minOccurs="0" /> <!-- %S -->
+        <xs:element name="Tip" type="xs:string" minOccurs="0" /> <!-- TIP -->
+        <xs:element name="Bel" type="xs:string" minOccurs="0" /> <!-- Bel. -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Podigra -->
+  <xs:element name="Podigra">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ID" type="xs:string" minOccurs="0" /> <!-- id -->
+        <xs:element name="PodigraID" type="xs:string" minOccurs="0" /> <!-- Podigra -->
+        <xs:element name="procVracanja" type="xs:string" minOccurs="0" /> <!-- % Vračanja -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Podatki o strežniških/spletnih igrah -->
+  <xs:element name="SSIgra">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ID" type="xs:string" minOccurs="0" /> <!-- id = SerN + Proizvajalec-->
+        <xs:element name="SerN" type="xs:string" minOccurs="0" /> <!-- Serijska št. -->
+        <xs:element name="Proizvajalec" type="xs:string" minOccurs="0" /> <!--Proizvajalec-->
+        <xs:element name="ZapStIA" type="xs:int" minOccurs="0" /> <!-- Zap. št. -->
+        <xs:element name="stPIT" type="xs:string" minOccurs="0" /> <!-- Št. PIT -->
+        <xs:element name="stIA" type="xs:string" minOccurs="0" /> <!-- Št. IA -->
+        <xs:element name="IdIAvNIS" type="xs:string" minOccurs="0" /> <!-- Interna identifikacijska oznaka IA v NIS -->
+        <xs:element name="TipIA" type="xs:string" minOccurs="0" /> <!-- Tip IA -->
+        <xs:element name="stIM" type="xs:int" minOccurs="0" /> <!-- Št. IM -->
+        <xs:element name="Igra" type="xs:string" minOccurs="0" /> <!-- Igra -->
+        <xs:element name="procVracanja" type="xs:string" minOccurs="0" /> <!-- % vračanja -->
+        <xs:element name="MaxStava " type="xs:decimal" minOccurs="0" /> <!-- Max. stava  -->
+        <xs:element name="VredObrKred" type="xs:decimal" minOccurs="0" /> <!-- Vrednost obračunskega kredita -->
+        <xs:element name="Tok" type="xs:string" minOccurs="0" /> <!-- Tok -->
+        <xs:element name="BA" type="xs:string" minOccurs="0" /> <!-- Sprejemnik bankovcev -->
+        <xs:element name="LetoIzdelave" type="xs:int" minOccurs="0" /> <!-- Leto izdelave -->
+        <xs:element name="PPIN" type="xs:boolean" minOccurs="0" /> <!-- PPIN -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Progresiva za strežniške/spletne igre -->
+  <xs:element name="ProgresivaSSIgra">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ID" type="xs:string" minOccurs="0" /> <!-- id -->
+        <xs:element name="ProgresivaID" type="xs:string" minOccurs="0" /> <!-- ID -->
+        <xs:element name="ZacetnaV" type="xs:decimal" minOccurs="0" /> <!-- Zacetna v. -->
+        <xs:element name="procV" type="xs:decimal" minOccurs="0" /> <!-- %V -->
+        <xs:element name="procS" type="xs:decimal" minOccurs="0" /> <!-- %S -->
+        <xs:element name="Tip" type="xs:string" minOccurs="0" /> <!-- TIP -->
+        <xs:element name="Bel" type="xs:string" minOccurs="0" /> <!-- Bel. -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Podatki o igralnih mizah -->
+  <xs:element name="IgralnaMiza">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ID" type="xs:string" minOccurs="0" /> <!-- id = SerN + Proizvajalec-->
+        <xs:element name="SerN" type="xs:string" minOccurs="0" /> <!-- Serijska št. -->
+        <xs:element name="Proizvajalec" type="xs:string" minOccurs="0" /> <!--Proizvajalec-->
+        <xs:element name="ZapStIM" type="xs:int" minOccurs="0" /> <!-- Zap. št. -->
+        <xs:element name="OznakaNaprave" type="xs:string" minOccurs="0" /> <!--Oznaka naprave-->
+        <xs:element name="InventarnaSt" type="xs:string" minOccurs="0" /> <!--Inventarna številka-->
+        <xs:element name="LetoIzdelave" type="xs:int" minOccurs="0" /> <!-- Leto izdelave -->
+        <xs:element name="Igra" type="xs:string" minOccurs="0" /> <!-- Igra -->
+        <xs:element name="StavaMinMax" type="xs:string" minOccurs="0" /> <!-- Stava min/max  -->
+        <xs:element name="PPIN" type="xs:boolean" minOccurs="0" /> <!-- PPIN -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Progresiva za igralne mize -->
+  <xs:element name="ProgresivaIgralnaMiza">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ID" type="xs:string" minOccurs="0" /> <!-- id -->
+        <xs:element name="ProgresivaID" type="xs:string" minOccurs="0" /> <!-- ID -->
+        <xs:element name="ZacetnaV" type="xs:decimal" minOccurs="0" /> <!-- Zacetna vrednost -->
+        <xs:element name="procV" type="xs:decimal" minOccurs="0" /> <!-- %V -->
+        <xs:element name="procS" type="xs:decimal" minOccurs="0" /> <!-- %S -->
+        <xs:element name="Vplacilo" type="xs:decimal" minOccurs="0" /> <!-- Vplacilo -->
+        <xs:element name="Proizvajalec" type="xs:string" minOccurs="0" /> <!-- Proizvajalec -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <!-- Podatki o preizkusu igralne naprave -->
+  <xs:element name="Preizkus">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ID" type="xs:string" minOccurs="0" /> <!-- id = SERIAL_11 + MANUF_4 / je enak ID iz IgralniAvtomati  -->
+        <xs:element name="SIQ_ID_1" type="xs:string" minOccurs="0" />
+        <xs:element name="KONC_ID_2" type="xs:string" minOccurs="0" />
+        <xs:element name="INT_ID_3" type="xs:string" minOccurs="0" />
+        <xs:element name="MANUF_4" type="xs:string" minOccurs="0" />
+        <xs:element name="PLATFORM_5" type="xs:string" minOccurs="0" />
+        <xs:element name="CABINET_6" type="xs:string" minOccurs="0" />
+        <xs:element name="PROC_PN_7" type="xs:string" minOccurs="0" />
+        <xs:element name="BA_8" type="xs:string" minOccurs="0" />
+        <xs:element name="BA_SW_9" type="xs:string" minOccurs="0" />
+        <xs:element name="CA_10" type="xs:string" minOccurs="0" />
+        <xs:element name="SERIAL_11" type="xs:string" minOccurs="0" />
+        <xs:element name="YEAR_12" type="xs:string" minOccurs="0" />
+        <xs:element name="G_TYPE_13" type="xs:string" minOccurs="0" />
+        <xs:element name="G_NAME_CER" type="xs:string" minOccurs="0" />
+        <xs:element name="G_NAME_14" type="xs:string" minOccurs="0" />
+        <xs:element name="ID_MAIN_15" type="xs:string" minOccurs="0" />
+        <xs:element name="ID_DATA_16" type="xs:string" minOccurs="0" />
+        <xs:element name="RTP_17" type="xs:string" minOccurs="0" />
+        <xs:element name="MBET_18" type="xs:string" minOccurs="0" />
+        <xs:element name="COIN_19" type="xs:string" minOccurs="0" />
+        <xs:element name="TOKEN_20" type="xs:string" minOccurs="0" />
+        <xs:element name="PRG_21" type="xs:string" minOccurs="0" />
+        <xs:element name="INITIAL_22" type="xs:string" minOccurs="0" />
+        <xs:element name="INCR_23" type="xs:string" minOccurs="0" />
+        <xs:element name="INS_D_24" type="xs:string" minOccurs="0" />
+        <xs:element name="INS_R_25" type="xs:string" minOccurs="0" />
+        <xs:element name="Prazno_polje" type="xs:string" minOccurs="0" />
+        <xs:element name="STATUS_26" type="xs:string" minOccurs="0" />
+        <xs:element name="LAST_IN_27" type="xs:string" minOccurs="0" />
+        <xs:element name="C_HW_28" type="xs:string" minOccurs="0" />
+        <xs:element name="C_SW_29" type="xs:string" minOccurs="0" />
+        <xs:element name="NIS_30" type="xs:string" minOccurs="0" />
+        <xs:element name="OPOMBE" type="xs:string" minOccurs="0" />
+        <xs:element name="LOK_31" type="xs:string" minOccurs="0" />
+        <xs:element name="IN_32" type="xs:string" minOccurs="0" />
+        <xs:element name="POR_ST" type="xs:string" minOccurs="0" />
+        <xs:element name="POR_D" type="xs:string" minOccurs="0" />
+        <xs:element name="CHW_D" type="xs:string" minOccurs="0" />
+        <xs:element name="CSW_D" type="xs:string" minOccurs="0" />
+        <xs:element name="TACC" type="xs:string" minOccurs="0" />
+        <xs:element name="TRND" type="xs:string" minOccurs="0" />
+        <xs:element name="TSW" type="xs:string" minOccurs="0" />
+        <xs:element name="KONC" type="xs:string" minOccurs="0" />
+        <xs:element name="LOKACIJA" type="xs:string" minOccurs="0" />
+        <xs:element name="GAME" type="xs:string" minOccurs="0" />
+        <xs:element name="PRG_V" type="xs:string" minOccurs="0" />
+        <xs:element name="PRG_MAN" type="xs:string" minOccurs="0" />
+        <xs:element name="PRG_MOD" type="xs:string" minOccurs="0" />
+        <xs:element name="C_PRG" type="xs:string" minOccurs="0" />
+        <xs:element name="CPRG_D" type="xs:string" minOccurs="0" />
+        <xs:element name="TPRG" type="xs:string" minOccurs="0" />
+        <xs:element name="MODEL" type="xs:string" minOccurs="0" />
+        <xs:element name="KONC_ID_DS" type="xs:string" minOccurs="0" />
+        <xs:element name="LOKACIJA_ID" type="xs:string" minOccurs="0" />
+        <xs:element name="PRIPRAVIL" type="xs:string" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Podatki o preizkusu za strežniške igre -->
+  <xs:element name="PreizkusSSIgra">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ID" type="xs:string" minOccurs="0" /> <!-- id = Igra + CertIgre -->
+        <xs:element name="ZapSt" type="xs:string" minOccurs="0" />
+        <xs:element name="Igra" type="xs:string" minOccurs="0" />
+        <xs:element name="CertIgre" type="xs:string" minOccurs="0" />
+        <xs:element name="ID_DATA" type="xs:string" minOccurs="0" />
+        <xs:element name="Nadgradnja" type="xs:string" minOccurs="0" />
+        <xs:element name="CertNadgradnje" type="xs:string" minOccurs="0" />
+        <xs:element name="Opomba" type="xs:string" minOccurs="0" />
+        <xs:element name="PovezanaPlatforma" type="xs:string" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:simpleType name="Amount_Type">
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="0"/>
+    </xs:restriction>
+  </xs:simpleType>  
+
+</xs:schema>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/DDV_NPSvracilo_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/DDV_NPSvracilo_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="DDV_NPSvracilo"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:element name="DDV_NPSvracilo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Popravek Dokumenta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Buyer" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Podatki o kupcu vozila</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Country" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Država članica</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="DdvID" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Identifikacijska številka za DDV</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Name" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naziv kupca</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Address" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ulica, hišna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="City" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naselje</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Post" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Poštna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PostName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naziv pošte</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="SubmitDate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Obrazec DDV-NPSdobava predložen dne</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Amount" type="Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Znesek zahtevanega DDV za vračilo</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Vehicle" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Podatki o prevoznem sredstvu</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Vrsta prevoznega sredstva</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="1">
+                      <xs:annotation>
+                        <xs:documentation>Kopensko motorno vozilo</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="2">
+                      <xs:annotation>
+                        <xs:documentation>Plovilo</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="3">
+                      <xs:annotation>
+                        <xs:documentation>Zrakoplov</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ChassisNumber" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Številka šasije/trupa plovila/ogrodja zrakoplova</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="KmOrHours" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Število prevoženih kilometrov/preplutih oz. preletenih ur</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="AcquiredDate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Datum dobave</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="FirstUseDate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Datum prve uporabe</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="DdvAmount" type="Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Znesek DDV plačan pri nakupu vozila</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Price" type="Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Prodajna cena</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Attachment" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Priloge</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="1">
+                <xs:annotation>
+                  <xs:documentation>Račun/pogodba o nakupu prevoznega sredstva</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="2">
+                <xs:annotation>
+                  <xs:documentation>Dokazilo, da je bil DDV plačan ob nakupu</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="3">
+                <xs:annotation>
+                  <xs:documentation>Račun/pogodba o prodaji prevoznega sredstva</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="4">
+                <xs:annotation>
+                  <xs:documentation>Dokazilo, da je bilo novo prevozno sredstvo prepeljano v drugo državo članico</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="5">
+                <xs:annotation>
+                  <xs:documentation>Dokazilo o prvi registraciji</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="6">
+                <xs:annotation>
+                  <xs:documentation>Drugo</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="Decimal14_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,14}(\.\d{1,2})?" />
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

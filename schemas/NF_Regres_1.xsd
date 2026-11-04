@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/NF_Regres_1.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://edavki.durs.si/Documents/Schemas/NF_Regres_1.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+             schemaLocation="EDP-Common-1.xsd"/>
+
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Regres" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+   
+  <xs:element name="Regres">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Popravek Dokumenta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Period" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obdobje</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="Employee" minOccurs="0" maxOccurs="unbounded" >
+          <xs:annotation>
+            <xs:documentation>Izplačilo pomoči za financiranje regresa za letni dopust uveljavljam za spodaj navedene delavce vključene v zavarovanje na podlagi delovnega razmerja na dan uveljavitve ZIUPGT</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalAmount" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj regres</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AccountNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Transakcijski račun</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AccountType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Tip transakcijskega računa</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="own">
+                <xs:annotation>
+                  <xs:documentation>lasten transakcijski račun</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="other">
+                <xs:annotation>
+                  <xs:documentation>drug transakcijski račun (IBAN)</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Employee">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Izplačilo pomoči za financiranje regresa za letni dopust uveljavljam za spodaj navedene delavce vključene v zavarovanje na podlagi delovnega razmerja na dan uveljavitve ZIUPGT</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="TaxPayerID" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčna številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="FirstName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Ime</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="LastName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Priimek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="InsuranceHours" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Ure vključenosti v zavarovanje na podlagi delovnega razmerja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="WorkHours" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Polni tedenski delovni čas v urah</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Amount" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek regresa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

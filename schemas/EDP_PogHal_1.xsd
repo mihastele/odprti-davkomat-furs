@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema id="EDP_PogHal_1" targetNamespace="http://edavki.durs.si/Documents/Schemas/EDP_PogHal_1.xsd"
+  elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/EDP_PogHal_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+  <xs:element name="EDP-PogHal">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="User" type="edp:taxPayerType">
+          <xs:annotation>
+            <xs:documentation>
+              Tax payer profile which is being authorized.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Certificate">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SerialNumber" type="xs:string" />
+              <xs:element name="Issuer" type="xs:string" />
+              <xs:element name="Fingerprint" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element ref="EDP-PogHal" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

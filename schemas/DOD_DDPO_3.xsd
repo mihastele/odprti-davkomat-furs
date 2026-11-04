@@ -1,0 +1,2896 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/DOD_DDPO_3.xsd" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" elementFormDefault="qualified" targetNamespace="http://edavki.durs.si/Documents/Schemas/DOD_DDPO_3.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="EDP-Common-1.xsd" namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" />
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element ref="DOD_DDPO" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DOD_DDPO">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Obračun davka od dohodkov pravnih oseb</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="PeriodStart" type="xs:dateTime">
+          <xs:annotation>
+            <xs:documentation>Obdobje od</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="PeriodEnd" type="xs:dateTime">
+          <xs:annotation>
+            <xs:documentation>Obdobje do</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="TaxSubjectExt">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>Dodatni podatki o zaveznacu</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element minOccurs="1" maxOccurs="1" name="ActivitySkdCode">
+                <xs:annotation>
+                  <xs:documentation>Šifra vrste dejavnosti po SKD</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:length value="5" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element minOccurs="1" maxOccurs="1" name="PredominantActivityCode">
+                <xs:annotation>
+                  <xs:documentation>Šifra vrste pretežne dejavnosti</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:length value="5" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="ForNotResident" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Davčni obračun zavezanca nerezidenta, za dobiček poslovne enote</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="IsTax9Article" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Davčni obračun zavezanca iz 9. člena ZDDPO-1</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="IsTax54Article" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Davčni obračun zavezanca iz 54. člena ZDDPO-1</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="IsTax12Article" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Davčni zavezanec opravlja poslovanje med povezanimi osebami po 12. členu ZDDPO-1</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="IsTax13Article" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Davčni zavezanec opravlja poslovanje med povezanimi osebami po 13. členu ZDDPO-1</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="IsTax13Article4Item" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Davčni zavezanec opravlja poslovanje med povezanimi osebami po 13. členu ZDDPO-1, ki imajo ugodnejši davčni položaj, opredeljen v 4. odstavku 13. člena ZDDPO-1</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="IsTax15Article" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Davčni zavezanec prejema ali daje posojila povezanim osebam po 15. členu ZDDPO-1</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="IsTaxPayerUserOfEconomicZone" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Davčni zavezanec je uporabnik ekonomske cone</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="EconomicZoneProvisionNumber">
+          <xs:annotation>
+            <xs:documentation>Št. odločbe za ekonomsko cono.</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="30" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="EconomicZoneProvisionDate" nillable="true" type="xs:dateTime">
+          <xs:annotation>
+            <xs:documentation>Datum odločbe za ekonomsko cono.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="EconomicZoneTaxOffice">
+          <xs:annotation>
+            <xs:documentation>Davčni urad za ekonomsko cono.</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:length value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="EconomicZoneNo" nillable="true">
+          <xs:annotation>
+            <xs:documentation>Navedeni obračun zadeva (vpišite ustrezno številko v skladu z metodologijo)</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:int">
+              <xs:minInclusive value="0" />
+              <xs:maxInclusive value="3" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="AssessmentOfTaxType">
+          <xs:annotation>
+            <xs:documentation>Način ugotavljanja davka:</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="Individual">
+                <xs:annotation>
+                  <xs:documentation>Individualno</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="Group">
+                <xs:annotation>
+                  <xs:documentation>Skupinsko</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="Group200">
+                <xs:annotation>
+                  <xs:documentation>Skupinsko po 200. čl.</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="AssessmentOfTax">
+          <xs:annotation>
+            <xs:documentation>Dodatni podatki za skupinsko/skupinsko po 200. čl. ZDavP ugotavljanje davka</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>Skupinsko/skupinsko po 200. čl. ZDavP ugotavljanje davka</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="1" name="ProvisionNumber">
+                <xs:annotation>
+                  <xs:documentation>Skupinsko ugotavljanje davka - številka odločbe</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="30" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element minOccurs="1" maxOccurs="1" name="ProvisionDate" nillable="true" type="xs:dateTime">
+                <xs:annotation>
+                  <xs:documentation>Skupinsko ugotavljanje davka - datum odločbe</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element minOccurs="0" maxOccurs="1" name="TaxOffice">
+                <xs:annotation>
+                  <xs:documentation>Skupinsko ugotavljanje davka - davčni urad</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:length value="2" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element minOccurs="0" maxOccurs="1" name="TaxSubjectName" type="xs:string">
+                <xs:annotation>
+                  <xs:documentation>Skupinsko ugotavljanje davka - naziv glavnega zavezanca</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element minOccurs="0" maxOccurs="1" name="TaxSubjectAddress" type="xs:string">
+                <xs:annotation>
+                  <xs:documentation>Skupinsko ugotavljanje davka - sedež glavnega zavezanca</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element minOccurs="0" maxOccurs="1" name="TaxNo">
+                <xs:annotation>
+                  <xs:documentation>Skupinsko ugotavljanje davka - Davčna številka</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:length value="8" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E10" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>1. - Prihodki, ugotovljeni po računovodskih predpisih</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E20" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>1.1 - Dohodki, od katerih je bil odtegnjen davek na viru, vključno z davčnim odtegljajem</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E30" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>2. - Popravek prihodkov na raven davčno priznanih prihodkov – zmanjšanje (vsota 2.1 do 2.8)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E40" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>2.1 - Izvzem prihodkov od nepridobitne dejavnosti</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E50" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>2.2 - Zmanjšanje prihodkov za odpravo in porabo že obdavčenih rezervacij </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E60" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>2.3 - Zmanjšanje prihodkov za že obdavčene prihodke zaradi odprave nepotrebnih rezervacij </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E70" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>2.4 - Izvzem prihodkov iz naslova odprave oslabitev, če se predhodna oslabitev ni upoštevala </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E80" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>2.5 - Izvzem prihodkov od udeležbe na dobičku </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E90" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>2.6 - Izvzem prihodkov na podlagi mednarodnih pogodb o izogibanju dvojnega obdavčevanja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E100" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>2.7 - Zmanjšanje prihodkov za oblikovane dodatne rezerve po 18. čl. ZFPPod</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E110" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>2.8 - Izvzem prihodkov zaradi predhodno nepriznanih odhodkov, v skladu z 19.a čl.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E120" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>3. - Popravek prihodkov na raven davčno priznanih prihodkov – povečanje (vsota 3.1 do 3.4)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E130" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>3.1 - Povečanje prihodkov zaradi transfernih cen med povezanimi osebami </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E140" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>3.2 - Povečanje prihodkov zaradi transfernih cen med povezanimi osebami rezidenti  </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E150" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>3.3 - Povečanje prihodkov od obresti na dana posojila povezanim osebam</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E160" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>3.4 - Povečanje prihodkov zaradi odprave nepotrebnih rezervacij</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E170" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>4. - DAVČNO PRIZNANI PRIHODKI (1 – 2 + 3)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E180" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>5. - ODHODKI, ugotovljeni po računovodskih predpisih</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E190" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6. - Popravek odhodkov na raven davčno priznanih odhodkov – zmanjšanje (vsota 6.1 do 6.35) </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E200" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.1 - Izvzem odhodkov od nepridobitne dejavnosti</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E210" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.2 - Zmanjšanje odhodkov zaradi transfernih cen med povezanimi osebami </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E220" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.3 - Zmanjšanje odhodkov zaradi transfernih cen med povezanimi osebami rezidenti </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E230" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.4 - Zmanjšanje odhodkov za obresti na prejeta posojila od povezanih oseb</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E240" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.5 - Zmanjšanje odhodkov za oblikovane rezervacije na račun dolgoročno vnaprej vračunanih stroškov oziroma odhodkov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E250" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.6 - Zmanjšanje odhodkov iz naslova splošnega prevrednotenja kapitala</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E260" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.7 - Zmanjšanje odhodkov za odhodke prevrednotenja sredstev in dolgov (razen odhodkov prevrednotenja dolgov, terjatev, finančnih naložb, denarnih terjatev, ki se po SRS prevrednotujejo zaradi spremembe valutnega tečaja) in za odhodke zaradi uporabe kapitalske metode vrednotenja </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E270" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.8 - Izvzem odhodkov, ki se nanašajo na izvzete prihodke od udeležbe na dobičku</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E280" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.9 - Izvzem odhodkov, ki se nanašajo na izvzete prihodke na podlagi mednarodnih pogodb o izogibanju dvojnega obdavčevanja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E290" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.10 - Nepriznani odhodki za zneske, ki se obravnavajo kot naložbe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E300" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.11 - Nepriznani odhodki, ki imajo naravo udeležbe v dobičku</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E310" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.12 - Nepriznani odhodki za pokrivanje izgub iz preteklih let </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E320" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.13 - Nepriznani odhodki za rezervacije za kritje možnih izgub</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E330" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.14 - Nepriznani odhodki za stroške, ki se nanašajo na privatno življenje (6.14.1 do 6.14.3)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E340" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.14.1 - Stroški, ki se nanašajo na privatno življenje lastnikov in povezanih oseb</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E350" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.14.2 - Stroški, ki se nanašajo na privatno življenje drugih oseb</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E360" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.14.3 - Stroški ugodnosti, ki jih delavcem zagotavlja delodajalec</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E370" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.15 - Nepriznani odhodki za stroške prisilne izterjave davkov in drugih dajatev </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E380" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.16 - Nepriznani odhodki za kazni, ki jih izreče pristojni organ</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E390" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.17 - Nepriznani odhodki za davke </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E400" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.18 - Nepriznani odhodki za obresti od nepravočasno plačanih davkov ali drugih dajatev </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E410" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.19 - Nepriznani odhodki za obresti od posojil, prejetih od oseb, določenih v 9. b tč. 1. odst. 21. čl.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E420" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.20 - Nepriznani odhodki za podkupnine in druge oblike premoženjskih koristi </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E430" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.21 - Nepriznani odhodki za donacije</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E440" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.22 - Drugi odhodki, ki se ne priznajo v skladu z 20. čl.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E450" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.23 - Nepriznani odhodki v višini 50 odstotkov stroškov reprezentance </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E460" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.24 - Nepriznani odhodki v višini 50 odstotkov stroškov nadzornega sveta </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E470" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.25 - Zmanjšanje odhodkov za učinke pri spremembi izbrane metode vrednotenja zalog pred potekom 5 let</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E480" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.26 - Nepriznani odhodki za obresti od presežka posojil</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E490" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.27 - Nepriznani odhodki za obračunano amortizacijo, ki presega amortizacijo, obračunano po metodi enakomernega časovnega amortiziranja in na podlagi predpisanih stopenj, oziroma celotni znesek davčno priznane amortizacije</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E500" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.28 - Nepriznani odhodki za amortizacijo dokončno amortiziranih sredstev</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E510" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.29 - Nepriznani odhodki za amortizacijo opredmetenih osnovnih sredstev, katerih nabavna vrednost je bila predhodno odpisana in davčno priznana</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E520" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.30 - Nepriznani odhodki za posebne rezervacije pri bankah, ki presegajo višino, določeno z zakonom, ki ureja bančništvo </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E530" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.31 - Nepriznani odhodki za zavarovalno-tehnične rezervacije, ki presegajo višino ali zgornjo mejo, določeno z zakonom, ki ureja zavarovalništvo </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E540" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.32 - Nepriznani odhodki za nagrade vajencem</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E550" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.33 - Nepriznani odhodki za druga izplačila v zvezi z zaposlitvijo</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E560" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.34 - Nepriznani odhodki za plače in druga izplačila v zvezi z zaposlitvijo, ki se izplačajo na podlagi udeležbe v dobičku</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E570" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>6.35 - Zmanjšanje odhodkov v primeru prodaje ali drugačne odtujitve sredstva pred dokončno obračunano amortizacijo za znesek razlike med amortizacijo, obračunano za davčne namene in amortizacijo, obračunano za poslovne namene</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E580" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>7. - Popravek odhodkov na raven davčno priznanih odhodkov – povečanje (vsota 7.1 do 7.6) </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E590" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>7.1 - Povečanje odhodkov za porabo rezervacij</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E600" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>7.2 - Povečanje odhodkov za odhodke prevrednotenja, ki se priznajo ob prodaji oziroma odtujitvi sredstev in ob poravnavi oziroma odtujitvi dolgov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E610" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>7.3 - Povečanje odhodkov za predhodne odpise terjatev, ki niso bili davčno priznani </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E620" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>7.4 - Povečanje odhodkov za odpis celotne nabavne vrednosti za opredmetena osnovna sredstva</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E630" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>7.5 - Povečanje odhodkov za razliko pri amortizaciji, do zneska, obračunanega po metodi enakomernega časovnega amortiziranja in na podlagi predpisanih stopenj</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E640" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>7.6 - Povečanje odhodkov v primeru prodaje ali drugačne odtujitve sredstva pred dokončno obračunano amortizacijo za znesek razlike med amortizacijo, obračunano za poslovne namene in amortizacijo, obračunano za davčne namene</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E650" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>8. - DAVČNO PRIZNANI ODHODKI (5 – 6 + 7)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E660" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>9. - RAZLIKA med davčno priznanimi prihodki in odhodki (4 – 8)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E670" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>10. - RAZLIKA med davčno priznanimi odhodki in prihodki (8 – 4)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E680" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>11. - Sprememba davčne osnove pri prehodu na nov način računovodenja, pri spremembah računovodskih usmeritev, popravkih napak in prevrednotenjih (11.1 - 11.2 + 11.3 -11.4 + 11.5)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E690" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>11.1 - Povečanje davčne osnove za znesek razlik zaradi prehoda na spremenjen način sestavljanja računovodskih poročil, ki se vključi v davčno osnovo v tem obračunu </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E700" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>11.2 - Zmanjšanje davčne osnove za znesek razlik zaradi prehoda na spremenjen način sestavljanja računovodskih poročil, ki se vključi v davčno osnovo v tem obračunu </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E710" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>11.3 - Povečanje davčne osnove za znesek razlik zaradi sprememb računovodskih usmeritev in popravkov napak</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E720" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>11.4 - Zmanjšanje davčne osnove za znesek razlik zaradi sprememb računovodskih usmeritev in popravkov napak</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E730" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>11.5 - Povečanje davčne osnove za znesek prevrednotovalnega popravka kapitala (presežka iz prevrednotenja) zaradi prevrednotenja gospodarskih kategorij, ki ga zavezanec prenese v preneseni poslovni izid  </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E740" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>12. - Povečanje davčne osnove za predhodno uveljavljene davčne olajšave (vsota 12.1 do 12.3)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E750" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>12.1 - Znesek izkoriščene davčne olajšave za znesek investicij, zaradi prodaje oziroma odtujitve ali prenosa sredstev izven RS ali zaradi izgube pravice do uporabe opredmetenega osnovnega sredstva pri finančnem najemu </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E760" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>12.2 - Znesek izkoriščene davčne olajšave za novozaposlene delavce zaradi predčasne prekinitve delovnega razmerja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E770" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>12.3 - Neporabljeni del investicijskih rezerv </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E780" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>13. - DAVČNA OSNOVA (9 + 11 + 12) ali (11 + 12 – 10), če &gt; 0</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E790" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>14. - DAVČNA IZGUBA (11 + 12 – 10), če &lt; 0</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E800" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>15. - Zmanjšanje davčne osnove in davčne olajšave (vsota 15.1 do 15.13, vendar največ do višine davčne osnove iz zap. št. 13)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E810" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>15.1 - Zmanjšanje davčne osnove za prejete obresti od kratkoročnih in dolgoročnih vrednostnih papirjev, ki so jih do 8. aprila 1995 izdale Republika Slovenija, občine ali javna podjetja, ki so jih ustanovile Republika Slovenija ali občine</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E820" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>15.2 - Pokrivanje izgube </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E830" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>15.3 - Olajšava za investirani znesek v opremo in v neopredmetena dolgoročna sredstva </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E840" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>15.4 - Olajšava za vlaganja v raziskave in razvoj po prvem stavku 2. odst. 49. čl.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E850" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>15.5 - Olajšava za vlaganja v raziskave in razvoj po drugem stavku 2. odst. 49. čl.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E860" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>15.6 - Olajšava za zaposlovanje pripravnikov in brezposelnih oseb </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E870" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>15.7 - Olajšava za zaposlovanje doktorjev znanosti</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E880" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>15.8 - Olajšava za zaposlovanje invalidov </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E890" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>15.9 - Olajšava za prostovoljno dodatno pokojninsko zavarovanje</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E900" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>15.10 - Olajšava za donacije – izplačila za humanitarne, invalidske, dobrodelne, znanstvene, vzgojno-izobraževalne, športne, kulturne, ekološke in religiozne namene </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E910" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>15.11 - Izplačila političnim strankam in reprezentativnim sindikatom</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E920" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>15.12 - Davčna ugodnost za začetno investicijo v ekonomski coni – vlaganja v osnovna sredstva</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E930" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>15.13 - Davčna ugodnost za odpiranje novih delovnih mest v ekonomski coni</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E940" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>16. - OSNOVA ZA DAVEK (13 – 15)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E950" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>17. - DAVEK</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E950Per" nillable="true" type="positivePercent">
+          <xs:annotation>
+            <xs:documentation>Zap. št. 16 krat ……. odstotkov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E960" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>18. - Odbitek tujega davka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E970" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>19. - Povečanje davka zaradi sprememb odbitka tujega davka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E980" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>20. - DAVČNA OBVEZNOST (17 – 18 + 19)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E990" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>21. - Zmanjšanje davčne obveznosti za plačani znesek odtegnjenega davka </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E1000" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>22. - Vplačane akontacije </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E1010" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>23. - OBVEZNOST ZA DOPLAČILO DAVKA (20 – 21 – 22), če &gt; 0</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E1020" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>24. - PREVEČ VPLAČANE AKONTACIJE (20 – 21 – 22), če &lt; 0</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E1030" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>25. - OSNOVA ZA DOLOČITEV AKONTACIJE DAVKA</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E1040" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>26. - Akontacija</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E1050" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>27. - Mesečni obrok akontacije</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="E1060" nillable="true" type="money">
+          <xs:annotation>
+            <xs:documentation>28. - Trimesečni obrok akontacije</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="EnclosedAttAjpes" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Priložena priloga Ajpes</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="AttAjpes">
+          <xs:annotation>
+            <xs:documentation>Podatki iz bilance stanja, izkaza poslovnega izida oziroma podatki iz drugih ustreznih poročil</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="StatementSendToAjpes" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Izjavljam, da ne prilagam podatkov, ki so navedeni kot Priloga 3 davčnega obračuna, ker so bili ti podatki predloženi Agenciji Republike Slovenije za javnopravne evidence in storitve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="SubmitedToAJPESOnDate" nillable="true" type="xs:dateTime">
+          <xs:annotation>
+            <xs:documentation>Podatkov, ki so navedeni kot Priloga 3 davčnega obračuna, so bili predloženi Agenciji Republike Slovenije za javnopravne evidence in storitve, dne</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="EnclosedAtt03a" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Priložena priloga 3a</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="Att03a" type="Att03a" />
+        <xs:element minOccurs="1" maxOccurs="1" name="EnclosedAtt04" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Priložena priloga 4</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="Att04" type="Att04" />
+        <xs:element minOccurs="1" maxOccurs="1" name="EnclosedAtt05" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Priložena priloga 5</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="Att05" type="Att05" />
+        <xs:element minOccurs="1" maxOccurs="1" name="EnclosedAtt06" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Priložena priloga 6</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="Att06" type="Att06" />
+        <xs:element minOccurs="1" maxOccurs="1" name="EnclosedAtt07a" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Priložena priloga 7a</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="Att07a" type="Att07a" />
+        <xs:element minOccurs="1" maxOccurs="1" name="EnclosedAtt07b" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Priložena priloga 7b</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="Att07b" type="Att07b" />
+        <xs:element minOccurs="1" maxOccurs="1" name="EnclosedAtt08" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Priložena priloga 8</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="Att08" type="Att08" />
+        <xs:element minOccurs="1" maxOccurs="1" name="EnclosedAtt09" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Priložena priloga 9</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="Att09" type="Att09" />
+        <xs:element minOccurs="1" maxOccurs="1" name="EnclosedAtt10" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Priložena priloga 10</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="Att10" type="Att10" />
+        <xs:element minOccurs="1" maxOccurs="1" name="EnclosedAtt11" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Priložena priloga 11</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="Att11" type="Att11" />
+        <xs:element minOccurs="1" maxOccurs="1" name="EnclosedAtt12" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Priložena priloga 12</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="Att12" type="Att12" />
+        <xs:element minOccurs="1" maxOccurs="1" name="EnclosedAtt13" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Priložena priloga 13</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="Att13" type="Att13" />
+        <xs:element minOccurs="1" maxOccurs="1" name="EnclosedAtt14" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Priložena priloga 14</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="Att14" type="Att14" />
+        <xs:element minOccurs="1" maxOccurs="1" name="EnclosedAtt15" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Priložena priloga 15</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="Att15" type="Att15" />
+        <xs:element minOccurs="1" maxOccurs="1" name="EnclosedAtt16" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Priložena priloga 16</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="Att16" type="Att16" />
+        <xs:element minOccurs="1" maxOccurs="1" name="ReturnOfAdvancePaymentType">
+          <xs:annotation>
+            <xs:documentation>Zahtevek za vračilo davka po 2. odst. 349. čl. ZDavP-1</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="Return">
+                <xs:annotation>
+                  <xs:documentation>Zahtevam vračilo preveč plačane akontacije v znesku iz zap. št. 24</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="Compensation">
+                <xs:annotation>
+                  <xs:documentation>Preveč plačani znesek davka naj se šteje v naslednja plačila</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="Att03a">
+    <xs:annotation>
+      <xs:documentation>Priloga 3a</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="TableA">
+        <xs:annotation>
+          <xs:documentation>TABELA A: Izračun razlike, za katero se preračuna preneseni poslovni izid</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="E10" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>1. - Odprava celotnega slabega imena</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E20" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>2. - Preračun - povečanje vrednosti dolgoročnih in kratkoročnih finančnih naložb, razvrščenih med finančna sredstva, izmerjena po pošteni vrednosti prek poslovnega izida, na njihovo pošteno vrednost</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E30" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>3. - Odprava pred 1. januarjem 2006 oblikovanega posebnega prevrednotovalnega popravka kapitala iz naslova prevrednotenj dolgoročnih in kratkoročnih finančnih naložb, razvrščenih med finančna sredstva, izmerjena po pošteni vrednosti prek poslovnega izida </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E40" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>4. - Povečanje prenesenega poslovnega izida za preračun dolgoročnih in kratkoročnih finančnih naložb v odvisna, skupaj obvladovana in pridružena podjetja na izvirno nabavno vrednost, če je podjetje te finančne naložbe vrednotilo po kapitalski metodi in za učinke prevrednotenj povečevalo finančne odhodke </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E50" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>5. - Povečanje prenesenega poslovnega izida zaradi odprave dolgoročnih rezervacij  </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E60" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>6. - Druga povečanja prenesenega poslovnega izida</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E70" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>7. - Skupaj povečanja prenesenega poslovnega izida (vsota 1 do 6), od tega:  </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E80" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>7.1 - Znesek, ki ne povečuje davčne osnove</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E90" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>8. - Oslabitev dobrega imena</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E100" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>9. - Preračun - zmanjšanje vrednosti dolgoročnih in kratkoročnih finančnih naložb, razvrščenih med finančna sredstva, izmerjena po pošteni vrednosti prek poslovnega izida, na njihovo pošteno vrednost</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E110" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>10. - Zmanjšanje prenesenega poslovnega izida za preračun dolgoročnih in kratkoročnih finančnih naložb v odvisna, skupaj obvladovana in pridružena podjetja na izvirno nabavno vrednost, če je podjetje te finančne naložbe vrednotilo po kapitalski metodi in za učinke prevrednotenj povečevalo finančne prihodke</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E120" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>11. - Druga zmanjšanja prenesenega poslovnega izida</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E130" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>12. - Skupaj zmanjšanja prenesenega poslovnega izida (vsota 8 do 11), od tega:</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E140" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>12.1 - Znesek, ki ne zmanjšuje davčne osnove </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E150" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>13. - Znesek, za katerega se poveča preneseni poslovni izid (zap. št. 7 – zap. št. 12), če &gt; 0</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E160" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>14. - Znesek, za katerega se zmanjša preneseni poslovni izid (zap. št. 7 – zap. št. 12), če &lt; 0</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E170" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>15. - Znesek, za katerega se poveča davčna osnova (zap. št. (7 manj 7.1) – zap. št. (12 manj 12.1)), če &gt; 0  </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E180" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>16. - Znesek, za katerega se zmanjša davčna osnova (zap. št. (7 manj 7.1) – zap. št. (12 manj 12.1)), če &lt; 0</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E190" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>17. - Znesek, za katerega se poveča oziroma zmanjša davčna osnova v tem davčnem obdobju  </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E200" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>18. - Znesek, za katerega se bo povečala oziroma zmanjšala davčna osnova v naslednjih dveh davčnih obdobjih (zap. št. 15 oz. 16 manj zap. št. 17)</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="TableB">
+        <xs:annotation>
+          <xs:documentation>TABELA B: Izračun razlike, za katero se preračuna druga postavka kapitala (presežek iz prevrednotenja oz. prevrednotovalni popravek kapitala)</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="E10" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>1. - Preračun - povečanje vrednosti dolgoročnih in kratkoročnih finančnih naložb, razvrščenih med za prodajo razpoložljive finančne naložbe, na njihovo pošteno vrednost </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E20" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>2. - Preračun - povečanje vrednosti opredmetenih osnovnih sredstev, neopredmetenih sredstev in naložbenih nepremičnin, na njihovo pošteno vrednost </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E30" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>3. - Povečanja vrednosti drugih sredstev, za katere se poveča presežek iz prevrednotenja  </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E40" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>4. - Skupaj povečanja (vsota 1 do 3)</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E50" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>5. - Preračun – zmanjšanje vrednosti dolgoročnih in kratkoročnih finančnih naložb, razvrščenih med za prodajo razpoložljive finančne naložbe, na njihovo pošteno vrednost</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E60" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>6. - Preračun - zmanjšanje vrednosti opredmetenih osnovnih sredstev, neopredmetenih sredstev in naložbenih nepremičnin, na njihovo pošteno vrednost</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E70" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>7. - Zmanjšanja vrednosti drugih sredstev, za katera se zniža presežek iz prevrednotenja  </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E80" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>8. - Skupaj zmanjšanja (vsota 5 do 7)</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E90" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>9. - Znesek, za katerega se poveča presežek iz prevrednotenja (zap. št. 4 manj zap. št. 8)</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Att04">
+    <xs:annotation>
+      <xs:documentation>Priloga 4</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="TableA" type="DoubleTaxTableData">
+        <xs:annotation>
+          <xs:documentation>A - TABELA A</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="TableB" type="DoubleTaxTableData">
+        <xs:annotation>
+          <xs:documentation>B - TABELA B</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DoubleTaxTableData">
+    <xs:annotation>
+      <xs:documentation>Podatki v zvezi z izvzetjem prihodkov na podlagi mednarodnih pogodb o izogibanju dvojnega obdavčevanja</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="CountryList">
+        <xs:annotation>
+          <xs:documentation>Seznam držav.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="CountryRowData" nillable="true">
+              <xs:complexType>
+                <xs:annotation>
+                  <xs:documentation>Podatki za eno državo.</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                  <xs:element minOccurs="1" maxOccurs="1" name="CountryCode">
+                    <xs:annotation>
+                      <xs:documentation>1 - Država</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:length value="3" />
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element minOccurs="0" maxOccurs="1" name="IncomeList">
+                    <xs:annotation>
+                      <xs:documentation>Podatki za posamezno državo.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element minOccurs="0" maxOccurs="unbounded" name="IncomeRowData" nillable="true">
+                          <xs:complexType>
+                            <xs:annotation>
+                              <xs:documentation>Podatek o prihodku.</xs:documentation>
+                            </xs:annotation>
+                            <xs:sequence>
+                              <xs:element minOccurs="1" maxOccurs="1" name="IncomeType">
+                                <xs:annotation>
+                                  <xs:documentation>2 - Vrsta dohodka</xs:documentation>
+                                </xs:annotation>
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:minLength value="1" />
+                                    <xs:maxLength value="100" />
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:element>
+                              <xs:element minOccurs="1" maxOccurs="1" name="ExcludedIncome" nillable="true" type="money">
+                                <xs:annotation>
+                                  <xs:documentation>3 - Znesek izvzetega prihodka</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element minOccurs="1" maxOccurs="1" name="ExcludedExpenses" nillable="true" type="money">
+                                <xs:annotation>
+                                  <xs:documentation>4 - Znesek izvzetega odhodka</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="ExcludedIncomeSum" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>3 - Skupaj za državo - Znesek izvzetega prihodka</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="ExcludedExpensesSum" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>4 - Skupaj za državo - Znesek izvzetega odhodka</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="ExcludedIncomeSum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>3 - Skupaj za vse države - Znesek izvzetega prihodka</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="ExcludedExpensesSum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>4 - Skupaj za vse države - Znesek izvzetega odhodka</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Att05">
+    <xs:annotation>
+      <xs:documentation>Priloga 5</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="ChangeOfOwnership25" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation>Sprememba lastništva za več kakor 25 odstotkov</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N9" type="PeriodAtt05Data">
+        <xs:annotation>
+          <xs:documentation>n-9</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N8" type="PeriodAtt05Data">
+        <xs:annotation>
+          <xs:documentation>n-8</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N7" type="PeriodAtt05Data">
+        <xs:annotation>
+          <xs:documentation>n-7</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N6" type="PeriodAtt05Data">
+        <xs:annotation>
+          <xs:documentation>n-6</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N5" type="PeriodAtt05Data">
+        <xs:annotation>
+          <xs:documentation>n-5</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N4" type="PeriodAtt05Data">
+        <xs:annotation>
+          <xs:documentation>n-4</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N3" type="PeriodAtt05Data">
+        <xs:annotation>
+          <xs:documentation>n-3</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N2" type="PeriodAtt05Data">
+        <xs:annotation>
+          <xs:documentation>n-2</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N1" type="PeriodAtt05Data">
+        <xs:annotation>
+          <xs:documentation>n-1</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N" type="PeriodAtt05Data">
+        <xs:annotation>
+          <xs:documentation>n</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E10Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>2 - Skupaj - Nepokrita davčna izguba iz preteklih davčnih obdobij</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E20Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>3 - Skupaj - Sprememba višine davčne izgube zaradi odločbe v postopku nadzora</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E30Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>4 - Skupaj - Prenos izgub zaradi prenosa dejavnosti, združitve ali delitve</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E40Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>5 - Skupaj - Skupaj nepokrita davčna izguba</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E50Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>6 - Skupaj - Pokrivanje davčne izgube v dav. obdobju, za katerega se sestavlja obračun (n)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E60Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>7 - Skupaj - Ostanek nepokrite davčne izgube</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PeriodAtt05Data">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="PeriodStart" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>Obdobje od</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="PeriodEnd" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>Obdobje do</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E10" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>2 - Nepokrita davčna izguba iz preteklih davčnih obdobij</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E20" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>3 - Sprememba višine davčne izgube zaradi odločbe v postopku nadzora</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E30" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>4 - Prenos izgub zaradi prenosa dejavnosti, združitve ali delitve</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E40" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>5 - Skupaj nepokrita davčna izguba</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E50" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>6 - Pokrivanje davčne izgube v dav. obdobju, za katerega se sestavlja obračun ( n)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E60" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>7 - Ostanek nepokrite davčne izgube</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Att06">
+    <xs:annotation>
+      <xs:documentation>Priloga 6</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="N6" type="PeriodAtt06Data">
+        <xs:annotation>
+          <xs:documentation>n-6</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N5" type="PeriodAtt06Data">
+        <xs:annotation>
+          <xs:documentation>n-5</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N4" type="PeriodAtt06Data">
+        <xs:annotation>
+          <xs:documentation>n-4</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N3" type="PeriodAtt06Data">
+        <xs:annotation>
+          <xs:documentation>n-3</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N2" type="PeriodAtt06Data">
+        <xs:annotation>
+          <xs:documentation>n-2</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N1" type="PeriodAtt06Data">
+        <xs:annotation>
+          <xs:documentation>n-1</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N" type="PeriodAtt06Data">
+        <xs:annotation>
+          <xs:documentation>n</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E10Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>2 - Skupaj - 20 odstotkov investiranega zneska tekočega obdobja</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E20Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>3 - Skupaj - Neizkoriščeni del dav. ol. preteklega obd.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E30Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>4 - Skupaj - Zmanjšanje neizkoriščenega dela dav. ol. iz preteklega obd. zaradi odtujitve ali prenosa izven Slovenije pred potekom 3 let</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E40Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>5 - Skupaj - Sprememba neizkoriščenega dela dav. ol. iz preteklega obd. zaradi spremembe po odločbi</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E50Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>6 - Skupaj - Prenos ol. zaradi prenosa dejavnosti, združitve ali delitve</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E60Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>7 - Skupaj - Povečanje dav. ol. zaradi vložitve sredstev zavezanca, ki preneha z opravljanjem dejavnosti, v pravno osebo</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E70Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>8 - Skupaj - Skupaj neizkoriščeni del davčne olajšave</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E80Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>9 - Skupaj - Koriščenje davčne olajšave v dav. obdobju n</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E90Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>10 - Skupaj - Neizkoriščeni del davčne olajšave</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PeriodAtt06Data">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="PeriodStart" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>Obdobje od</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="PeriodEnd" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>Obdobje do</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E10" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>2 - 20 odstotkov investiranega zneska tekočega obdobja</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E20" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>3 - Neizkoriščeni del dav.ol. preteklega obd.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E30" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>4 - Zmanjšanje neizkoriščenega dela dav. ol. iz preteklega obd. zaradi odtujitve ali prenosa izven Slovenije pred potekom 3 let</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E40" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>5 - Sprememba neizkoriščenega dela dav. ol. iz preteklega obd. zaradi spremembe po odločbi</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E50" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>6 - Prenos ol. zaradi prenosa dejavnosti, združitve ali delitve</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E60" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>7 - Povečanje dav. ol. zaradi vložitve sredstev zavezanca, ki preneha z opravljanjem dejavnosti, v pravno osebo</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E70" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>8 - Skupaj neizkoriščeni del davčne olajšave</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E80" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>9 - Koriščenje davčne olajšave v dav. obdobju n</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E90" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>10 - Neizkoriščeni del dav. olajšave</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Att07a">
+    <xs:annotation>
+      <xs:documentation>Priloga 7a</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="N6" type="PeriodAtt07aData">
+        <xs:annotation>
+          <xs:documentation>n-6</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N5" type="PeriodAtt07aData">
+        <xs:annotation>
+          <xs:documentation>n-5</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N4" type="PeriodAtt07aData">
+        <xs:annotation>
+          <xs:documentation>n-4</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N3" type="PeriodAtt07aData">
+        <xs:annotation>
+          <xs:documentation>n-3</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N2" type="PeriodAtt07aData">
+        <xs:annotation>
+          <xs:documentation>n-2</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N1" type="PeriodAtt07aData">
+        <xs:annotation>
+          <xs:documentation>n-1</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N" type="PeriodAtt07aData">
+        <xs:annotation>
+          <xs:documentation>n</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E10Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>2 - Skupaj - 20 odstotkov investiranega zneska tekočega obdobja</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E20Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>3 - Skupaj - Neizkoriščeni del dav. ol. preteklega obd.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E30Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>4 - Skupaj - Zmanjšanje neizkoriščenega dela dav. ol. iz preteklega obd. zaradi odtujitve ali prenosa izven Slovenije pred potekom 3 let</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E40Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>5 - Skupaj - Sprememba neizkoriščenega dela dav. ol. iz preteklega obd. zaradi spremembe po odločbi</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E50Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>6 - Skupaj - Prenos ol. zaradi prenosa dejavnosti, združitve ali delitve</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E60Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>7 - Skupaj - Skupaj neizkoriščeni del davčne olajšave</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E70Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>8 - Skupaj - Koriščenje davčne olajšave v dav. odb.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E80Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>9 - Skupaj - Neizkoriščeni del davčne olajšave</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PeriodAtt07aData">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="PeriodStart" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>Obdobje od</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="PeriodEnd" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>Obdobje do</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E10" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>2 - 20 odstotkov zneska vlaganj v raziskave in razvoj tekočega obdobja</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E20" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>3 - Neizkoriščeni del dav.ol. preteklega obd.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E30" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>4 - Zmanjšanje neizkoriščenega dela dav. ol. iz preteklega obd. zaradi odtujitve ali prenosa izven Slovenije pred potekom 3 let</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E40" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>5 - Sprememba neizkoriščenega dela dav. ol. iz preteklega obd. zaradi spremembe po odločbi</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E50" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>6 - Prenos ol. zaradi prenosa dejavnosti, združitve ali delitve</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E60" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>7 - Skupaj neizkoriščeni del davčne olajšave</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E70" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>8 - Koriščenje davčne olajšave v dav. odb. n</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E80" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>9 - Neizkoriščeni del dav. olajšave</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Att07b">
+    <xs:annotation>
+      <xs:documentation>Priloga 7b</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="ReliefType">
+        <xs:annotation>
+          <xs:documentation>Odstotek uveljavljanja olajšave</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Relief10">
+              <xs:annotation>
+                <xs:documentation>10% uveljavljanja olajšave</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Relief20">
+              <xs:annotation>
+                <xs:documentation>20% uveljavljanja olajšave</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N6" type="PeriodAtt07bData">
+        <xs:annotation>
+          <xs:documentation>n-6</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N5" type="PeriodAtt07bData">
+        <xs:annotation>
+          <xs:documentation>n-5</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N4" type="PeriodAtt07bData">
+        <xs:annotation>
+          <xs:documentation>n-4</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N3" type="PeriodAtt07bData">
+        <xs:annotation>
+          <xs:documentation>n-3</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N2" type="PeriodAtt07bData">
+        <xs:annotation>
+          <xs:documentation>n-2</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N1" type="PeriodAtt07bData">
+        <xs:annotation>
+          <xs:documentation>n-1</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="N" type="PeriodAtt07bData">
+        <xs:annotation>
+          <xs:documentation>n</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E10Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>2 - Skupaj - 10 oziroma 20 odstotkov zneska vlaganj v raziskave in razvoj tekočega obdobja</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E20Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>3 - Skupaj - Neizkoriščeni del dav. ol. preteklega obd.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E30Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>4 - Skupaj - Zmanjšanje neizkoriščenega dela dav. ol. iz preteklega obd. zaradi odtujitve ali prenosa izven Slovenije pred potekom 3 let</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E40Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>5 - Skupaj - Sprememba neizkoriščenega dela dav. ol. iz preteklega obd. zaradi spremembe po odločbi</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E50Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>6 - Skupaj - Prenos ol. zaradi prenosa dejavnosti, združitve ali delitve</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E60Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>7 - Skupaj - Skupaj neizkoriščeni del davčne olajšave</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E70Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>8 - Skupaj - Koriščenje davčne olajšave v dav. odb.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E80Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>9 - Skupaj - Neizkoriščeni del davčne olajšave</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PeriodAtt07bData">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="PeriodStart" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>Obdobje od</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="PeriodEnd" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>Obdobje do</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E10" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>2 - 10 oziroma 20 odstotkov zneska vlaganj v raziskave in razvoj tekočega obdobja</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E20" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>3 - Neizkoriščeni del dav.ol. preteklega obd.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E30" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>4 - Zmanjšanje neizkoriščenega dela dav. ol. iz preteklega obd. zaradi odtujitve ali prenosa izven Slovenije pred potekom 3 let</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E40" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>5 - Sprememba neizkoriščenega dela dav. ol. iz preteklega obd. zaradi spremembe po odločbi</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E50" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>6 - Prenos ol. zaradi prenosa dejavnosti, združitve ali delitve</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E60" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>7 - Skupaj neizkoriščeni del davčne olajšave</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E70" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>8 - Koriščenje davčne olajšave v dav. odb. n</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E80" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>9 - Neizkoriščeni del dav. olajšave</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Att08">
+    <xs:annotation>
+      <xs:documentation>Priloga 8</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="TableA">
+        <xs:annotation>
+          <xs:documentation>A - TABELA A: Podatki v zvezi z olajšavo za zaposlovanje pripravnikov in brezposelnih oseb (1. odst. 50. čl. in 74. čl. ZDDPO-1)</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="RowAData" nillable="true">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="1" maxOccurs="1" name="NameSurname">
+                    <xs:annotation>
+                      <xs:documentation>2 - Ime in priimek</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:minLength value="1" />
+                        <xs:maxLength value="23" />
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="TaxNo">
+                    <xs:annotation>
+                      <xs:documentation>3 - Davčna številka</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:length value="8" />
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="ReliefType">
+                    <xs:annotation>
+                      <xs:documentation>4 - Vrsta olajšave za zaposlovanje</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:enumeration value="A">
+                          <xs:annotation>
+                            <xs:documentation>A - Pripravnik</xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="B">
+                          <xs:annotation>
+                            <xs:documentation>B - Delavec, ki je prvič sklenil delovno razmerje</xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="C">
+                          <xs:annotation>
+                            <xs:documentation>C - Delavec, ki je bil pred sklenitvijo pogodbe o zaposlitvi najmanj 12 mesecev prijavljen pri Zavodu RS za zaposlovanje</xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="EmploymentDate" type="xs:dateTime">
+                    <xs:annotation>
+                      <xs:documentation>5 - Datum sklenitve delovnega razmerja</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="Salary" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>6 - Plača zaposlenega</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="ThirtyPerSalary" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>7 - 30 odstotkov plače.</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="TableB">
+        <xs:annotation>
+          <xs:documentation>B - TABELA B: Podatki v zvezi z oljašavo za zaposlovanje doktorjev znanosti (2. odst. 50. čl. ZDDPO-I)</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="RowBData" nillable="true">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="1" maxOccurs="1" name="NameSurname">
+                    <xs:annotation>
+                      <xs:documentation>2 - Ime in priimek</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:minLength value="1" />
+                        <xs:maxLength value="23" />
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="TaxNo">
+                    <xs:annotation>
+                      <xs:documentation>3 - Davčna številka</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:length value="8" />
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="EmploymentDate" type="xs:dateTime">
+                    <xs:annotation>
+                      <xs:documentation>4 - Datum sklenitve delovnega razmerja</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="Salary" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>5 - Plača zaposlenega</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="ThirtyPerSalary" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>6 - 30 odstotkov plače.</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="TableC">
+        <xs:annotation>
+          <xs:documentation>C - TABELA C: Podatki v zvezi z olajšavo za zaposlovanje invalidov (4. in 5. odst. 50. čl. ZDDPO-1) </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="RowCData" nillable="true">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="1" maxOccurs="1" name="NameSurname">
+                    <xs:annotation>
+                      <xs:documentation>2 - Ime in priimek</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:minLength value="1" />
+                        <xs:maxLength value="23" />
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="TaxNo">
+                    <xs:annotation>
+                      <xs:documentation>3 - Davčna številka</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:length value="8" />
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="ReliefType">
+                    <xs:annotation>
+                      <xs:documentation>4 - Vrsta olajšave za zaposlovanje</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:enumeration value="D">
+                          <xs:annotation>
+                            <xs:documentation>D - Invalid (po zakonu, ki ureja zaposlitveno rehabilitacijo in zaposlovanje invalidov</xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="E">
+                          <xs:annotation>
+                            <xs:documentation>E - Invalidna oseba s 100-odstotno telesno okvaro ali gluha oseba</xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="F">
+                          <xs:annotation>
+                            <xs:documentation>F - Invalid, ki je zaposlen nad predpisano kvoto pri delodajalcu in čigar invalidnost ni posledica poškodbe pri delu ali poklicne bolezni pri istem delodajalcu</xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="EmploymentDate" type="xs:dateTime">
+                    <xs:annotation>
+                      <xs:documentation>5 - Datum sklenitve delovnega razmerja</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="Salary" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>6 - Plača zaposlenega</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="FifthyPerSalary" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>7 - 50 odstotkov plače.</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="SeventyPerSalary" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>8 - 70 odstotkov plače.</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="TableASalarySum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>TABELA A: Skupaj - Plača zaposlenega</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="TableAThirtyPerSalarySum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>TABELA A: Skupaj - 30 odstotkov plače</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="TableBSalarySum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>TABELA B: Skupaj - Plača zaposlenega</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="TableBThirtyPerSalarySum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>TABELA B: Skupaj - 30 odstotkov plače</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="TableCSalarySum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>TABELA C: Skupaj - Plača zaposlenega</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="TableCFifthyPerSalarySum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>TABELA C: Skupaj - 50 odstotkov plače</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="TableCSeventyPerSalarySum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>TABELA C: Skupaj - 70 odstotkov plače</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Att09">
+    <xs:annotation>
+      <xs:documentation>Priloga 9</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="E10" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>1 - Humanitarni nameni</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E20" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>2 - Invalidski nameni</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E30" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>3 - Dobrodelni nameni</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E40" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>4 - Znanstveni nameni</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E50" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>5 - Vzgojno-izobraževalni nameni</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E60" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>6 - Športni nameni</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E70" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>7 - Kulturni nameni</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E80" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>8 - Ekološki nameni</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E90" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>9 - Religiozni nameni</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="Sum1" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>Skupaj (1 - 9)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="CheckSum1" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>Kontrolni podatek – 0,3 odstotka obdavčenega prihodka davčnega obdobja zavezanca</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E100" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>10 - Izplačila političnim strankam</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E110" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>11 - Izplačila reprezentativnim sindikatom</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="Sum2" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>Skupaj (10 in 11)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="CheckSum2" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>Kontrolni podatek – znesek trikratne povprečne mesečne plače na zaposlenega pri zavezancu </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Att10">
+    <xs:annotation>
+      <xs:documentation>Priloga 10</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="CountryList">
+        <xs:annotation>
+          <xs:documentation>Podatki za države.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="CountryRowData" nillable="true">
+              <xs:complexType>
+                <xs:annotation>
+                  <xs:documentation>Podatki za eno državo.</xs:documentation>
+                </xs:annotation>
+                <xs:sequence>
+                  <xs:element minOccurs="1" maxOccurs="1" name="CountryCode">
+                    <xs:annotation>
+                      <xs:documentation>1 - Država, kjer imajo tuji dohodki vir</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:length value="3" />
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element minOccurs="0" maxOccurs="1" name="DeducationList">
+                    <xs:annotation>
+                      <xs:documentation>Podatki o odbitku davka za državo.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element minOccurs="0" maxOccurs="unbounded" name="DeducationRowData" nillable="true">
+                          <xs:complexType>
+                            <xs:annotation>
+                              <xs:documentation>Podatek o odbitku davka.</xs:documentation>
+                            </xs:annotation>
+                            <xs:sequence>
+                              <xs:element minOccurs="0" maxOccurs="1" name="IncomeType">
+                                <xs:annotation>
+                                  <xs:documentation>2 - Vrsta posameznega dohodka</xs:documentation>
+                                </xs:annotation>
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:maxLength value="100" />
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:element>
+                              <xs:element minOccurs="1" maxOccurs="1" name="E10" nillable="true" type="money">
+                                <xs:annotation>
+                                  <xs:documentation>3 - Osnova za plačilo davka</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element minOccurs="1" maxOccurs="1" name="E20" nillable="true" type="positivePercent">
+                                <xs:annotation>
+                                  <xs:documentation>4 - Stopnja davka</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element minOccurs="1" maxOccurs="1" name="E30" nillable="true" type="money">
+                                <xs:annotation>
+                                  <xs:documentation>5 - Znesek davka</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element minOccurs="1" maxOccurs="1" name="E40" nillable="true" type="positivePercent">
+                                <xs:annotation>
+                                  <xs:documentation>6 - Stopnja davka iz mednarodne pogodbe</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element minOccurs="1" maxOccurs="1" name="E50" nillable="true" type="money">
+                                <xs:annotation>
+                                  <xs:documentation>7 - Znesek davka, če se upošteva stopnja davka iz mednarodne pogodbe</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element minOccurs="1" maxOccurs="1" name="E60" nillable="true" type="money">
+                                <xs:annotation>
+                                  <xs:documentation>8 - Znesek plačanega davka</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element minOccurs="1" maxOccurs="1" name="E70" nillable="true" type="money">
+                                <xs:annotation>
+                                  <xs:documentation>9 - Znesek končnega in plačanega tujega davka</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element minOccurs="1" maxOccurs="1" name="E80" nillable="true" type="money">
+                                <xs:annotation>
+                                  <xs:documentation>10 - Znesek davka, ki bi ga bilo treba plačati po ZDDPO-1 za tuje dohodke, če odbitek ne bi bil možen</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element minOccurs="1" maxOccurs="1" name="E90" nillable="true" type="money">
+                                <xs:annotation>
+                                  <xs:documentation>11 - Možni odbitek (nižji od zneskov iz stolpcev 9 in 10)</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element minOccurs="1" maxOccurs="1" name="E100" nillable="true" type="money">
+                                <xs:annotation>
+                                  <xs:documentation>12 - Priznani odbitek (znesek iz stolpca 11, vendar ne več kakor znesek iz zap. št. 17 obračuna DDPO)</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E10Sum" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>3 - Skupaj - Osnova za plačilo davka</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E70Sum" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>9 - Skupaj - Znesek končnega in plačanega tujega davka</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E80Sum" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>10 - Skupaj - Znesek davka, ki bi ga bilo treba plačati po ZDDPO-1 za tuje dohodke, če odbitek ne bi bil možen</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E90Sum" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>11 - Skupaj - Možni odbitek (nižji od zneskov iz stolpcev 9 in 10)</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E90Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>11 - Skupaj za vse države - Možni odbitek (nižji od zneskov iz stolpcev 9 in 10)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E100Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>12 - Skupaj za vse države - Priznani odbitek (znesek iz stolpca 11, vendar ne več kakor znesek iz zap. št. 17 obračuna DDPO)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="Corrections">
+        <xs:annotation>
+          <xs:documentation>Ponovni preračuni</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="CorrectionsRowData" nillable="true">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="1" maxOccurs="1" name="PeriodStart" type="xs:dateTime">
+                    <xs:annotation>
+                      <xs:documentation>Obdobje od</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="PeriodEnd" type="xs:dateTime">
+                    <xs:annotation>
+                      <xs:documentation>Obdobje do</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="0" maxOccurs="1" name="CountryList">
+                    <xs:annotation>
+                      <xs:documentation>Podatki za države</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element minOccurs="0" maxOccurs="unbounded" name="CountryRowData" nillable="true">
+                          <xs:complexType>
+                            <xs:annotation>
+                              <xs:documentation>Podatki za eno državo.</xs:documentation>
+                            </xs:annotation>
+                            <xs:sequence>
+                              <xs:element minOccurs="1" maxOccurs="1" name="CountryCode">
+                                <xs:annotation>
+                                  <xs:documentation>1 - Država, kjer imajo tuji dohodki vir</xs:documentation>
+                                </xs:annotation>
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:length value="3" />
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:element>
+                              <xs:element minOccurs="0" maxOccurs="1" name="DeducationList">
+                                <xs:annotation>
+                                  <xs:documentation>Podatki o odbitku davka za državo.</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element minOccurs="0" maxOccurs="unbounded" name="DeducationRowData" nillable="true">
+                                      <xs:complexType>
+                                        <xs:annotation>
+                                          <xs:documentation>Podatek o odbitku davka.</xs:documentation>
+                                        </xs:annotation>
+                                        <xs:sequence>
+                                          <xs:element minOccurs="0" maxOccurs="1" name="IncomeType">
+                                            <xs:annotation>
+                                              <xs:documentation>2 - Vrsta posameznega dohodka</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:simpleType>
+                                              <xs:restriction base="xs:string">
+                                                <xs:maxLength value="100" />
+                                              </xs:restriction>
+                                            </xs:simpleType>
+                                          </xs:element>
+                                          <xs:element minOccurs="1" maxOccurs="1" name="E10" nillable="true" type="money">
+                                            <xs:annotation>
+                                              <xs:documentation>3 - Osnova za plačilo davka</xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                          <xs:element minOccurs="1" maxOccurs="1" name="E20" nillable="true" type="positivePercent">
+                                            <xs:annotation>
+                                              <xs:documentation>4 - Stopnja davka</xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                          <xs:element minOccurs="1" maxOccurs="1" name="E30" nillable="true" type="money">
+                                            <xs:annotation>
+                                              <xs:documentation>5 - Znesek davka</xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                          <xs:element minOccurs="1" maxOccurs="1" name="E40" nillable="true" type="positivePercent">
+                                            <xs:annotation>
+                                              <xs:documentation>6 - Stopnja davka iz mednarodne pogodbe</xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                          <xs:element minOccurs="1" maxOccurs="1" name="E50" nillable="true" type="money">
+                                            <xs:annotation>
+                                              <xs:documentation>7 - Znesek davka, če se upošteva stopnja davka iz mednarodne pogodbe</xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                          <xs:element minOccurs="1" maxOccurs="1" name="E60" nillable="true" type="money">
+                                            <xs:annotation>
+                                              <xs:documentation>8 - Znesek plačanega davka</xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                          <xs:element minOccurs="1" maxOccurs="1" name="E70" nillable="true" type="money">
+                                            <xs:annotation>
+                                              <xs:documentation>9 - Znesek končnega in plačanega tujega davka</xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                          <xs:element minOccurs="1" maxOccurs="1" name="E80" nillable="true" type="money">
+                                            <xs:annotation>
+                                              <xs:documentation>10 - Znesek davka, ki bi ga bilo treba plačati po ZDDPO-1 za tuje dohodke, če odbitek ne bi bil možen</xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                          <xs:element minOccurs="1" maxOccurs="1" name="E90" nillable="true" type="money">
+                                            <xs:annotation>
+                                              <xs:documentation>11 - Možni odbitek (nižji od zneskov iz stolpcev 9 in 10)</xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                          <xs:element minOccurs="1" maxOccurs="1" name="E100" nillable="true" type="money">
+                                            <xs:annotation>
+                                              <xs:documentation>12 - Priznani odbitek (znesek iz stolpca 11, vendar ne več kakor znesek iz zap. št. 17 obračuna DDPO)</xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                        </xs:sequence>
+                                      </xs:complexType>
+                                    </xs:element>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element minOccurs="1" maxOccurs="1" name="E10Sum" nillable="true" type="money">
+                                <xs:annotation>
+                                  <xs:documentation>3 - Skupaj - Osnova za plačilo davka</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element minOccurs="1" maxOccurs="1" name="E70Sum" nillable="true" type="money">
+                                <xs:annotation>
+                                  <xs:documentation>9 - Skupaj - Znesek končnega in plačanega tujega davka</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element minOccurs="1" maxOccurs="1" name="E80Sum" nillable="true" type="money">
+                                <xs:annotation>
+                                  <xs:documentation>10 - Skupaj - Znesek davka, ki bi ga bilo treba plačati po ZDDPO-1 za tuje dohodke, če odbitek ne bi bil možen</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element minOccurs="1" maxOccurs="1" name="E90Sum" nillable="true" type="money">
+                                <xs:annotation>
+                                  <xs:documentation>11 - Skupaj - Možni odbitek (nižji od zneskov iz stolpcev 9 in 10)</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E90Sum" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>11 - Skupaj za vse države - Možni odbitek (nižji od zneskov iz stolpcev 9 in 10)</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E100Sum" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>12 - Skupaj za vse države - Priznani odbitek (znesek iz stolpca 11, vendar ne več kakor znesek iz zap. št. 17 obračuna DOHDEJ)</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Att11">
+    <xs:annotation>
+      <xs:documentation>Priloga 11</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Table">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="RowData" nillable="true">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="1" maxOccurs="1" name="PeriodStart" type="xs:dateTime">
+                    <xs:annotation>
+                      <xs:documentation>1 - Obdobje odbitka tujega davka</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="PeriodEnd" type="xs:dateTime">
+                    <xs:annotation>
+                      <xs:documentation>1 - Obdobje do</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E10" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>2 - Priznani odbitek v obdobju odbitka tujega davka</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E20" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>3 - Možni odbitek tujega davka ob upoštevanju sprememb</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E30" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>4 - Povečanje davka</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E30Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>4 - Skupaj - Povečanje davka</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Att12">
+    <xs:annotation>
+      <xs:documentation>Priloga 12</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="TableA" type="TableAtt012Data">
+        <xs:annotation>
+          <xs:documentation>A - TABELA A: Deset vrednostno najvišjih posamičnih ustvarjenih dobičkov pri prodaji vrednostnih papirjev in deležev v gospodarskih družbah v davčnem obdobju</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="TableB" type="TableAtt012Data">
+        <xs:annotation>
+          <xs:documentation>B - TABELA B: Deset vrednostno najvišjih posamičnih ustvarjenih izgub pri prodaji vrednostnih papirjev in deležev v gospodarskih družbah v davčnem obdobju</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TableAtt012Data">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RowData" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="E10">
+              <xs:annotation>
+                <xs:documentation>2 - Vrednostni papir oziroma delež</xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:maxLength value="12" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element minOccurs="0" maxOccurs="1" name="E20">
+              <xs:annotation>
+                <xs:documentation>3 - Izdajatelj</xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:maxLength value="100" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element minOccurs="0" maxOccurs="1" name="E30">
+              <xs:annotation>
+                <xs:documentation>4 - Oznaka</xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:maxLength value="12" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E40">
+              <xs:annotation>
+                <xs:documentation>5 - Vrsta prodaje</xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="A">
+                    <xs:annotation>
+                      <xs:documentation>Prodaja na Ljubljanski borzi d. d.</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="B">
+                    <xs:annotation>
+                      <xs:documentation>Prodaja na Ljubljanski borzi d. d. v svežnju ali z aplikacijo</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="C">
+                    <xs:annotation>
+                      <xs:documentation>Prodaja z neposredno pogodbo s kupcem</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="D">
+                    <xs:annotation>
+                      <xs:documentation>Prodaja na borzi s sedežem v Evropski uniji</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="E">
+                    <xs:annotation>
+                      <xs:documentation>Prodaja na borzi s sedežem izven Evropske unije</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="F">
+                    <xs:annotation>
+                      <xs:documentation>Druge vrste prodaje</xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E50" nillable="true" type="xs:dateTime">
+              <xs:annotation>
+                <xs:documentation>6 - Datum prodaje</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E60" nillable="true">
+              <xs:annotation>
+                <xs:documentation>7 - Količina</xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:decimal">
+                  <xs:fractionDigits value="2" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E70" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>8 - Cena na enoto</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E80" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>9 - Skupna vrednost prodaje</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="E90" nillable="true" type="money">
+              <xs:annotation>
+                <xs:documentation>10 - Ustvarjena dobiček/izguba</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Att13">
+    <xs:annotation>
+      <xs:documentation>Priloga 13</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Table">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="RowData" nillable="true">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="1" maxOccurs="1" name="Type">
+                    <xs:annotation>
+                      <xs:documentation>1 - Vrsta dolgoročne rezervacije</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:enumeration value="StandardType1">
+                          <xs:annotation>
+                            <xs:documentation>Dolgoročne rez. za prejete don.,ki so bile oblik. pred 1.1.06 in so od 1.1.06 dolg. pas. čas. razm.</xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="StandardType2">
+                          <xs:annotation>
+                            <xs:documentation>Dolgoročne rezervacije za reorganizacije</xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="StandardType3">
+                          <xs:annotation>
+                            <xs:documentation>Dolgoročne rezervacije za pričakovane izgube iz kočljivih pogodb</xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="StandardType4">
+                          <xs:annotation>
+                            <xs:documentation>Dolgoročne rezervacije za pokojnine</xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="StandardType5">
+                          <xs:annotation>
+                            <xs:documentation>Dolgoročne rezervacije za jubilejne nagrade</xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="StandardType6">
+                          <xs:annotation>
+                            <xs:documentation>Dolgoročne rezervacije za odpravnine ob upokojitvi</xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="StandardType7">
+                          <xs:annotation>
+                            <xs:documentation>Dolgoročne rezervacije za dana jamstva</xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="CustomType">
+                          <xs:annotation>
+                            <xs:documentation>Dodatna vrsta dolgoročne rezervacije, ki ni na seznamu</xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element minOccurs="0" maxOccurs="1" name="TypeDescription">
+                    <xs:annotation>
+                      <xs:documentation>1 - Vrsta dolgoročne rezervacije - tekstovni opis. Za standardne tipe lahko pustite prazno.</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:maxLength value="100" />
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E10" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>2 - Stanje na začetku davčnega obdobja</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E20" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>3 - Povečanja v davčnem obdobju</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E30" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>4 - Poraba rezervacij v davčnem obdobju</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E40" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>5 - Odprava rezervacij v davčnem obdobju</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E50" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>6 - Stanje na koncu davčnega obdobja</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E20Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>3 - Skupaj - Povečanja v davčnem obdobju</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E30Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>4 - Skupaj - Poraba rezervacij v davčnem obdobju</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E40Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>5 - Skupaj - Odprava rezervacij v davčnem obdobju</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="E50Sum" nillable="true" type="money">
+        <xs:annotation>
+          <xs:documentation>6 - Skupaj - Stanje na koncu davčnega obdobja</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Att14">
+    <xs:annotation>
+      <xs:documentation>Priloga 14</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Table">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="RowData" nillable="true">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="0" maxOccurs="1" name="RelatedPersonName">
+                    <xs:annotation>
+                      <xs:documentation>Naziv povezane osebe</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:maxLength value="93" />
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element minOccurs="0" maxOccurs="1" name="TaxNo">
+                    <xs:annotation>
+                      <xs:documentation>Davčna številka</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:maxLength value="20" />
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="RelationA" type="xs:boolean">
+                    <xs:annotation>
+                      <xs:documentation>Povezanost A</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="RelationB" type="xs:boolean">
+                    <xs:annotation>
+                      <xs:documentation>Povezanost B</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="RelationC" type="xs:boolean">
+                    <xs:annotation>
+                      <xs:documentation>Povezanost C</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="RelationD" type="xs:boolean">
+                    <xs:annotation>
+                      <xs:documentation>Povezanost D</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="RelationE" type="xs:boolean">
+                    <xs:annotation>
+                      <xs:documentation>Povezanost E</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="BeneficialTax" type="xs:boolean">
+                    <xs:annotation>
+                      <xs:documentation>Ugodnejši davčni položaj</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E10" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>Skupna vrednost prejetih posojil</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E20" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>Skupna vrednost danih posojil</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Att15">
+    <xs:annotation>
+      <xs:documentation>Priloga 15</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Table">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="RowData" nillable="true">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="0" maxOccurs="1" name="RelatedPersonName">
+                    <xs:annotation>
+                      <xs:documentation>Naziv povezane osebe</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:maxLength value="93" />
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element minOccurs="0" maxOccurs="1" name="TaxNo">
+                    <xs:annotation>
+                      <xs:documentation>Davčna številka</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:maxLength value="20" />
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="RelationA" type="xs:boolean">
+                    <xs:annotation>
+                      <xs:documentation>Povezanost A</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="RelationB" type="xs:boolean">
+                    <xs:annotation>
+                      <xs:documentation>Povezanost B</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="RelationC" type="xs:boolean">
+                    <xs:annotation>
+                      <xs:documentation>Povezanost C</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="RelationD" type="xs:boolean">
+                    <xs:annotation>
+                      <xs:documentation>Povezanost D</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E10" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>Kumulativni promet terjatev</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E20" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>Kumulativni promet obveznosti</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Att16">
+    <xs:annotation>
+      <xs:documentation>Priloga 16</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Table">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="RowData" nillable="true">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="0" maxOccurs="1" name="RelatedPersonName">
+                    <xs:annotation>
+                      <xs:documentation>Naziv povezane osebe</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:maxLength value="93" />
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element minOccurs="0" maxOccurs="1" name="TaxNo">
+                    <xs:annotation>
+                      <xs:documentation>Davčna številka</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:maxLength value="20" />
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="BeneficialTax" type="xs:boolean">
+                    <xs:annotation>
+                      <xs:documentation>Ugodnejši davčni položaj</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E10" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>Kumulativni promet terjatev</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="1" maxOccurs="1" name="E20" nillable="true" type="money">
+                    <xs:annotation>
+                      <xs:documentation>Kumulativni promet obveznosti</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="money">
+    <xs:annotation>
+      <xs:documentation>Znesek v SIT</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="positivePercent">
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="2" />
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

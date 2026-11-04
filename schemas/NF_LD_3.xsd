@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="NF_LD_3" targetNamespace="http://edavki.durs.si/Documents/Schemas/NF_LD_3.xsd" elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/NF_LD_3.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <!-- Import the common schema -->
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" id="EDP-Common-1" />
+  <!-- Root element of the document definition -->
+  <!-- Document envelope that contains the document header, signatures and its body. -->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element ref="edp:AttachmentList" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element name="ContactInfo" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="ContactName" type="xs:string"  minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Ime in priimek kontaktne osebe</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Email" type="xs:string"  minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Elektronski naslov</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="TelephoneNumber" type="xs:string"  minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Telefonska številka</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="AttachmentInfo" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Category" type="xs:string"  minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Kategorija prilog</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Type" type="xs:string"  minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Tip prilog</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Description" type="xs:string"  minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Opis</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,398 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/PODO_OPSVZ_1.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+           targetNamespace="http://edavki.durs.si/Documents/Schemas/PODO_OPSVZ_1.xsd"
+           elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+             schemaLocation="EDP-Common-1.xsd"
+             id="EDP-Common-1"/>
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="OPSVZ"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OPSVZ">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DocumentWorkflowID" type="edp:DocumentIDType">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DocumentWorkflowName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - naziv</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F001" type="xs:date">
+          <xs:annotation>
+            <xs:documentation>Obdobje od</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F001a" type="xs:date">
+          <xs:annotation>
+            <xs:documentation>Obdobje do</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F002" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Razlog</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F010" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Priimek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F015" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Ime</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F030a" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefon</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F040" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naslov bivališča</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F050a" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Šifra davčnega urada</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F050b" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv davčnega urada</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F060" type="xs:integer" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Tedenski sklad ur zavezanca</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F065" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Zavarovalna podlaga</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F075" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Oprostitev plačila prispevkov na podlagi prvega vpisa v predpisan register</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:integer">
+              <xs:enumeration value="30">
+                <xs:annotation>
+                  <xs:documentation>Zavezanec uveljavlja 30% oprostitev plačila prispevkov na podlagi prvega vpisa v predpisan register</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="50">
+                <xs:annotation>
+                  <xs:documentation>Zavezanec uveljavlja 50% oprostitev plačila prispevkov na podlagi prvega vpisa v predpisan register</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>  
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="F076" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum prvega vpisa v predpisan register</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F080" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prejemnik iz proračuna (kulturnik)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F090Item" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F090" type="xs:int">
+                <xs:annotation>
+                  <xs:documentation>Zaporedna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F090a" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Prvi dan zadržanosti (YYYY-MM-DD)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F090b_from" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Zadržanost za polni delovni čas od</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F090b_to" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Zadržanost za polni delovni čas do</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F090c_from" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Zadržanost za krajši delovni čas od</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F090c_to" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Zadržanost za krajši delovni čas do</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F090f" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Razlog zadržanosti</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F090h" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Invalidnost</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="F110U" type="xs:integer" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Mesečna osnova za polni delovni čas (Število ur)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F110ZO" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Mesečna osnova za polni delovni čas (Zavarovalna osnova)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F120U" type="xs:integer" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Redno delo (Število ur)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F120ZO" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Redno delo (Zavarovalna osnova)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F130U" type="xs:integer" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Zadržanost od dela – v breme zavezanca (Število ur)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F130ZO" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Zadržanost od dela – v breme zavezanca (Zavarovalna osnova)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F140U" type="xs:integer" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Zadržanost od dela – ni v breme zavezanca (Število ur)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F150U" type="xs:integer" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>- očetovski dopust brez pravice do nadomestila (Število ur)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F160U" type="xs:integer" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>- invalid s pravico do dela s skrajšanim del. časom (Število ur)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F170U" type="xs:integer" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj (Število ur)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F170ZO" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj (Zavarovalna osnova)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F210S" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek zavarovanca za pokojninsko in invalidsko zavarovanje (Stopnja)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F210O" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek zavarovanca za pokojninsko in invalidsko zavarovanje (Obračunani znesek)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F210Z" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek zavarovanca za pokojninsko in invalidsko zavarovanje (Znesek za plačilo)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F220S" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek delodajalca za pokojninsko in invalidsko zavarovanje (Stopnja)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F220O" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek delodajalca za pokojninsko in invalidsko zavarovanje (Obračunani znesek)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F220Z" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek delodajalca za pokojninsko in invalidsko zavarovanje (Znesek za plačilo)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F230S" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek za zavarovalno dobo, ki šteje s povečanjem (Stopnja)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F230O" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek za zavarovalno dobo, ki šteje s povečanjem (Obračunani znesek)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F230Z" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek za zavarovalno dobo, ki šteje s povečanjem (Znesek za plačilo)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F240R" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj prispevki za PIZ (Podračun)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F240O" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj prispevki za PIZ (Obračunani znesek)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F240Z" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj prispevki za PIZ (Znesek za plačilo)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F310S" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek zavarovanca za primer bolezni in poškodbe izven dela (Stopnja)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F310Z" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek zavarovanca za primer bolezni in poškodbe izven dela (Znesek za plačilo)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F320S" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek delodajalca za primer bolezni in poškodbe izven dela (Stopnja)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F320Z" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek delodajalca za primer bolezni in poškodbe izven dela (Znesek za plačilo)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F330S" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek za primer poškodbe pri delu in poklicne bolezni	(Stopnja)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F330Z" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek za primer poškodbe pri delu in poklicne bolezni	(Znesek za plačilo)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F340R" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj prispevki za ZZ (Podračun)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F340Z" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj prispevki za ZZ (Znesek za plačilo)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F410S" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek zavarovanca za starševsko varstvo (Stopnja)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F410Z" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek zavarovanca za starševsko varstvo (Znesek za plačilo)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F420S" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>	Prispevek delodajalca za starševsko varstvo (Stopnja)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F420Z" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek delodajalca za starševsko varstvo (Znesek za plačilo)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F430S" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek zavarovanca za zaposlovanje (Stopnja)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F430Z" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek zavarovanca za zaposlovanje (Znesek za plačilo)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F440S" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek delodajalca za zaposlovanje (Stopnja)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F440Z" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevek delodajalca za zaposlovanje (Znesek za plačilo)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F450R" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj prispevki za starš. varstvo in zaposl. (Podračun)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F450Z" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj prispevki za starš. varstvo in zaposl. (Znesek za plačilo)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F500O" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevki skupaj (Obračunani znesek)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F500P" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prispevki skupaj (Znesek za plačilo)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="CustodianNotes" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Opombe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianSubmitDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum prijave</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

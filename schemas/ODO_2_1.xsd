@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema id="ODO_2_1" targetNamespace="http://edavki.durs.si/Documents/Schemas/ODO_2_1.xsd" elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/ODO_2_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+    <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+    <xs:element name="ODO_2">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="TaxPayerEx" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="TaxNumber" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation xml:lang="sl">Davčna številka plačnika davka</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="Name" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation xml:lang="sl">Firma nerezidenta plačnika davka</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="Address" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation xml:lang="sl">Sedež plačnika davka</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="ODO">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="ControlerCode" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation xml:lang="sl">Šifra kontrolorja</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation xml:lang="sl">Popravek dokumenta</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="Month" type="xs:int" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation xml:lang="sl">Mesec izplačila dohodka</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="Year" type="xs:int" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation xml:lang="sl">Leto izplačila dohodka</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="CustodianNotes" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Opombe</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="SubmitDate" type="xs:date" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Datum prijave</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="ODOItem" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="TaxNumber" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation xml:lang="sl">Davčna številka prejemnika</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="Receiver" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation xml:lang="sl">Prejemnik</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="ReceiverOffice" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation xml:lang="sl">Poslovna enota nerezidenta</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="IncomeType" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation xml:lang="sl">Vrsta dohodka</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="Income" type="xs:decimal" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation xml:lang="sl">Znesek dohodka v SIT</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="PaymentDate" type="xs:date" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation xml:lang="sl">Datum izplačila</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Attachment" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Hash" type="xs:string" minOccurs="0" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Envelope">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="edp:Header" />
+                <xs:element ref="edp:Signatures" />
+                <xs:element name="body">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="edp:bodyContent" />
+                            <xs:element ref="ODO_2" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

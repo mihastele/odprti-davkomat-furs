@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/GloBE_OPD_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/GloBE_OPD_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="GloBE_Opd"/>
+              <xs:element ref="IzrPD" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="Samoprijava" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="SamoprijavaSum" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- GloBE_Odpd -->
+  <xs:element name="GloBE_Opd">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ZaObdobjeOd" type="xs:date" minOccurs="0" />
+        <xs:element name="ZaObdobjeDo" type="xs:date" minOccurs="0" />
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0"/>
+        
+        <xs:element name="KontaktnaOseba" type="xs:string" minOccurs="0" />
+        <xs:element name="ElektronskiNaslov" type="xs:string" minOccurs="0" />
+        <xs:element name="Telefon" type="xs:string" minOccurs="0" />
+        <xs:element name="Skupina" type="xs:string" minOccurs="0" />
+        <!-- Obračun domačega povrhnjega davka vlagam po -->
+        <xs:element name="PraviluOVkljucitviDohodkovIIR" type="xs:boolean" minOccurs="0" />
+        <xs:element name="KrovniMaticniSubjekt" type="xs:boolean" minOccurs="0" />
+        <xs:element name="VmesniMaticniSubjekt" type="xs:boolean" minOccurs="0" />
+        <xs:element name="MaticniSubjektVDelniLasti" type="xs:boolean" minOccurs="0" />
+        <xs:element name="PraviluOPrenizkoObdavcenihDobickihUTPR" type="xs:boolean" minOccurs="0" />
+        <xs:element name="IzracunSkupaj" type="xs:decimal" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Izračun povrhnjega davka popravilih IIR in UTPR {?_vrhvrh}-->
+  <xs:element name="IzrPD">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Jurisdikcija" type="xs:string" minOccurs="0" />
+        <xs:element name="Jurisdikcija_N" type="xs:string" minOccurs="0" />
+        <xs:element name="Podskupina" type="type_VrstaPodskupine" minOccurs="0" />
+        <xs:element name="Podskupina_N" type="xs:string" minOccurs="0" />
+        <xs:element name="ZnesekPoIIRPravilu" type="xs:decimal" minOccurs="0" />
+        <xs:element name="ZnesekPoUTRPravilu" type="xs:decimal" minOccurs="0" />
+        <xs:element name="Skupaj" type="xs:decimal" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Samoprijava -->
+  <xs:element name="Samoprijava">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DavcnaStevilka" type="xs:string" minOccurs="0" />
+        <xs:element name="PremaloObracunan" type="xs:decimal" minOccurs="0" />
+        <xs:element name="DatumOdKaterega" type="xs:date" minOccurs="0" />
+        <xs:element name="ZnesekObracunanihObresti" type="xs:decimal" minOccurs="0" />
+        <xs:element name="Skupaj" type="xs:decimal" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="SamoprijavaSum">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Skupaj" type="xs:decimal" minOccurs="0" />
+        <xs:element name="ZDavP_140a_st" type="xs:string" minOccurs="0" />
+        <xs:element name="DatumPlacila" type="xs:date" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+    <xs:simpleType name="type_VrstaPodskupine">
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="A"/>
+        <xs:enumeration value="B"/>
+        <xs:enumeration value="C"/>
+        <xs:enumeration value="D"/>
+        <xs:enumeration value="E"/>
+      </xs:restriction>
+    </xs:simpleType>
+
+
+
+</xs:schema>

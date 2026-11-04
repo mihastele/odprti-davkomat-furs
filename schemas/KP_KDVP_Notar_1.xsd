@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/KP_KDVP_Notar_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/KP_KDVP_Notar_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  <!-- Document types definition -->
+  <!-- Document envelope that contains the document header, signatures and its body. -->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Data"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Year" type="xs:int">
+          <xs:annotation>
+            <xs:documentation>Leto poročanja LLLL</xs:documentation>
+          </xs:annotation>
+        </xs:element>        
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Popravek dokumenta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PODD" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Podatki za odmero dohodnine pri transakcijah z deleži</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="PayerId" type="edp:TaxNumberType" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka izplačevalca</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PayerMS" type="StringMax50" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Matična številka izplačevalca</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Id" type="edp:TaxNumberType"  minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka zavezanca</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="EMSO" type="StringMax20" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>EMŠO zavezanca</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TinCountry" type="CountryNameType" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Država identifikacijske številke (dvočrkovna koda)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TinId" type="StringMax20" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Identifikacijska številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Name" type="StringNotEmpty" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ime</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Surname" type="StringNotEmpty" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Priimek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Resident" type="ResidentType" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Oznaka za status rezidentstva</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ShareName" type="ShareNameType" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Oznaka deleža</xs:documentation>
+                </xs:annotation>
+              </xs:element>              
+              <xs:element name="Transaction" type="TransactionType" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Odsvojitev/pridobitev</xs:documentation>
+                </xs:annotation>
+              </xs:element>              
+              <xs:element name="Gain" type="GainType" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Način pridobitve</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Date" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Datum</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Amount" type="DecimalPos12_8_Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Količina</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Value" type="DecimalPos14_8_Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Vrednost</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Costs" type="DecimalPos14_4_Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Stroški</xs:documentation>
+                </xs:annotation>
+              </xs:element>              
+              <xs:element name="RefContractNo" type="StringMax256" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Opr. številka pogodbe</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- Definicije primitivnih tipov -->
+  <xs:simpleType name="TransactionType">
+    <xs:annotation>
+      <xs:documentation>Odsvojitev/pridobitev</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="P">
+        <xs:annotation>
+          <xs:documentation>Pridobitev</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="S">
+        <xs:annotation>
+          <xs:documentation>Odsvojitev</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>      
+      <xs:enumeration value="L">
+        <xs:annotation>
+          <xs:documentation>Odkup lastnega poslovnega deleža</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>  
+  <xs:simpleType name="ResidentType">
+    <xs:annotation>
+      <xs:documentation>Status rezidentstva</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="R">
+        <xs:annotation>
+          <xs:documentation>Rezident RS</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="N">
+        <xs:annotation>
+          <xs:documentation>Nerezident RS</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="GainType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="A">
+        <xs:annotation>
+          <xs:documentation>vložek kapitala</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B">
+        <xs:annotation>
+          <xs:documentation>nakup</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="C">
+        <xs:annotation>
+          <xs:documentation>povečanje kapitala družbe z lastnimi sredstvi zavezanca</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D">
+        <xs:annotation>
+          <xs:documentation>povečanje kapitala družbe iz sredstev družbe</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="E">
+        <xs:annotation>
+          <xs:documentation>zamenjava kapitala ob statusnih spremembah družbe</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F">
+        <xs:annotation>
+          <xs:documentation>dedovanje</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="G">
+        <xs:annotation>
+          <xs:documentation>darilo</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="H">
+        <xs:annotation>
+          <xs:documentation>drugo</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="I">
+        <xs:annotation>
+          <xs:documentation>povečanje kapitalskega deleža v osebni družbi zaradi pripisa dobička kapitalskemu deležu</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="J">
+        <xs:annotation>
+          <xs:documentation>pridobitev kapita​la v inovativnih zagonskih podjetjih</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>      
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="CountryNameType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="40"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ShareNameType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="20"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="DecimalPos14_4_Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,14}(\.\d{1,4})?"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="DecimalPos14_8_Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,14}(\.\d{1,8})?"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="DecimalPos12_8_Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,12}(\.\d{1,8})?"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="StringNotEmpty">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="StringMax20">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="20"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="StringMax50">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="50"/>
+    </xs:restriction>
+  </xs:simpleType>  
+  <xs:simpleType name="StringMax256">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="256"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

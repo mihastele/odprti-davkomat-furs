@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/KIDO_9_12_1.xsd" elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/KIDO_9_12_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"   schemaLocation="EDP-Common-1.xsd"/>
+
+  
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Data"/>
+              <xs:element ref="IncomeReceiver" minOccurs="0" maxOccurs="1"/><!--Podatki o prejemniku dohodka-->
+              <xs:element ref="IncomeReceiver_data" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element ref="IncomePayer" minOccurs="0" maxOccurs="1"/><!--Podatki o plačniku/izplačevalcu dohodka  / Velja za B30 in B40
+-->
+              <xs:element ref="TaxPayerA" minOccurs="0" maxOccurs="1"/><!--3a Podatki o plačniku davka                / Velja za B10, B11, B20 in B21  -->
+              <xs:element ref="IncomePayerB" minOccurs="0" maxOccurs="1"/><!--3b Podatki o izplačevalcu dohodka       / Velja za B10, B11, B20 in B21 -->
+              <xs:element ref="IncomeData" minOccurs="0" maxOccurs="unbounded"/><!--Podatki o dohodku-->
+              
+              <xs:element ref="BankAccount" minOccurs="0" maxOccurs="1"/><!--Podatki o bančnem računu-->
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0" /><!-- Correction for document -->
+        
+        
+        <xs:element name="Country" type="xs:string" minOccurs="0"/><!--Država s katero ima RS KIDO-->
+        <xs:element name="Article" type="xs:string" minOccurs="0"/><!--Člen-->
+        <xs:element name="Paragraph" type="xs:string" minOccurs="0"/><!--Odstavek-->
+        <xs:element name="TaxRate" type="xs:decimal" minOccurs="0"/><!--Stopnja davka-->
+        <xs:element name="ReliefType" type="xs:string" minOccurs="0"/><!--Vrsta olajšave-->
+
+        <!--predstran-->
+        <xs:element name="IncomeType" type="xs:string"  minOccurs="0" maxOccurs="1"/><!-- - Želim uveljavljati vračilo davka od-->
+        <xs:element name="DocumentOwnerRole" type="DocumentOwnerRole_Type"  minOccurs="0" maxOccurs="1"/>
+        
+        <!--Other-->
+        <xs:element name="Notes" type="xs:string" minOccurs="0" /><!-- Drugo - prosti tekst -->
+        <xs:element name="Statement" type="xs:boolean" minOccurs="0" /><!-- Izjavljam, da je prejemnik dohodka tudi upravičeni lastnik dohodka... -->
+        <xs:element name="AttAuthorityCert" type="xs:boolean" minOccurs="0" /><!-- Potrdilo pristojnega organa -->
+        
+        
+      </xs:sequence>
+
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="IncomeReceiver">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Podatki o prejemniku dohodka</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="TaxPayerID" type="xs:int" minOccurs="0"/><!-- Davčna številka -->
+        <xs:element name="TaxPayerType" type="xs:string" minOccurs="0"/><!-- Tip davčnega zavezanca -->
+        <xs:element name="OtherID" type="xs:string" minOccurs="0"/><!-- Druga identifikacijska številka -->
+        <xs:element name="Name" type="xs:string" minOccurs="0"/><!-- Ime in priimek/Naziv podjetja -->
+        <xs:element name="FirstName" type="xs:string" minOccurs="0"/><!-- Ime -->
+        <xs:element name="Surname" type="xs:string" minOccurs="0"/><!-- Priimek -->
+        <xs:element name="Address" type="xs:string" minOccurs="0"/><!-- Ulica hišna številka -->
+        <xs:element name="City" type="xs:string" minOccurs="0"/><!-- Kraj -->
+        <xs:element name="Post" type="xs:string" minOccurs="0"/><!-- Poštna številka -->
+        <xs:element name="Country" type="xs:string" minOccurs="0" /><!-- Država -->
+        <xs:element name="ActualManagingCity" type="xs:string" minOccurs="0"/><!-- Kraj dejanskega upravljanja -->
+        <xs:element name="Email" type="xs:string" minOccurs="0"/><!-- Elektronski naslov -->
+        <xs:element name="Telephone" type="xs:string" minOccurs="0"/><!-- Telefonska številka -->
+        <xs:element name="ResidenceCountry" type="xs:string" minOccurs="0"/><!-- Država rezidenstva -->
+        <xs:element name="BusinessUnitInRS" type="xs:boolean" minOccurs="0"/><!-- Poslovna enota v Republiki Sloveniji -->
+        <xs:element name="BusinessUnitTitle" type="xs:string" minOccurs="0"/><!-- Naziv poslovne enote -->
+        <xs:element name="Headquarters" type="xs:string" minOccurs="0"/><!-- Sedež -->
+        <xs:element name="Activity" type="xs:string" minOccurs="0"/><!-- Dejavnost -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  
+  <xs:element name="IncomeReceiver_data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Citizenship" type="xs:string" minOccurs="0"  maxOccurs="unbounded"/><!-- Državljanstvo -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  
+  
+  <xs:element name="IncomePayer">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Podatki o plačniku / izplačevalcu dohodka</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="TaxPayerID" type="xs:int" minOccurs="0" /><!-- Davčna številka -->
+        <xs:element name="TaxPayerType" type="xs:string" minOccurs="0"/><!-- Tip davčnega zavezanca -->
+        <xs:element name="Company" type="xs:string" minOccurs="0" /><!-- Firma in pravno-organizacijska oblika -->
+        <xs:element name="Headquarters" type="xs:string" minOccurs="0" /><!-- Sedež -->
+        <xs:element name="Country" type="xs:string" minOccurs="0" /><!-- Država -->
+        <xs:element name="Email" type="xs:string" minOccurs="0" /><!-- Elektronski naslov -->
+        <xs:element name="Telephone" type="xs:string" minOccurs="0" /><!-- Telefon -->
+        <xs:element name="BaseCapital" type="xs:decimal" minOccurs="0" /><!-- Osnovni kapital -->
+        <xs:element name="BusinessUnitInRS" type="xs:boolean" minOccurs="0" /><!-- Poslovna enota v RS -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="TaxPayerA">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Podatki o plačniku davka</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="TaxPayerID" type="xs:int" minOccurs="0" /><!-- Davčna številka -->
+        <xs:element name="TaxPayerType" type="xs:string" minOccurs="0"/><!-- Tip davčnega zavezanca -->
+        <xs:element name="Company" type="xs:string" minOccurs="0" /><!-- Firma in pravno-organizacijska oblika -->
+        <xs:element name="Headquarters" type="xs:string" minOccurs="0" /><!-- Sedež -->
+        <xs:element name="Country" type="xs:string" minOccurs="0" /><!-- Država -->
+        <xs:element name="Email" type="xs:string" minOccurs="0" /><!-- Elektronski naslov -->
+        <xs:element name="Telephone" type="xs:string" minOccurs="0" /><!-- Telefon -->
+        <xs:element name="BaseCapital" type="xs:decimal" minOccurs="0" /><!-- Osnovni kapital -->
+        <xs:element name="BusinessUnitInRS" type="xs:boolean" minOccurs="0" /><!-- Poslovna enota v RS -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="IncomePayerB">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Podatki o plačniku davka</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="TaxPayerID" type="xs:int" minOccurs="0" /><!-- Davčna številka -->
+        <xs:element name="TaxPayerType" type="xs:string" minOccurs="0"/><!-- Tip davčnega zavezanca -->
+        <xs:element name="Company" type="xs:string" minOccurs="0" /><!-- Firma in pravno-organizacijska oblika -->
+        <xs:element name="Headquarters" type="xs:string" minOccurs="0" /><!-- Sedež -->
+        <xs:element name="Country" type="xs:string" minOccurs="0" /><!-- Država -->
+        <xs:element name="Email" type="xs:string" minOccurs="0" /><!-- Elektronski naslov -->
+        <xs:element name="Telephone" type="xs:string" minOccurs="0" /><!-- Telefon -->
+        <xs:element name="BaseCapital" type="xs:decimal" minOccurs="0" /><!-- Osnovni kapital -->
+        <xs:element name="BusinessUnitInRS" type="xs:boolean" minOccurs="0" /><!-- Poslovna enota v RS -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="IncomeData">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Podatki o dohodku</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Type" type="xs:string" minOccurs="0" /><!-- (ex Vrsta dohodka) Uveljavljam vračilo davka od -->
+        <xs:element name="EdpNuiNumber" type="xs:string" minOccurs="0" /><!-- EDP številka obračuna NUI -->
+        <xs:element name="DoesShareToPayer" type="xs:boolean" minOccurs="0" /><!-- Delež plačniku -->
+        <xs:element name="ShareToPayer" type="xs:decimal" minOccurs="0" /><!-- Delež plačniku -->
+        <xs:element name="PayDate" type="xs:date" minOccurs="0" /><!-- Datum plačila -->
+        <xs:element name="Amount" type="xs:decimal" minOccurs="0" /><!-- Znesek dohodka -->
+        <xs:element name="WithholdingTax" type="xs:decimal" minOccurs="0" /><!-- Znesek odtegnjenega davka -->
+        <xs:element name="MPTax" type="xs:decimal" minOccurs="0" /><!-- Znesek davka po MP -->
+        <xs:element name="RequiredRefund" type="xs:decimal" minOccurs="0" /><!-- Znesek zahtevanega vračila -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="BankAccount"><!--Podatki o bančnem računu-->
+    <xs:complexType>
+      <xs:sequence>
+
+        <xs:element name="ReturnToInvestor" type="xs:boolean" minOccurs="0" /><!-- Znesek vrnjenega davka nakažite - Vlagatelju T - Pooblaščencu (plačniku davka ali drugi osebi) F -->
+        <xs:element name="TaxPayerID" type="xs:int" minOccurs="0"/><!-- Davčna številka -->
+        <xs:element name="TaxPayerType" type="xs:string" minOccurs="0"/><!-- Tip davčnega zavezanca -->
+        <xs:element name="OtherID" type="xs:string" minOccurs="0"/><!-- Druga identifikacijska številka -->
+        <xs:element name="Name" type="xs:string" minOccurs="0"/><!-- Ime in priimek/Naziv podjetja -->
+        <xs:element name="Address" type="xs:string" minOccurs="0"/><!-- Ulica hišna številka -->
+        <xs:element name="City" type="xs:string" minOccurs="0"/><!-- Kraj -->
+        <xs:element name="Post" type="xs:string" minOccurs="0"/><!-- Poštna številka -->
+        <xs:element name="Country" type="xs:string" minOccurs="0"/><!-- Država -->
+                
+        <!--Izberite račun-->
+        <xs:element name="AccountNumber" type="xs:string" minOccurs="0" /><!-- Številka računa -->
+        <xs:element name="BankName" type="xs:string" minOccurs="0" /><!-- Naziv banke -->
+        <xs:element name="Bic" type="xs:string" minOccurs="0" /><!-- SWIFT/BIC -->
+        <xs:element name="BankCountry" type="xs:string" minOccurs="0" /><!-- Država -->
+        <!-- Opomba: V primeru, da bančnega računa ni na seznamu, mora lastnik bančni račun prijaviti FURS.
+             Trenutno izpolnjen zahtevek shranite med osnutke s klikom na gumb: »Shrani začasno«. Ko bo bančni račun vpisan v davčni register, izberite KIDO zahtevek iz osnutkov in nadaljujte z oddajo. -->
+        
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+	<xs:simpleType name="DocumentOwnerRole_Type">
+		<xs:restriction base="xs:string">
+        <xs:enumeration value="IncomeReceiver"/><!-- Prejemnik dohodka -->
+        <xs:enumeration value="IncomePayer"/><!-- Izplačevalec dohodka -->
+        <xs:enumeration value="TaxPayer"/><!-- Plačnik davka -->
+    </xs:restriction>
+  </xs:simpleType>
+  
+</xs:schema>

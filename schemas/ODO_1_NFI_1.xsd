@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema id="ODO_1_NFI_1" targetNamespace="http://edavki.durs.si/Documents/Schemas/ODO_1_NFI_1.xsd" elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/ODO_1_NFI_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+  <xs:element name="ODO_1_NFI">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TaxPayerEx" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TaxNumber" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Davčna številka plačnika davka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Name" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Firma nerezidenta plačnika davka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Address" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Sedež plačnika davka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Receiver">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Code" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Oznaka prejemnika</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxNumber" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Davčna številka prejemnika dohodka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Name" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Firma rezidenta/nerezidenta prejemnika dohodka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Address" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Sedež prejemnika dohodka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CountryCode" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Država rezidentstva prejemnika dohodka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="OfficeTaxNumber" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Davčna številka poslovne enote nerezidenta, kateri pripada dohodek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="OfficeName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Naziv poslovne enote nerezidenta, kateri pripada dohodek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="OfficeAddress" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Sedež/kraj poslovne enote nerezidenta, kateri pripada dohodek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="OfficeCountryCode" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Država poslovne enote nerezidenta, kateri pripada dohodek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ODO">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DocumentWorkflowID" type="edp:DocumentIDType">
+                <xs:annotation>
+                  <xs:documentation>Vrsta dokumenta - šifra</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="DocumentWorkflowName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Vrsta dokumenta - naziv</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ControlerCode" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Šifra kontrolorja</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PaymentDate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Datum izplačila dohodka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Popravek dokumenta</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TotalIncome" type="xs:decimal" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Vsota zneska dohodka v EUR</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TotalTax" type="xs:decimal" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Vsota davka v EUR</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CustodianNotes" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Opombe</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="SubmitDate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Datum prijave</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ODOItem" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="IncomeType" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Številčna oznaka vrste dohodka (iz navodil).</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="LegalGround" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Pravna podlaga za izplačilo</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="OrderNumber" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Odločba po 245. členu ZDavP-1</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="OtherContract" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Druga mednarodna pogodba</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Income" type="xs:decimal" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Znesek dohodka v EUR</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxDegree" type="xs:decimal" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Stopnja davka v %</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Tax" type="xs:decimal" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="sl">Davek v EUR</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element ref="ODO_1_NFI" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

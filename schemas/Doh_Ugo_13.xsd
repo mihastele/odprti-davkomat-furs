@@ -1,0 +1,556 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/Doh_Ugo_13.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/Doh_Ugo_13.xsd"
+  elementFormDefault="qualified">
+
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+             schemaLocation="EDP-Common-1.xsd"
+             id="EDP-Common-1"/>
+
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="Doh_Ugo"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Doh_Ugo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Header">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Year" type="typeHeaderYear">
+                <xs:annotation>
+                  <xs:documentation>Leto odmere dohodnine</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="UgoHeader">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TaxPayerName" type="typeName" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Zavezanec</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxPayerID" type="edp:TaxNumberType" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Number" type="typeNumber" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Številka informativnega izračuna dohodnine</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="DateIssued" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Dan izdaje informativnega izračuna dohodnine</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Income1100">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F1101_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1101_Contribution" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1101_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1102_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1102_Contribution" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1102_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1103_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1103_Contribution" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1103_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1104_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1104_Contribution" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1104_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1105_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1105_Contribution" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1105_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1106_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1106_Contribution" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1106_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1107_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1107_Contribution" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1107_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1108_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1108_Contribution" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1108_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1109_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1109_Contribution" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1109_ActualCosts" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1109_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1110_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1110_Contribution" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1110_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1111_Income" type="edp:Decimal14_2Type" minOccurs="0" />
+              <xs:element name="F1111_Contribution" type="edp:Decimal14_2Type" minOccurs="0" />
+              <xs:element name="F1111_Advance"  type="edp:Decimal14_2Type" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Income1200">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F1211_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1211_Contribution" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1211_Costs" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1211_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1212_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1212_Contribution" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1212_Costs" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1212_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1220_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1220_Contribution" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1220_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1230_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1230_Contribution" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1230_Costs" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F1230_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Income2000">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F2100_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F2100_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Income3000">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F3100_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F3100_Contribution" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F3100_Relief" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F3100_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Income4000">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F4200_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F4200_Costs" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F4200_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Income6000">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="F6100_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F6100_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F6200_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F6200_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F6300_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F6300_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F6500_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F6500_Costs" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F6500_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F6700_Income" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F6700_ActualCosts" type="edp:Decimal14_2Type" minOccurs="0"/>
+              <xs:element name="F6700_Advance" type="edp:Decimal14_2Type" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="IncomeForeign" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>2. spremembe ali dopolnitve podatkov o dohodkih, prejetih oziroma doseženih v tujini in uveljavljanja odbitka davka, plačanega v tujini ter uveljavljanja oprostitve na podlagi mednarodne pogodbe</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element name="IncomeType" type="typeIncomeType" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Oznaka dohodka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Income" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Dohodek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Contribution" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Tuji prispevki</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Tax" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Tuji davek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Costs" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Stroški</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Advance" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Akontacija v RS</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CountryCode" type="typeCountryCode" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Država - koda</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CountryName" type="typeCountryName" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Država - naziv</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IntOrg" type="typeIntOrgName" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Mednarodna organizacija</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Income6300Avg" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>3. spremembe ali dopolnitve podatkov o dohodkih, ki se povprečijo</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element name="IncomeType" type="typeIncomeType" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Oznaka dohodka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Income" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Dohodek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Contribution" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Prispevki</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Costs" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Normirani ali dejanski stroški</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="FromMonth" type="typeMonth" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Od meseca</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="FromYear" type="typeYear" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Od leta</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ToMonth" type="typeMonth" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Do meseca</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ToYear" type="typeYear" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Do leta</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Relief1" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>4. spremembe ali dopolnitve podatkov o vzdrževanih družinskih članih</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element name="F1" type="typeName" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ime in priimek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F2" type="edp:TaxNumberType" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F3" type="typeYear" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Leto rojstva</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F4" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Sorodstveno razmerje</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F5" type="typeMonth" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Čas vzdrževanja od meseca</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F6" type="typeMonth" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Čas vzdrževanja do meseca</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F7" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Prispevek za preživljanje</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Relief1_Extra">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>Uveljavljam razliko do celotne višine posebne olajšave za zgoraj navedene vzdrževane družinske člane, za katere olajšavo uveljavlja zavezanec</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element name="Name" type="typeName" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Zavezanec</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxNumber" type="edp:TaxNumberType" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="DeclineFullRelief" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ne želim več uveljavljati razlike do celotne višine posebne olajšave za vzdrževane družinske člane</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Relief1_Ignore" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>Želim, da davčni organ pri odmeri dohodnine ne upošteva posebne olajšave za naslednje vzdrževane družinske člane</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element name="F1" type="typeName" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ime in priimek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F2" type="edp:TaxNumberType" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F3" type="typeYear" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Leto rojstva</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Relief2" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>5. spremembe ali dopolnitve podatkov o uveljavljanju olajšave za prostovoljno dodatno pokojninsko zavarovanje</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element name="Name" type="typePensionFundName" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Oznaka pokojninskega načrta</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Amount" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Znesek plačanih premij</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Relief3">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>6. uveljavljanja drugih olajšav</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element name="Disability" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Uveljavljam olajšavo za invalida s 100-odstotno telesno okvaro, ki mi je bila priznana pravica do tuje nege in pomoči na podlagi odločbe Zavoda za pokojninsko in invalidsko zavarovanje Slovenije, centra za socialno delo ali občinskega upravnega organa, pristojnega za varstvo borcev in vojaških invalidov</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PersonalAbove70Years" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Uveljavljam osebno olajšavo za starost nad 70 let</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PersonalVoluntaryAndUnprofessional" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Uveljavljam osebno olajšavo za prostovoljno in nepoklicno opravljanje nalog zaščite, reševanja in pomoči</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PersonalUpTo29YearsEmployment" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Uveljavljam posebno olajšavo do dopolnjenega 29. leta starosti za dohodke iz delovnega razmerja</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Rezident" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Uveljavljam posebno osebno olajšavo za nove rezidente</xs:documentation>
+                </xs:annotation>
+              </xs:element>              
+              <xs:element name="General" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Uveljavljam splošno olajšavo</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Student" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Uveljavljam študentsko olajšavo</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IncomeTax" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Uveljavljam zmanjšanje dohodnine za 13,5 % </xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Investment" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Uveljavljam olajšavo za investiranje v osnovna sredstva in opremo v povezavi z osnovno kmetijsko in osnovno gozdarsko dejavnostjo v okviru kmečkega gospodinjstva ali agrarne skupnosti</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="UgoExtra">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="WrongIncomeTaxCalcOther" type="typeFreeText" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>7. napačnega izračuna dohodnine in drugo</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PhoneNumber" type="typePhoneNumber" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Telefonska številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="EmailAddress" type="typeEmail" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Elektronski naslov</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="PersonalUpTo29YearsEmploymentMonths" minOccurs="0" maxOccurs="unbounded" >
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="MonthFrom" type="typeMonth" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Od meseca</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="MonthTo" type="typeMonth" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Do meseca</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- Document type definitions -->
+  <xs:simpleType name="typeHeaderYear">
+    <xs:restriction base="typeYear">
+      <xs:minInclusive value="2007"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="typePhoneNumber">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="30"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="typeYear">
+    <xs:restriction base="xs:int">
+      <xs:pattern value="[1-9][0-9]{3}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="typeMonth">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="12"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="typeIncomeType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[1-9][0-9]{3}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="typeName">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="40"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="typePensionFundName">
+    <xs:restriction base="typeName">
+      <xs:maxLength value="30"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="typeCountryCode">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]{3}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="typeCountryName">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="100"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="typeNumber">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="30"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="typeIntOrgName">
+    <xs:restriction base="typeName">
+      <xs:maxLength value="40"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="typeFreeText">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="500"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="typeFreeTextLong">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="320"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="typeEmail">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="75"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

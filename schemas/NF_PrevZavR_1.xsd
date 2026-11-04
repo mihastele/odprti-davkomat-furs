@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema id="NF_PrevZavR_1" targetNamespace="http://edavki.durs.si/Documents/Schemas/NF_PrevZavR_1.xsd"
+  elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/NF_PrevZavR_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  xmlns:r="http://edavki.durs.si/Documents/Schemas/NF_PrevZavR_1.xsd"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+  <xs:element name="NF_PrevZavR">
+    <xs:annotation>
+      <xs:documentation xml:lang="sl">
+        Odgovor na zahtevo za preverjanje podatkov o davčnih zavezancih (dokument NF_PrevZav_1).
+        Struktura dokumenta je podobna dokumentu NF_PrevZav.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Result" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TaxNumber">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="valid" type="xs:boolean">
+                        <xs:annotation>
+                          <xs:documentation xml:lang="sl">
+                            Davčna številka je pravilna/veljavna če je vrednost "true".
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:attribute>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Criteria">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Field" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="name" type="fieldType" use="required" />
+                            <xs:attribute name="equal" type="xs:boolean">
+                              <xs:annotation>
+                                <xs:documentation xml:lang="sl">
+                                  Vrednost "true". Vrednost preverjenega polja je pravilna.
+                                  Vrednost "false". Vrednost preverjenega polja ni pravilna.
+                                  Ni atributa. Polje ni bilo preverjeno.
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:attribute>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+    <xs:unique name="single">
+      <xs:selector xpath="r:Verify" />
+      <xs:field xpath="r:TaxNumber" />
+    </xs:unique>
+  </xs:element>
+  <xs:simpleType name="fieldType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="EMSO" />
+      <xs:enumeration value="BirthDate" />
+      <xs:enumeration value="Surname" />
+      <xs:enumeration value="Firstname" />
+      <xs:enumeration value="MaticnaPOSP" />
+      <xs:enumeration value="NamePOSP" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element ref="NF_PrevZavR" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

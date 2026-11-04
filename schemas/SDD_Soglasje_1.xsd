@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/SDD_Soglasje_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/SDD_Soglasje_1.xsd" elementFormDefault="qualified">
+	<xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+	<!--document structure-->
+	<xs:element name="Envelope">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="edp:Header"/>
+				<xs:element ref="edp:Signatures"/>
+				<xs:element name="body">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="edp:bodyContent"/>
+							<xs:element ref="Consent"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Consent">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ReferenceID" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Referenčna oznaka soglasja</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ConsentType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Tip soglasja</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="new">
+								<xs:annotation>
+									<xs:documentation>Novo soglasje</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="change">
+								<xs:annotation>
+									<xs:documentation>Sprememba</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="cancel">
+								<xs:annotation>
+									<xs:documentation>Ukinitev</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Telefonska številka</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Email" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Elektronski naslov</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="AccountNumber" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>IBAN številka plačilnega računa/ SWIFT BIC</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="PaymentReceiver">
+					<xs:complexType>
+						<xs:annotation>
+							<xs:documentation>Podatki o prejemniku plačila</xs:documentation>
+						</xs:annotation>
+						<xs:sequence>
+							<xs:element name="Name" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Ime in priimek/Naziv podjetja</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="ID" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Identifikacijska oznaka</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Address" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Ulica in hišna številka</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="City" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Kraj</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="PostNumber" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Poštna številka</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="PostName" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Naziv pošte</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="CountryID" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Oznaka države</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="CountryName" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Država</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="DirectDebitType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Vrsta direktne obremenitve</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="periodic">
+								<xs:annotation>
+									<xs:documentation>Periodična (ponavljajoča) obremenitev</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="oneTime">
+								<xs:annotation>
+									<xs:documentation>Enkratna obremenitev</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SignatureDate" type="xs:date" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Datum podpisa</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="SignaturePlace" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Kraj podpisa</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Agreement" type="xs:boolean" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Soglašam s splošnimi pogoji plačevanja obveznih dajatev s SEPA direktno obremenitvijo</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

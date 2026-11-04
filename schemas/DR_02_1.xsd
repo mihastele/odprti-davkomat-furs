@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/DR_02_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/DR_02_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:AttachmentList" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Data"/>
+              <xs:element name="ApplicantData" type="ApplicantDataType" minOccurs="0" /><!-- Applicant data {? Applicant data} -->
+              <xs:element name="NaturalPersonData" type="NaturalPersonDataType" minOccurs="0" /><!-- Legal entity contact data {?_Step1} -->
+              <xs:element name="TaxResidency" type="TaxResidencyType" minOccurs="0" /><!-- Tax residency {?_Step2} -->
+              <xs:element name="Address" type="AddressType" minOccurs="0" /><!-- Address {?_Step2} -->
+              <xs:element name="AccountsAbroad" type="AccountsAbroadType" minOccurs="0" maxOccurs="unbounded" /><!-- Accounts abroad (outside Republic of Slovenia) {?_Step3} -->
+              <xs:element name="CapitalInvestments" type="CapitalInvestmentsType" minOccurs="0" maxOccurs="unbounded" /><!-- Data on capital investments abroad {?_Step4} -->
+              <xs:element name="ReasonForEntryAndOther" type="ReasonForEntryAndOtherType" minOccurs="0" /><!-- Reason for entry in the tax register and Other {?_Step5} -->
+              
+              <xs:element name="AppDataTelephoneNumbers" type="TelephoneNumberType" minOccurs="0"  maxOccurs="unbounded"/>
+              <xs:element name="NaturalPersTelephoneNumbers" type="TelephoneNumberType" minOccurs="0"  maxOccurs="unbounded"/>
+              <xs:element name="AppDataEmails" type="EmailsType" minOccurs="0"   maxOccurs="unbounded"/>
+              
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:element name="Data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0" /><!-- Correction for document -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="ApplicantDataType">
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string" minOccurs="0" /><!-- SI PASS naziv -->
+      <xs:element name="Email" type="xs:string" minOccurs="0" /><!-- Potrjen e mail iz vstopa -->
+      <xs:element name="SubmittingOnBehalf" type="xs:boolean" minOccurs="0" default="false"/> <!--as authorized person-->
+      
+      <xs:element name="BirthDate" type="xs:date" minOccurs="0" /> <!-- Birth date [DD/MM/YYYY] -->
+      <xs:element name="Address" type="xs:string" minOccurs="0" /> <!-- Permanent residence (Address) -->
+      <xs:element name="Country" type="xs:string" minOccurs="0" /> <!-- Permanent residence (Country) -->
+      <!--AppDataTelephoneNumbers-->
+      <!--AppDataEmails-->
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="NaturalPersonDataType">
+    <xs:sequence>
+      <xs:element name="FirstName" type="xs:string" minOccurs="0" /><!-- First name -->
+      <xs:element name="Surname" type="xs:string" minOccurs="0" /><!-- Surname -->
+      <xs:element name="BirthDate" type="xs:date" minOccurs="0" /><!-- Birth Date -->
+      <xs:element name="BirthPlace" type="xs:string" minOccurs="0" /><!-- Birth place -->
+      <xs:element name="BirthCountry" type="xs:string" minOccurs="0" /><!-- Birth country -->
+      <xs:element name="Gender" type="xs:string" minOccurs="0" /><!-- Gender -->
+      <!-- NaturalPersTelephoneNumbers -->
+      <xs:element name="Email" type="xs:string" minOccurs="0" /><!-- Email address -->
+      <xs:element name="SloEmso" type="xs:string" minOccurs="0" /><!-- Slovenian personal identification number -->
+      <xs:element name="CitizenshipCountry" type="xs:string" minOccurs="0" maxOccurs="unbounded" /><!-- Citizenship -->
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="TaxResidencyType">
+    <xs:sequence>
+      <xs:element name="Country" type="xs:string" minOccurs="0" /><!-- Country of tax residence -->
+      <xs:element name="TaxNumber" type="xs:string" minOccurs="0" /><!-- Number for tax purposes in the country of residence -->
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AddressType">
+    <xs:sequence>
+      <xs:element name="Country" type="xs:string" minOccurs="0" /><!-- Country -->
+      <xs:element name="StreetAndNumber" type="xs:string" minOccurs="0" /><!-- Street and number -->
+      <xs:element name="City" type="xs:string" minOccurs="0" /><!-- City or town -->
+      <xs:element name="PostCode" type="xs:string" minOccurs="0" /><!-- Post code -->
+      <xs:element name="PostName" type="xs:string" minOccurs="0" /><!-- Place of postal office -->
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AccountsAbroadType">
+    <xs:sequence>
+      <xs:element name="Number" type="xs:string" minOccurs="0" /><!-- Number -->
+      <xs:element name="BankName" type="xs:string" minOccurs="0" /><!-- Name of bank or savings bank -->
+      <xs:element name="SwiftOrBic" type="xs:string" minOccurs="0" /><!-- SWIFT code or BIC of bank -->
+      <xs:element name="Country" type="xs:string" minOccurs="0" /><!-- Country -->
+      <xs:element name="OpeningDate" type="xs:date" minOccurs="0" /><!-- Date of account opening< -->
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CapitalInvestmentsType">
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string" minOccurs="0" /><!-- Name -->
+      <xs:element name="HeadOffice" type="xs:string" minOccurs="0" /><!-- Head office -->
+      <xs:element name="OrganisationalForm" type="xs:string" minOccurs="0" /><!-- Organisational form of the company abroad -->
+      <xs:element name="EntryDate" type="xs:date" minOccurs="0" /><!-- Entry date -->
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ReasonForEntryAndOtherType">
+    <xs:sequence>
+      <xs:element name="ReasonID" type="xs:string" minOccurs="0" /><!-- Reason for entry in the tax register - ID -->
+      <xs:element name="ReasonName" type="xs:string" minOccurs="0" /><!-- Reason for entry in the tax register - name -->
+      <xs:element name="Description" type="xs:string" minOccurs="0" /><!-- Reason description -->
+      <xs:element name="Other" type="xs:string" minOccurs="0" /><!-- Other -->
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- low level -->
+  <xs:complexType name="TelephoneNumberType">
+    <xs:sequence>
+      <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0"  /> <!-- Telephone number(s) -->
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="EmailsType">
+    <xs:sequence>
+      <xs:element name="Email" type="xs:string" minOccurs="0"  /> <!-- E-mail address(es) -->
+    </xs:sequence>
+  </xs:complexType>    
+
+  
+</xs:schema>

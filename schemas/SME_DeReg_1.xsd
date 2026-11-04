@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/SME_DeReg_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/SME_DeReg_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  
+  <!--Zahtevek za prenehanje uporabe posebne ureditve za oprostitev v drugih državah članicah (SME)-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Data"/>
+              <xs:element ref="CancellationAgreement" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Podatki o zavezancu-->
+  <xs:element name="Data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Period" type="xs:date" minOccurs="0" />        
+        <xs:element name="PlaceOfBusiness_CountryID" type="xs:string" minOccurs="0" />   <!--Država sedeža podjetja-->
+        <xs:element name="SME_ID" type="xs:string" minOccurs="0" />   <!--SME številka-->
+        <xs:element name="PlaceOfBusiness_TaxID" type="xs:string" minOccurs="0" /> <!--Davčna številka v državi sedežaa-->
+        <xs:element name="PlaceOfBusiness_DdvID" type="xs:string" minOccurs="0" /> <!--Identifikacijska številka za DDV v državi sedeža-->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <!--Prenehanje uporabe posebne ureditve SME-->
+  <xs:element name="CancellationAgreement">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="EndSMEDate" type="xs:date" minOccurs="0" /> <!--Želim prenehati uporablajti posebno ureditev SME z dnem-->
+        <xs:element name="EndSME" type="xs:boolean" minOccurs="0" /> <!--Ne želim več uporabljati posebne ureditve SME-->
+        <xs:element name="BusinessEnd" type="xs:boolean" minOccurs="0" /> <!--Ne opravljam več dejavnosti-->
+        <xs:element name="CountryChange" type="xs:boolean" minOccurs="0" /> <!--Sedež svoje dejavnosti bom prenesel v državo članico:-->
+        <xs:element name="CountryID" type="xs:string" minOccurs="0" /> <!--Država članica-->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+
+</xs:schema>

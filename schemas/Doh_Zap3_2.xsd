@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/Doh_Zap3_2.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+           targetNamespace="http://edavki.durs.si/Documents/Schemas/Doh_Zap3_2.xsd"
+           elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="Doh_Zap3"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:element name="Doh_Zap3">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DocumentWorkflowID" type="edp:DocumentIDType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DocumentWorkflowName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - ime</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PaymentDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum prejema dohodka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Email" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Elektronski naslov zavezanca</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Telefonska številka zavezanca</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ResidentOfRepublicOfSlovenia" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Rezident Republike Slovenije</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Country" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Država rezidentstva</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IncomeDataOption1" type="xs:boolean" minOccurs="0" default="false">
+          <xs:annotation>
+            <xs:documentation>Zavezanec ni zavarovanec po 15. ali 20. členu ZZVZZ</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IncomeDataOption2" type="xs:boolean" minOccurs="0" default="false">
+          <xs:annotation>
+            <xs:documentation>Zavezanec ni vključen v obvezno PIZ za polni delovni ali zavarovalni čas in ni upokojenec</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IncomeDataOption3" type="xs:boolean" minOccurs="0" default="false">
+          <xs:annotation>
+            <xs:documentation>Za zavezanca se glede plačila prispevkov uporablja zakonodaja druge države članice EU</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IncomeData" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>Podatki o dohodku iz drugega pogodbenega razmerja</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element name="PeriodFrom" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Obračunsko obdobje (od)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PeriodTo" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Obračunsko obdobje (do)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Type" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Vrsta dohodka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Income" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Dohodek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ForeignTax" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Tuji davek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="AmountOfActualCosts" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Znesek dejanskih stroškov</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CountryID" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Država</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxDeduction" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Uveljavljam odbitek tujega davka / Uveljavljam oprostitev plačila akontacije dohodnine * / Ne uveljavljam odbitek ali oprostitev</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Paragraph" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>TaxDeductionParagraph (* od dohodka, ki v skladu s ... odstavkom **)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Article" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>TaxDeductionArticle (** ... člena)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Breakdown" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>BreakdownOfActualCostsOfTransportAndAccommodation (razčlenitev dejanskih stroškov prevoza in nočitve)</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element name="Description" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Opis</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Amount" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Znesek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="IncomePayer" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>Podatki o izplačevalcu dohodka</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element name="Name" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ime in priimek oziroma firma</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Address" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naslov oziroma sedež</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CountryID" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Država</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxNumber" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IdentificationNumber" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Identifikacijska številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Attachment" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Priloge</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Description" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Priloge (popis dokumentov oziroma dokazil, ki jih prilagate k napovedi)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <!-- Custodian data -->
+        <xs:element name="CustodianNotes" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Custodian notes</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianSubmitDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Submission date</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <!-- end of optional fields-->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="Decimal14_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,14}(\.\d{1,2})?" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

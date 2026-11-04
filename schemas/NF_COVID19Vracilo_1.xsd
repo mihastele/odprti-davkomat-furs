@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/NF_COVID19Vracilo_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/NF_COVID19Vracilo_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="COVID19Vracilo"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="COVID19Vracilo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IsForEmployers" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Tip vračila: false(empty) - MTD, true - DEL</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IsForSubsidy" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Tip vračila: false(empty) - MTD, true - SUB</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IsForCompensation" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Tip vračila: false(empty) - MTD, true - NAD</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IsForUncoveredFixedCosts" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Tip vračila: false(empty) - MTD, true - NFS</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IsForMinWageSubsidy" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Tip vračila: false(empty) - MTD, true - SMP</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IsForSubsidyPkp9" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Tip vračila: false(empty) - MTD, true - SUB9</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IsForVacationAllowance" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Tip vračila: false(empty) - MTD, true - REG</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IsForAidForEconomy" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Tip vračila: false(empty) - MTD, true - ENER</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="Reason" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>... ne izpolnjujem pogojev za uveljavljanje zaradi:</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Selected" type="xs:boolean" minOccurs="0" />
+              <xs:element name="ID" type="xs:string" minOccurs="0" />
+              <xs:element name="Name" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="ExtraordinaryAssistance" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>... pomoč v obliki mesečnega temeljnega dohodka:</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Selected" type="xs:boolean" minOccurs="0" />
+              <xs:element name="Year" type="xs:int" minOccurs="0" />
+              <xs:element name="Month" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="ExtraordinaryAssistanceForEmployers" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>... refundiran znesek nadomestila plač:</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Selected" type="xs:boolean" minOccurs="0" />
+              <xs:element name="Year" type="xs:int" minOccurs="0" />
+              <xs:element name="Month" type="xs:int" minOccurs="0" />
+              <xs:element name="TotalAmount" type="edp:Decimal14_2Type" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="ExtraordinaryAssistanceForSubsidy" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>... znesek subvencije prejete zaradi skrajšanega polnega delovnega časa:</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Selected" type="xs:boolean" minOccurs="0" />
+              <xs:element name="Year" type="xs:int" minOccurs="0" />
+              <xs:element name="Month" type="xs:int" minOccurs="0" />
+              <xs:element name="TotalAmount" type="edp:Decimal14_2Type" minOccurs="0" />
+              <xs:element name="DateReceived" type="xs:date" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="ExtraordinaryAssistanceForCompensation" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>... refundiran znesek nadomestila plače na začasnem čakanju na delo:znesek nadomestila plače na začasnem čakanju na delo:</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Selected" type="xs:boolean" minOccurs="0" />
+              <xs:element name="Year" type="xs:int" minOccurs="0" />
+              <xs:element name="Month" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="ExtraordinaryAssistanceForUncoveredFixedCosts" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>... izplačani znesek delnega izplačila nekritih fiksnih stroškov:</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Selected" type="xs:boolean" minOccurs="0" />
+              <xs:element name="PeriodFrom" type="xs:date" minOccurs="0" />
+              <xs:element name="PeriodTo" type="xs:date" minOccurs="0" />
+              <xs:element name="TotalAmount" type="edp:Decimal14_2Type" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="ExtraordinaryAssistanceForMinWageSubsidy" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>... znesek prejetih subvencij za:</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Selected" type="xs:boolean" minOccurs="0" />
+              <xs:element name="Year" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="ExtraordinaryAssistanceForSubsidyPkp9" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>... želim vrniti prejeti znesek delnega povračila nadomestila plače za skrajšani polni delovni čas za:</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Selected" type="xs:boolean" minOccurs="0" />
+              <xs:element name="Year" type="xs:int" minOccurs="0" />
+              <xs:element name="Month" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="ExtraordinaryAssistanceForAidForEconomy" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>... izplačano pomoč za gospodarstvo:</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Selected" type="xs:boolean" minOccurs="0" />
+              <xs:element name="PeriodFrom" type="xs:date" minOccurs="0" />
+              <xs:element name="PeriodTo" type="xs:date" minOccurs="0" />
+              <xs:element name="TotalAmount" type="edp:Decimal14_2Type" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="ExemptionFromContributions" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>... oprostitev plačila prispevkov za socialno varnost:</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Selected" type="xs:boolean" minOccurs="0" />
+              <xs:element name="Year" type="xs:int" minOccurs="0" />
+              <xs:element name="Month" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

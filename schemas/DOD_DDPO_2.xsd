@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema id="DD_DDPO_2" targetNamespace="http://edavki.durs.si/Documents/Schemas/DOD_DDPO_2.xsd"
+	elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/DOD_DDPO_2.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+	<xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+	<xs:element name="DOD_DDPO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="General">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="PeriodStart" type="xs:date" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Obdobje od
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="PeriodEnd" type="xs:date" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Obdobje do
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="PredominantActivityCode" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Vrsta pretežne dejavnosti šifra
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="PredominantActivityName" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Vrsta pretežne dejavnosti naziv
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="IsTax9Article" type="xs:boolean" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Davčni obracun zavezanca iz 9. člena ZDDPO-1
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="IsTax54Article" type="xs:boolean" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Davčni obracun zavezanca iz 54. člena ZDDPO-1
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="IsTax12Article" type="xs:boolean" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Davčni zavezanec opravlja poslovanje med povezanimi osebami po 12. členu ZDDPO-1
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="IsTax13Article" type="xs:boolean" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Davčni zavezanec opravlja poslovanje med povezanimi osebami po 13. členu ZDDPO-1
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="IsTax13Article4Item" type="xs:boolean" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Davčni zavezanec opravlja poslovanje med povezanimi osebami po 13. členu ZDDPO-1,
+                                  ki imajo ugodnejši davčni položaj, opredeljen v 4. odstavku 13. člena ZDDPO-1
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="IsTax15Article" type="xs:boolean" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Davčni zavezanec prejema ali daje posojila povezanim osebam po 15. členu ZDDPO-1
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="IsTaxPayerUserOfEconomicZone" type="xs:boolean" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Davčni zavezanec je uporabnik ekonomske cone
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="EconomicZone_Number" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl"></xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="EconomicZone_Date" type="xs:date" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl"></xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="EconomicZone_TaxOffice" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl"></xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="StatedBalanceRelatingTo" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Navedeni obracun se nanasa na...
+                                </xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:int">
+										<xs:enumeration value="1">
+											<xs:annotation>
+												<xs:documentation>dejavnosti v ekonomski coni</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
+										<xs:enumeration value="2">
+											<xs:annotation>
+												<xs:documentation>Dejavnosti izven ekonomske cone</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
+										<xs:enumeration value="3">
+											<xs:annotation>
+												<xs:documentation>Celotno poslovanje</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="AssessmentOfTax" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Način ugotavljanja davka
+                                </xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="INDIVIDUAL">
+											<xs:annotation>
+												<xs:documentation>individualno</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
+										<xs:enumeration value="GROUP">
+											<xs:annotation>
+												<xs:documentation>skupinsko</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
+										<xs:enumeration value="GROUP_200">
+											<xs:annotation>
+												<xs:documentation>skupinsko po 200. členu ZDavP</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="ProvisionNumber" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Številka odločbe
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="ProvisionDate" type="xs:date" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Datum izdaje odločbe
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="ProvisionTaxOffice" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Davčni urad izdaje odlocbe
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="NameOfMainTaxPayer" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Firma glavnega zavezanca
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Address1OfMainTaxPayer" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Naslov1 glavnega zavezanca
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Address2OfMainTaxPayer" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Naslov2 glavnega zavezanca
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="CityOfMainTaxPayer" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Mesto glavnega zavezanca
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="TaxNumberOfMainTaxPayer" type="xs:int" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Davčna številka glavnega zavezanca
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Provision200_Number" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  številka izdaje odlocbe (skupinsko po 200.clenu)
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Provision200_Date" type="xs:date" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                 datum izdaje odlocbe (skupinsko po 200.clenu)
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Provision200_TaxOffice" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  davcni urad izdaje odlocbe (skupinsko po 200.clenu)
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="NameOfProposer" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Firma predlagatelja
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Address1OfProposer" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Naslov1 predlagatelja
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Address2OfProposer" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Naslov2 predlagatelja
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="CityOfProposer" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Mesto predlagatelja
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="TaxNumberOfProposer" type="xs:int" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Davčna številka predlagatelja
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="PO_Type" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation xml:lang="sl">
+                                  Tip pravne osebe
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Annex_3" type="xs:boolean" minOccurs="0" />
+							<xs:element name="Annex_3Date" type="xs:date" minOccurs="0" />
+							<xs:element name="Annex_4" type="xs:boolean" minOccurs="0" />
+							<xs:element name="Annex_5" type="xs:boolean" minOccurs="0" />
+							<xs:element name="Annex_6" type="xs:boolean" minOccurs="0" />
+							<xs:element name="Annex_7" type="xs:boolean" minOccurs="0" />
+							<xs:element name="Annex_8" type="xs:boolean" minOccurs="0" />
+							<xs:element name="Annex_9" type="xs:boolean" minOccurs="0" />
+							<xs:element name="Annex_10" type="xs:boolean" minOccurs="0" />
+							<xs:element name="Annex_11" type="xs:boolean" minOccurs="0" />
+							<xs:element name="Annex_12" type="xs:boolean" minOccurs="0" />
+							<xs:element name="Annex_13" type="xs:boolean" minOccurs="0" />
+							<xs:element name="Annex_14" type="xs:boolean" minOccurs="0" />
+							<xs:element name="Annex_15" type="xs:boolean" minOccurs="0" />
+							<xs:element name="Annex_16" type="xs:boolean" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="BaseData">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="F1" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F2" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F2_1" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F2_2" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F2_3" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F2_4" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F2_5" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F2_6" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F2_7" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F3" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F3_1" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F3_2" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F3_3" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F3_4" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F3_5" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F4" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F5" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_1" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_2" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_3" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_4" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_5" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_6" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_7" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_8" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_9" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_10" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_11" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_12" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_13" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_14" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_14_1" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_14_2" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_14_3" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_15" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_16" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_17" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_18" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_19" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_20" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_21" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_22" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_23" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_24" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_25" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_26" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_27" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_28" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_29" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_30" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_31" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_32" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F6_33" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F7" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F7_1" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F7_2" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F7_3" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F7_4" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F8" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F9" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F10" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F11" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F11_1" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F11_2" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F12" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F12_1" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F12_2" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F12_3" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F12_4" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F13" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F14" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F15" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F15_1" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F15_2" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F15_3" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F15_4" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F15_5" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F15_5_1" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F15_5_2" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F15_6" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F15_7" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F15_8" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F15_9" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F15_10" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F15_11" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F15_12" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F15_13" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F16" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F17" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F17p" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F18" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F19" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F20" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F21" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F22" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F23" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F24" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F25" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F26" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F27" type="xs:decimal" minOccurs="0" />
+							<xs:element name="F28" type="xs:decimal" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Envelope">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="edp:Header" />
+				<xs:element ref="edp:Signatures" />
+				<xs:element name="body">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="edp:bodyContent" />
+							<xs:element ref="DOD_DDPO" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

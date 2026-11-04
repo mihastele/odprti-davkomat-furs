@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/DMV_N_3.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://edavki.durs.si/Documents/Schemas/DMV_N_3.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+             schemaLocation="EDP-Common-1.xsd"/>
+
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="DMV_N"/>
+              <xs:element ref="Vehicle" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element ref="SelfReporting" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+   
+  <xs:element name="DMV_N">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Email" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Elektronski naslov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Notes" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Opomba</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Opomba</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Vehicle">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Vozilo</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="CodeVIN" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Identifikacijska številka vozila (VIN številka)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PurchaseValue" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Nabavna vrednost vozila (v EUR)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PurchaseDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Trenutek nastanka davčne obveznosti</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SellerIdNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>ID za namene DDV prodajalca - ID številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SellerCountry" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>ID za namene DDV prodajalca - Koda države</xs:documentation>
+          </xs:annotation>
+        </xs:element> 
+        <xs:element name="SellerName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv/ime in priimek prodajalca</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ExemptionRefundCode" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Koda oprostitve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ExemptionRefundName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv oprostitve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SupplyCountry" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Država, iz katere je vozilo pridobljeno</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DisabilityType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta invalidnosti koda</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DisabilityTypeN" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta invalidnosti opis</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VehicleLocation" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vozilo se nahaja (lokacija – naslov)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VehiclePayment" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Plačilo vozila (kako in komu)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VehicleAcquisition" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Prevzem vozila (kje in kdo)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AcquisitionPurpose" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Namen pridobitve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+    <xs:element name="SelfReporting">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="SelfReport" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Samoprijava</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DepositAfterDeadLine" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Vložitev po izteku roka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AfterDecision_B1" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Oddaja po roku - že izdan sklep o podaljšanju rokaOddaja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="B1_DecisionNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Številka sklepa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="B1_DecisionDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Datum sklepa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="B1_ExtendedDeadLine" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Oddaja po roku - že izdan sklep o podaljšanju roka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Proposal_B2" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Oddaja po roku – z vložitvijo predloga za podaljšanje roka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="B2_ProposalSubmitted_B3" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Vloga za podaljšanje roka - že vložena</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="B3_CessationDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Datum prenehanja razloga za zamudo</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="B3_ApplicationSubmitted_Reasons" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">Opis razlogov za zamudo</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/DDV_P3_1.xsd" elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/DDV_P3_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+    <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" id="EDP-Common-1" />
+    <xs:element name="DDV_P3">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="RegistrationType" type="xs:int" minOccurs="0" />
+                <xs:element name="F1" type="xs:string" minOccurs="0" />
+                <!-- 1a : Header -->
+                <xs:element name="F2_Name" type="xs:string" minOccurs="0" />
+                <xs:element name="F2_ShortName" type="xs:string" minOccurs="0" />
+                <xs:element name="F3_Ulica" type="xs:string" minOccurs="0" />
+                <xs:element name="F3_Naselje" type="xs:string" minOccurs="0" />
+                <xs:element name="F3_Post" type="xs:string" minOccurs="0" />
+                <xs:element name="F3_PostName" type="xs:string" minOccurs="0" />
+                <xs:element name="F3_Country" type="xs:string" minOccurs="0" />
+                <xs:element name="F4_Name" type="xs:string" minOccurs="0" />
+                <xs:element name="F4_ShortName" type="xs:string" minOccurs="0" />
+                <xs:element name="F5_Ulica" type="xs:string" minOccurs="0" />
+                <xs:element name="F5_Naselje" type="xs:string" minOccurs="0" />
+                <xs:element name="F5_Post" type="xs:string" minOccurs="0" />
+                <xs:element name="F5_PostName" type="xs:string" minOccurs="0" />
+                <xs:element name="F5_Country" type="xs:string" minOccurs="0" />
+                <xs:element name="F6_PhoneNumber" type="xs:string" minOccurs="0" />
+                <xs:element name="F6_FaxNumber" type="xs:string" minOccurs="0" />
+                <xs:element name="F6_EMail" type="xs:string" minOccurs="0" />
+                <xs:element name="F7_BankAccount" minOccurs="0" maxOccurs="10">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="AccountNumber" type="xs:string" minOccurs="0" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="F8_Name" type="xs:string" minOccurs="0" />
+                <xs:element name="F8_TaxNumber" type="xs:int" minOccurs="0" />
+                <xs:element name="F9_FirstName" type="xs:string" minOccurs="0" />
+                <xs:element name="F9_Surname" type="xs:string" minOccurs="0" />
+                <xs:element name="F10_Code" type="xs:string" minOccurs="0" />
+                <xs:element name="F10_Name" type="xs:string" minOccurs="0" />
+                <xs:element name="F11_From" type="xs:date" minOccurs="0" />
+                <xs:element name="F11_To" type="xs:date" minOccurs="0" />
+                <xs:element name="F12_Name" type="xs:string" minOccurs="0" />
+                <xs:element name="F12_ShortName" type="xs:string" minOccurs="0" />
+                <xs:element name="F13" type="xs:string" minOccurs="0" />
+                <xs:element name="F14_Ulica" type="xs:string" minOccurs="0" />
+                <xs:element name="F14_Naselje" type="xs:string" minOccurs="0" />
+                <xs:element name="F14_Post" type="xs:string" minOccurs="0" />
+                <xs:element name="F14_PostName" type="xs:string" minOccurs="0" />
+                <xs:element name="F14_Country" type="xs:string" minOccurs="0" />
+                <xs:element name="F15_From" type="xs:date" minOccurs="0" />
+                <xs:element name="F15_To" type="xs:date" minOccurs="0" />
+                <xs:element name="F16_Name" type="xs:string" minOccurs="0" />
+                <xs:element name="F16_TaxNumber" type="xs:int" minOccurs="0" />
+                <xs:element name="F17_FirstName" type="xs:string" minOccurs="0" />
+                <xs:element name="F17_Surname" type="xs:string" minOccurs="0" />
+                <xs:element name="F18" type="xs:boolean" minOccurs="0" />
+                <xs:element name="F19" type="xs:boolean" minOccurs="0" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Envelope">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="edp:Header" />
+                <xs:element ref="edp:Signatures" />
+                <xs:element name="body">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="edp:bodyContent" />
+                            <xs:element ref="DDV_P3" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

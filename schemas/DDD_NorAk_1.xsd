@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/DDD_NorAk_1.xsd" elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/DDD_NorAk_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" id="EDP-Common-1" />
+
+
+  <!--Priloge -->
+  <xs:element name="DDD_NorAk_Attachment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="F07" type="xs:positiveInteger" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Zaporedna številka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F08" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Ime priloge
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element >
+
+  <!--Podatki o prihodku, doseženem pri osebi, ki ni plačnik davka -->
+  <xs:element name="DDD_NorAk_IncomeData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Income" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Prihodek iz dejavnosti zadnjih zaporednih 12 mesecev.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IncomeType" type="typeIncomeTypeEnum" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Vrsta prihodka.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>       
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Uveljavljanje ugodnosti po zakonu o dohodnini -->
+  <xs:element name="DDD_NorAk_Benefits">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Claim" minOccurs="0">         
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Claim" type="xs:boolean"/>
+              <xs:element name ="Rate" type="xs:decimal"/>              
+            </xs:sequence>
+          </xs:complexType>         
+        </xs:element>
+        <xs:element name="ClaimCulturalWorker" type="typeRegisteredWorker" minOccurs="0"/>
+        <xs:element name="ClaimJuornalistWorker" type="typeRegisteredWorker" minOccurs="0"/>
+        <xs:element name="ClaimSportsWorker" type="typeRegisteredWorker" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <!-- Izjava o davčni obveznosti izven Slovenije -->
+  <xs:element name="DDD_NorAk_TaxObligations">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="F01" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Datum 
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F02" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Prihodek
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F03" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Davek
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F04" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Država
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F05" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Člen mednarodne pogodbe
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="F06" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Odstavek mednarodne pogodbe
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Izogibanje dvojnega obdavčevanja -->
+  <xs:element name="DDD_NorAk_DualTaxation">
+    <xs:complexType>
+      <xs:sequence>        
+        <xs:element name="Claim" type="xs:boolean"/>
+        <xs:element name ="Paragraph" type="xs:string"/>
+        <xs:element name ="Article" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Podatki dokumenta-->
+        <xs:element name="DDD_NorAk_DocumentData">
+          <xs:complexType>
+            <xs:sequence>
+        <xs:element name="DocumentWorkflowID" type="edp:DocumentIDType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Period" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Obdobje</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PhoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Telefonska številka
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Email" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Elektronski naslov
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>                
+        <xs:element name="TaxOfficeID" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Šifra davčnega urada</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxOfficeName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv davčnega urada</xs:documentation>
+          </xs:annotation>
+        </xs:element>       
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--glavna zgradba dokumenta-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="DDD_NorAk_DocumentData" />
+              <xs:element ref="DDD_NorAk_IncomeData"  minOccurs="0"/>
+              <xs:element ref="DDD_NorAk_Benefits"  minOccurs="0"/>              
+              <xs:element ref="DDD_NorAk_TaxObligations"  minOccurs="0"/>
+              <xs:element ref="DDD_NorAk_DualTaxation"  minOccurs="0"/>
+              <xs:element ref="DDD_NorAk_Attachment" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+<!-- Document types definition -->
+  <xs:simpleType name="typeIncomeTypeEnum">
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="A">
+        <xs:annotation>
+          <xs:documentation xml:lang="sl">
+            A - Prihodek, dosežen z opravljanjem kmetijske, gozdarske in dopolnilne dejavnosti na kmetiji.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B">
+        <xs:annotation>
+          <xs:documentation xml:lang="sl">
+            B - Prihodek, dosežen z izdelavo ali prodajo izdelkov domače in umetne obrti, za katere je pridobljeno veljavno mnenje pristojne OZS.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="C">
+        <xs:annotation>
+          <xs:documentation xml:lang="sl">
+            C - Prihodek, dosežen s prozvodnjo električne energije iz mikrosoproizvodnje in naprav za proizvodnjo el. e. iz obnovljivih virov, katerih nazivna moč ne presega 50 kW.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D">
+        <xs:annotation>
+          <xs:documentation xml:lang="sl">
+            D - Prihodek, dosežen z opravljanjem drugih dejavnosti.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name ="typeRegisteredWorker">
+    <xs:sequence>
+      <xs:element name="Claim" type="xs:boolean"/>
+      <xs:element name ="Profession" type="xs:string"/>
+      <xs:element name ="Register" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

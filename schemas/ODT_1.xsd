@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/ODT_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/ODT_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="ODT"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:element name="ODT">
+    <xs:complexType>
+      <xs:sequence>
+        <!--Common-->
+        <xs:element name="DocumentWorkflowID" type="edp:DocumentIDType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DocumentWorkflowName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - naziv</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <!-- Document fields -->
+        <xs:element name="Period" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obdobje</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SettlementType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta obračuna</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Country" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Država sedeža</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalTaxBase" type="Decimal14_4Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj - osnova za davek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxRate" type="edp:Decimal14_0Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Stopnja davka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalTax" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek davka na tonažo</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalTaxAdvance" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek medletnih obrokov akontacije davka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalTaxDifference" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obveznost za doplačilo davka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalTaxRefund" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obveznost za vračilo davka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxAdvance" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Akontacija davka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="MonthlyTaxAdvanceInstalment" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Višina mesečnega obroka akontacije davka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ThreeMonthlyTaxAdvanceInstalment" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Višina trimesečnega obroka akontacije davka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <!-- Ship -->
+        <xs:element name="ShipEntry" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Ship" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ladja</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="IMO" type="xs:nonNegativeInteger" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>IMO številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="NetoTonnage" type="xs:nonNegativeInteger" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Neto tonaža ladje (v neto tonah)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="NumberOfDays" type="xs:nonNegativeInteger" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Število dni ladje v sistemu davka na tonažo v davčnem obdobju</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="NumberOfIdleDays" type="xs:nonNegativeInteger" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Število dni, ko ladja ni (ne bo) opravljala gospodarske dejavnosti v davčnem obdobju</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ShipEntryDetail" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="NumberOfOperationalDays" type="xs:nonNegativeInteger" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Število dni poslovanja ladje v davčnem obdobju</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="PropertyFraction" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Lastninski delež zavezanca za davek na tonažo na ladji (v ulomku)</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Numerator" type="xs:nonNegativeInteger" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>Števec ulomka</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="Denominator" type="xs:nonNegativeInteger" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>Imenovalec ulomka</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="DailyTaxBase" type="Decimal14_4Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Dnevna davčna osnova</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="TaxBase" type="Decimal14_4Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Osnova za davek</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- Custodian fields -->
+        <xs:element name="CustodianNotes" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Opombe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianSubmitDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum prijave</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <!-- end of optional fields-->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="Decimal14_4Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,14}(\.\d{1,4})?" />
+      <!--xs:fractionDigits value="4" />
+      <xs:totalDigits value="14" /-->
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

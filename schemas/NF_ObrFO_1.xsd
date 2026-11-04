@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/NF_ObrFO_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/NF_ObrFO_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="NFObrFO"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <!-- Definicija vsebine -->
+  <xs:element name="NFObrFO">
+    <xs:complexType>
+      <xs:sequence>
+        <!-- Popravek dokumenta -->
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Popravek Dokumenta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        
+        <!-- Telefonska številka davčnega zavezanca (TTaxPayer) -->
+        <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefonska številka davčnega zavezanca</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        
+        <!-- Podatki o pooblaščencu -->
+        <xs:element name="Representative" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Podatki o pooblaščencu</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Name" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ime in priimek / Naziv</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Street" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ulica</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="BuildingID" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Hišna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="City" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naselje</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Post" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Poštna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="PostName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Pošta</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxNumber" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Telefonska številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        
+        <!-- Podatki o zahtevku -->
+        <xs:element name="RequestType" type="xs:string" minOccurs="0" />
+          
+        <!-- Podatki o davčni obveznosti -->
+        <xs:element name="TaxLiability" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TaxType" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Vrsta davka</xs:documentation>
+                </xs:annotation>
+              </xs:element>              
+              <xs:element name="TaxPeriod" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčno obdobje</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Amount" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Znesek davka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Text" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>
+                    Odločba, obračun ali drugi akt, iz katerega izvira davčna obveznost
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- Dodatna pojasnila davčnega zavezanca -->
+        <xs:element name="Explanation" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Dodatna pojasnila davčnega zavezanca</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Document type definitions -->
+  <xs:simpleType name="Decimal14_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,14}(\.\d{1,2})?"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

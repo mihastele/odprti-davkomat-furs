@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/DMV_O_3.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://edavki.durs.si/Documents/Schemas/DMV_O_3.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+             schemaLocation="EDP-Common-1.xsd"/>
+
+  <xs:element name="DMV_O">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DocumentWorkflowID" type="edp:DocumentIDType">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DocumentWorkflowName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - naziv</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Period" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>Obdobje (LLLLMM)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalTax" type="edp:NegativeDecimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj davek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianNotes" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Opombe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianSubmitDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum prijave</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Vehicle" minOccurs="0" maxOccurs="unbounded" >
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>Vozilo</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element name="SequenceNumber" type="xs:int">
+                <xs:annotation>
+                  <xs:documentation>Zaporedna številka zapisa</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="VehicleType" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Vrsta vozila</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="VehicleMake" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Znamka motornega vozila</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="VehicleModel" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Tip in model motornega vozila</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CodeVIN" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Identifikacijska številka vozila (VIN stevilka)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="FuelTypeCode" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Koda vrste goriva</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="FuelTypeName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naziv vrste goriva</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="EngineWorkingModeCode" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Koda načina delovanja motorja</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="EngineWorkingModeName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naziv načina delovanja motorja</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CO2Omission" type="Integer3_Type" minOccurs="0">                
+                <xs:annotation>
+                  <xs:documentation>Izpust CO2</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="EnginePower" type="Decimal3_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Moč motorja</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="EngineVolume" type="xs:decimal" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>prostornina motorja</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="HeavyPartsOmission" type="Decimal1_5Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Izpust trdih delcev</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="EuroOmissionRateCode" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Koda stopnje izpusta Euro</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="EuroOmissionRateName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naziv stopnje izpusta Euro</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="SeatCount" type="Integer2_Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Število sedežev</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CertificateOfConformityIssuingDate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Datum izdaje potrdila o skladnosti</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CertificateOfConformity" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Potrdilo o skladnosti</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="SupplyEUCountry" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Koda država dobave (članica EU)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="SupplyEUCountryName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ime države dobave (članica EU)</xs:documentation>
+                </xs:annotation>
+              </xs:element>              
+              <xs:element name="TaxBase" type="edp:NegativeDecimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna osnova</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxRate" type="Decimal2_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Stopnja DMV</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxAmount" type="edp:NegativeDecimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Znesek davka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxAddRate" type="Decimal2_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Stopnja pribitka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxAddAmount" type="edp:NegativeDecimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Znesek pribitka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxSum" type="edp:NegativeDecimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Skupaj davek</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ExemptionRefoundCode" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Koda oprostitve/vračila</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="ExemptionRefoundName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naziv oprostitve/vračila</xs:documentation>
+                </xs:annotation>
+              </xs:element>              
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Attachment" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Hash" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="DMV_O"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="Decimal1_5Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,1}(\.\d{1,5})?" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="Decimal2_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,2}(\.\d{1,2})?" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Decimal3_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,3}(\.\d{1,2})?" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Integer3_Type">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:pattern value="[0-9]{0,3}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Integer2_Type">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:pattern value="[0-9]{0,2}" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+</xs:schema>

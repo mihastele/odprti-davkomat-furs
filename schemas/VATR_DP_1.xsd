@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/VATR_DP_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" xmlns:vatr="http://edavki.durs.si/Documents/Schemas/VATR_Common_1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/VATR_DP_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/VATR_Common_1.xsd" schemaLocation="VATR_Common_1.xsd"/>
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="VATR_DP"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--type definitions-->
+  <xs:element name="VATR_DP">
+    <xs:complexType>
+      <xs:sequence>
+        <!-- Delivered document information -->
+        <xs:element name="DocumentInformation" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="EdpDocumentNumber" type="xs:string" minOccurs="0"/>
+              <xs:element name="ReferenceNumber" type="xs:string" minOccurs="0"/>
+              <xs:element name="Version" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="RefundingCountryCode" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <!-- Tax office information -->
+        <xs:element name="TaxOffice" minOccurs="0">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="vatr:BaseTrader_Type">
+                <xs:sequence>
+                  <xs:element name="CountryCode" type="xs:string" minOccurs="0"/>
+                  <xs:element name="VATIdentificationNumber" minOccurs="0">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="Number" type="xs:string" minOccurs="0"/>
+                        <xs:element name="issuedBy" type="xs:string" minOccurs="0"/>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:extension>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+        <!-- Applicant information -->
+        <xs:element name="Applicant" type="vatr:Applicant_Type" minOccurs="0"/>
+        <!-- Representative information -->
+        <xs:element name="Representative" minOccurs="0">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="vatr:BaseTrader_Type">
+                <xs:sequence>
+                  <xs:element name="CountryCode" type="xs:string" minOccurs="0"/>
+                  <xs:element name="EmailAddress" type="xs:string" minOccurs="0"/>
+                  <xs:element name="RepresentativeID" minOccurs="0">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="ID" type="xs:string" minOccurs="0"/>
+                        <xs:element name="issuedBy" type="xs:string" minOccurs="0"/>
+                        <xs:element name="identificationType" type="xs:string" minOccurs="0"/>
+                        <xs:element name="otherQlf" type="xs:string" minOccurs="0"/>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:extension>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

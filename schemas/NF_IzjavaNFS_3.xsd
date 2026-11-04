@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/NF_IzjavaNFS_3.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/NF_IzjavaNFS_3.xsd" elementFormDefault="qualified">
+	<xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+	<!--document structure-->
+	<xs:element name="Envelope">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="edp:Header"/>
+				<xs:element ref="edp:Signatures"/>
+				<xs:element name="body">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="edp:bodyContent"/>
+							<xs:element ref="IzjavaNFS"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="IzjavaNFS">
+		<xs:complexType>
+			<xs:sequence>
+				<!-- Za obdobje od ... do ... -->
+				<xs:element name="PeriodFrom_1_1" type="xs:date" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>1.1 Za obdobje od</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="PeriodTo_1_1" type="xs:date" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>1.1 do</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<!-- Podatki o upravičencu -->
+				<xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>telefonska številka</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Date_1_4" type="xs:date" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>1.4 Datum registracije</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Number_1_6" type="Decimal8_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>1.6 Povprečno število zaposlenih od 2.12.2019 do 30.11.2020, ...</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+
+				<!-- Izjavljam, da ... -->
+				<xs:element name="Statement_2_1" type="xs:boolean" minOccurs="0" >
+					<xs:annotation>
+						<xs:documentation>2.1 sem imel na dan uveljavitve zakona enega ali več zaposlenih delavcev</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Statement_2_2" type="xs:boolean" minOccurs="0" >
+					<xs:annotation>
+						<xs:documentation>2.2 sem na dan uveljavitve zakona kot samozaposlen vključen v obvezno ...</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Statement_2_3" type="xs:boolean" minOccurs="0" >
+					<xs:annotation>
+						<xs:documentation>2.3 je na dan uveljavitve zakona družbenik ali delničar gospodarske družbe oziroma ustanovitelj ...</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Statement_2_4" type="xs:boolean" minOccurs="0" >
+					<xs:annotation>
+						<xs:documentation>2.4 na dan 31. 12. 2019 podjetje ni bilo podjetje v težavah ...</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Statement_2_5" type="xs:boolean" minOccurs="0" >
+					<xs:annotation>
+						<xs:documentation>2.5 nekritih fiksnih stroškov v upravičenem obdobju ne krijem iz drugih virov, kot so zavarovanja ...</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Statement_2_6" type="xs:boolean" minOccurs="0" >
+					<xs:annotation>
+						<xs:documentation>2.6 sem neposredni ali posredni uporabnik proračuna Republike Slovenije oz. proračuna občine ...</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Statement_2_7" type="xs:boolean" minOccurs="0" >
+					<xs:annotation>
+						<xs:documentation>2.7 opravljam finančno ali zavarovalniško dejavnost ...</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+
+				<!-- Uveljavljam izredno pomoč v obliki delnega povračila nekritih fiksnih stroškov -->
+				<xs:element name="PeriodFrom_2_8_1" type="xs:date" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>2.8.1 Za obdobje od</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="PeriodTo_2_8_2" type="xs:date" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>2.8.2 do</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Amount_2_8_3" type="edp:Decimal14_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>2.8.3 v višini</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Calculation_2_8_4" type="edp:Decimal14_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>2.8.4 Maksimalen znesek</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+
+				<!-- Pomoč mi izplačajte na -->
+				<xs:element name="AccountNumber" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>transakcijski račun (2.9 / 2.10)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+
+				<xs:element name="AccountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>tip transakcijskega računa (2.9 / 2.10)</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="own">
+								<xs:annotation>
+									<xs:documentation>lasten transakcijski račun (2.9)</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="other">
+								<xs:annotation>
+									<xs:documentation>drug transakcijski račun (IBAN) (2.10)</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<!-- Ocena upada prihodkov od prodaje v upravičenem obdobju  -->
+				<xs:element name="Selection_3_0" minOccurs="0" >
+					<xs:annotation>
+						<xs:documentation>Upad prihodkov od prodaje v upravičenem obdobju se izračuna na podlagi:</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="DPP">
+								<xs:annotation>
+									<xs:documentation>dejanskih prihodkov od prodaje</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="PSZ">
+								<xs:annotation>
+									<xs:documentation>povprečnih prihodkov od prodaje glede na: povprečno število zaposlenih</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="VOS">
+								<xs:annotation>
+									<xs:documentation>povprečnih prihodkov od prodaje glede na: vrednost osnovnih sredstev, brez zemljišč</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<xs:element name="Amount_3_1" type="edp:Decimal14_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.1 Ocena Prihodki od prodaje od 1. 10. 2020 do 31. 12. 2020</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Number_3_1_1" type="Decimal8_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.1.1 Povprečno število zaposlenih 1.10.2020 do 31.12.2020</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Amount_3_1_2" type="edp:Decimal14_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.1.2 Vrednost osnovnih sredstev, brez zemljišč, po stanju na dan 31.12.2020</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Calculation_3_1_3" type="Decimal14_4Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.1.3 Prihodki od prodaje od 1.10.2020 do 31.12.2020 - povprečje glede na podlago v deležu</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Amount_3_2" type="edp:Decimal14_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.2 Prihodki od prodaje v obdobju od 1. 10. 2019 do 31. 12. 2019</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Number_3_2_1" type="Decimal8_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.2.1 Povprečno število zaposlenih 1.10.2019 do 31.12.2019</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Amount_3_2_2" type="edp:Decimal14_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.2.2 Vrednost osnovnih sredstev, brez zemljišč, po stanju na dan 31.12.2019</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Calculation_3_2_3" type="Decimal14_4Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.2.3 Prihodki od prodaje od 1.10.2019 do 31.12.2029 - povprečje glede na podlago v deležu</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Amount_3_3" type="edp:Decimal14_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.3 Prihodki od prodaje v obdobju od {Datum registracije} do 1. 9. 2020</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Number_3_3_1" type="Decimal8_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.3.1 Povprečno število zaposlenih {Datum registracije} do 1.9.2020</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Amount_3_3_2" type="edp:Decimal14_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.3.2 Vrednost osnovnih sredstev, brez zemljišč, po stanju na dan 1.9.2020</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Calculation_3_3_3" type="Decimal14_4Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.3.3 Prihodki od prodaje od {Datum registracije} do 31.12.2029 povprečje glede na podlago v deležu</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Number_3_4" type="xs:int" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.4 Število dni poslovanja</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Calculation_3_5" type="edp:Decimal14_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.5 Ocena upada prihodkov od prodaje</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+
+				<!-- Izračun višine nekritih fiksnih stroškov v upravičenem obdobju -->
+				<xs:element name="Amount_4_1" type="edp:Decimal14_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>4.1 Celoletni prihodki od prodaje od 1. 1. 2019 do 31. 12. 2019</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Amount_4_2" type="edp:Decimal14_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>4.2 Prihodki od prodaje v obdobju od {Datum registracije} do 31. 12. 2019</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Number_4_3" type="xs:int" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>4.3 Število dni poslovanja</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Calculation_4_4" type="edp:Decimal14_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>4.4 Višina nekritih fiksnih stroškov</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+
+				<!-- Višina nekritih fiksnih stroškov ne sme presegati -->
+				<xs:element name="Calculation_5_1" type="edp:Decimal14_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>5.1 Omejitev 1.000 evrov mesečno na redno zaposlenega (na dan oddaje te izjave):</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Calculation_5_2" type="edp:Decimal14_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>5.2 Omejitev višine pomoči po točki 3.1. ali 3.12 ...</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+
+				<!-- Ocena omejitve glede na oceno višine neto izgube v upravičenem obdobju -->
+				<xs:element name="Amount_5_3_1" type="edp:Decimal14_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>5.3.1 Ocena Neto izguba (AOP187) upravičenca od 1. 10. 2020 do 31. 12. 2020</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Number_5_3_2" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>5.3.2 Velikost podjetja glede na prilogo 1 Uredbe Komisije (ES) št. 651/2014</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="1">
+								<xs:annotation>
+									<xs:documentation>mikro ali malo</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="2">
+								<xs:annotation>
+									<xs:documentation>srednje ali veliko</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Calculation_5_3_3" type="edp:Decimal14_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>5.3.3 Ocena dodatne omejitve glede neto izgube in velikosti podjetja</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:simpleType name="Decimal8_2Type">
+		<xs:restriction base="xs:decimal">
+			<xs:pattern value="\d{1,8}(\.\d{1,2})?" />
+		</xs:restriction>
+	</xs:simpleType>
+
+  <xs:simpleType name="Decimal14_4Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,14}(\.\d{1,4})?" />
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

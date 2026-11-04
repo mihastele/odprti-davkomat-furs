@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/Obv_DZ_2.xsd" elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/Obv_DZ_2.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+    <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+    <xs:element name="Obv-DZ">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="sender" type="edp:custodianType" />
+                <xs:element name="referenceDocumentNumber" minOccurs="0" type="xs:string" />
+                <xs:element name="subject" type="xs:string" />
+                <xs:element name="message" type="xs:string" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Envelope">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="edp:Header" />
+                <xs:element ref="edp:AttachmentList" minOccurs="0" />
+                <xs:element ref="edp:Signatures" />
+                <xs:element name="body">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="edp:bodyContent" />
+                            <xs:element ref="Obv-DZ" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

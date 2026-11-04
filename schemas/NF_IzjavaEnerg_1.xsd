@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/NF_IzjavaEnerg_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/NF_IzjavaEnerg_1.xsd" elementFormDefault="qualified">
+	<xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+	<!--document structure-->
+	<xs:element name="Envelope">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="edp:Header"/>
+				<xs:element ref="edp:Signatures"/>
+				<xs:element name="body">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="edp:bodyContent"/>
+							<xs:element ref="IzjavaEnerg"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="IzjavaEnerg">
+		<xs:complexType>
+			<xs:sequence>
+				<!-- Za obdobje od ... do ... -->
+				<xs:element name="PeriodFrom" type="xs:date" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Za obdobje od</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="PeriodTo" type="xs:date" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>(Za obdobje) do</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<!-- Podatki o upravičencu -->
+				<xs:element name="RegistrationDate" type="xs:date" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>1.3 Datum registracije</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>1.5 Telefonska številka</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Email" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>1.6 Elektronski naslov</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<!-- Izjavljam, da ... -->
+				<xs:element name="Statement_2_5" type="xs:boolean" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>2.5 bomo v primeru, da smo zahtevali previsok znesek pomoči o tem obvestili FURS do roka za predložitev ...</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Statement_2_6" type="xs:boolean" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>2.6 bomo v primeru, da smo neupravičeno prejeli pomoč o tem obvestili FURS do roka za predložitev ...</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Statement_2_7" type="xs:boolean" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>2.7 so podatki v izjavi resnični in pravilni in temeljijo na verodostojnih knjigovodskih listinah, ki jih bomo na ...</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				
+				<!-- Podatki za leto 2019 (2020 in 2021 pri kasneje ustanovljenih) -->
+				<xs:element name="Number_3_1" type="xs:unsignedInt" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.1 Leto</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Number_3_2" type="xs:unsignedInt" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.2 Število dni poslovanja</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Amount_3_3" type="edp:Decimal14_0Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.3 Prihodki od prodaje (AOP 110)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Amount_3_4" type="edp:Decimal14_0Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.4 Prihodki od prodaje preračunani na raven leta</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Amount_3_5" type="edp:Decimal14_0Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.5 Poslovni odhodki (AOP 127)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Amount_3_6" type="edp:Decimal14_0Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.6 Stroški energije (AOP 132/ konto 402 pri fizičnih osebah))</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Percent_3_8" type="edp:Decimal14_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>3.8 Delež stroškov energije v vseh poslovnih odhodkih v %</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				
+				<!-- Ocena zvišanja stroškov energije 2021/2022 -->
+				<xs:element name="Number_4_1" type="xs:unsignedInt" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>4.1 Število dni poslovanja v letu 2021</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Amount_4_2" type="edp:Decimal14_0Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>4.2 Stroški energije (AOP 132/ konto 402 pri fizičnih osebah) v letu 2021</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Amount_4_3" type="edp:Decimal14_0Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>4.3 Stroški energije v letu 2021 preračunani na raven leta</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Amount_4_4" type="edp:Decimal14_0Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>4.4 Načrtovani stroški energije v letu 2022</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+					<xs:element name="Percent_4_5" type="edp:Decimal14_2Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>4.5 Načrtovano zvišanje stroškov energije v letu 2022 glede na leto 2021 v %</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				
+				<!-- Izračun najvišje dovoljene pomoči glede na vpisane podatke vlagatelja -->
+				<xs:element name="Amount_5_1" type="edp:Decimal14_0Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>5.1 Škoda zaradi povečanja stroškov energije</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Amount_5_2" type="edp:Decimal14_0Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>5.2 Druga javna sredstva za odpravo posledic škode v letu 2022 zaradi dviga cen energentov iz državnega in občinskih proračunov</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Amount_5_3" type="edp:Decimal14_0Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>5.3 Preostanek škode po prejemu drugih javnih sredstev</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Amount_5_4" type="edp:Decimal14_0Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>5.4 60% škode zaradi povečanja stroškov energije</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+					<xs:element name="Amount_5_5" type="edp:Decimal14_0Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>5.5 Pomoč glede na višino prihodkov od prodaje in delež stroškov energije v vseh poslovnih odhodkih</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+					<xs:element name="Amount_5_6" type="edp:Decimal14_0Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>5.6 Najvišja dovoljena pomoč</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				
+				<!-- Zaprošena pomoč -->
+				<xs:element name="Amount_6_1" type="edp:Decimal14_0Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>6.1 V skladu z Zakonom o ukrepih za omilitev posledic dviga cen energentov v gospodarstvu in kmetijstvu (ZUOPDCE) zaprošamo za pomoč v višini</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				
+				<!-- Pomoč mi izplačajte na -->
+				<xs:element name="AccountNumber" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>transakcijski račun (2.9 / 2.10)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="AccountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>tip transakcijskega računa (2.9 / 2.10)</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="own">
+								<xs:annotation>
+									<xs:documentation>lasten transakcijski račun (2.9)</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="other">
+								<xs:annotation>
+									<xs:documentation>drug transakcijski račun (IBAN) (2.10)</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

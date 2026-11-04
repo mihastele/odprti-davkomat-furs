@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/DDV_O_3.xsd" elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/DDV_O_3.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" id="EDP-Common-1" />
+  <xs:element name="DDV-O">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="taxPeriodStart" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Začetek davčnega obdobja (datum): YYYY-MM-DD
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="taxPeriodEnd" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Konec davčnega obdobja (datum): YYYY-MM-DD
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="correctionOfPastTaxPeriod" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Popravki za pretekla obdobja (obvezno izbrati)
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="f02" type="xs:positiveInteger" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+            Davčna številka zastopnika
+          </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="f03" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Zahtevam vračilo (obvezno izbrati)
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="f04" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="sl">
+              Izračunavam odbitni delež (obvezno izbrati)
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="f11" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f12" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f13" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f14" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f15" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f16" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f17" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        
+        <xs:element name="f21" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f22" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f23" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f24" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f25" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f26" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f27" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        
+        <xs:element name="f31" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f32" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f33" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f34" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f35" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f36" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f37" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        
+        <xs:element name="f41" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f42" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f43" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f44" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f45" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f46" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f47" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        <xs:element name="f48" type="edp:NegativeDecimal14_0Type" minOccurs="0" />
+        
+        <xs:element name="f51" type="edp:Decimal14_0Type" minOccurs="0" />
+        <xs:element name="f52" type="edp:Decimal14_0Type" minOccurs="0" />
+        
+        <xs:element name="f61" type="edp:NegativeDecimal14_0Type" />
+        
+        <xs:element name="f71" type="edp:Decimal14_0Type" minOccurs="0" />
+        <xs:element name="f72" type="edp:Decimal14_0Type" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element ref="DDV-O" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

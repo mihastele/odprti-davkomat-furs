@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/DDV_ObrPN_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/DDV_ObrPN_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="DDV_ObrPN"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:element name="DDV_ObrPN">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="PeriodYear" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčno obdobje-leto</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PeriodFrom" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Od</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PeriodTo" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>do</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Language" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Jezik</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Contact" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Contact</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PhoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefon</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Email" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Elektronska pošta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Compensation" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>nadomestilo</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Foreigner" type="xs:boolean" minOccurs="0" >
+                <xs:annotation>
+                  <xs:documentation>Tujec</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxNumber" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka kupca</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Buyer" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Kupec</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Address" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Sedež kupca</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Country" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Država</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Compensation" type="Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Pavšalno nadomestilo</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Sum" type="Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vsota</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="Decimal14_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,14}(\.\d{1,2})?" />
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

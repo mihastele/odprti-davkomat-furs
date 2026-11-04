@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/ODE_PDO_4.xsd" elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/ODE_PDO_4.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+    <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+    <xs:simpleType name="docType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="0" />
+            <xs:enumeration value="1" />
+            <xs:enumeration value="2" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="addrType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="0" />
+            <xs:enumeration value="1" />
+            <xs:enumeration value="2" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="freeFormatType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="0" />
+            <xs:enumeration value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="isoDate">
+        <xs:restriction base="xs:date">
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="isoDate1">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[12][0-9][0-9][0-9](0[1-9]|1[0-2])([0-2][0-9]|3[01])" />
+            <xs:pattern value="[12][0-9][0-9][0-9](0[1-9]|1[0-2])" />
+            <xs:pattern value="[12][0-9][0-9][0-9]" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="isoDateYear">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[12][0-9][0-9][0-9]" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="taxIdType">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="countryCodeType">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="2" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="paymentCodeType">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="(axx(2|x))|((b|c|d)(1|2|x)x(2|x))" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="accountType">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[1-3]-[abcdx]" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="currencyCodeType">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="3" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="amountType">
+        <xs:restriction base="xs:long">
+            <xs:minInclusive value="0" />
+            <xs:maxInclusive value="999999999999999999" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="string70">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="70" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="string35">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="35" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="string210">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="210" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="string149">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="149" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="string105">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="105" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="string9">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="9" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="string8">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="8" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="string3">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="3" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:element name="ODE_PDO">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="PDO">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="F100" type="xs:date">
+                                <xs:annotation>
+                                    <xs:documentation>Datum poročanja</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F101" type="taxIdType">
+                                <xs:annotation>
+                                    <xs:documentation>Identifikacija plačilnega zastopnika (DŠ)</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F102" type="xs:string">
+                                <xs:annotation>
+                                    <xs:documentation>Izjava (2. točka prvega odstavka 344. člena ZDavP-2</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="Year" type="isoDateYear">
+                                <xs:annotation>
+                                    <xs:documentation>Leto poročanja (YYYY)</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="PDOItem" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="F001" type="isoDateYear" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Leto poročanja (YYYY)</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <!-- Upravičeni lastnik/subjekt -->
+                            <xs:element name="F002" type="countryCodeType" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Koda države rezidentstva</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F003" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>TIN države rezidentstva</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F003-1" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>DŠ določena s strani DURS</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F004" type="isoDate" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Datum rojstva: YYYY-MM-DD ali prazno</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F005-121" type="string70" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Priimek oz. naziv subjekta</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F005-122" type="string70" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Ime</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F006" type="string35" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Kraj rojstva</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F007" type="countryCodeType" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Koda države</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F008" type="addrType" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Vrsta naslova</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <!-- Naslov oz. sedež upravičenega lastnika/subjekta -->
+                            <xs:element name="F008-121" type="string70" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Ulica</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F008-122" type="string35" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Mesto</xs:documentation>
+                              </xs:annotation>
+                           </xs:element>
+                            <xs:element name="F008-123" type="string9" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Poštna številka</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F008-13" type="countryCodeType" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Koda države ISO 3166</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <!-- Drug naslov upravičenega lastnika/subjekta (če obstaja) -->
+                            <xs:element name="F009" type="addrType" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Vrsta naslova</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F009-121" type="string70" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Ulica</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F009-122" type="string35" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Mesto</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F009-123" type="string9" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Poštna številka</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F009-13" type="countryCodeType" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Koda države ISO 3166</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <!-- Plačilni zastopnik -->
+                            <xs:element name="F010-121" type="string70" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Priimek oz. naziv subjekta</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F010-122" type="string70" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Ime</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F011-121" type="string70" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Ulica</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F011-122" type="string35" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Mesto</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F011-123" type="string9" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Poštna številka</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F011-13" type="countryCodeType" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Koda države ISO 3166</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <!-- Podatki o dohodku od prihodkov v obliki plačil obresti -->
+                            <xs:element name="F012" type="isoDateYear" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Leto plačila: YYYY ali prazno</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F013" type="paymentCodeType" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Vrsta plačila dohodka</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F014" type="currencyCodeType" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Koda valute ISO 4217</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F015" type="amountType" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Znesek plačila</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <!-- Podatki o oddaji -->
+                            <xs:element name="F016" type="string70" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Pošiljateljev sklic</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F017" type="string70" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Sklic popravka</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F018" type="string105" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Številka računa/Dolžniška terjatev</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="F019" type="accountType" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Vrsta računa</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Attachment" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Hash" type="xs:string" minOccurs="0" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Envelope">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="edp:Header" />
+                <xs:element ref="edp:Signatures" />
+                <xs:element name="body">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="edp:bodyContent" />
+                            <xs:element ref="ODE_PDO" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

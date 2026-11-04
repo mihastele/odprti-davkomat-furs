@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/KP_NV_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/KP_NV_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="NV"/>
+              <xs:element ref="Person" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="Payment" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="Transaction" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="NV">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="EmailAddress" type="xs:string" minOccurs="0" />
+        <xs:element name="PhoneNumber" type="xs:string" minOccurs="0" />
+        <xs:element name="PeriodYear" type="xs:int" minOccurs="0"/>
+        <xs:element name="RegistrationDate" type="xs:date" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Person">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TaxNumber" type="xs:string" minOccurs="0" />
+        <xs:element name="IdentificationNumber" type="xs:string" minOccurs="0" />
+        <xs:element name="Name" type="xs:string" minOccurs="0" />
+        <xs:element name="IsResident" type="xs:string" minOccurs="0" />
+        <xs:element name="ResidentCountry" type="xs:string" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Payment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="PersonID" type="xs:string" minOccurs="0" />
+        <xs:element name="Date" type="xs:date" minOccurs="0" />
+        <xs:element name="Amount" type="Decimal14_2Type" minOccurs="0" />
+        <xs:element name="SubsequentPayment" type="xs:boolean" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Transaction">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="PersonID" type="xs:string" minOccurs="0" />
+        <xs:element name="Date" type="xs:date" minOccurs="0" />
+        <xs:element name="Type" type="xs:string" minOccurs="0" />
+        <xs:element name="TypeName" type="xs:string" minOccurs="0" />
+        <xs:element name="Amount" type="Decimal14_2Type" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Type definitions-->
+  <xs:simpleType name="Decimal14_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,14}(\.\d{1,2})?"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

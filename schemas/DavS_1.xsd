@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/DavS_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/DavS_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="DavS"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <!--type definitions-->
+  <xs:element name="DavS">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CustodianNotes" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Opombe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianSubmitDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum prijave</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Period" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obdobje</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>        
+        <xs:element name="Email" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Elektronski naslov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TaxData"  minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="GameCode" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Klasična igra na srečo (koda igre)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="GameName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Klasična igra na srečo (naziv igre)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxBaseSum" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Seštevek davčnih osnov</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxRate" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna stopnja (v %)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Tax" type="edp:Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Znesek obračunanega davka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="TotalTaxBaseSum" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vsota stolpca Seštevek davčnih osnov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalTax" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vsota stolpca Znesek obračunanega davka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Subaccount" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vplačilni podračun</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="OrganizerType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta prireditelja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="NOrganizerType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta prireditelja opis</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+      
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

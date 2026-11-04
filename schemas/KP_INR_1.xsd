@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/KP_INR_1.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+           targetNamespace="http://edavki.durs.si/Documents/Schemas/KP_INR_1.xsd"
+           elementFormDefault="qualified">
+
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!-- Document structure -->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="INR"/>
+              <xs:element ref="Holder" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element ref="TAttachment" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="INR">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Popravek Dokumenta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PeriodYear" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčno obdobje - leto</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Holder">
+    <xs:annotation>
+      <xs:documentation>Podatki o imetniku INR</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TaxNumber" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčna številka imetnika</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="FirstName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Ime imetnika</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="LastName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Priimek imetnika</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="BirthDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum rojstva imetnika</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="InrNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Številka INR</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ContractConclusionDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum sklenitve pogodbe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SuspensionStartDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum začetka mirovanja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ContractTerminationDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum prenehanja pogodbe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TransferContractConclusionDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum sklenitve pogodbe (prenos)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PaymentBalancePreviousYear" type="NegativeDecimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Stanje vplačil preteklega leta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="Payment" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="Payout" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Payment">
+    <xs:annotation>
+      <xs:documentation>Podatki o vplačilih na INR v davčnem letu</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="PaymentDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum vplačila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PaymentAmount" type="NegativeDecimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek vplačila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PaymentType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta vplačila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SubAccountType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta podračuna</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Payout">
+    <xs:annotation>
+      <xs:documentation>Podatki o izplačilih iz INR v davčnem letu</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="PayoutDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum izplačila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PayoutAmount" type="NegativeDecimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek izplačila</xs:documentation>
+          </xs:annotation>
+        </xs:element>          
+        <xs:element name="AssetValueBeforePayout" type="NegativeDecimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrednost sredstev pred izplačilom</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PaymentBalanceBeforePayout" type="NegativeDecimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Stanje vplačil na dan izplačila (pred izplačilom)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PaymentBalanceAfterPayout" type="NegativeDecimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Stanje vplačil na dan izplačila (po izplačilu)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="TAttachment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Hash" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <!-- Type definitions -->
+  <xs:simpleType name="NegativeDecimal14_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="[\-+]?\d{1,14}(\.\d{1,2})?" />
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

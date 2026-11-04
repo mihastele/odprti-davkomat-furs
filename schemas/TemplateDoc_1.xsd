@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/TemplateDoc_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/TemplateDoc_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="BaseEntity"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <!--type definitions-->
+  <xs:element name="BaseEntity" id="EntityName">
+    <xs:complexType>
+      <xs:sequence>
+        <!--Common-->
+        <xs:element name="DocumentTypeID" type="edp:DocumentIDType">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DocumentTypeName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - naziv</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianNotes" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Opombe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianSubmitDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum prijave</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <!--end common-->
+        <!--optional fields-->
+        <xs:element name="Period" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>Obdobje (MM.YYYY)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalTax" type="xs:long">
+          <xs:annotation>
+            <xs:documentation>Skupaj davek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <!-- end of optional fields-->
+        <xs:element name="Data1" id="DependentEntitiyName" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>Data1 Opis</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element name="F1" id="ElemenName1" type="xs:string">
+                <xs:annotation>
+                  <xs:documentation>Opis polja F1</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F2" id="ElemenName2" type="xs:int">
+                <xs:annotation>
+                  <xs:documentation>Opis polja F2</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F3" id="ElemenName3" type="xs:date">
+                <xs:annotation>
+                  <xs:documentation>Opis polja F3</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F4" id="ElemenName4" type="xs:boolean">
+                <xs:annotation>
+                  <xs:documentation>Opis polja F4</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F5" id="ElemenName5" type="xs:decimal">
+                <xs:annotation>
+                  <xs:documentation>Opis polja F5</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F6" id="ElemenName6" type="xs:string">
+                <xs:annotation>
+                  <xs:documentation>Opis polja F6</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F7" id="ElemenName7" type="xs:string">
+                <xs:annotation>
+                  <xs:documentation>Opis polja F7</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F8" id="ElemenName8" type="xs:string">
+                <xs:annotation>
+                  <xs:documentation>Opis polja F8</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F9" id="ElemenName9" type="xs:string">
+                <xs:annotation>
+                  <xs:documentation>Opis polja F9</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F10" id="ElemenName10" type="xs:string">
+                <xs:annotation>
+                  <xs:documentation>Opis polja F10</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F11" id="ElemenName11" type="xs:string">
+                <xs:annotation>
+                  <xs:documentation>Opis polja F11</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F12" id="ElemenName12" type="xs:string">
+                <xs:annotation>
+                  <xs:documentation>Opis polja F12</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

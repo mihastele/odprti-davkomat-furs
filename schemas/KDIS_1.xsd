@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/KDIS_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/KDIS_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="KDIS"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <!--type definitions-->
+  <xs:element name="KDIS">
+    <xs:complexType>
+      <xs:sequence>
+        <!--Common-->
+        <xs:element name="DocumentWorkflowID" type="edp:DocumentIDType">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DocumentWorkflowName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta dokumenta - naziv</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <!--end common-->
+        <!--optional fields-->
+        <xs:element name="Period" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obdobje</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PeriodType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta obdobja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="OrganizerType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta prireditelja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalBase" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj osnova</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalKD" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj KD</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalCalculatedKD" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj obracunana KD</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalDifference" type="xs:decimal" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj razlika</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ObjectName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv objekta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ObjectCode" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Sifra objekta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="OBRACUN" minOccurs="0" maxOccurs="unbounded"  >
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>Obracun</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element name="SequenceNumber" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Zaporedna stevilka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="GameCode" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Sifra igre</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="GameName" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Naziv igre</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Base" type="xs:decimal" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Osnova</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Rate" type="xs:decimal" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Stopnja</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="KD" type="xs:decimal" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>KD</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="CalculatedKD" type="xs:decimal" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Obracunana KD</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Difference" type="xs:decimal" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Razlika</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="CustodianNotes" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Opombe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustodianSubmitDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum prijave</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <!-- end of optional fields-->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

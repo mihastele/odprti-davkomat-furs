@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/IGR_P1_1.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://edavki.durs.si/Documents/Schemas/IGR_P1_1.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+             schemaLocation="EDP-Common-1.xsd"/>
+
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="IGR_P1"/>
+              <xs:element ref="Realization" maxOccurs="unbounded"/>
+              <xs:element ref="Recapitulation"/>
+              <xs:element ref="Admissions"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+   
+  <xs:element name="IGR_P1">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="OrganizerType" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta prireditelja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="NOrganizerType" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta prireditelja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Period" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obdobje obračuna</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Email" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Elektronski naslov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TelephoneNumber" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CasinoCode" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Igralnica/igralni salon - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CasinoName" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Igralnica/igralni salon - naziv</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CasinoMunicipality" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Občina igralnice/igralnega salona</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Realization">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Realizacija iz iger in iz napitnin - vrsta igre</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="GameTypeCode" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta igre - koda</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="GameTypeDescription" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta igre - opis</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="Game" minOccurs="0" maxOccurs="unbounded" >
+          <xs:annotation>
+            <xs:documentation>Igra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="GameTypeRealizationGames" type="edp:NegativeDecimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Realizacija iz iger</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="GameTypeRealizationTips" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Realizacija iz napitnine</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Game">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Igra</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="GameCode" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Oznaka igre - koda</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="GameCodeDescription" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Oznaka igre - opis</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="RealizationGames" type="edp:NegativeDecimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Realizacija iz iger</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="RealizationTips" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Realizacija iz napitnine</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Recapitulation">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Realizacija iz iger in iz napitnin - skupaj</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="TotalRealizationGames" type="edp:NegativeDecimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Realizacija skupaj - iz iger</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalRealizationTips" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Realizacija skupaj - iz napitnin</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TipsBoxOffice" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Napitnince - blagajna</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TipsReception" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Napitnine - recepcija</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalTips" type="edp:NegativeDecimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vse napitnine - skupaj</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="Admissions">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Število vstopov in višina plačane vstopnine</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="NumDomesticGuests" type="NonNegativeInt_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Domači gostje</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="NumForeignGuests" type="NonNegativeInt_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Tuji gostje</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalNumEntries" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj število vstopov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="NumAdmissionFree" type="NonNegativeInt_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Brez plačane vstopnine</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="NumWithAdmission" type="NonNegativeInt_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>S plačano vstopnino</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AdmissionAmount" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Višina plačane vstopnine</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="NonNegativeInt_Type">
+    <xs:restriction base="xs:int">
+      <xs:pattern value="\d{1,9}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String256_Type">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="256" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

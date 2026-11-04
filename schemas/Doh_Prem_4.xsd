@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSpy v2018 sp1 (x64) (http://www.altova.com) by  (Comtrade d.o.o.) -->
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/Doh_Prem_4.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" 
+targetNamespace="http://edavki.durs.si/Documents/Schemas/Doh_Prem_4.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" id="EDP-Common-1"/>
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/> <!--incl Workflow, CustodianInfo-->
+        <xs:element ref="edp:AttachmentList" minOccurs="0"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="TDoh_Prem" minOccurs="0" maxOccurs="1"/>
+              <xs:element ref="TDohodek" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="TDoh_Prem">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="SelfReport" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="Email" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="PhoneNumber" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="ResidentRS" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="ResidentCountry" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="ResidentCountryCode" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="Citizenship" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="CitizenshipCode" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="TaxPeriod" type="xs:int" minOccurs="1"/>
+        <xs:element name="Opombe" type="xs:string" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--3 -->
+  <xs:element name="TDohodek">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="LineId" type="xs:string" minOccurs="0"/>
+        <xs:element name="Dohodek" type="xs:decimal" minOccurs="0"/>
+        <xs:element name="NormiraniStroski" type="xs:string" minOccurs="0"/>
+        <xs:element name="DejanskiStroski" type="xs:decimal" minOccurs="0"/>
+        <xs:element name="OddajaOd" type="xs:int" minOccurs="0"/>
+        <xs:element name="OddajaDo" type="xs:int" minOccurs="0"/>
+        <xs:element name="ZnesekNajemnine" type="xs:decimal" minOccurs="0"/>
+        <xs:element ref="TPremozenje" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="TOdbitekDavka" minOccurs="0"/>
+        <xs:element ref="TRokOdDo" minOccurs="0" maxOccurs="12"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
+  <!-- 5 -->
+  <xs:element name="TPremozenje">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="LineId" type="xs:string" minOccurs="0"/>
+        <xs:element name="Vrsta" type="xs:string" minOccurs="0"/>
+        <xs:element name="NepremicninavRS" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="OpisPremicnine" type="xs:string" minOccurs="0"/>
+        <xs:element name="OpisPremicnineKoda" type="xs:string" minOccurs="0"/>
+        <xs:element name="NaslovNepremicnine" type="xs:string" minOccurs="0"/>
+        <xs:element name="OpisNepremicnine" type="xs:string" minOccurs="0"/>
+        <xs:element name="SifraObcine" type="xs:string" minOccurs="0"/>
+        <xs:element name="SifraObcineKoda" type="xs:string" minOccurs="0"/>
+        <xs:element name="StevilkaParcele" type="xs:string" minOccurs="0"/>
+        <xs:element name="StevilkaStavbe" type="xs:string" minOccurs="0"/>
+        <xs:element name="StevilkaDelaStavbe" type="xs:string" minOccurs="0"/>
+        <xs:element name="KmetijskoGozdnoZemlj" type="xs:boolean" minOccurs="0"/>
+        <xs:element ref="TOprostitev" minOccurs="0"/>
+        <xs:element ref="TNajemniPosel" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="TRokOdDo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="OddajaOd" type="xs:int" minOccurs="0"/>
+        <xs:element name="OddajaDo" type="xs:int" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <!--6 -->
+  <xs:element name="TOprostitev">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="LineId" type="xs:string" minOccurs="0"/>
+        <xs:element name="PremicnoPremozenje" type="xs:string" minOccurs="0"/>
+        <xs:element name="PremicnoPremozenjeKoda" type="xs:string" minOccurs="0"/>
+        <xs:element name="DrzavaPogodbe" type="xs:string" minOccurs="0"/>
+        <xs:element name="DrzavaPogodbeKoda" type="xs:string" minOccurs="0"/>
+        <xs:element name="ClenPogodbe" type="xs:string" minOccurs="0"/>
+        <xs:element name="OdstavekPogodbe" type="xs:string" minOccurs="0"/>
+        <xs:element name="PristojniOrgan" type="xs:string" minOccurs="0"/>
+        <xs:element name="DatumIzdaje" type="xs:date" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--4 -->
+  <xs:element name="TOdbitekDavka">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="LineId" type="xs:string" minOccurs="0"/>
+        <xs:element name="TujiDavek" type="xs:decimal" minOccurs="0"/>
+        <xs:element name="Country" type="xs:string" minOccurs="0"/>
+        <xs:element name="CountryCode" type="xs:string" minOccurs="0"/>
+        <xs:element name="Oprostitev" type="xs:boolean" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- 9A -->
+  <xs:element name="TNajemniPosel">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="LineId" type="xs:string" minOccurs="0"/>
+        <xs:element name="Izjava" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="DatumOd" type="xs:date" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="DatumDo" type="xs:date" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="NedolocenCas" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="Najemnina" type="xs:decimal" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="Opremljenost" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="Stroski" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="DrugiNajemodajalci" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="VrstaProstorov" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="VrstaProstorovKoda" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="VrstaPosla" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="VrstaPoslaKoda" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="Povrsina" type="xs:decimal" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="TNajemojemalec" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--9B-->
+  <xs:element name="TNajemojemalec">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="LineId" type="xs:string" minOccurs="0"/>
+        <xs:element name="TipZavezanca" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="ImeNaziv" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="Priimek" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="Ulica" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="HisnaSt" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="Naselje" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="PostnaSt" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="Posta" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="Drzava" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="DrzavaKoda" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="IdentSt" type="xs:string" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+ </xs:schema>

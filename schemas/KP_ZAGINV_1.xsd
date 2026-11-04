@@ -1,0 +1,438 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/KP_ZAGINV_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/KP_ZAGINV_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList" minOccurs="0" />
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="ZAGINV"/>
+              <xs:element ref="Person" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="Options" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="Shares" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="Stakes" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="Other" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ZAGINV">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Podatki o delodajalcu</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="EmployerTaxNumber" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1P001 Davčna številka delodajalca</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CompanyName" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1P002 Ime oz. naziv delodajalca</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CompanyAddress" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>1P003 Naslov delodajalca</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="RegistrationDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>1P004 Datum vpisa v register inovativnih podjetij</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PeriodYear" type="xs:int" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Obdobje poročanja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Person">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Podatki o delavcu</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="TaxNumber" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1Z001 Davčna številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Name" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1Z002 Ime</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Surname" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1Z003 Priimek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IsNotMajorityOwner" type="xs:boolean" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1Z004 V času pridobitve ni večinski družbenik</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="IsResident" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1Z005 Status rezidenstva</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ResidentCountry" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1Z006 Država rezidentstva</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Options">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Opcije</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element ref="OptionsAcquisition" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="OptionsDetachment" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Shares">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Delnice</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element ref="SharesAcquisition" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="SharesDetachment" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Stakes">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Deleži</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element ref="StakesAcquisition" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="StakesDetachment" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="OptionsAcquisition">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Pridobitev opcij</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="PersonID" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>ID podatkov o osebi</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Date" type="xs:date" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1A001 Datum podelitve opcij</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Label" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1A002 Oznaka opcijske pogodbe/dogovora</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Amount" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1A003 Količina delnic, za katere je bila zagotovljena opcija (pravica do nakupa)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Value" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1A004 Vrednost delnic na enoto, za katere je bila zagotovljena opcija (pravica do nakupa)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="StakeAmount" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1A005 Količina deležev, za katere je bila zagotovljena opcija (pravica do nakupa)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="StakeValue" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1A006 Vrednost deležev, za katere je bila zagotovljena opcija (pravica do nakupa)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="OptionsDetachment">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Odsvojitev opcij</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="PersonID" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>ID podatkov o osebi</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Date" type="xs:date" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1B001 Datum odsvojitve opcij</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Label" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1B002 Oznaka opcijske pogodbe/dogovora</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Amount" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1B003 Količina odsvojenih delnic, za katere je bila zagotovljena opcija (pravica do nakupa)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Value" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1B004 Vrednost odsvojenih delnic na enoto, za katere je bila zagotovljena opcija (pravica do nakupa)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="StakeAmount" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1B005 Količina odsvojenih deležev, za katere je bila zagotovljena opcija (pravica do nakupa)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="StakeValue" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>1B006 Vrednost odsvojenih deležev, za katere je bila zagotovljena opcija (pravica do nakupa)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="SharesAcquisition">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Pridobitev delnic</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="PersonID" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>ID podatkov o osebi</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Date" type="xs:date" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>2A001 Datum pridobitve delnic</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Label" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>2A002 Oznaka pridobljenih delnic</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="HasLabel" type="xs:boolean" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Pridobljene delnice nimajo oznake</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Amount" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>2A003 Količina pridobljenih delnic</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ValuePerUnit" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>2A004 Vrednost pridobljenih delnic na enoto</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalValue" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>2A005 Skupna vrednost pridobljenih delnic</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Pay" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>2A006 Plačilo za pridobitev delnic</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="OptionsLabel" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>2A007 Pridobitev na podlagi opcijske pogodbe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="LapseDate10Year" type="xs:date" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>6001 Datum poteka obdobja desetih let</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="SharesDetachment">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Odsvojitev delnic</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="PersonID" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>ID podatkov o osebi</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Date" type="xs:date" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>2B001 Datum odsvojitve delnic</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Amount" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>2B002 Količina odsvojenih delnic</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ValuePerUnit" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>2B003 Vrednost odsvojenih delnic na enoto</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalValue" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>2B004 Skupna vrednost odsvojenih delnic</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="StakesAcquisition">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Pridobitev deležev</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="PersonID" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>ID podatkov o osebi</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Date" type="xs:date" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>3A001 Datum pridobitve deležev</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Amount" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>3A002 Količina pridobljenih deležev</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Value" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>3A003 Vrednost pridobljenih deležev</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Pay" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>3A004 Plačilo za pridobitev deležev</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="OptionsLabel" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>3A005 Pridobitev na podlagi opcijske pogodbe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="LapseDate10Year" type="xs:date" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>6001 Datum poteka obdobja desetih let</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="StakesDetachment">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Odsvojitev deležev</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="PersonID" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>ID podatkov o osebi</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Date" type="xs:date" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>3B001 Datum odsvojitve deležev</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Amount" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>2B002 Količina odsvojenih deležev</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Value" type="xs:decimal" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>2B003 Vrednost odsvojenih deležev</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Other">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Ostali pogoji za nastanek davčne obveznosti od dohodka</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="PersonID" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>ID podatkov o osebi</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DateContractStart" type="xs:date" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>4001 Datum sklenitve delovnega razmerja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DateContractEnd" type="xs:date" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>4002 Datum prenehanja delovnega razmerja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DateRestructure" type="xs:date" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>5001 Datum preoblikovanja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="RestructureText" type="xs:string" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Prenehanje ali preoblikovanje delodajalca ali ko se delodajalec preneha šteti za plačnika davka skladno z določili ZDavP-2</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

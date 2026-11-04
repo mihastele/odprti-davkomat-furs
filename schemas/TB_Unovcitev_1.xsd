@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/TB_Unovcitev_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" xmlns:fu="http://edavki.durs.si/Documents/Schemas/FU_Imported_Types_1.xsd" targetNamespace="http://edavki.durs.si/Documents/Schemas/TB_Unovcitev_1.xsd" elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/FU_Imported_Types_1.xsd" schemaLocation="FU_Imported_Types_1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:AttachmentList"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="Data"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:element name="Data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Popravek Dokumenta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+	  
+        <xs:element name="AccommodationEstablishmentId" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Nastanitveni obrat (ID)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="AccommodationEstablishmentName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Nastanitveni obrat (naziv)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+		
+        <xs:element name="Bon21ServiceType" minOccurs="0" >
+          <xs:annotation>
+            <xs:documentation>Vrsta storitve (gostinski, športni ali kulturni bon)</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="G">
+                <xs:annotation>
+                  <xs:documentation>Gostinstvo</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="T">
+                <xs:annotation>
+                  <xs:documentation>Turizem</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="S">
+                <xs:annotation>
+                  <xs:documentation>Šport</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="K">
+                <xs:annotation>
+                  <xs:documentation>Kultura</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>		  
+        </xs:element>
+
+        <xs:element name="RefundOwnerType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Tip povračila računa</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="ServiceProviderManual">
+                <xs:annotation>
+                  <xs:documentation>Potrditev z osebnim dokumentom.</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="ServiceProviderEdp">
+                <xs:annotation>
+                  <xs:documentation>Potrditev v mobilni aplikaciji.</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="Guest">
+                <xs:annotation>
+                  <xs:documentation>Brez potrditve. Povračilo gostom.</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+
+        <xs:element name="BillNumber" type="fu:IdentifierType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Številka računa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="RefundAmountSum" type="Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vsota vseh povračil (turistični bon)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="Bon21AmountSum" type="Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vsota vseh povračil (gostinski, športni ali kulturni bon)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="IsReservation" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Rezervacija</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="Refunds" type="RefundsType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Tabela s podrobnostmi povračila (turistični bon)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+		
+        <xs:element name="Bon21Refunds" type="Bon21RefundsType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Tabela s podrobnostmi povračila (gostinski, športni ali kulturni bon)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="RefundsType">
+    <xs:sequence>
+      <xs:element name="RefundDetails" type="RefundDetailsType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Vrstica s podrobnostmi povračila (turistični bon)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Bon21RefundsType">
+    <xs:sequence>
+      <xs:element name="Bon21RefundDetails" type="Bon21RefundDetailsType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Vrstica s podrobnostmi povračila (gostinski, športni ali kulturni bon)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="RefundDetailsType">
+    <xs:sequence>
+      <xs:element name="Id" type="xs:int" >
+        <xs:annotation>
+          <xs:documentation>ID vrstice</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="IsConfirmator" type="xs:boolean" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Potrjevalec</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="FirstName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Ime</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="LastName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Priimek</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="Emso" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>EMŠO</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="IsDonor" type="xs:boolean" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Prenosnik</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="IdentificationType" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Tip osebnega dokumenta</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="O">
+              <xs:annotation>
+                <xs:documentation>Osebna</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="P">
+              <xs:annotation>
+                <xs:documentation>Potni list</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="V">
+              <xs:annotation>
+                <xs:documentation>Vozniška</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="T">
+              <xs:annotation>
+                <xs:documentation>Ostalo</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element name="IdentificationNumber" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Številka osebnega dokumenta</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="AccommodationFrom" type="xs:date" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Nočitev od</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="AccommodationTo" type="xs:date" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Nočitev do</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="Amount" type="Decimal14_2Type" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Vrednost</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="RecipientId" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Pridobitelj (ID vrstice)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="Bon21RefundDetailsType">
+    <xs:sequence>
+      <xs:element name="Id" type="xs:int" >
+        <xs:annotation>
+          <xs:documentation>ID vrstice</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="IsConfirmator" type="xs:boolean" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Potrjevalec</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="FirstName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Ime</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="LastName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Priimek</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="Emso" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>EMŠO</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="IsDonor" type="xs:boolean" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Prenosnik</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="ServiceDate" type="xs:date" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Datum storitve</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="Amount" type="Decimal14_2Type" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Vrednost</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="RecipientId" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Pridobitelj (ID vrstice)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:simpleType name="Decimal14_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,14}(\.\d{1,2})?" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/NF_SubMP_1.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://edavki.durs.si/Documents/Schemas/NF_SubMP_1.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+             schemaLocation="EDP-Common-1.xsd"/>
+
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="SubMP" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+   
+  <xs:element name="SubMP">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Period" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obdobje obračuna</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TelephoneNumber" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="Employee" minOccurs="0" maxOccurs="unbounded" >
+          <xs:annotation>
+            <xs:documentation>Mesečno subvencijo minimalne plače (MP) uveljavljam za</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TotalSubsidy" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Skupaj subvencija MP</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AccountNumber" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Transakcijski račun</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AccountType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Tip transakcijskega računa</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="own">
+                <xs:annotation>
+                  <xs:documentation>lasten transakcijski račun</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="other">
+                <xs:annotation>
+                  <xs:documentation>drug transakcijski račun (IBAN)</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Employee">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Mesečno subvencijo minimalne plače (MP) uveljavljam za</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="TaxPayerID" type="Int8_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Davčna številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="FirstName" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Ime</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="LastName" type="String256_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Priimek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Wage" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Plača brez dodatkov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Fund" type="Int3_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Mesečni fond ur polnega delovnega časa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Hours" type="Int3_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Ure dela</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Subsidy" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Znesek subvencije</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="Int3_Type">
+    <xs:restriction base="xs:int">
+      <xs:pattern value="\d{1,3}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Int8_Type">
+    <xs:restriction base="xs:int">
+      <xs:pattern value="\d{1,8}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String256_Type">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="256" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

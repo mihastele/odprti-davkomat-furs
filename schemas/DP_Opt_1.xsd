@@ -1,0 +1,520 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://edavki.durs.si/Documents/Schemas/DP_Opt_1.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://edavki.durs.si/Documents/Schemas/DP_Opt_1.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+             schemaLocation="EDP-Common-1.xsd"/>
+
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Opt" minOccurs="0" />
+              <xs:element ref="Contact" minOccurs="0" />
+              <xs:element ref="Beneficiary" minOccurs="0" />
+              <xs:element ref="FamilyMember" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element ref="BankAccount" minOccurs="0" />
+              <xs:element ref="Procedure" minOccurs="0" />
+              <xs:element ref="General" minOccurs="0" />
+              <xs:element ref="MaxAmounts" minOccurs="0" />
+              <xs:element ref="Transport" minOccurs="0" />
+              <xs:element ref="Propellant" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="AlcoholTobacco" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element ref="DirectExemption" minOccurs="0" />
+              <xs:element ref="NotEligible" minOccurs="0" />
+              <xs:element ref="Changes" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Opt">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Osnovno potrdilo za oprostitev davkov</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Deposited" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum oddaje vloge s strani upravičenca</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Contact">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Kontaktna oseba</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Name" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Ime in priimek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Email" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Elektronski naslov</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TelephoneNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Telefonska številka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Beneficiary">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Dodatni podatki upravičenca</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="CountryOrOrganisationCode" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Država/Organizacija upravičenca - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CountryOrOrganisationName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Država/Organizacija upravičenca - naziv</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TypeOfExemptionCode" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta oprostitve - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TypeOfExemptionName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta oprostitve - naziv</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CategoryCode" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Kategorija upravičenca - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CategoryName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Kategorija upravičenca - naziv</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="StatusCardNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Številka statusne izkaznice</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="StatusCardValidTo" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Veljavnost statusne izkaznice do</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="FamilyMember">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Družinski člani</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="RelationshipCode" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Sorodstveno razmerje - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="RelationshipName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Sorodstveno razmerje - naziv</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Name" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Ime</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Surname" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Priimek</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="BankAccount">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Bančni račun</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Name" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv/Ime in priimek imetnika</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AccountNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Številka računa</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Procedure">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Vrsta postopka</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="TypeCode" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta postopka - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TypeName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vrsta postopka - naziv</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Date" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ReasonCode" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Razlog - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ReasonName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Razlog - naziv</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="General">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Splošne omejitve oprostitve</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="BasicCertificateNumber" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Številka osnovnega potrdila</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="OfficeStartDate" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Datum nastopa funkcije v RS</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EnforcementPeriodFrom" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obdobje uveljavitve od</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EnforcementPeriodTo" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Obdobje uveljavitve do</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="InternationalAgreement" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Oprostitev po mednarodnem sporazumu</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="InternationalAgreementNotes" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Oprostitev po mednarodnem sporazumu - opombe</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="MinExemptionAmount" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Najnižji znesek oprostitve z vštetim DDV</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="MaxAmounts">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Najvišji skupni znesek oprostitev (upravičenec in družinski člani)</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="FirstYear" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Najvišji skupni znesek oprostitev - prvo leto</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="FirstYearValidTo" type="xs:date" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Najvišji skupni znesek oprostitev - prvo leto - velja do</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="FirstYearNoLimits" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Najvišji skupni znesek oprostitev - prvo leto - ni omejitev</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="NextYears" type="edp:Decimal14_2Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Najvišji skupni znesek oprostitev - vsako naslednje leto</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="NextYearsNoLimits" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Najvišji skupni znesek oprostitev - vsako naslednje leto - ni omejitev</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Transport">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Omejitve oprostitve za prevozna sredstva</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="PurchaseCode" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Pri nakupu - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PurchaseName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Pri nakupu - naziv</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Sale" type="PositiveInt_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Pri odtujitvi - mesecev od prve registracije v RS</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SaleNoLimits" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Pri odtujitvi - ni omejitev</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Relocation" type="PositiveInt_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Pri selitvi - mesecev od prve registracije v RS</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="RelocationNoLimits" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Pri selitvi - ni omejitev</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Propellant">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Omejitve oprostitve za pogonsko gorivo</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="VehicleCode" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vozilo - šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="VehicleName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Vozilo - naziv</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="InitialQuarter" type="PositiveInt_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Začetno četrtletje</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="InitialQuarterUnit" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Začetno četrtletje - enota</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="NextQuarters" type="PositiveInt_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naslednja četrtletja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="NextQuartersUnit" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naslednja četrtletja - enota</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="AlcoholTobacco">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Omejitve oprostitve za alkohol in tobačne izdelke</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Code" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Šifra</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Name" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naziv</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="InitialQuarter" type="PositiveInt_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Začetno četrtletje</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="NextQuarters" type="PositiveInt_Type" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Naslednja četrtletja</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Quantity" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Količina</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="DirectExemption">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Neposredne oprostitve</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Notes" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Neposredne oprostitve - vnos</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="NotEligible">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Zavezanec ni upravičen do omejitev oprostitev</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="MaxAmountsNotEligible" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Najvišji skupni znesek oprostitev - Ni upravičen</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TransportNotEligible" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Omejitve oprostitve za prevozna sredstva - Ni upravičen</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PropellantNotEligible" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>>Omejitve oprostitve za pogonsko gorivo - Ni upravičen</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AlcoholTobaccoNotEligible" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Omejitve oprostitve za alkohol in tobačne izdelke - Ni upravičen</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DirectExemptionNotEligible" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Neposredne oprostitve - Ni upravičen</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Changes">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Indikator spremembe podatkov v sklopu</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="FamilyMemberChange" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Sprememba podatkov v sklopu Družinski člani</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="BankAccountChange" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Sprememba podatkov v sklopu Bančni račun</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ProcedureChange" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Sprememba podatkov v sklopu Vrsta postopka</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="GeneralChange" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Sprememba podatkov v sklopu Splošne omejitve oprostitve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="MaxAmountsChange" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Sprememba podatkov v sklopu Najvišji skupni znesek oprostitev (upravičenec in družinski člani)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TransportChange" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Sprememba podatkov v sklopu Omejitve oprostitve za prevozna sredstva</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PropellantChange" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Sprememba podatkov v sklopu Omejitve oprostitve za pogonsko gorivo</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AlcoholTobaccoChange" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Sprememba podatkov v sklopu Omejitve oprostitve za alkohol in tobačne izdelke</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DirectExemptionChange" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Sprememba podatkov v sklopu Neposredne oprostitve</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="PositiveInt_Type">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

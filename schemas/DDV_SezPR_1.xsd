@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://edavki.durs.si/Documents/Schemas/DDV_SezPR_1.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  targetNamespace="http://edavki.durs.si/Documents/Schemas/DDV_SezPR_1.xsd"
+  elementFormDefault="qualified">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd"/>
+
+  <!--document structure-->
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header"/>
+        <xs:element ref="edp:Signatures"/>
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent"/>
+              <xs:element ref="DDV_SezPR"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--type definitions-->
+  <xs:element name="DDV_SezPR">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CorrectionForDocument" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Popravek Dokumenta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Language" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Jezik</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Year" type="xs:int" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>za koledarsko leto</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="ResponsiblePerson" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Odgovorna oseba</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Name" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Ime</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxNumber" type="edp:TaxNumberType" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        
+        <xs:element name="Bill" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Podatki o računih</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Date" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Datum računa</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Number" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Številka računa</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TaxBase" type="Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna osnova</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="DdvRate" type="Decimal3_1Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Stopnja DDV</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="DdvAmount" type="Decimal14_2Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Znesek DDV</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="Decimal14_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,14}(\.\d{1,2})?"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="Decimal3_1Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="\d{1,3}(\.\d{1})?"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

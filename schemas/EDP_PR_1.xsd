@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="EDP-PR-1" targetNamespace="http://edavki.durs.si/Documents/Schemas/EDP_PR_1.xsd" elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/EDP_PR_1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd">
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+  <xs:element name="EDP-PR">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="deputy" type="edp:taxPayerType">
+          <xs:annotation>
+            <xs:documentation>
+              Tax payer profile which is being authorized.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="permissions">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="formGroup" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="formGroupID" type="xs:int" />
+                    <xs:element name="form" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="formID" type="xs:int" />
+                          <xs:element name="formCode" type="xs:string" />
+                          <xs:element name="formName" type="xs:string" minOccurs="0" default="" />
+                          <xs:element name="fill" type="allowType" />
+                          <xs:element name="sign" type="allowType" />
+                          <xs:element name="viewSent" type="allowType" />
+                          <xs:element name="dateFrom" type="xs:date" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>
+                                Date valid from (inclusive). If missing: no limit.
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="dateTo" type="xs:date" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>
+                                Date valid to (inclusive). If missing: no limit.
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element ref="EDP-PR" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="allowType">
+    <xs:restriction base="xs:int">
+      <xs:enumeration value="-1" />
+      <xs:enumeration value="0" />
+      <xs:enumeration value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

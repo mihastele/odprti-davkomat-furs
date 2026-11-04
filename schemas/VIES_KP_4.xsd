@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema id="VIES_KP_4" targetNamespace="http://edavki.durs.si/Documents/Schemas/VIES_KP_4.xsd"
+  elementFormDefault="qualified" xmlns="http://edavki.durs.si/Documents/Schemas/VIES_KP_4.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:edp="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd"
+  xmlns:r="http://edavki.durs.si/Documents/Schemas/VIES_KP_4.xsd"
+>
+  <xs:import namespace="http://edavki.durs.si/Documents/Schemas/EDP-Common-1.xsd" schemaLocation="EDP-Common-1.xsd" />
+  <xs:element name="VIES_KP">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="General">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="H1_ReportingPeriodStart" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Datum začetka obdobja poročanja</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="H1_ReportingPeriodEnd" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Datum konca obdobja poročanja</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="H1_Year" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Leto</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="H1_Month" type="MonthEnumType" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Mesec</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="A25_CurrentTotal" type="edp:NegativeDecimal14_0Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Polje A25 (vsota)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="A26_CurrentThreePartyTotal" type="edp:NegativeDecimal14_0Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Polje A26 (vsota)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="A28_CurrentServiceTotal" type="edp:NegativeDecimal14_0Type" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Polje A28 (vsota)</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F_ResponsiblePerson" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Odgovorna oseba</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F13_TaxNumber" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Davčna številka odgovorne osebe</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F_ContactPerson" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Kontaktna oseba</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="F_ContactPhone" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Telefonska številka kontaktne osebe</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="A_Current">
+          <xs:annotation>
+            <xs:documentation>Podatki o dobavah za tekoče obdobje</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="A" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="A21_C" type="CountryCodeType" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Koda države (VIES koda)</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="A22_N" type="xs:string" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Številka za DDV, brez kode države</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="A23_T" type="edp:NegativeDecimal14_0Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Skupna vrednost dobave v EUR</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="A24_T3" type="edp:NegativeDecimal14_0Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Skupna vrednost tristranskih dobav v EUR</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="A27_S" type="edp:NegativeDecimal14_0Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Skupna vrednost storitev v EUR</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="B_PastCorrections">
+          <xs:annotation>
+            <xs:documentation>Popravki podatkov za pretekla obdobja</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="B" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="B30_Y" type="xs:int" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Leto</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="B30_M" type="MonthEnumType" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Mesec</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="B31_C" type="CountryCodeType" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Koda države (VIES koda)</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="B32_N" type="xs:string" minOccurs="0" >
+                      <xs:annotation>
+                        <xs:documentation>Številka za DDV, brez kode države</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="B33_T" type="NegativeDecimal16_2Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Nova vrednost dobave v EUR/SIT</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="B34_T3" type="NegativeDecimal16_2Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Nova vrednost tristranskih dobav v EUR/SIT</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="B35_S" type="NegativeDecimal16_0Type" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Nova vrednost storitev v EUR</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="MonthEnumType">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="12"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Decimal12_0Type">
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="0" />
+      <xs:minInclusive value="0" />
+      <!--xs:totalDigits value="12" /-->
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Decimal12_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="2" />
+      <!--xs:totalDigits value="12" /-->
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="NegativeDecimal16_0Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="[\-+]?\d{1,16}" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="NegativeDecimal16_2Type">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="[\-+]?\d{1,16}(\.\d{1,2})?" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="CountryCodeType">
+    <xs:restriction base="xs:string">
+      <xs:length value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Envelope">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="edp:Header" />
+        <xs:element ref="edp:Signatures" />
+        <xs:element name="body">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="edp:bodyContent" />
+              <xs:element ref="VIES_KP" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
