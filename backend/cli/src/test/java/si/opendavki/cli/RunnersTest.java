@@ -111,7 +111,10 @@ class RunnersTest {
         } finally {
             System.setErr(old);
         }
-        assertTrue(err.toString().contains("File not found: /nonexistent/statement.csv"), err.toString());
+        // The reported path may be normalised to the platform separator, so match its parts, not the literal input.
+        assertTrue(err.toString().contains("File not found: "), err.toString());
+        assertTrue(err.toString().contains("nonexistent"), err.toString());
+        assertTrue(err.toString().contains("statement.csv"), err.toString());
         assertFalse(err.toString().contains("at java."), err.toString());
     }
 }
