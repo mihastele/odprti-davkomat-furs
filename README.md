@@ -51,7 +51,7 @@ Principles:
 | Audit report: every gain traced to sale and lot statement lines, every rate and dividend listed (Markdown + JSON) | 🟡 implemented ([docs](docs/tax-engine.md)); open-lot rows not itemised yet |
 | Trading 212, Revolut, Trade Republic, eToro, XTB, DEGIRO, Lightyear, N26 | ⬜ planned |
 | Vue 3 browser interface (local server, nothing uploaded) | 🟡 implemented ([docs](docs/web-interface.md)), tried in Chromium only |
-| Self-contained desktop launch (bundled UI, XSDs and JRE; app image for Windows, macOS and Linux) | 🟡 Windows built and smoke-tested locally; macOS/Linux scripts await their first CI run ([docs](docs/desktop.md)) |
+| Self-contained desktop launch (bundled UI, XSDs and JRE; app image for Windows, macOS and Linux) | 🟡 Windows built and smoke-tested locally; macOS/Linux built and launch-probed by CI ([docs](docs/desktop.md)) |
 | JavaFX desktop shell around the same UI | ⬜ planned (ODV-013) |
 
 ## Run it
@@ -196,9 +196,9 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**. 
 - **Out of scope for now**: options, futures, CFDs, crypto, other eDavki forms, signing/submission (D-09, I-04, I-10, D-11); interest (Doh-Obr) is generated but its type code and payer details are unverified (D-12).
 - **Only original filings** are produced; corrections and late submissions are partly modelled (D-04).
 - **Audit report and web interface** are English only; the audit is Markdown shown as text (A-01, U-01 to U-04).
-- **Desktop packaging** is a portable app image, not a signed installer: Windows SmartScreen and macOS Gatekeeper warn about the unsigned build, there is no auto-update, MSI/DMG signing or icon identity yet, and the macOS/Linux packaging scripts are unverified until the CI matrix runs (U-05 to U-08).
+- **Desktop packaging** is a portable app image, not a signed installer: Windows SmartScreen and macOS Gatekeeper warn about the unsigned build, there is no auto-update, MSI/DMG signing or icon identity yet. CI builds and launch-probes all four artifacts, but nobody has opened the UI on a real macOS or Linux desktop yet (U-05 to U-08).
 - **The JavaFX shell is not implemented.** The packaged application uses the browser interface in a native tray-managed process; JavaFX WebView is planned as a second window on the same UI/server (ODV-013).
-- **No license file yet, and the new CI workflow has not run yet** (L-10, see [BLOCKERS](docs/BLOCKERS.md)).
+- **No license file yet**; the CI workflow has run and passes (L-10, see [BLOCKERS](docs/BLOCKERS.md)).
 <!-- KNOWN-LIMITATIONS:END -->
 
 ## Roadmap
@@ -215,7 +215,7 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**. 
 | ODV-008 | CI, license | CI workflow added, licence still blocked (B5) |
 | ODV-009 | Vue 3 interface on a local-only backend | done (Chromium-tested) |
 | ODV-010 | Self-contained runtime: bundled UI/XSDs, user paths, UI by default, `doctor`/`paths` | done (Windows verified; unit tests) |
-| ODV-011 | Cross-platform app images with a bundled JRE, tray, build scripts and CI matrix | done on Windows; macOS/Linux await the first CI run |
+| ODV-011 | Cross-platform app images with a bundled JRE, tray, build scripts and CI matrix | done (Windows locally; all four CI artifacts built and launch-probed) |
 | ODV-012 | Settings screen, explicit project save/open, onboarding and localization | planned |
 | ODV-013 | JavaFX WebView shell around the same local UI | planned |
 | later | More brokers, other forms | |

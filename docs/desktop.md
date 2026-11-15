@@ -59,8 +59,9 @@ settings and caches.
 
 The GitHub Actions matrix builds and packages Windows x64, macOS x64, macOS arm64 and Linux x64. The **Windows** build
 has been created and smoke-tested locally: the launcher starts with its bundled runtime, `paths` extracts and verifies
-the four XSDs, and `serve --no-open` returns the bundled interface. The macOS and Linux artifacts have not been run on
-this machine; they are built by CI and must be treated as unverified until someone launches them and says so.
+the four XSDs, and `serve --no-open` returns the bundled interface. CI has produced all four artifacts and each package
+script successfully launched its own bundled runtime with `paths`; nobody has opened the browser UI on a real macOS or
+Linux desktop yet, so those two platforms remain interaction-unverified.
 
 The e2e smoke test (`node frontend/e2e/smoke.cjs`) starts the self-contained jar without `--web-dir` or
 `--schema-dir`. It runs in the CI test job after Playwright's Chromium is installed, and includes a page reload.
@@ -80,3 +81,5 @@ The e2e smoke test (`node frontend/e2e/smoke.cjs`) starts the self-contained jar
   bundle and a download bridge, and Linux WebView support must be validated separately.
 - **Linux tray support varies by desktop.** If no tray is available, the launcher falls back to the terminal/Ctrl-C
   instructions.
+- **macOS/Linux UI interaction is unverified.** CI starts the packaged executable and runs `paths`, but has not opened
+  the browser UI on those desktops; only Windows has the full local smoke test.

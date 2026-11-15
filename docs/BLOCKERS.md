@@ -113,9 +113,10 @@ exemption claim, tell me the case. The models exist but have never been tried ag
 
 ## B8. Turn on the CI check (L-10)
 
-`.github/workflows/ci.yml` now builds and tests every push and packages Windows, macOS and Linux app images, but GitHub
-Actions has not run it yet. In the repository settings make sure Actions are enabled and look at the first run; send me the
-log if it is red. The macOS and Linux packages are unverified until that run produces artifacts and someone launches them.
+`.github/workflows/ci.yml` builds and tests every push and packages Windows, macOS and Linux app images. The first runs
+are green and produced all four artifacts (Windows x64, macOS x64/arm64, Linux x64), including the browser smoke test and
+each package's `paths` probe. What remains is a person opening the UI on a real macOS and Linux desktop; send a note if
+either looks wrong.
 
 ## B9. Code signing and notarization (U-05)
 
