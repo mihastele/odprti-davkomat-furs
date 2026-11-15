@@ -48,7 +48,7 @@ cp "$jar" "$stage/opendavki.jar"
 
 echo "Packaging OpenDavki $app_version for $platform-$arch..."
 modules='java.base,java.desktop,java.net.http,java.sql,java.xml,java.logging,java.naming,jdk.httpserver,jdk.crypto.ec,jdk.unsupported'
-jpackage \
+if ! jpackage \
   --type app-image \
   --name OpenDavki \
   --app-version "$app_version" \
@@ -57,7 +57,10 @@ jpackage \
   --main-class si.opendavki.cli.Main \
   --dest "$package_dir" \
   --add-modules "$modules" \
-  --java-options '-Dfile.encoding=UTF-8'
+  --java-options '-Dfile.encoding=UTF-8' > "$package_dir/jpackage.log" 2>&1; then
+  echo "::error title=jpackage failed::$(tail -n 25 "$package_dir/jpackage.log" | tr '\n' ' ')"
+  exit 1
+fi
 
 app="$package_dir/OpenDavki"
 if [ "$platform" = "macos" ]; then
@@ -73,11 +76,17 @@ fi
 # Prove the launcher starts from outside the repository with its own runtime.
 probe_home="$package_dir/smoke-home"
 if [ "$platform" = "macos" ]; then
-  OPENDAVKI_HOME="$probe_home" "$app/Contents/MacOS/OpenDavki" paths >/dev/null
+  if ! OPENDAVKI_HOME="$probe_home" "$app/Contents/MacOS/OpenDavki" paths > "$package_dir/probe.log" 2>&1; then
+    echo "::error title=packaged probe failed::$(tail -n 25 "$package_dir/probe.log" | tr '\n' ' ')"
+    exit 1
+  fi
   artifact="$package_dir/OpenDavki-$version-macos-$arch.zip"
   (cd "$package_dir" && ditto -c -k --sequesterRsrc --keepParent OpenDavki.app "$artifact")
 else
-  OPENDAVKI_HOME="$probe_home" "$app/bin/OpenDavki" paths >/dev/null
+  if ! OPENDAVKI_HOME="$probe_home" "$app/bin/OpenDavki" paths > "$package_dir/probe.log" 2>&1; then
+    echo "::error title=packaged probe failed::$(tail -n 25 "$package_dir/probe.log" | tr '\n' ' ')"
+    exit 1
+  fi
   artifact="$package_dir/OpenDavki-$version-linux-$arch.tar.gz"
   tar -C "$package_dir" -czf "$artifact" OpenDavki
 fi
