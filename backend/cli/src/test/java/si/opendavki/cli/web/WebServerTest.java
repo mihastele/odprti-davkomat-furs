@@ -156,6 +156,35 @@ class WebServerTest {
         assertEquals(400, post("/api/ledger", server.token(), "{\"text\":\"\"}").statusCode());
     }
 
+    @Test void aReloadCanRestoreTheCurrentLedgerSummary() throws Exception {
+        JsonNode imported = Json.MAPPER.readTree(post("/api/import", server.token(), importBody()).body());
+        String id = imported.get("ledgerId").asText();
+        HttpResponse<String> restored = get("/api/ledger/" + id, server.token());
+        assertEquals(200, restored.statusCode(), restored.body());
+        JsonNode body = Json.MAPPER.readTree(restored.body());
+        assertEquals(id, body.get("ledgerId").asText());
+        assertEquals(2, body.get("entries").size());
+        assertEquals("SELL 4 @ 130 EUR", body.get("entries").get(1).get("what").asText());
+        assertTrue(body.has("diagnostics"));
+        assertEquals(400, get("/api/ledger/unknown", server.token()).statusCode());
+    }
+
+    @Test void theBundledInterfaceIsServedWithoutADirectory() throws Exception {
+        WebServer bundled = new WebServer(0, null, dir.resolve("no.env"), Path.of("../../schemas"), "/test-web");
+        bundled.start();
+        try {
+            assertTrue(bundled.hasUi());
+            HttpRequest request = HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + bundled.port() + "/")).GET().build();
+            HttpResponse<String> index = http.send(request, HttpResponse.BodyHandlers.ofString());
+            assertEquals(200, index.statusCode());
+            assertTrue(index.body().contains("test web ui"), index.body());
+            assertEquals(404, http.send(HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + bundled.port() + "/../secret.txt")).GET().build(),
+                    HttpResponse.BodyHandlers.ofString()).statusCode());
+        } finally {
+            bundled.close();
+        }
+    }
+
     @Test void onlyTheLatestFewLedgersAreKept() throws Exception {
         String first = Json.MAPPER.readTree(post("/api/import", server.token(), importBody()).body()).get("ledgerId").asText();
         for (int i = 0; i < 5; i++) post("/api/import", server.token(), importBody());

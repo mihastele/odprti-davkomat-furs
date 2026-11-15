@@ -113,8 +113,18 @@ exemption claim, tell me the case. The models exist but have never been tried ag
 
 ## B8. Turn on the CI check (L-10)
 
-`.github/workflows/ci.yml` builds and tests every push, but GitHub Actions has not run it yet. In the repository settings make
-sure Actions are enabled and look at the first run; send me the log if it is red.
+`.github/workflows/ci.yml` now builds and tests every push and packages Windows, macOS and Linux app images, but GitHub
+Actions has not run it yet. In the repository settings make sure Actions are enabled and look at the first run; send me the
+log if it is red. The macOS and Linux packages are unverified until that run produces artifacts and someone launches them.
+
+## B9. Code signing and notarization (U-05)
+
+Why: the packaged app images are unsigned. Windows SmartScreen and macOS Gatekeeper warn on first launch, which is a real
+UX cost that cannot be removed from code alone.
+
+You do: decide whether the project will buy a Windows code-signing certificate and an Apple Developer account. If yes,
+provide the credentials as CI secrets and say which builds should be signed. Until then the release notes must show the
+"right-click Open / Run anyway" instructions and the packages stay marked unverified (BACKLOG U-05).
 
 ---
 

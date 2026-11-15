@@ -1,16 +1,34 @@
 # Web interface
 
-A browser interface for the same steps as the command line: choose statements, check what was read, create the declarations.
-It runs **only on your computer**: `opendavki serve` starts a small server on `127.0.0.1` and the page talks to nothing else.
+A browser interface for the same steps as the command line: choose statements, check what was read, create the
+declarations. It runs **only on your computer**: the server listens on `127.0.0.1` and the page talks to nothing else.
+
+## Starting it
+
+The packaged application starts this interface when you launch `OpenDavki` with no arguments. From a checkout:
 
 ```bash
-npm --prefix frontend ci && npm --prefix frontend run build      # once (Node 22)
-java -jar backend/cli/target/opendavki.jar serve                 # prints an address; open it in your browser
+./run.ps1                 # Windows: start the interface and open the browser
+./run.sh                  # macOS/Linux
 ```
 
-The address contains a random key after `#` (for example `http://127.0.0.1:41873/#token=...`). The browser never sends the
-fragment to a server; the page keeps the key in memory and removes it from the address bar. Settings come from `.env`
-exactly as for the command line; `--web-dir`, `--env-file`, `--schema-dir` and `--port` are available.
+`java -jar backend/cli/target/opendavki.jar` does the same from any directory. The explicit form is still available:
+
+```bash
+java -jar backend/cli/target/opendavki.jar serve --no-open
+```
+
+`serve` prints the keyed address; add `--open` to open it, or `--tray` to keep Open/Quit in the system tray. The
+address contains a random key after `#` (for example `http://127.0.0.1:41873/#token=...`). The browser never sends the
+fragment to a server; the page keeps the key in `sessionStorage` (so a reload does not break it) and removes it from the
+address bar. `sessionStorage` disappears when the tab closes.
+
+The installed build has the web interface and the official XSDs **inside the jar**. `--web-dir` and `--schema-dir`
+remain as development overrides. Build the interface once if you are working on it:
+
+```bash
+npm --prefix frontend ci && npm --prefix frontend run build
+```
 
 ## What it does
 
@@ -18,23 +36,41 @@ exactly as for the command line; `--web-dir`, `--env-file`, `--schema-dir` and `
    ledger saved earlier. A file nobody recognises can be summarised with *Show the layout of the first file* (column names and
    value shapes only), which is what you paste into an issue to get your broker supported.
 2. **Check**: findings (errors, warnings, notes) and every ledger entry with the statement line it came from; save the ledger.
+   The ledger id is kept in the browser session, so reloading the page returns to this step while the server is still running.
 3. **Declarations**: tax year and tax number, then Doh-KDVP and Doh-Div XML (each shown as valid or invalid against the official
    schema), the per-security cross-check, the audit report with every figure traced to its statement line, and downloads. An
    incomplete result produces no XML unless you tick the clearly marked box (inspection only).
+
+The footer shows the settings file and schema directory actually in use; `opendavki paths` prints the same information in
+a terminal.
+
+## Settings and data
+
+Settings come from the same resolution order as the command line: `--env-file`, then `OPENDAVKI_ENV_FILE`, then `./.env`,
+then the per-user config directory (`%APPDATA%\OpenDavki\.env`, `~/Library/Application Support/OpenDavki/.env`, or
+`~/.config/opendavki/.env`). `OPENDAVKI_HOME` selects a portable layout. The settings screen is not implemented yet
+(BACKLOG U-02); edit that file and restart `serve`, or use the command line.
+
+The official XSDs are extracted from the jar into the per-user cache on first use and verified against `SHA256SUMS`.
+Downloaded exchange-rate tables use the same cache.
 
 ## Security model
 
 - Listens on the loopback address only. Every API call needs the per-start key; a wrong or missing key gets 401.
 - Requests whose `Host` or `Origin` is not this server are refused (other websites and DNS rebinding cannot use it).
-- Request bodies are limited to 64 MB; unknown JSON properties are rejected; static files are served only from the web directory.
-- Responses carry `Cache-Control: no-store`, `X-Content-Type-Options: nosniff` and a Content-Security-Policy of `default-src 'self'`.
-- Nothing is written to disk by the server. The imported ledger is kept **in the server's memory** (the latest five) and the page
-  refers to it by id; amounts reach the page as text, never as JSON numbers, so no value passes through a JavaScript double.
-  Restarting the server forgets everything; save the ledger JSON if you want to keep it.
+- Request bodies are limited to 64 MB; unknown JSON properties are rejected; static files are served only from the
+  configured web directory or the bundled `/web` resources.
+- Responses carry `Cache-Control: no-store`, `X-Content-Type-Options: nosniff` and a Content-Security-Policy of
+  `default-src 'self'`.
+- The server keeps the latest five imported ledgers **in memory** and writes no statement or ledger to disk. The CLI
+  extracts the bundled schemas and may cache downloaded exchange rates; restarting the server forgets the ledgers, so
+  save the ledger JSON if you want to keep it.
 - Statement text shown in the page (names, descriptions) is rendered as text, never as HTML.
 
 ## Tests
 
-`npm --prefix frontend test` (unit tests), the Java `WebServerTest` (API and security behaviour) and, with Playwright's Chromium
-installed, `node frontend/e2e/smoke.cjs` (drives the real page against the real server, including a download and an
-unrecognised file).
+`npm --prefix frontend test` (unit tests), the Java `WebServerTest` (API, static files, security behaviour) and
+`node frontend/e2e/smoke.cjs` (drives the real page against the real server, including a reload, a download and an
+unrecognised file). The CI test job installs Playwright's Chromium and runs the e2e check; locally, install it with
+`npx --prefix frontend playwright install chromium`. The e2e check uses the self-contained jar: no `--web-dir` or
+`--schema-dir`.

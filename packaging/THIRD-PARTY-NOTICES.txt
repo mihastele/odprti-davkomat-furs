@@ -1,0 +1,22 @@
+OpenDavki third-party notices
+=============================
+
+OpenDavki itself has no licence file yet (BACKLOG L-10 / BLOCKERS B5). The packaged application includes the following
+third-party components:
+
+Runtime
+- Eclipse Temurin / OpenJDK 21, GPLv2 with the Classpath Exception.
+
+Java libraries
+- Jackson core, databind, annotations and datatype-jsr310, Apache License 2.0.
+- Apache PDFBox, fontbox and pdfbox-io, Apache License 2.0.
+- picocli, Apache License 2.0.
+- Apache Commons Logging, Apache License 2.0.
+
+Web interface
+- Vue.js 3, MIT License.
+- Vite and the Vue plugin are build-time tools and are not shipped in the application image.
+
+The official FURS XSDs in schemas/ are published by FURS for eDavki; they are included byte-for-byte with SHA256SUMS.
+The full licence texts are available from each project's distribution and website. This notice must be reviewed when the
+project chooses its own licence or adds another dependency.

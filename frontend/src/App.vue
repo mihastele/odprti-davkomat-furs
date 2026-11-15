@@ -1,6 +1,6 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
-import { call, hasToken, initToken } from './api.js'
+import { call, forgetLedger, hasToken, initToken, rememberLedger, rememberedLedger } from './api.js'
 import StepImport from './components/StepImport.vue'
 import StepCheck from './components/StepCheck.vue'
 import StepReport from './components/StepReport.vue'
@@ -10,6 +10,18 @@ const info = ref(null)
 const ledger = ref(null)
 const fatal = ref('')
 
+async function restoreLedger() {
+  const id = rememberedLedger()
+  if (!id) return
+  try {
+    ledger.value = await call('GET', `/api/ledger/${encodeURIComponent(id)}`)
+    step.value = 'check'
+  } catch {
+    // The server keeps ledgers in memory only; a restart makes the remembered id useless.
+    forgetLedger()
+  }
+}
+
 async function boot() {
   if (!initToken()) {
     if (!hasToken()) fatal.value = 'This page needs the address printed by `opendavki serve`, including the part after #. Start it again and open that address.'
@@ -18,6 +30,7 @@ async function boot() {
   try {
     info.value = await call('GET', '/api/info')
     fatal.value = ''
+    if (!ledger.value) await restoreLedger()
   } catch (e) {
     fatal.value = `Cannot reach the local server: ${e.message}`
   }
@@ -32,6 +45,7 @@ onBeforeUnmount(() => window.removeEventListener('hashchange', boot))
 
 function imported(result) {
   ledger.value = result
+  rememberLedger(result.ledgerId)
   step.value = 'check'
 }
 </script>
@@ -66,7 +80,8 @@ function imported(result) {
 
       <footer v-if="info">
         Exchange rates: {{ info.settings?.fxSource }} · fees in cost: {{ info.settings?.includeFees ? 'yes' : 'no' }} · time zone: {{ info.settings?.timezone }}
-        · settings come from <code>.env</code> (see <code>.env.example</code>).
+        · settings: <code :title="info.paths?.settings">{{ info.paths?.settings }}</code>
+        · schemas: <code :title="info.paths?.schemas">{{ info.paths?.schemas }}</code>
       </footer>
     </template>
   </main>

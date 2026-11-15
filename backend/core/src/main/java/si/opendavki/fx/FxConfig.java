@@ -3,6 +3,7 @@ package si.opendavki.fx;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Map;
+import si.opendavki.app.AppPaths;
 
 /**
  * Exchange-rate settings. Precedence: real environment variables, then the {@code .env} file, then defaults.
@@ -51,8 +52,9 @@ public record FxConfig(FxSource source, Path cacheDir, String ecbUrl, String bsi
         }
         if (lookback < 0) throw new IllegalArgumentException("OPENDAVKI_FX_MAX_LOOKBACK_DAYS must be >= 0");
         String file = env.getOrDefault("OPENDAVKI_FX_FILE", "").trim();
+        String cache = env.getOrDefault("OPENDAVKI_FX_CACHE_DIR", "").trim();
         return new FxConfig(source,
-                Path.of(env.getOrDefault("OPENDAVKI_FX_CACHE_DIR", ".opendavki/cache/fx").trim()),
+                cache.isEmpty() ? AppPaths.current().fxCacheDir() : Path.of(cache),
                 blankTo(env.get("OPENDAVKI_FX_ECB_URL"), DEFAULT_ECB_URL),
                 blankTo(env.get("OPENDAVKI_FX_BSI_URL"), null),
                 file.isEmpty() ? null : Path.of(file),

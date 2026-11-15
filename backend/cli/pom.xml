@@ -47,6 +47,11 @@
     <finalName>opendavki</finalName>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.3.1</version>
+      </plugin>
+      <plugin>
         <!-- The shade plugin replaces target/opendavki.jar with the fat jar. Without forceCreation the next build reuses that
              fat jar as the "thin" input when the CLI sources are unchanged, and its stale copies of core classes win. -->
         <groupId>org.apache.maven.plugins</groupId>
@@ -89,4 +94,41 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <!-- Active when the Vue build exists, so the ordinary backend build still works from a clean checkout and a
+           packaged build is self-contained. packaging/package.* checks that the page really made it into the jar. -->
+      <id>bundled-web-ui</id>
+      <activation>
+        <file>
+          <exists>${project.basedir}/../../frontend/dist/index.html</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>copy-web-ui</id>
+                <phase>process-resources</phase>
+                <goals><goal>copy-resources</goal></goals>
+                <configuration>
+                  <outputDirectory>${project.build.outputDirectory}/web</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>${project.basedir}/../../frontend/dist</directory>
+                      <filtering>false</filtering>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

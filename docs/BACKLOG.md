@@ -36,7 +36,7 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 | L-06 | No cash, fee or FX entries in the ledger (only trades, dividends, interest, corporate actions, transfers). | ODV-0xx |
 | L-08 | Generic CSV: no decimal comma and no time of day (dates may be `yyyy-MM-dd` or `dd.MM.yyyy`). Decimal commas are ambiguous (`1,234`), so they are not guessed. | when needed |
 | L-09 | Statement hashes use raw bytes; fixtures depend on LF line endings (`.gitattributes` enforces it for `*.csv`/`*.json`). | — |
-| L-10 | No CI configuration (build + tests on push) and no LICENSE file yet. | ODV-008 |
+| L-10 | CI configuration was added (build, tests and a cross-platform app-image matrix) but GitHub Actions has not run it yet; there is still no LICENSE file. | ODV-008 |
 
 ## Interactive Brokers adapter (ODV-003)
 
@@ -131,5 +131,9 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 |---|---|---|
 | U-01 | English only (no Slovenian translation), and not audited for accessibility beyond labels, roles and keyboard use. | ODV-0xx |
 | U-02 | Settings (`.env`) cannot be edited in the interface; only shown. Profiles can be added per import but not saved. | ODV-0xx |
-| U-03 | The browser test (`frontend/e2e/smoke.cjs`) needs Playwright's Chromium and is not run in CI; only Chromium was tried. The 64 MB request limit has no test. | ODV-0xx |
-| U-04 | The server keeps only the latest five imported ledgers in memory and forgets them on restart; no sessions, no persistence by design. | — |
+| U-03 | The browser test (`frontend/e2e/smoke.cjs`) is now part of the CI test job with Playwright's Chromium, but only Chromium has been tried; the 64 MB request limit still has no test. | ODV-0xx (remaining: request-limit test) |
+| U-04 | The server keeps only the latest five imported ledgers in memory and forgets them on restart; no sessions, no persistence by design. The browser now restores the current ledger id after a reload while the server is running, but a restart still forgets it. | ODV-012 (opt-in project save) |
+| U-05 | App images are unsigned: Windows SmartScreen and macOS Gatekeeper warn on first launch. Code signing/notarization needs certificates and accounts. | when certificates exist |
+| U-06 | Only portable app images are produced (zip/tar.gz); no MSI, DMG, deb/rpm, auto-update or desktop-menu installer. | ODV-011 follow-up |
+| U-07 | The macOS and Linux app images are built by the CI matrix but have not been launched on real machines; only the Windows image was smoke-tested locally. | ODV-011 verification |
+| U-08 | `jpackage` uses its default icon; there is no project logo/icon yet. A third-party notices file is included in the app image. | when the logo is decided |

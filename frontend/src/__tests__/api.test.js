@@ -1,5 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { ApiError, call, fileToBase64, fetchText, hasToken, initToken, resetTokenForTests } from '../api.js'
+import {
+  ApiError, call, fileToBase64, fetchText, forgetLedger, hasToken, initToken, rememberLedger, rememberedLedger,
+  resetTokenForTests
+} from '../api.js'
 
 afterEach(() => {
   resetTokenForTests()
@@ -20,6 +23,22 @@ describe('initToken', () => {
     expect(initToken({ hash: '', pathname: '/', search: '' }, { replaceState })).toBe(false)
     expect(initToken({ hash: '#other=1', pathname: '/', search: '' }, { replaceState })).toBe(false)
     expect(replaceState).not.toHaveBeenCalled()
+  })
+
+  it('keeps the key across a reload without putting it back in the address bar', () => {
+    const replaceState = vi.fn()
+    expect(initToken({ hash: '#token=remembered', pathname: '/', search: '' }, { replaceState })).toBe(true)
+    expect(initToken({ hash: '', pathname: '/', search: '' }, { replaceState })).toBe(true)
+    expect(replaceState).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('remembered ledger', () => {
+  it('remembers and forgets the server-side ledger id', () => {
+    rememberLedger('abc-123')
+    expect(rememberedLedger()).toBe('abc-123')
+    forgetLedger()
+    expect(rememberedLedger()).toBe(null)
   })
 })
 

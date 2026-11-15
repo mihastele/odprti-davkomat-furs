@@ -17,16 +17,17 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import si.opendavki.broker.BrokerAdapter;
 import si.opendavki.broker.BrokerAdapters;
 import si.opendavki.broker.StatementSource;
 import si.opendavki.broker.profile.ProfileAdapter;
 import si.opendavki.broker.profile.ProfileLoader;
+import si.opendavki.cli.CliPaths;
 import si.opendavki.cli.InputException;
 import si.opendavki.cli.Services;
 import si.opendavki.furs.SchemaChecksums;
-import si.opendavki.fx.DotEnv;
 import si.opendavki.fx.FxConfig;
 import si.opendavki.json.Json;
 import si.opendavki.ledger.Ledger;
@@ -45,30 +46,42 @@ public final class WebServer implements AutoCloseable {
     private static final long MAX_BODY_BYTES = 64L * 1024 * 1024;
 
     private final HttpServer server;
+    private final ExecutorService executor;
     private final String token;
     private final Path webDir;
     private final Path envFile;
     private final Path schemaDir;
+    private final String resourceRoot;
     /** Imported ledgers by id, newest last; bounded so a long session cannot grow without limit. Never written to disk. */
     private final Map<String, Ledger> ledgers = new java.util.LinkedHashMap<>();
     private static final int MAX_LEDGERS = 5;
 
     public WebServer(int port, Path webDir, Path envFile, Path schemaDir) throws IOException {
+        this(port, webDir, envFile, schemaDir, "/web");
+    }
+
+    /** Package-visible so tests can serve a fixture resource root instead of the real bundled page. */
+    WebServer(int port, Path webDir, Path envFile, Path schemaDir, String resourceRoot) throws IOException {
         this.webDir = webDir;
         this.envFile = envFile;
         this.schemaDir = schemaDir;
+        this.resourceRoot = resourceRoot.endsWith("/") ? resourceRoot.substring(0, resourceRoot.length() - 1) : resourceRoot;
         byte[] raw = new byte[24];
         new SecureRandom().nextBytes(raw);
         this.token = Base64.getUrlEncoder().withoutPadding().encodeToString(raw);
         this.server = HttpServer.create(new InetSocketAddress(InetAddress.getLoopbackAddress(), port), 0);
         server.createContext("/api/", this::api);
         server.createContext("/", this::staticFile);
-        server.setExecutor(Executors.newFixedThreadPool(4));
+        this.executor = Executors.newFixedThreadPool(4);
+        server.setExecutor(executor);
     }
 
     public void start() { server.start(); }
 
-    @Override public void close() { server.stop(0); }
+    @Override public void close() {
+        server.stop(0);
+        executor.shutdownNow();
+    }
 
     public int port() { return server.getAddress().getPort(); }
 
@@ -77,7 +90,16 @@ public final class WebServer implements AutoCloseable {
     /** The address to open; the key is in the fragment, which browsers never send to the server. */
     public String url() { return "http://127.0.0.1:" + port() + "/#token=" + token; }
 
-    public boolean hasUi() { return Files.isRegularFile(webDir.resolve("index.html")); }
+    public boolean hasUi() {
+        return webDir != null
+                ? Files.isRegularFile(webDir.resolve("index.html"))
+                : WebServer.class.getResource(resourceRoot + "/index.html") != null;
+    }
+
+    /** Whether this build contains the Vue interface in its jar. */
+    public static boolean bundledUiAvailable() {
+        return WebServer.class.getResource("/web/index.html") != null;
+    }
 
     // ---- request guards ---------------------------------------------------------------------------------------
 
@@ -140,6 +162,7 @@ public final class WebServer implements AutoCloseable {
             String path = ex.getRequestURI().getPath(), method = ex.getRequestMethod();
             if (method.equals("GET") && path.equals("/api/info")) { json(ex, 200, info()); return; }
             if (method.equals("GET") && path.startsWith("/api/ledger/") && path.endsWith("/download")) { downloadLedger(ex, path); return; }
+            if (method.equals("GET") && path.startsWith("/api/ledger/")) { json(ex, 200, existingLedger(path)); return; }
             if (!method.equals("POST")) { error(ex, 405, "Method not allowed"); return; }
             byte[] body = readBody(ex.getRequestBody());
             switch (path) {
@@ -158,7 +181,7 @@ public final class WebServer implements AutoCloseable {
     }
 
     private Map<String, Object> info() throws IOException {
-        Map<String, String> env = DotEnv.environment(envFile);
+        Map<String, String> env = CliPaths.environmentAt(envFile);
         Map<String, Object> settings = new java.util.LinkedHashMap<>();
         try {
             FxConfig fx = FxConfig.from(env);
@@ -178,7 +201,16 @@ public final class WebServer implements AutoCloseable {
             schemas.add(Map.of("name", "schemas", "status", "UNVERIFIED: " + e.getMessage()));
         }
         List<Map<String, String>> adapters = BrokerAdapters.all().stream().map(a -> Map.of("id", a.id(), "name", a.displayName())).toList();
-        return Map.of("version", "0.1.0", "adapters", adapters, "settings", settings, "schemas", schemas);
+        Map<String, Object> out = new java.util.LinkedHashMap<>();
+        out.put("version", "0.1.0");
+        out.put("adapters", adapters);
+        out.put("settings", settings);
+        out.put("schemas", schemas);
+        out.put("paths", Map.of(
+                "settings", envFile.toAbsolutePath().normalize().toString(),
+                "schemas", schemaDir.toAbsolutePath().normalize().toString(),
+                "webUi", webDir != null ? webDir.toAbsolutePath().normalize().toString() : "bundled in the application"));
+        return out;
     }
 
     private Map<String, Object> importStatements(Requests.Import req) throws IOException {
@@ -189,7 +221,7 @@ public final class WebServer implements AutoCloseable {
         }
         List<StatementSource> sources = new ArrayList<>();
         for (Requests.File f : req.files()) sources.add(new StatementSource(f.name(), decode(f)));
-        var outcome = Services.runImport(sources, req.adapter(), extra, DotEnv.environment(envFile));
+        var outcome = Services.runImport(sources, req.adapter(), extra, CliPaths.environmentAt(envFile));
         Map<String, Object> out = new java.util.LinkedHashMap<>(ledgerSummary(outcome.ledger()));
         out.put("files", outcome.files());
         out.put("diagnostics", outcome.diagnostics());
@@ -212,9 +244,27 @@ public final class WebServer implements AutoCloseable {
             ledgers.put(id, ledger);
             while (ledgers.size() > MAX_LEDGERS) ledgers.remove(ledgers.keySet().iterator().next());
         }
+        Map<String, Object> out = new java.util.LinkedHashMap<>();
+        out.put("ledgerId", id);
+        out.putAll(ledgerView(ledger));
+        return out;
+    }
+
+    /** Restores the page after a reload; the ledger itself stays in memory and disappears when the server stops. */
+    private Map<String, Object> existingLedger(String path) {
+        String id = path.substring("/api/ledger/".length());
+        Ledger ledger = ledger(id);
+        Map<String, Object> out = new java.util.LinkedHashMap<>();
+        out.put("ledgerId", id);
+        out.putAll(ledgerView(ledger));
+        out.put("diagnostics", si.opendavki.ledger.LedgerChecker.check(ledger));
+        return out;
+    }
+
+    private static Map<String, Object> ledgerView(Ledger ledger) {
         List<Map<String, String>> entries = new ArrayList<>();
         for (si.opendavki.ledger.LedgerEntry e : ledger.entries()) entries.add(describeEntry(e));
-        return Map.of("ledgerId", id, "entries", entries);
+        return Map.of("entries", entries);
     }
 
     private static Map<String, String> describeEntry(si.opendavki.ledger.LedgerEntry e) {
@@ -263,7 +313,7 @@ public final class WebServer implements AutoCloseable {
 
     private Map<String, Object> report(Requests.Report req) throws IOException {
         Ledger ledger = ledger(req.ledgerId());
-        var o = Services.runReport(ledger, req.year(), req.taxNumber(), DotEnv.environment(envFile), schemaDir, req.allowIncomplete());
+        var o = Services.runReport(ledger, req.year(), req.taxNumber(), CliPaths.environmentAt(envFile), schemaDir, req.allowIncomplete());
         Map<String, Object> out = new java.util.LinkedHashMap<>();
         out.put("complete", o.result().complete());
         out.put("xmlWithheld", o.xmlWithheld());
@@ -305,9 +355,9 @@ public final class WebServer implements AutoCloseable {
             if (!ex.getRequestMethod().equals("GET") && !ex.getRequestMethod().equals("HEAD")) { error(ex, 405, "Method not allowed"); return; }
             String path = ex.getRequestURI().getPath();
             if (path.equals("/")) path = "/index.html";
-            Path root = webDir.toAbsolutePath().normalize();
-            Path file = root.resolve(path.substring(1)).normalize();
-            if (!file.startsWith(root) || !Files.isRegularFile(file)) {
+            boolean unsafe = path.contains("..") || path.contains("\\") || path.contains("//");
+            byte[] body = unsafe ? null : readStatic(path);
+            if (body == null) {
                 if (path.equals("/index.html")) {
                     send(ex, 404, "text/plain; charset=utf-8", ("The web interface is not built. Run: npm --prefix frontend ci && npm --prefix frontend run build\n").getBytes(StandardCharsets.UTF_8));
                 } else {
@@ -315,10 +365,23 @@ public final class WebServer implements AutoCloseable {
                 }
                 return;
             }
-            send(ex, 200, contentType(file.getFileName().toString()), ex.getRequestMethod().equals("HEAD") ? new byte[0] : Files.readAllBytes(file));
+            send(ex, 200, contentType(path), ex.getRequestMethod().equals("HEAD") ? new byte[0] : body);
         } catch (Exception e) {
             System.err.println("Internal error serving a file: " + e.getClass().getName());
             error(ex, 500, "Internal error");
+        }
+    }
+
+    /** Reads a file from the explicit web directory, or from the jar when the server was started with the bundled UI. */
+    private byte[] readStatic(String path) throws IOException {
+        if (webDir != null) {
+            Path root = webDir.toAbsolutePath().normalize();
+            Path file = root.resolve(path.substring(1)).normalize();
+            if (!file.startsWith(root) || !Files.isRegularFile(file)) return null;
+            return Files.readAllBytes(file);
+        }
+        try (InputStream in = WebServer.class.getResourceAsStream(resourceRoot + path)) {
+            return in == null ? null : in.readAllBytes();
         }
     }
 
@@ -328,9 +391,13 @@ public final class WebServer implements AutoCloseable {
         if (n.endsWith(".js") || n.endsWith(".mjs")) return "text/javascript; charset=utf-8";
         if (n.endsWith(".css")) return "text/css; charset=utf-8";
         if (n.endsWith(".svg")) return "image/svg+xml";
-        if (n.endsWith(".json")) return "application/json; charset=utf-8";
+        if (n.endsWith(".json") || n.endsWith(".map")) return "application/json; charset=utf-8";
         if (n.endsWith(".png")) return "image/png";
         if (n.endsWith(".ico")) return "image/x-icon";
+        if (n.endsWith(".woff2")) return "font/woff2";
+        if (n.endsWith(".woff")) return "font/woff";
+        if (n.endsWith(".ttf")) return "font/ttf";
+        if (n.endsWith(".webmanifest")) return "application/manifest+json";
         return "application/octet-stream";
     }
 }

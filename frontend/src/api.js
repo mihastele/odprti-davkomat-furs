@@ -1,6 +1,8 @@
 // All traffic goes to the local `opendavki serve` process that delivered this page. The key it printed is in the address
 // fragment (#token=...), which the browser never sends to a server; it is kept in memory and removed from the address bar.
 
+const TOKEN_KEY = 'opendavki.token'
+const LEDGER_KEY = 'opendavki.ledgerId'
 let token = null
 
 export class ApiError extends Error {
@@ -10,12 +12,24 @@ export class ApiError extends Error {
   }
 }
 
-/** Reads the key from the address fragment, then hides it. Returns whether a key is available. */
-export function initToken(location = window.location, history = window.history) {
+/** sessionStorage survives a reload but is cleared when the tab closes; private modes may not have it. */
+function safeStorage() {
+  try {
+    return window.sessionStorage
+  } catch {
+    return null
+  }
+}
+
+/** Reads the key from the address fragment, then hides it and keeps it for a reload. Returns whether a key is available. */
+export function initToken(location = window.location, history = window.history, storage = safeStorage()) {
   const match = /(?:^#|&)token=([^&]+)/.exec(location.hash)
   if (match) {
     token = decodeURIComponent(match[1])
     history.replaceState(null, '', location.pathname + location.search)
+    try { storage?.setItem(TOKEN_KEY, token) } catch { /* private mode: keep the in-memory key */ }
+  } else if (token === null) {
+    try { token = storage?.getItem(TOKEN_KEY) ?? null } catch { token = null }
   }
   return token !== null
 }
@@ -24,8 +38,23 @@ export function hasToken() {
   return token !== null
 }
 
-export function resetTokenForTests() {
+export function resetTokenForTests(storage = safeStorage()) {
   token = null
+  forgetLedger(storage)
+  try { storage?.removeItem(TOKEN_KEY) } catch { /* ignore */ }
+}
+
+/** The server keeps the ledger in memory; remembering the id lets a reload resume the check screen. */
+export function rememberLedger(ledgerId, storage = safeStorage()) {
+  try { if (ledgerId) storage?.setItem(LEDGER_KEY, ledgerId) } catch { /* ignore */ }
+}
+
+export function rememberedLedger(storage = safeStorage()) {
+  try { return storage?.getItem(LEDGER_KEY) ?? null } catch { return null }
+}
+
+export function forgetLedger(storage = safeStorage()) {
+  try { storage?.removeItem(LEDGER_KEY) } catch { /* ignore */ }
 }
 
 export async function call(method, path, body) {

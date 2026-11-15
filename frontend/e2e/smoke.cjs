@@ -1,4 +1,4 @@
-// End-to-end check in a real browser against the real local server. Not part of CI (needs Playwright's Chromium).
+// End-to-end check in a real browser against the real local server. The CI test job installs Playwright's Chromium first.
 //   npm --prefix frontend run build && node frontend/e2e/smoke.cjs [screenshot-dir]
 const { chromium } = require('playwright')
 const { spawn } = require('child_process')
@@ -12,8 +12,9 @@ fs.mkdirSync(shots, { recursive: true })
 
 function startServer() {
   return new Promise((resolve, reject) => {
-    const p = spawn('java', ['-jar', 'backend/cli/target/opendavki.jar', 'serve', '--web-dir', 'frontend/dist',
-      '--env-file', 'examples/synthetic.env', '--schema-dir', 'schemas'], { cwd: root, env: { ...process.env, JAVA_TOOL_OPTIONS: '' } })
+    // No --web-dir or --schema-dir: this checks the self-contained jar, not the development checkout.
+    const p = spawn('java', ['-jar', 'backend/cli/target/opendavki.jar', 'serve', '--no-open',
+      '--env-file', 'examples/synthetic.env'], { cwd: root, env: { ...process.env, JAVA_TOOL_OPTIONS: '' } })
     let out = ''
     const onData = (d) => {
       out += d
@@ -53,6 +54,12 @@ function startServer() {
     await page.waitForSelector('text=2. Check what was read')
     assert.match(await page.textContent('main'), /Ledger entries \(6\)/)
     await page.screenshot({ path: path.join(shots, '2-check.png'), fullPage: true })
+
+    // A reload must keep the token (sessionStorage) and resume the server-side ledger, not throw the user back to the start.
+    await page.reload()
+    await page.waitForSelector('text=2. Check what was read')
+    assert.match(await page.textContent('main'), /Ledger entries \(6\)/)
+    assert.ok(!page.url().includes('token'), 'the key must stay out of the address bar after a reload')
 
     await page.click('text=Continue to the report')
     await page.fill('#year', '2024')

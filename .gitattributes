@@ -1,3 +1,6 @@
 *.csv text eol=lf
 *.json text eol=lf
+*.yml text eol=lf
+*.sh text eol=lf
+mvnw text eol=lf
 *.xsd -text

@@ -51,16 +51,42 @@ Principles:
 | Audit report: every gain traced to sale and lot statement lines, every rate and dividend listed (Markdown + JSON) | 🟡 implemented ([docs](docs/tax-engine.md)); open-lot rows not itemised yet |
 | Trading 212, Revolut, Trade Republic, eToro, XTB, DEGIRO, Lightyear, N26 | ⬜ planned |
 | Vue 3 browser interface (local server, nothing uploaded) | 🟡 implemented ([docs](docs/web-interface.md)), tried in Chromium only |
+| Self-contained desktop launch (bundled UI, XSDs and JRE; app image for Windows, macOS and Linux) | 🟡 Windows built and smoke-tested locally; macOS/Linux scripts await their first CI run ([docs](docs/desktop.md)) |
+| JavaFX desktop shell around the same UI | ⬜ planned (ODV-013) |
 
-## Quick start
+## Run it
 
-Requires Java 21 and Maven.
+### Packaged application (no Java, Maven or Node)
+
+The packaging scripts produce self-contained app images with their own Java runtime, the web interface and the official
+XSDs. When the project publishes release artifacts, unzip or untar the one for your platform; you can build the same
+artifact locally with `./packaging/package.ps1` or `./packaging/package.sh`. Then:
+
+- **Windows:** unzip, open the `OpenDavki` folder and double-click `OpenDavki.exe`.
+- **macOS:** open `OpenDavki.app`. The build is unsigned, so the first launch needs right-click → Open (or the
+  Gatekeeper instructions in [docs/desktop.md](docs/desktop.md)).
+- **Linux:** run `OpenDavki/bin/OpenDavki`.
+
+It starts a server on `127.0.0.1` only, opens the browser interface, and shows a tray icon with **Open** and **Quit**.
+Settings and caches live in the OS user directories; `OpenDavki paths` and `OpenDavki doctor` show exactly where.
+Nothing is uploaded.
+
+### From source
+
+Requires JDK 21. Node 22 is needed only to build the web interface; the Maven wrapper is included, so a global Maven
+install is not required.
 
 ```bash
-cd backend && mvn install
-J="java -jar cli/target/opendavki.jar"
+./build.ps1                 # Windows; frontend + Java in one command
+./build.sh                  # macOS/Linux
+./run.ps1                   # no arguments: start the interface and open the browser
+```
 
-$J serve                                     # browser interface on this computer (build it once: npm --prefix ../frontend ci && npm --prefix ../frontend run build)
+The built jar also works from any directory:
+
+```bash
+J="java -jar backend/cli/target/opendavki.jar"   # run from the repository root for the example paths below
+$J serve                                     # start on 127.0.0.1 and print the keyed address; add --open to open it
 $J adapters                                  # importers on the classpath
 $J import statement.csv -o ledger.json       # read, de-duplicate, check (exit code 1 on errors)
 $J check ledger.json
@@ -69,21 +95,24 @@ $J import statement.csv --profile my-profile.json -o ledger.json   # a CSV broke
 $J fx USD 2024-03-01 100                     # rate the configured source gives, and 100 USD in EUR
 
 # ledger -> declarations for a tax year (XML validated against the XSDs, plus audit-<year>.json and audit-<year>.md)
-$J report ledger.json --year 2024 --tax-number 12345678 --out-dir out --schema-dir ../schemas
+$J report ledger.json --year 2024 --tax-number 12345678 --out-dir out
 
 $J audit out/audit-2024.json                 # render the readable audit report again from the JSON
-$J validate KDVP out/kdvp-2024.xml --schema-dir ../schemas
-$J generate KDVP ../examples/kdvp-synthetic.json --schema-dir ../schemas -o kdvp.out.xml   # from a hand-written report (dev tool)
+$J validate KDVP out/kdvp-2024.xml
+$J generate KDVP examples/kdvp-synthetic.json -o kdvp.out.xml   # from a hand-written report (dev tool)
 ```
 
 Try the whole pipeline offline on synthetic data (own rates file instead of the ECB download):
 
 ```bash
-cd backend && mvn -q install && cd ..
-J="java -jar backend/cli/target/opendavki.jar"
-$J import examples/statement-generic.csv -o /tmp/ledger.json
-$J report /tmp/ledger.json --year 2024 --tax-number 12345678 --out-dir /tmp/out --env-file examples/synthetic.env
+./build.ps1                                  # or ./build.sh
+./run.ps1 import examples/statement-generic.csv -o ledger.json
+./run.ps1 report ledger.json --year 2024 --tax-number 12345678 --out-dir out --env-file examples/synthetic.env
 ```
+
+`--schema-dir`, `--env-file` and `--web-dir` remain available as overrides. Without them the application finds
+`./schemas`, `./.env` and the built interface when they exist, and otherwise uses the bundled XSDs and the user config
+directory.
 
 Exit codes: `0` ok, `1` XSD validation failed or ledger errors, `2` input/config error, `3` schema or rate source unavailable.
 
@@ -91,14 +120,19 @@ Exit codes: `0` ok, `1` XSD validation failed or ledger errors, `2` input/config
 
 ## Configuration
 
-Copy [`.env.example`](.env.example) to `.env` (git-ignored). Real environment variables override it.
+Copy [`.env.example`](.env.example) to `.env` (git-ignored), or let the packaged application use its per-user settings
+file. Resolution order: `--env-file`, then `OPENDAVKI_ENV_FILE`, then `./.env`, then the user config directory. Real
+environment variables override the file. `opendavki paths` prints the resolved paths.
 
 | Setting | Default | Meaning |
 |---|---|---|
+| `OPENDAVKI_HOME` | unset | Portable mode: config, cache, schema cache and rate cache live under this one directory (process environment only) |
+| `OPENDAVKI_ENV_FILE` | unset | Settings file to use instead of `./.env` (process environment only) |
+| `OPENDAVKI_SCHEMA_DIR` | unset | Official XSD directory to use instead of `./schemas` or the bundled copy (process environment only) |
 | `OPENDAVKI_FX_SOURCE` | `ECB` | `ECB`, `BSI` (Bank of Slovenia) or `FILE` (your own CSV) |
 | `OPENDAVKI_FX_MISSING_DAY` | `PREVIOUS` | use the latest earlier rate when a day has none, or `FAIL` |
 | `OPENDAVKI_FX_MAX_LOOKBACK_DAYS` | `7` | limit for the fallback above |
-| `OPENDAVKI_FX_CACHE_DIR` | `.opendavki/cache/fx` | download cache |
+| `OPENDAVKI_FX_CACHE_DIR` | user cache directory (`OpenDavki/fx`) | download cache; `./.opendavki/cache/fx` is still honoured when set explicitly |
 | `OPENDAVKI_FX_ECB_URL`, `_BSI_URL`, `_FILE` | ECB history URL, empty, empty | source locations |
 | `OPENDAVKI_INSTRUMENTS_FILE` | empty | CSV that fixes missing ISINs and asset classes ([docs/instrument-master.md](docs/instrument-master.md)) |
 | `OPENDAVKI_OVERRIDES_FILE` | empty | CSV that drops individual ledger entries, each with a reason ([docs/overrides.md](docs/overrides.md)) |
@@ -128,10 +162,14 @@ backend/core            ledger, adapter SPI, exchange rates, tax engine, FURS XM
 backend/brokers/<id>    one Maven module per broker adapter
 backend/cli             command-line tool and local web server (shaded jar)
 frontend/               Vue 3 web interface
+packaging/              jpackage app-image scripts and runtime README
 profiles/draft/         DRAFT broker profiles (JSON)
 schemas/                official FURS XSDs, byte-for-byte, with SHA256SUMS
 examples/               synthetic report inputs
-docs/                   adapter guide, format docs, FX, tax engine, backlog
+docs/                   adapter guide, format docs, FX, tax engine, desktop, backlog
+build.ps1 / build.sh    one-command source build (web UI + Maven)
+run.ps1 / run.sh        launch the built jar
+.mvn/, mvnw, mvnw.cmd   Maven Wrapper
 ```
 
 ## Official schemas
@@ -158,7 +196,9 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**. 
 - **Out of scope for now**: options, futures, CFDs, crypto, other eDavki forms, signing/submission (D-09, I-04, I-10, D-11); interest (Doh-Obr) is generated but its type code and payer details are unverified (D-12).
 - **Only original filings** are produced; corrections and late submissions are partly modelled (D-04).
 - **Audit report and web interface** are English only; the audit is Markdown shown as text (A-01, U-01 to U-04).
-- **No license file yet; CI has not run yet** (L-10, see [BLOCKERS](docs/BLOCKERS.md)).
+- **Desktop packaging** is a portable app image, not a signed installer: Windows SmartScreen and macOS Gatekeeper warn about the unsigned build, there is no auto-update, MSI/DMG signing or icon identity yet, and the macOS/Linux packaging scripts are unverified until the CI matrix runs (U-05 to U-08).
+- **The JavaFX shell is not implemented.** The packaged application uses the browser interface in a native tray-managed process; JavaFX WebView is planned as a second window on the same UI/server (ODV-013).
+- **No license file yet, and the new CI workflow has not run yet** (L-10, see [BLOCKERS](docs/BLOCKERS.md)).
 <!-- KNOWN-LIMITATIONS:END -->
 
 ## Roadmap
@@ -172,8 +212,12 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**. 
 | ODV-005 | Audit report (done); ledger checks for transfers, prices and precision (done, see [docs](docs/ledger-checks.md)); semantic declaration checks and IBKR P/L cross-check | partly done |
 | ODV-006 | Splits, reverse splits, conversions, instrument master | done (cash components and adapter support open) |
 | ODV-007 | Golden files against eDavki, schema versioning | |
-| ODV-008 | CI, license | |
+| ODV-008 | CI, license | CI workflow added, licence still blocked (B5) |
 | ODV-009 | Vue 3 interface on a local-only backend | done (Chromium-tested) |
+| ODV-010 | Self-contained runtime: bundled UI/XSDs, user paths, UI by default, `doctor`/`paths` | done (Windows verified; unit tests) |
+| ODV-011 | Cross-platform app images with a bundled JRE, tray, build scripts and CI matrix | done on Windows; macOS/Linux await the first CI run |
+| ODV-012 | Settings screen, explicit project save/open, onboarding and localization | planned |
+| ODV-013 | JavaFX WebView shell around the same local UI | planned |
 | later | More brokers, other forms | |
 
 ## Contributing

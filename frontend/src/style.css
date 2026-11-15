@@ -119,3 +119,4 @@ pre {
 }
 
 footer { margin-top: 32px; color: var(--muted); font-size: 0.85rem; }
+footer code { word-break: break-all; }

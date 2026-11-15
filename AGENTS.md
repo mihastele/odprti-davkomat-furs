@@ -18,23 +18,30 @@ backend/core            ledger, broker adapter SPI, FX rates, tax engine, FURS X
 backend/brokers/<id>    one Maven module per broker adapter; depends only on core
 backend/cli             picocli command line, local web server (`serve`), shaded jar, discovers adapters with ServiceLoader
 frontend/               Vue 3 web interface (built with Vite, served by `opendavki serve`); `npm test`, `node e2e/smoke.cjs`
+packaging/              jpackage app-image scripts, runtime README and third-party notices
 profiles/draft/         DRAFT broker profiles (JSON) for the generic profile engine
 schemas/                official FURS XSDs, byte-for-byte, with SHA256SUMS. Never edit.
 examples/               synthetic report inputs
-docs/                   adapters.md, profiles.md, generic-csv.md, ibkr.md, trading212.md, fx.md, tax-engine.md, web-interface.md, BACKLOG.md, BLOCKERS.md
+docs/                   adapters.md, profiles.md, generic-csv.md, ibkr.md, trading212.md, fx.md, tax-engine.md, web-interface.md, desktop.md, BACKLOG.md, BLOCKERS.md
+build.ps1 / build.sh    one-command source build (web UI + Maven)
+run.ps1 / run.sh        launch the built jar
+.mvn/, mvnw, mvnw.cmd   Maven Wrapper
 .env.example            every configuration key with its default
 ```
 
 ## Build, test, run
 
-Java 21, Maven. From `backend/`:
+Java 21, Maven. The Maven Wrapper lives at the repository root; from `backend/` plain `mvn` still works:
 
 ```bash
-mvn -q -B install                      # build + all tests of all modules (run before every commit)
-npm --prefix ../frontend ci && npm --prefix ../frontend test   # when touching frontend/
-mvn -q -B install -pl core -DskipTests # refresh core when testing one broker module alone
-mvn -q -B test -pl brokers/ibkr        # one module
-java -jar cli/target/opendavki.jar --help
+./build.ps1                            # Windows: frontend + Java in one command
+./build.sh                             # macOS/Linux: frontend + Java in one command
+./mvnw -f backend/pom.xml -q -B install  # Java build + all tests (run before every commit)
+npm --prefix frontend ci && npm --prefix frontend test   # when touching frontend/
+./mvnw -f backend/pom.xml -q -B install -pl core -DskipTests # refresh core when testing one broker module alone
+./mvnw -f backend/pom.xml -q -B test -pl brokers/ibkr    # one module
+./run.ps1 --help                       # or java -jar backend/cli/target/opendavki.jar --help
+./packaging/package.ps1                # Windows app image; package.sh on macOS/Linux
 ```
 
 Regenerate adapter fixture expectations **deliberately** and read the diff:

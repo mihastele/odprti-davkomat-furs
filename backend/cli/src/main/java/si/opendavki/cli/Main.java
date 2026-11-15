@@ -1,5 +1,7 @@
 package si.opendavki.cli;
 
+import java.awt.Desktop;
+import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -11,31 +13,37 @@ import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.util.HexFormat;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import si.opendavki.app.AppPaths;
 import si.opendavki.broker.BrokerAdapter;
 import si.opendavki.broker.BrokerAdapters;
 import si.opendavki.broker.ImportResult;
 import si.opendavki.broker.StatementSource;
+import si.opendavki.furs.SchemaChecksums;
 import si.opendavki.ledger.Diagnostic;
 import si.opendavki.ledger.Ledger;
 import si.opendavki.ledger.LedgerChecker;
-import si.opendavki.ledger.LedgerEntry;
 import si.opendavki.furs.DivXmlWriter;
 import si.opendavki.furs.FormType;
 import si.opendavki.furs.KdvpXmlWriter;
 import si.opendavki.furs.SchemaValidator;
+import si.opendavki.fx.DotEnv;
+import si.opendavki.fx.FxConfig;
 import si.opendavki.model.DivReport;
 import si.opendavki.model.KdvpReport;
 
 @Command(name = "opendavki", mixinStandardHelpOptions = true, version = "0.1.0",
-        description = "Open-source, local-first FURS eDavki XML tooling.",
+        description = "Open-source, local-first FURS eDavki XML tooling. With no command, starts the local web interface.",
         subcommands = {Main.Generate.class, Main.Validate.class, Main.Schemas.class, Main.Adapters.class,
-                Main.Import.class, Main.Check.class, Main.Fx.class, Main.Report.class, Main.Audit.class, Main.Describe.class, Main.Profiles.class, Main.Serve.class})
+                Main.Import.class, Main.Check.class, Main.Fx.class, Main.Report.class, Main.Audit.class, Main.Describe.class,
+                Main.Profiles.class, Main.Serve.class, Main.Paths.class, Main.Doctor.class})
 public final class Main implements Callable<Integer> {
 
     /** Exit codes: 0 ok, 1 XSD validation failed, 2 usage/input error, 3 schema missing. */
@@ -53,6 +61,10 @@ public final class Main implements Callable<Integer> {
                 System.err.println("File not found: " + e.getMessage());
                 return INPUT_ERROR;
             }
+            if (e instanceof SchemaValidator.SchemaMissingException) {
+                System.err.println(e.getMessage());
+                return SCHEMA_MISSING;
+            }
             if (e instanceof IOException || e instanceof InputException) {
                 System.err.println("Error: " + e.getMessage());
                 return INPUT_ERROR;
@@ -63,18 +75,28 @@ public final class Main implements Callable<Integer> {
     }
 
     @Override public Integer call() {
-        CommandLine.usage(this, System.out);
-        return 0;
+        // Starting with no arguments is the packaged application: start the local UI and open it. `--help` still works
+        // because picocli handles it before this method, and `serve` remains available for terminals and scripts.
+        try {
+            return Serve.run(0, null, null, null, true, true);
+        } catch (SchemaValidator.SchemaMissingException e) {
+            System.err.println(e.getMessage());
+            return SCHEMA_MISSING;
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return 0;
+        } catch (Exception e) {
+            System.err.println("Error: " + (e.getMessage() == null ? e.getClass().getSimpleName() : e.getMessage()));
+            return INPUT_ERROR;
+        }
     }
-
-    static final String DEFAULT_SCHEMA_DIR = "schemas";
 
     @Command(name = "generate", description = "Generate XML from a JSON input file and validate it against the XSD.")
     static final class Generate implements Callable<Integer> {
         @Parameters(index = "0", description = "Form: KDVP, DIV or OBR") FormType form;
         @Parameters(index = "1", description = "Input JSON file (synthetic or normalized ledger export)") Path input;
         @Option(names = {"-o", "--out"}, description = "Output XML file (default: stdout)") Path out;
-        @Option(names = "--schema-dir", defaultValue = DEFAULT_SCHEMA_DIR, description = "Directory with official XSDs") Path schemaDir;
+        @Option(names = "--schema-dir", description = "Directory with official XSDs (default: ./schemas, then the bundled copy)") Path schemaDir;
         @Option(names = "--skip-validation", description = "Write XML without XSD validation (NOT for filing)") boolean skip;
 
         @Override public Integer call() throws IOException {
@@ -94,7 +116,7 @@ public final class Main implements Callable<Integer> {
                 System.err.println("WARNING: XSD validation skipped.");
                 return 0;
             }
-            return report(form, xml, schemaDir, out);
+            return report(form, xml, CliPaths.schemaDir(schemaDir), out);
         }
     }
 
@@ -102,10 +124,10 @@ public final class Main implements Callable<Integer> {
     static final class Validate implements Callable<Integer> {
         @Parameters(index = "0", description = "Form: KDVP, DIV or OBR") FormType form;
         @Parameters(index = "1", description = "XML file") Path xmlFile;
-        @Option(names = "--schema-dir", defaultValue = DEFAULT_SCHEMA_DIR, description = "Directory with official XSDs") Path schemaDir;
+        @Option(names = "--schema-dir", description = "Directory with official XSDs (default: ./schemas, then the bundled copy)") Path schemaDir;
 
         @Override public Integer call() throws IOException {
-            return report(form, Files.readString(xmlFile, StandardCharsets.UTF_8), schemaDir, xmlFile);
+            return report(form, Files.readString(xmlFile, StandardCharsets.UTF_8), CliPaths.schemaDir(schemaDir), xmlFile);
         }
     }
 
@@ -122,7 +144,7 @@ public final class Main implements Callable<Integer> {
         @Parameters(arity = "1..*", description = "Statement files") List<Path> statements;
         @Option(names = "--adapter", description = "Adapter id for all files (default: auto-detect per file)") String adapterId;
         @Option(names = {"-o", "--out"}, required = true, description = "Ledger JSON file to write") Path out;
-        @Option(names = "--env-file", defaultValue = ".env", description = "Settings file (see .env.example)") Path envFile;
+        @Option(names = "--env-file", description = "Settings file (default: ./.env, then the user config directory)") Path envFile;
         @Option(names = "--strict", description = "Do not write the ledger if any ERROR was found") boolean strict;
         @Option(names = "--profile", description = "Profile JSON describing a CSV layout (repeatable); see docs/profiles.md") List<Path> profiles = new ArrayList<>();
 
@@ -140,7 +162,7 @@ public final class Main implements Callable<Integer> {
             for (Path p : statements) sources.add(StatementSource.read(p));
             ImportRunner.Outcome outcome;
             try {
-                outcome = ImportRunner.run(sources, adapterId, extra, si.opendavki.fx.DotEnv.environment(envFile));
+                outcome = ImportRunner.run(sources, adapterId, extra, CliPaths.environment(envFile));
             } catch (InputException e) {
                 System.err.println(e.getMessage());
                 return INPUT_ERROR;
@@ -174,8 +196,8 @@ public final class Main implements Callable<Integer> {
         @Option(names = "--year", required = true, description = "Tax year") int year;
         @Option(names = "--tax-number", required = true, description = "Your 8-digit tax number (davčna številka)") String taxNumber;
         @Option(names = "--out-dir", defaultValue = ".", description = "Where to write kdvp-<year>.xml, div-<year>.xml, obr-<year>.xml, audit-<year>.json and .md") Path outDir;
-        @Option(names = "--env-file", defaultValue = ".env", description = "Settings file (see .env.example)") Path envFile;
-        @Option(names = "--schema-dir", defaultValue = DEFAULT_SCHEMA_DIR, description = "Directory with official XSDs") Path schemaDir;
+        @Option(names = "--env-file", description = "Settings file (default: ./.env, then the user config directory)") Path envFile;
+        @Option(names = "--schema-dir", description = "Directory with official XSDs (default: ./schemas, then the bundled copy)") Path schemaDir;
         @Option(names = "--allow-incomplete", description = "Write XML even if some instruments/payments were left out because of errors (NOT for filing)") boolean allowIncomplete;
 
         @Override public Integer call() throws IOException {
@@ -183,7 +205,10 @@ public final class Main implements Callable<Integer> {
             ReportRunner.Output o;
             try {
                 ledger = si.opendavki.json.Json.MAPPER.readValue(ledgerFile.toFile(), Ledger.class);
-                o = ReportRunner.run(ledger, year, taxNumber, si.opendavki.fx.DotEnv.environment(envFile), schemaDir, allowIncomplete);
+                o = ReportRunner.run(ledger, year, taxNumber, CliPaths.environment(envFile), CliPaths.schemaDir(schemaDir), allowIncomplete);
+            } catch (SchemaValidator.SchemaMissingException e) {
+                System.err.println(e.getMessage());
+                return SCHEMA_MISSING;
             } catch (InputException | IllegalArgumentException | com.fasterxml.jackson.core.JsonProcessingException e) {
                 System.err.println("Input error: " + e.getMessage());
                 return INPUT_ERROR;
@@ -258,23 +283,157 @@ public final class Main implements Callable<Integer> {
         }
     }
 
-    @Command(name = "serve", description = "Start the local web interface (this computer only; nothing leaves it).")
+    @Command(name = "serve", mixinStandardHelpOptions = true, description = "Start the local web interface (this computer only; nothing leaves it).")
     static final class Serve implements Callable<Integer> {
         @Option(names = "--port", defaultValue = "0", description = "Port on 127.0.0.1 (0 = pick a free one)") int port;
-        @Option(names = "--web-dir", defaultValue = "frontend/dist", description = "Built web interface (npm --prefix frontend run build)") Path webDir;
-        @Option(names = "--env-file", defaultValue = ".env", description = "Settings file (see .env.example)") Path envFile;
-        @Option(names = "--schema-dir", defaultValue = DEFAULT_SCHEMA_DIR, description = "Directory with official XSDs") Path schemaDir;
+        @Option(names = "--web-dir", description = "Override the built web interface (default: bundled in the application)") Path webDir;
+        @Option(names = "--env-file", description = "Settings file (default: ./.env, then the user config directory)") Path envFile;
+        @Option(names = "--schema-dir", description = "Directory with official XSDs (default: ./schemas, then the bundled copy)") Path schemaDir;
+        @Option(names = "--open", negatable = true, description = "Open the address in the default browser") boolean open;
+        @Option(names = "--tray", description = "Show a tray icon with Open and Quit (if the desktop supports it)") boolean tray;
 
         @Override public Integer call() throws Exception {
-            si.opendavki.cli.web.WebServer server = new si.opendavki.cli.web.WebServer(port, webDir, envFile, schemaDir);
+            return run(port, webDir, envFile, schemaDir, open, tray);
+        }
+
+        /** Shared by {@code serve} and the no-argument packaged launch. */
+        static Integer run(int port, Path webDirOverride, Path envFileOverride, Path schemaDirOverride,
+                           boolean shouldOpen, boolean trayIcon) throws Exception {
+            Path settings = CliPaths.envFile(envFileOverride);
+            Path schemas = CliPaths.schemaDir(schemaDirOverride);
+            Path web = webDirOverride == null ? null : webDirOverride.toAbsolutePath().normalize();
+            si.opendavki.cli.web.WebServer server = new si.opendavki.cli.web.WebServer(port, web, settings, schemas);
             server.start();
-            System.err.println("OpenDavki web interface (this computer only). Open:\n\n    " + server.url() + "\n\nThe address contains a one-time key; keep it private. Press Ctrl-C to stop.");
-            if (!server.hasUi()) {
-                System.err.println("\nNOTE: the web interface is not built (" + webDir + " not found). Run: npm --prefix frontend ci && npm --prefix frontend run build");
+            CountDownLatch stopped = new CountDownLatch(1);
+            Tray tray = null;
+            try {
+                System.err.println("OpenDavki web interface (this computer only).");
+                System.err.println("  Settings: " + settings + (Files.isRegularFile(settings) ? "" : " (not created; defaults are used)"));
+                System.err.println("  Schemas:  " + schemas);
+                System.err.println("  Web UI:   " + (server.hasUi() ? (web == null ? "bundled in the application" : web.toString()) : "NOT FOUND"));
+                System.err.println("\nOpen:\n\n    " + server.url() + "\n\nThe address contains a one-time key; keep it private.");
+                if (!server.hasUi()) {
+                    System.err.println("NOTE: the web interface is not built. Run: npm --prefix frontend ci && npm --prefix frontend run build");
+                }
+                if (shouldOpen) openBrowser(server.url());
+                if (trayIcon) {
+                    tray = Tray.install(() -> openBrowser(server.url()), () -> {
+                        server.close();
+                        stopped.countDown();
+                    });
+                    if (tray == null) System.err.println("NOTE: this desktop has no system tray; press Ctrl-C to stop.");
+                }
+                Runtime.getRuntime().addShutdownHook(new Thread(server::close));
+                try {
+                    stopped.await();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                return 0;
+            } finally {
+                if (tray != null) tray.close();
+                server.close();
             }
-            Runtime.getRuntime().addShutdownHook(new Thread(server::close));
-            Thread.currentThread().join();
+        }
+
+        static void openBrowser(String url) {
+            try {
+                if (!GraphicsEnvironment.isHeadless() && Desktop.isDesktopSupported()
+                        && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                    Desktop.getDesktop().browse(URI.create(url));
+                    return;
+                }
+            } catch (Exception e) {
+                // fall through to the printed address: a missing browser must not stop the local server
+            }
+            System.err.println("Open this address in a browser: " + url);
+        }
+    }
+
+    @Command(name = "paths", mixinStandardHelpOptions = true, description = "Show the settings, cache, schema and web paths this installation uses.")
+    static final class Paths implements Callable<Integer> {
+        @Option(names = "--web-dir", description = "Override the built web interface") Path webDir;
+        @Option(names = "--env-file", description = "Settings file override") Path envFile;
+        @Option(names = "--schema-dir", description = "Schema directory override") Path schemaDir;
+
+        @Override public Integer call() throws Exception {
+            AppPaths app = AppPaths.current();
+            Path settings = CliPaths.envFile(envFile);
+            Path schemas = CliPaths.schemaDir(schemaDir);
+            System.out.println("home       " + app.home());
+            System.out.println("config     " + app.configDir());
+            System.out.println("cache      " + app.cacheDir());
+            System.out.println("settings   " + settings + (Files.isRegularFile(settings) ? "" : " (not created)"));
+            System.out.println("schemas    " + schemas);
+            System.out.println("fx cache   " + app.fxCacheDir());
+            System.out.println("web ui     " + (webDir != null ? webDir.toAbsolutePath().normalize() : "bundled in the application"));
             return 0;
+        }
+    }
+
+    @Command(name = "doctor", mixinStandardHelpOptions = true, description = "Check Java, settings, schemas, the web interface and the data directories.")
+    static final class Doctor implements Callable<Integer> {
+        @Option(names = "--web-dir", description = "Override the built web interface") Path webDir;
+        @Option(names = "--env-file", description = "Settings file override") Path envFile;
+        @Option(names = "--schema-dir", description = "Schema directory override") Path schemaDir;
+
+        @Override public Integer call() throws Exception {
+            int problems = 0;
+            System.out.println("OpenDavki doctor");
+            System.out.println("  Java       " + System.getProperty("java.version") + " (" + System.getProperty("java.vendor") + ")");
+            System.out.println("  OS         " + System.getProperty("os.name") + " " + System.getProperty("os.version") + " " + System.getProperty("os.arch"));
+            AppPaths app = AppPaths.current();
+            System.out.println("  Home       " + app.home());
+            System.out.println("  Config     " + app.configDir());
+            System.out.println("  Cache      " + app.cacheDir());
+
+            Path settings = null;
+            Map<String, String> environment = Map.of();
+            try {
+                settings = CliPaths.envFile(envFile);
+                environment = DotEnv.environment(settings);
+                System.out.println("  Settings   " + settings + (Files.isRegularFile(settings) ? "" : " (not created; defaults are used)"));
+            } catch (IOException | RuntimeException e) {
+                System.out.println("  Settings   PROBLEM: " + e.getMessage());
+                problems++;
+            }
+
+            try {
+                Path schemas = CliPaths.schemaDir(schemaDir);
+                System.out.println("  Schemas    " + schemas);
+                long bad = SchemaChecksums.verify(schemas).stream().filter(e -> e.status() != SchemaChecksums.Status.OK).count();
+                if (bad > 0) { System.out.println("             PROBLEM: " + bad + " schema file(s) do not match SHA256SUMS"); problems++; }
+            } catch (Exception e) {
+                System.out.println("  Schemas    PROBLEM: " + e.getMessage());
+                problems++;
+            }
+
+            boolean web = webDir != null ? Files.isRegularFile(webDir.resolve("index.html")) : si.opendavki.cli.web.WebServer.bundledUiAvailable();
+            System.out.println("  Web UI     " + (web ? (webDir != null ? webDir.toAbsolutePath().normalize() : "bundled in the application") : "NOT FOUND"));
+            if (!web) problems++;
+
+            try {
+                FxConfig.from(environment);
+                System.out.println("  FX         " + environment.getOrDefault("OPENDAVKI_FX_SOURCE", "ECB") + " (settings parse)");
+            } catch (IllegalArgumentException e) {
+                System.out.println("  FX         PROBLEM: " + e.getMessage());
+                problems++;
+            }
+
+            for (Path dir : List.of(app.configDir(), app.cacheDir())) {
+                try {
+                    Files.createDirectories(dir);
+                    if (!Files.isWritable(dir)) { System.out.println("  Writable   PROBLEM: " + dir); problems++; }
+                } catch (IOException e) {
+                    System.out.println("  Writable   PROBLEM: " + dir + " (" + e.getMessage() + ")");
+                    problems++;
+                }
+            }
+
+            System.out.println("  Adapters   " + BrokerAdapters.all().size());
+            if (problems == 0) System.out.println("\nEverything looks ready.");
+            else System.out.println("\n" + problems + " problem(s) found.");
+            return problems == 0 ? 0 : INPUT_ERROR;
         }
     }
 
@@ -322,12 +481,12 @@ public final class Main implements Callable<Integer> {
         @Parameters(index = "0", description = "ISO 4217 currency, e.g. USD") String currency;
         @Parameters(index = "1", description = "Date yyyy-MM-dd") java.time.LocalDate date;
         @Parameters(index = "2", arity = "0..1", description = "Optional amount to convert to EUR") java.math.BigDecimal amount;
-        @Option(names = "--env-file", defaultValue = ".env", description = "Settings file (see .env.example)") Path envFile;
+        @Option(names = "--env-file", description = "Settings file (default: ./.env, then the user config directory)") Path envFile;
 
         @Override public Integer call() throws IOException {
-            si.opendavki.fx.FxConfig cfg;
+            FxConfig cfg;
             try {
-                cfg = si.opendavki.fx.FxConfig.fromEnvironment(envFile);
+                cfg = FxConfig.from(CliPaths.environment(envFile));
             } catch (IllegalArgumentException e) {
                 System.err.println("Configuration error: " + e.getMessage());
                 return INPUT_ERROR;
@@ -361,17 +520,19 @@ public final class Main implements Callable<Integer> {
 
         @Command(name = "status", description = "Verify the XSDs against SHA256SUMS and show which required ones are present.")
         static final class Status implements Callable<Integer> {
-            @Option(names = "--schema-dir", defaultValue = DEFAULT_SCHEMA_DIR) Path schemaDir;
+            @Option(names = "--schema-dir") Path schemaDir;
             @Override public Integer call() throws Exception {
+                Path dir = CliPaths.schemaDir(schemaDir);
+                System.out.println("Schema directory: " + dir);
                 int problems = 0;
                 for (FormType f : FormType.values()) {
-                    if (!Files.isRegularFile(schemaDir.resolve(f.xsdFileName))) { System.out.println("MISSING   " + f.xsdFileName); problems++; }
+                    if (!Files.isRegularFile(dir.resolve(f.xsdFileName))) { System.out.println("MISSING   " + f.xsdFileName); problems++; }
                 }
                 try {
-                    for (si.opendavki.furs.SchemaChecksums.Entry e : si.opendavki.furs.SchemaChecksums.verify(schemaDir)) {
+                    for (SchemaChecksums.Entry e : SchemaChecksums.verify(dir)) {
                         System.out.printf("%-9s %s  sha256=%s%s%n", e.status(), e.name(), e.actual() != null ? e.actual() : e.expected(),
-                                e.status() == si.opendavki.furs.SchemaChecksums.Status.MISMATCH ? "  (expected " + e.expected() + ")" : "");
-                        if (e.status() != si.opendavki.furs.SchemaChecksums.Status.OK) problems++;
+                                e.status() == SchemaChecksums.Status.MISMATCH ? "  (expected " + e.expected() + ")" : "");
+                        if (e.status() != SchemaChecksums.Status.OK) problems++;
                     }
                 } catch (IOException e) {
                     System.err.println(e.getMessage());
@@ -385,8 +546,9 @@ public final class Main implements Callable<Integer> {
         static final class Fetch implements Callable<Integer> {
             @Parameters(index = "0", description = "Name to save as, e.g. Doh_KDVP_9.xsd") String fileName;
             @Parameters(index = "1", description = "Source URL") URI url;
-            @Option(names = "--schema-dir", defaultValue = DEFAULT_SCHEMA_DIR) Path schemaDir;
+            @Option(names = "--schema-dir") Path schemaDir;
             @Override public Integer call() throws Exception {
+                Path dir = CliPaths.schemaDir(schemaDir);
                 if (!"https".equals(url.getScheme())) { System.err.println("Only https URLs are accepted."); return INPUT_ERROR; }
                 if (!fileName.matches("[A-Za-z0-9_.-]+\\.xsd")) { System.err.println("Invalid file name."); return INPUT_ERROR; }
                 HttpResponse<byte[]> r = HttpClient.newHttpClient().send(
@@ -395,7 +557,7 @@ public final class Main implements Callable<Integer> {
                 String actual = sha256(r.body());
                 java.util.Optional<String> expected;
                 try {
-                    expected = si.opendavki.furs.SchemaChecksums.expected(schemaDir, fileName);
+                    expected = SchemaChecksums.expected(dir, fileName);
                 } catch (IOException e) {
                     expected = java.util.Optional.empty();
                 }
@@ -404,8 +566,8 @@ public final class Main implements Callable<Integer> {
                             + ". Either FURS published a new version (add it under its new name, update FormType and the writers) or the download is wrong.");
                     return SCHEMA_MISSING;
                 }
-                Files.createDirectories(schemaDir);
-                Files.write(schemaDir.resolve(fileName), r.body());
+                Files.createDirectories(dir);
+                Files.write(dir.resolve(fileName), r.body());
                 System.out.println("Saved " + fileName + " sha256=" + actual + " from " + url);
                 if (expected.isEmpty()) {
                     System.err.println("WARNING: " + fileName + " is not listed in " + SchemaChecksumsFile + "; verify it against the official FURS page, then add the line above to it.");

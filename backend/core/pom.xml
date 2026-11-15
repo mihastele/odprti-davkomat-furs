@@ -27,6 +27,24 @@
   </dependencies>
 
   <build>
+    <resources>
+      <!-- Only the schemas the writers can produce, plus the official checksum file. The extracted copy gets a filtered
+           SHA256SUMS; keeping the directory ten megabytes smaller also keeps the packaged application smaller. -->
+      <resource>
+        <directory>${project.basedir}/../../schemas</directory>
+        <targetPath>schemas</targetPath>
+        <includes>
+          <include>Doh_KDVP_9.xsd</include>
+          <include>Doh_Div_3.xsd</include>
+          <include>Doh_Obr_2.xsd</include>
+          <include>EDP-Common-1.xsd</include>
+          <include>SHA256SUMS</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <!-- Shares the adapter conformance test kit with broker modules. -->

@@ -11,7 +11,7 @@ Drive OpenDavki forward one verified increment at a time. `AGENTS.md` is the sta
 
 1. Read `AGENTS.md`, the README (status table, roadmap, Known limitations) and `docs/BACKLOG.md`.
 2. `git status`, `git log --oneline | head`, and confirm you are on the assigned branch.
-3. Build once to learn the baseline: `cd backend && mvn -q -B install`. If it is not green, fix or report that first.
+3. Build once to learn the baseline: `./mvnw -f backend/pom.xml -q -B install` (or `cd backend && mvn -q -B install`). If it is not green, fix or report that first.
 
 ## 2. Choose the work
 
@@ -42,7 +42,7 @@ logic in `core` (or the adapter module), thin CLI. For a new adapter follow `doc
 
 ## 5. Verify
 
-- `cd backend && mvn -q -B install` must be green. For adapters also run the fixture test; review any regenerated
+- `./mvnw -f backend/pom.xml -q -B install` must be green. For adapters also run the fixture test; review any regenerated
   `expected.json` line by line.
 - Validate generated XML against `schemas/` (the writers' tests do; add a case for new output).
 - Try the feature through the CLI on a fixture and read the output, not just the exit code.
