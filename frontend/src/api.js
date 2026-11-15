@@ -95,7 +95,35 @@ export async function fileToBase64(file) {
   return btoa(binary)
 }
 
+/** Whether the JavaFX shell injected its file picker bridge. */
+export function desktopAvailable() {
+  return typeof window !== 'undefined' && typeof window.opendavkiDesktop?.pickFiles === 'function'
+}
+
+/** Returns [{name, base64, size}] from the JavaFX FileChooser, or null in a normal browser. */
+export function pickDesktopFiles(multiple = true) {
+  if (!desktopAvailable()) return null
+  try {
+    return JSON.parse(window.opendavkiDesktop.pickFiles(multiple, ''))
+  } catch {
+    return []
+  }
+}
+
+export function base64ToText(base64) {
+  const binary = atob(base64)
+  const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0))
+  return new TextDecoder().decode(bytes)
+}
+
 export function download(filename, text, type = 'text/plain') {
+  // JavaFX WebView has no download manager; its shell injects this bridge before the page loads.
+  try {
+    if (window.opendavkiDesktop?.saveFile) {
+      window.opendavkiDesktop.saveFile(filename, text, type)
+      return
+    }
+  } catch { /* fall back to the browser's Blob download */ }
   const url = URL.createObjectURL(new Blob([text], { type: `${type};charset=utf-8` }))
   const a = document.createElement('a')
   a.href = url

@@ -52,7 +52,8 @@ Principles:
 | Trading 212, Revolut, Trade Republic, eToro, XTB, DEGIRO, Lightyear, N26 | ⬜ planned |
 | Vue 3 browser interface (local server, nothing uploaded) | 🟡 implemented ([docs](docs/web-interface.md)), tried in Chromium only |
 | Self-contained desktop launch (bundled UI, XSDs and JRE; app image for Windows, macOS and Linux) | 🟡 Windows built and smoke-tested locally; macOS/Linux built and launch-probed by CI ([docs](docs/desktop.md)) |
-| JavaFX desktop shell around the same UI | ⬜ planned (ODV-013) |
+| JavaFX desktop shell around the same UI | 🟡 implemented on Windows; macOS/Linux WebView awaits verification ([docs](docs/desktop.md)) |
+| Settings screen, explicit project save/open, English/Slovenian UI | ✅ implemented; Java diagnostic text remains English |
 
 ## Run it
 
@@ -161,8 +162,9 @@ Adding a broker means adding one module that depends only on `core`: see [docs/a
 backend/core            ledger, adapter SPI, exchange rates, tax engine, FURS XML writers and XSD validator
 backend/brokers/<id>    one Maven module per broker adapter
 backend/cli             command-line tool and local web server (shaded jar)
-frontend/               Vue 3 web interface
-packaging/              jpackage app-image scripts and runtime README
+backend/desktop         JavaFX WebView shell around the same local UI (fat jar)
+frontend/               Vue 3 web interface; modern build and the WebView IIFE build
+packaging/              jpackage app-image scripts and runtime READMEs
 profiles/draft/         DRAFT broker profiles (JSON)
 schemas/                official FURS XSDs, byte-for-byte, with SHA256SUMS
 examples/               synthetic report inputs
@@ -195,9 +197,10 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**. 
 - **Incoming transfers from a broker that is not imported have no cost basis** unless the ledger is edited by hand (I-08).
 - **Out of scope for now**: options, futures, CFDs, crypto, other eDavki forms, signing/submission (D-09, I-04, I-10, D-11); interest (Doh-Obr) is generated but its type code and payer details are unverified (D-12).
 - **Only original filings** are produced; corrections and late submissions are partly modelled (D-04).
-- **Audit report and web interface** are English only; the audit is Markdown shown as text (A-01, U-01 to U-04).
-- **Desktop packaging** is a portable app image, not a signed installer: Windows SmartScreen and macOS Gatekeeper warn about the unsigned build, there is no auto-update, MSI/DMG signing or icon identity yet. CI builds and launch-probes all four artifacts, but nobody has opened the UI on a real macOS or Linux desktop yet (U-05 to U-08).
-- **The JavaFX shell is not implemented.** The packaged application uses the browser interface in a native tray-managed process; JavaFX WebView is planned as a second window on the same UI/server (ODV-013).
+- **Audit report and Java diagnostics** are English only; the interface itself switches between English and Slovenian, and the audit is Markdown shown as text (A-01, U-01).
+- **Desktop packaging** is a portable app image, not a signed installer: Windows SmartScreen and macOS Gatekeeper warn about the unsigned build, there is no auto-update, MSI/DMG signing or icon identity yet. CI builds both clients for all platforms and launch-probes them, but nobody has opened the UI on a real macOS or Linux desktop yet (U-05 to U-09).
+- **The JavaFX shell is implemented on Windows** and uses a legacy IIFE bundle, a native file picker and a download bridge. JavaFX WebView on Linux is unverified; the browser client remains the fallback (ODV-013, U-09).
+- **Saved profiles are stored but not offered as a picker** on the import screen; a profile file is still chosen per import (U-10).
 - **No license file yet**; the CI workflow has run and passes (L-10, see [BLOCKERS](docs/BLOCKERS.md)).
 <!-- KNOWN-LIMITATIONS:END -->
 
@@ -216,8 +219,8 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**. 
 | ODV-009 | Vue 3 interface on a local-only backend | done (Chromium-tested) |
 | ODV-010 | Self-contained runtime: bundled UI/XSDs, user paths, UI by default, `doctor`/`paths` | done (Windows verified; unit tests) |
 | ODV-011 | Cross-platform app images with a bundled JRE, tray, build scripts and CI matrix | done (Windows locally; all four CI artifacts built and launch-probed) |
-| ODV-012 | Settings screen, explicit project save/open, onboarding and localization | planned |
-| ODV-013 | JavaFX WebView shell around the same local UI | planned |
+| ODV-012 | Settings screen, explicit project save/open, onboarding and localization | done (settings/project e2e; Java diagnostics still English) |
+| ODV-013 | JavaFX WebView shell around the same local UI | done on Windows; macOS/Linux WebView verification pending |
 | later | More brokers, other forms | |
 
 ## Contributing

@@ -43,7 +43,7 @@ New-Item -ItemType Directory -Force $stage | Out-Null
 Copy-Item $jar (Join-Path $stage 'opendavki.jar')
 
 Write-Host "Packaging OpenDavki $version for windows-$arch (bundle version $bundleVersion)..."
-$modules = 'java.base,java.desktop,java.net.http,java.sql,java.xml,java.logging,java.naming,jdk.httpserver,jdk.crypto.ec,jdk.unsupported'
+$modules = 'java.base,java.desktop,java.net.http,java.sql,java.xml,java.logging,java.naming,jdk.httpserver,jdk.crypto.ec,jdk.unsupported,jdk.jsobject,jdk.xml.dom'
 & jpackage `
     --type app-image `
     --name OpenDavki `
@@ -95,7 +95,45 @@ Compress-Archive -Path $app -DestinationPath $zip
 $hash = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLowerInvariant()
 "$hash  $(Split-Path -Leaf $zip)" | Set-Content (Join-Path $packageDir 'SHA256SUMS')
 
+# The JavaFX shell is a second, native-window client over the same local server and UI.
+$desktopJar = Join-Path $root 'backend\desktop\target\opendavki-desktop.jar'
+if (-not (Test-Path $desktopJar)) { throw "the JavaFX desktop jar is missing; run .\build.ps1" }
+$desktopStage = Join-Path $packageDir 'desktop-stage'
+New-Item -ItemType Directory -Force $desktopStage | Out-Null
+Copy-Item $desktopJar (Join-Path $desktopStage 'opendavki-desktop.jar')
+Write-Host "Packaging OpenDavki Desktop $version for windows-$arch..."
+& jpackage `
+    --type app-image `
+    --name OpenDavkiDesktop `
+    --app-version $bundleVersion `
+    --input $desktopStage `
+    --main-jar opendavki-desktop.jar `
+    --main-class si.opendavki.desktop.Launcher `
+    --dest $packageDir `
+    --add-modules $modules `
+    --java-options '-Dfile.encoding=UTF-8'
+if ($LASTEXITCODE -ne 0) { throw "jpackage failed for the JavaFX desktop shell" }
+
+$desktopApp = Join-Path $packageDir 'OpenDavkiDesktop'
+Copy-Item (Join-Path $root 'packaging\RUNTIME-DESKTOP-README.txt') (Join-Path $desktopApp 'README.txt')
+Copy-Item (Join-Path $root 'packaging\THIRD-PARTY-NOTICES.txt') (Join-Path $desktopApp 'THIRD-PARTY-NOTICES.txt')
+try {
+    $env:OPENDAVKI_HOME = Join-Path $packageDir 'smoke-home-desktop'
+    $desktopProbe = Start-Process -FilePath (Join-Path $desktopApp 'OpenDavkiDesktop.exe') -ArgumentList '--smoke' `
+        -WorkingDirectory $env:TEMP -Wait -PassThru -WindowStyle Hidden
+    if ($desktopProbe.ExitCode -ne 0) { throw "the packaged JavaFX shell failed its smoke test (exit $($desktopProbe.ExitCode))" }
+} finally {
+    $env:OPENDAVKI_HOME = $originalHome
+}
+
+$desktopZip = Join-Path $packageDir "OpenDavkiDesktop-$version-windows-$arch.zip"
+Compress-Archive -Path $desktopApp -DestinationPath $desktopZip
+$desktopHash = (Get-FileHash $desktopZip -Algorithm SHA256).Hash.ToLowerInvariant()
+Add-Content (Join-Path $packageDir 'SHA256SUMS') "$desktopHash  $(Split-Path -Leaf $desktopZip)"
+
 Write-Host ""
 Write-Host "Packaged: $zip"
 Write-Host "SHA256:   $hash"
 Write-Host "Try it:   $app\OpenDavki.exe"
+Write-Host "Desktop:  $desktopZip"
+Write-Host "SHA256:   $desktopHash"

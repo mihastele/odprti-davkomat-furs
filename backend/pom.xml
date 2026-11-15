@@ -15,6 +15,7 @@
     <module>brokers/ibkr</module>
     <module>brokers/trading212</module>
     <module>cli</module>
+    <module>desktop</module>
   </modules>
 
   <properties>

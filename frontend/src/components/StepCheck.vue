@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { download, fetchText } from '../api.js'
+import { t } from '../i18n.js'
 import DiagnosticsTable from './DiagnosticsTable.vue'
 
 const props = defineProps({ ledger: { type: Object, required: true } })
@@ -30,22 +31,19 @@ async function saveLedger() {
 
 <template>
   <section class="card" aria-labelledby="check-h">
-    <h2 id="check-h">2. Check what was read</h2>
-    <div v-if="errors" class="banner error" role="alert">
-      {{ errors }} error(s) found. The most common cause is a missing earlier statement (MISSING_PURCHASE_HISTORY). The report refuses to produce XML for
-      anything affected.
-    </div>
-    <div v-else class="banner ok">No errors in the imported data. Read the warnings before continuing.</div>
+    <h2 id="check-h">{{ t('check.heading') }}</h2>
+    <div v-if="errors" class="banner error" role="alert">{{ t('check.errors', { count: errors }) }}</div>
+    <div v-else class="banner ok">{{ t('check.ok') }}</div>
 
-    <h3>Findings</h3>
+    <h3>{{ t('check.findings') }}</h3>
     <DiagnosticsTable :diagnostics="ledger.diagnostics ?? []" />
 
-    <h3>Ledger entries ({{ ledger.entries.length }})</h3>
-    <label for="q">Filter</label>
-    <input id="q" v-model="filter" type="text" placeholder="ISIN, symbol, text, date..." />
+    <h3>{{ t('check.entries', { count: ledger.entries.length }) }}</h3>
+    <label for="q">{{ t('check.filter') }}</label>
+    <input id="q" v-model="filter" type="text" :placeholder="t('check.filterPlaceholder')" />
     <div class="scroll">
       <table>
-        <thead><tr><th>Date</th><th>Broker</th><th>Instrument</th><th>What</th><th>Source</th></tr></thead>
+        <thead><tr><th>{{ t('check.date') }}</th><th>{{ t('check.broker') }}</th><th>{{ t('check.instrument') }}</th><th>{{ t('check.what') }}</th><th>{{ t('check.source') }}</th></tr></thead>
         <tbody>
           <tr v-for="(e, i) in rows" :key="i">
             <td>{{ e.date }}</td>
@@ -58,13 +56,13 @@ async function saveLedger() {
       </table>
     </div>
     <p v-if="!showAll && matching > LIMIT" class="muted">
-      Showing the first {{ LIMIT }} of {{ matching }}.
-      <button class="secondary" type="button" @click="showAll = true">Show all</button>
+      {{ t('check.showing', { shown: LIMIT, total: matching }) }}
+      <button class="secondary" type="button" @click="showAll = true">{{ t('check.showAll') }}</button>
     </p>
 
     <div class="actions">
-      <button class="primary" type="button" @click="emit('next')">Continue to the report</button>
-      <button class="secondary" type="button" @click="saveLedger">Save the ledger (JSON)</button>
+      <button class="primary" type="button" @click="emit('next')">{{ t('check.continue') }}</button>
+      <button class="secondary" type="button" @click="saveLedger">{{ t('check.saveLedger') }}</button>
     </div>
   </section>
 </template>

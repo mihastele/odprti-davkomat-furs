@@ -17,7 +17,8 @@ never guess.
 backend/core            ledger, broker adapter SPI, FX rates, tax engine, FURS XML writers + XSD validator (si.opendavki.*)
 backend/brokers/<id>    one Maven module per broker adapter; depends only on core
 backend/cli             picocli command line, local web server (`serve`), shaded jar, discovers adapters with ServiceLoader
-frontend/               Vue 3 web interface (built with Vite, served by `opendavki serve`); `npm test`, `node e2e/smoke.cjs`
+backend/desktop         JavaFX WebView shell over the same server/UI; reuses the CLI jar, adds no tax logic
+frontend/               Vue 3 web interface (Vite modern build + IIFE WebView build); `npm test`, `node e2e/smoke.cjs`
 packaging/              jpackage app-image scripts, runtime README and third-party notices
 profiles/draft/         DRAFT broker profiles (JSON) for the generic profile engine
 schemas/                official FURS XSDs, byte-for-byte, with SHA256SUMS. Never edit.

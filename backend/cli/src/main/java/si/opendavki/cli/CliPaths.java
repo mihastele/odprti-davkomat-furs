@@ -28,7 +28,7 @@ public final class CliPaths {
         return Path.of("").toAbsolutePath().normalize();
     }
 
-    static Path envFile(Path explicit) throws IOException {
+    public static Path envFile(Path explicit) throws IOException {
         return envFile(explicit, System.getenv(), AppPaths.current(), cwd());
     }
 
@@ -78,7 +78,7 @@ public final class CliPaths {
         return out;
     }
 
-    static Path schemaDir(Path explicit) throws IOException {
+    public static Path schemaDir(Path explicit) throws IOException {
         return schemaDir(explicit, System.getenv(), AppPaths.current(), cwd());
     }
 

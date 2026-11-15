@@ -11,6 +11,7 @@ fi
 echo "Building the web interface..."
 npm --prefix frontend ci
 npm --prefix frontend run build
+npm --prefix frontend run build:legacy
 
 echo "Building the Java application..."
 if [ -x ./mvnw ]; then

@@ -16,6 +16,8 @@ Write-Host "Building the web interface..."
 if ($LASTEXITCODE -ne 0) { throw "npm ci failed" }
 & npm --prefix "$root\frontend" run build
 if ($LASTEXITCODE -ne 0) { throw "the web build failed" }
+& npm --prefix "$root\frontend" run build:legacy
+if ($LASTEXITCODE -ne 0) { throw "the legacy web build failed" }
 
 $maven = if (Test-Path "$root\mvnw.cmd") { "$root\mvnw.cmd" } else { "mvn" }
 $mavenArgsList = @('-f', "$root\backend\pom.xml", '-B', 'clean')

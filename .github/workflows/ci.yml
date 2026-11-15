@@ -29,6 +29,8 @@ jobs:
         run: npm --prefix frontend ci && npm --prefix frontend test
       - name: Frontend build
         run: npm --prefix frontend run build
+      - name: Legacy build for JavaFX WebView
+        run: npm --prefix frontend run build:legacy
       - name: Java build and tests
         run: ./mvnw -f backend/pom.xml -B install
       - name: Install Chromium for the browser smoke test

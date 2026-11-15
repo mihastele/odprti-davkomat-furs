@@ -4,17 +4,22 @@ const { chromium } = require('playwright')
 const { spawn } = require('child_process')
 const assert = require('assert')
 const fs = require('fs')
+const os = require('os')
 const path = require('path')
 
 const root = path.resolve(__dirname, '..', '..')
 const shots = process.argv[2] || path.join(root, 'frontend', 'e2e', 'out')
 fs.mkdirSync(shots, { recursive: true })
 
+// A throwaway settings file: the settings-screen test must not edit the example in the repository.
+const settings = path.join(os.tmpdir(), `opendavki-e2e-${process.pid}.env`)
+fs.writeFileSync(settings, `OPENDAVKI_FX_SOURCE=FILE\nOPENDAVKI_FX_FILE=${path.join(root, 'examples', 'rates-synthetic.csv')}\n`)
+
 function startServer() {
   return new Promise((resolve, reject) => {
     // No --web-dir or --schema-dir: this checks the self-contained jar, not the development checkout.
     const p = spawn('java', ['-jar', 'backend/cli/target/opendavki.jar', 'serve', '--no-open',
-      '--env-file', 'examples/synthetic.env'], { cwd: root, env: { ...process.env, JAVA_TOOL_OPTIONS: '' } })
+      '--env-file', settings], { cwd: root, env: { ...process.env, JAVA_TOOL_OPTIONS: '' } })
     let out = ''
     const onData = (d) => {
       out += d
@@ -49,6 +54,15 @@ function startServer() {
     assert.ok(!page.url().includes('token'), 'the key must be removed from the address bar')
     await page.screenshot({ path: path.join(shots, '1-import.png'), fullPage: true })
 
+    // The settings screen writes only after an explicit Save, and the value reaches the temporary settings file.
+    await page.getByRole('button', { name: 'Settings', exact: true }).click()
+    await page.waitForSelector('#settings-h')
+    await page.fill('#timezone', 'Europe/Ljubljana')
+    await page.getByRole('button', { name: 'Save settings', exact: true }).click()
+    await page.waitForSelector('text=Settings saved.')
+    assert.match(fs.readFileSync(settings, 'utf8'), /OPENDAVKI_TIMEZONE=Europe\/Ljubljana/)
+    await page.getByRole('button', { name: 'Close', exact: true }).first().click()
+
     await page.setInputFiles('#files', path.join(root, 'examples', 'statement-generic.csv'))
     await page.getByRole('button', { name: 'Import', exact: true }).click()
     await page.waitForSelector('text=2. Check what was read')
@@ -78,6 +92,23 @@ function startServer() {
     assert.strictEqual(download.suggestedFilename(), 'kdvp-2024.xml')
     const xml = fs.readFileSync(await download.path(), 'utf8')
     assert.ok(xml.startsWith('<?xml') && xml.includes('<ISIN>US0378331005</ISIN>'))
+
+    // Explicit project save and open: the tax number is included only after ticking the box.
+    await page.check('#include-tax')
+    const [projectDownload] = await Promise.all([page.waitForEvent('download'),
+      page.getByRole('button', { name: 'Save project', exact: true }).click()])
+    assert.strictEqual(projectDownload.suggestedFilename(), 'opendavki-2024.opendavki.json')
+    const projectPath = await projectDownload.path()
+    const project = fs.readFileSync(projectPath, 'utf8')
+    assert.match(project, /"formatVersion"\s*:\s*1/)
+    assert.match(project, /"taxNumber"\s*:\s*"12345678"/)
+
+    await page.click('text=1. Statements')
+    await page.setInputFiles('#project-file', projectPath)
+    await page.waitForSelector('text=2. Check what was read')
+    await page.click('text=Continue to the report')
+    assert.strictEqual(await page.inputValue('#year'), '2024')
+    assert.strictEqual(await page.inputValue('#tax'), '12345678')
 
     // a file nobody recognises: clear message, and the safe layout view
     await page.click('text=1. Statements')

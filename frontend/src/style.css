@@ -47,6 +47,24 @@ body {
 
 main { max-width: 1040px; margin: 0 auto; padding: 0 16px 64px; }
 
+.topbar { display: flex; gap: 16px; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; }
+.top-actions { display: flex; gap: 8px; align-items: center; margin-top: 22px; }
+.top-actions select { width: auto; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.welcome { border-left: 4px solid var(--accent); padding: 2px 0 2px 14px; margin-bottom: 22px; }
+.welcome ol { margin: 0; padding-left: 20px; }
+.dropzone { border: 2px dashed var(--line); border-radius: 10px; padding: 22px; display: flex; flex-direction: column; gap: 4px; align-items: center; cursor: pointer; text-align: center; }
+.dropzone:hover, .dropzone:focus-visible { border-color: var(--accent); background: var(--bg); outline: none; }
+.dropzone input[type='file'] { display: none; }
+.file-list { list-style: none; padding: 0; margin: 8px 0 0; display: flex; flex-direction: column; gap: 2px; }
+.advanced { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 10px; }
+.advanced summary { cursor: pointer; font-weight: 600; }
+.file-row { display: flex; gap: 8px; align-items: center; }
+.file-row input[type='text'] { flex: 1; }
+.file-button { display: inline-block; cursor: pointer; white-space: nowrap; }
+.file-button input[type='file'] { display: none; }
+.settings-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+
 h1 { font-size: 1.5rem; margin: 20px 0 4px; }
 h2 { font-size: 1.15rem; margin: 0 0 12px; }
 h3 { font-size: 1rem; margin: 20px 0 8px; }

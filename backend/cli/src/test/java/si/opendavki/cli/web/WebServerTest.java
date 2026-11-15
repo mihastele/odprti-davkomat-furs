@@ -56,6 +56,12 @@ class WebServerTest {
         return http.send(b.build(), HttpResponse.BodyHandlers.ofString());
     }
 
+    private HttpResponse<String> put(String path, String token, String body) throws Exception {
+        HttpRequest.Builder b = HttpRequest.newBuilder(URI.create(base() + path)).PUT(HttpRequest.BodyPublishers.ofString(body));
+        if (token != null) b.header(WebServer.TOKEN_HEADER, token);
+        return http.send(b.build(), HttpResponse.BodyHandlers.ofString());
+    }
+
     private static String b64(String s) { return Base64.getEncoder().encodeToString(s.getBytes(StandardCharsets.UTF_8)); }
 
     private String importBody() {
@@ -183,6 +189,56 @@ class WebServerTest {
         } finally {
             bundled.close();
         }
+    }
+
+    @Test void settingsCanBeReadAndSavedExplicitly() throws Exception {
+        JsonNode initial = Json.MAPPER.readTree(get("/api/settings", server.token()).body());
+        assertEquals("ECB", initial.get("values").get("OPENDAVKI_FX_SOURCE").asText());
+        assertFalse(initial.get("exists").asBoolean());
+
+        HttpResponse<String> saved = put("/api/settings", server.token(),
+                "{\"values\":{\"OPENDAVKI_INCLUDE_FEES\":\"false\",\"OPENDAVKI_TIMEZONE\":\"Europe/Ljubljana\"}}");
+        assertEquals(200, saved.statusCode(), saved.body());
+        assertTrue(Files.readString(dir.resolve("no.env")).contains("OPENDAVKI_INCLUDE_FEES=false"));
+        assertEquals("Europe/Ljubljana", Json.MAPPER.readTree(saved.body()).get("values").get("OPENDAVKI_TIMEZONE").asText());
+
+        assertEquals(400, put("/api/settings", server.token(), "{\"values\":{\"OPENDAVKI_HOME\":\"/tmp\"}}").statusCode());
+        assertEquals(400, put("/api/settings", server.token(), "{\"values\":{\"OPENDAVKI_INCLUDE_FEES\":\"maybe\"}}").statusCode());
+        assertEquals(401, get("/api/settings", null).statusCode());
+    }
+
+    @Test void settingsFilesAreSavedUnderTheConfigDirectory() throws Exception {
+        String csv = "match,isin\nCUSIPX,IE00BFMXXD54\n";
+        JsonNode saved = Json.MAPPER.readTree(post("/api/settings/files", server.token(),
+                "{\"kind\":\"instruments\",\"name\":\"mine.csv\",\"contentBase64\":\"" + b64(csv) + "\"}").body());
+        Path path = Path.of(saved.get("path").asText());
+        assertTrue(Files.isRegularFile(path), path.toString());
+        assertTrue(path.startsWith(dir.resolve("files/instruments").toAbsolutePath()));
+        assertEquals(400, post("/api/settings/files", server.token(),
+                "{\"kind\":\"instruments\",\"name\":\"../escape.csv\",\"contentBase64\":\"" + b64(csv) + "\"}").statusCode());
+    }
+
+    @Test void aProjectCanBeSavedAndOpenedAgain() throws Exception {
+        JsonNode imported = Json.MAPPER.readTree(post("/api/import", server.token(), importBody()).body());
+        String ledgerId = imported.get("ledgerId").asText();
+        JsonNode saved = Json.MAPPER.readTree(post("/api/project/save", server.token(),
+                "{\"ledgerId\":\"" + ledgerId + "\",\"year\":2024,\"taxNumber\":\"12345678\",\"includeTaxNumber\":true}").body());
+        String project = saved.get("text").asText();
+        JsonNode projectJson = Json.MAPPER.readTree(project);
+        assertEquals(1, projectJson.get("formatVersion").asInt(), project);
+        assertEquals("12345678", projectJson.get("report").get("taxNumber").asText(), project);
+        assertEquals("opendavki-2024.opendavki.json", saved.get("filename").asText());
+
+        JsonNode opened = Json.MAPPER.readTree(post("/api/project/open", server.token(),
+                Json.MAPPER.writeValueAsString(java.util.Map.of("text", project))).body());
+        assertEquals(2, opened.get("entries").size());
+        assertEquals(2024, opened.get("report").get("year").asInt());
+        assertEquals("12345678", opened.get("report").get("taxNumber").asText());
+
+        JsonNode withoutTax = Json.MAPPER.readTree(post("/api/project/save", server.token(),
+                "{\"ledgerId\":\"" + ledgerId + "\",\"year\":2024,\"taxNumber\":\"12345678\",\"includeTaxNumber\":false}").body());
+        assertFalse(withoutTax.get("text").asText().contains("12345678"));
+        assertEquals(400, post("/api/project/open", server.token(), "{\"text\":\"{\\\"formatVersion\\\":99}\"}").statusCode());
     }
 
     @Test void onlyTheLatestFewLedgersAreKept() throws Exception {

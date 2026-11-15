@@ -129,11 +129,11 @@ into eDavki. No importer has been run on a real broker statement. The tax engine
 
 | ID | Gap | Planned |
 |---|---|---|
-| U-01 | English only (no Slovenian translation), and not audited for accessibility beyond labels, roles and keyboard use. | ODV-0xx |
-| U-02 | Settings (`.env`) cannot be edited in the interface; only shown. Profiles can be added per import but not saved. | ODV-0xx |
+| U-01 | The interface switches between English and Slovenian, but the audit report and diagnostics from the Java core remain English, and accessibility has not been audited beyond labels, roles and keyboard use. | ODV-0xx |
 | U-03 | The browser test (`frontend/e2e/smoke.cjs`) runs in CI with Playwright's Chromium and passes, but only Chromium has been tried; the 64 MB request limit still has no test. | ODV-0xx (remaining: request-limit test) |
-| U-04 | The server keeps only the latest five imported ledgers in memory and forgets them on restart; no sessions, no persistence by design. The browser now restores the current ledger id after a reload while the server is running, but a restart still forgets it. | ODV-012 (opt-in project save) |
 | U-05 | App images are unsigned: Windows SmartScreen and macOS Gatekeeper warn on first launch. Code signing/notarization needs certificates and accounts. | when certificates exist |
 | U-06 | Only portable app images are produced (zip/tar.gz); no MSI, DMG, deb/rpm, auto-update or desktop-menu installer. | ODV-011 follow-up |
-| U-07 | The macOS and Linux app images are built and launch-probed (`paths`) by CI, but nobody has opened the browser UI on a real macOS or Linux desktop yet; only the Windows image was smoke-tested locally. | ODV-011 verification |
-| U-08 | `jpackage` uses its default icon; there is no project logo/icon yet. A third-party notices file is included in the app image. | when the logo is decided |
+| U-07 | Both browser and JavaFX app images are built and launch-probed by CI (`paths` and the JavaFX smoke flow), but nobody has opened either UI on a real macOS or Linux desktop yet; only the Windows images were smoke-tested locally. | ODV-011/013 verification |
+| U-08 | `jpackage` uses its default icon; there is no project logo/icon yet. A third-party notices file is included in the app images. | when the logo is decided |
+| U-09 | The JavaFX shell works on Windows; JavaFX WebView on Linux depends on platform native libraries and has not been verified there. The browser client remains the fallback. | ODV-013 verification |
+| U-10 | Saved broker profiles live in the settings directory and are listed there, but the import screen still requires choosing a profile file for each import; there is no saved-profile picker. | ODV-0xx |

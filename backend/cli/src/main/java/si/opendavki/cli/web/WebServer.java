@@ -26,7 +26,10 @@ import si.opendavki.broker.profile.ProfileAdapter;
 import si.opendavki.broker.profile.ProfileLoader;
 import si.opendavki.cli.CliPaths;
 import si.opendavki.cli.InputException;
+import si.opendavki.cli.ProjectService;
 import si.opendavki.cli.Services;
+import si.opendavki.cli.SettingsService;
+import si.opendavki.ledger.ProjectFile;
 import si.opendavki.furs.SchemaChecksums;
 import si.opendavki.fx.FxConfig;
 import si.opendavki.json.Json;
@@ -161,15 +164,23 @@ public final class WebServer implements AutoCloseable {
             if (!tokenOk(ex)) { error(ex, 401, "Missing or wrong key. Open the address printed by `serve`, including the part after #."); return; }
             String path = ex.getRequestURI().getPath(), method = ex.getRequestMethod();
             if (method.equals("GET") && path.equals("/api/info")) { json(ex, 200, info()); return; }
+            if (method.equals("GET") && path.equals("/api/settings")) { json(ex, 200, settings().view()); return; }
             if (method.equals("GET") && path.startsWith("/api/ledger/") && path.endsWith("/download")) { downloadLedger(ex, path); return; }
             if (method.equals("GET") && path.startsWith("/api/ledger/")) { json(ex, 200, existingLedger(path)); return; }
-            if (!method.equals("POST")) { error(ex, 405, "Method not allowed"); return; }
+            if (!method.equals("POST") && !method.equals("PUT")) { error(ex, 405, "Method not allowed"); return; }
             byte[] body = readBody(ex.getRequestBody());
+            if (method.equals("PUT") && path.equals("/api/settings")) {
+                json(ex, 200, settings().save(Json.MAPPER.readValue(body, Requests.SettingsUpdate.class).values()));
+                return;
+            }
             switch (path) {
                 case "/api/import" -> json(ex, 200, importStatements(Json.MAPPER.readValue(body, Requests.Import.class)));
                 case "/api/ledger" -> json(ex, 200, loadLedger(Json.MAPPER.readValue(body, Requests.LoadLedger.class)));
                 case "/api/describe" -> json(ex, 200, Map.of("text", describe(Json.MAPPER.readValue(body, Requests.Describe.class))));
                 case "/api/report" -> json(ex, 200, report(Json.MAPPER.readValue(body, Requests.Report.class)));
+                case "/api/settings/files" -> json(ex, 200, settingsFile(Json.MAPPER.readValue(body, Requests.SettingsFile.class)));
+                case "/api/project/save" -> json(ex, 200, saveProject(Json.MAPPER.readValue(body, Requests.ProjectSave.class)));
+                case "/api/project/open" -> json(ex, 200, openProject(Json.MAPPER.readValue(body, Requests.ProjectOpen.class)));
                 default -> error(ex, 404, "Unknown endpoint");
             }
         } catch (InputException | IllegalArgumentException | com.fasterxml.jackson.core.JsonProcessingException e) {
@@ -210,6 +221,31 @@ public final class WebServer implements AutoCloseable {
                 "settings", envFile.toAbsolutePath().normalize().toString(),
                 "schemas", schemaDir.toAbsolutePath().normalize().toString(),
                 "webUi", webDir != null ? webDir.toAbsolutePath().normalize().toString() : "bundled in the application"));
+        return out;
+    }
+
+    private SettingsService settings() {
+        return new SettingsService(envFile);
+    }
+
+    private Map<String, Object> settingsFile(Requests.SettingsFile req) throws IOException {
+        return settings().saveFile(req.kind(), req.name(), decode(req.name(), req.contentBase64()));
+    }
+
+    private Map<String, Object> saveProject(Requests.ProjectSave req) throws IOException {
+        Ledger ledger = ledger(req.ledgerId());
+        String text = ProjectService.save(ledger, req.year(), req.taxNumber(), req.includeTaxNumber());
+        Map<String, Object> out = new java.util.LinkedHashMap<>();
+        out.put("text", text);
+        out.put("filename", ProjectService.suggestedFileName(req.year()));
+        return out;
+    }
+
+    private Map<String, Object> openProject(Requests.ProjectOpen req) throws IOException {
+        ProjectFile project = ProjectService.open(req.text());
+        Map<String, Object> out = new java.util.LinkedHashMap<>(ledgerSummary(project.ledger()));
+        out.put("diagnostics", si.opendavki.ledger.LedgerChecker.check(project.ledger()));
+        out.put("report", project.report());
         return out;
     }
 
