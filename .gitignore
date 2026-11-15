@@ -18,3 +18,9 @@ from_*_to_*.csv
 
 # web interface
 frontend/e2e/out/
+
+backend/out/
+
+backend/statement.csv
+
+backend/ledger.json
