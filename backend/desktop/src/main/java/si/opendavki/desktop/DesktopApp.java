@@ -56,8 +56,8 @@ public final class DesktopApp extends Application {
                 ((JSObject) engine.executeScript("window")).setMember("opendavkiDesktop", bridge);
             }
         });
-        engine.load(server.url());
         smokeIfRequested(engine);
+        engine.load(server.url());
 
         MenuBar menuBar = menuBar(web);
         BorderPane root = new BorderPane(web);
