@@ -7,7 +7,9 @@ package_dir="$root/target/package"
 stage="$package_dir/stage"
 jar="$root/backend/cli/target/opendavki.jar"
 version="$(sed -n 's:.*<version>\(.*\)</version>.*:\1:p' backend/pom.xml | head -n 1)"
-app_version="${version%-SNAPSHOT}"
+# jpackage requires a version whose first component is greater than zero (macOS rejects 0.x.y). The artifact keeps the
+# project version; this is the bundle metadata version only.
+bundle_version='1.0.0'
 
 skip_build=0
 skip_tests=0
@@ -46,12 +48,12 @@ rm -rf "$package_dir"
 mkdir -p "$stage"
 cp "$jar" "$stage/opendavki.jar"
 
-echo "Packaging OpenDavki $app_version for $platform-$arch..."
+echo "Packaging OpenDavki $version for $platform-$arch (bundle version $bundle_version)..."
 modules='java.base,java.desktop,java.net.http,java.sql,java.xml,java.logging,java.naming,jdk.httpserver,jdk.crypto.ec,jdk.unsupported'
 if ! jpackage \
   --type app-image \
   --name OpenDavki \
-  --app-version "$app_version" \
+  --app-version "$bundle_version" \
   --input "$stage" \
   --main-jar opendavki.jar \
   --main-class si.opendavki.cli.Main \

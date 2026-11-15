@@ -27,7 +27,9 @@ if (-not ($listing -contains 'schemas/Doh_KDVP_9.xsd')) { throw "the jar has no 
 
 [xml]$pom = Get-Content (Join-Path $root 'backend\pom.xml')
 $version = [string]$pom.project.version
-$appVersion = $version -replace '-SNAPSHOT$', ''
+# jpackage requires a version whose first component is greater than zero (macOS rejects 0.x.y). The artifact keeps the
+# project version; this is the bundle metadata version only.
+$bundleVersion = '1.0.0'
 $architecture = if ($env:PROCESSOR_ARCHITECTURE) { $env:PROCESSOR_ARCHITECTURE.ToLowerInvariant() } else { 'amd64' }
 $arch = switch ($architecture) {
     'amd64' { 'x64' }
@@ -40,12 +42,12 @@ Remove-Item -Recurse -Force $packageDir -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force $stage | Out-Null
 Copy-Item $jar (Join-Path $stage 'opendavki.jar')
 
-Write-Host "Packaging OpenDavki $appVersion for windows-$arch..."
+Write-Host "Packaging OpenDavki $version for windows-$arch (bundle version $bundleVersion)..."
 $modules = 'java.base,java.desktop,java.net.http,java.sql,java.xml,java.logging,java.naming,jdk.httpserver,jdk.crypto.ec,jdk.unsupported'
 & jpackage `
     --type app-image `
     --name OpenDavki `
-    --app-version $appVersion `
+    --app-version $bundleVersion `
     --input $stage `
     --main-jar opendavki.jar `
     --main-class si.opendavki.cli.Main `

@@ -15,7 +15,8 @@ From the repository root, on the platform you are packaging for:
 
 The scripts run the one-command source build first, verify that the jar really contains `web/index.html` and the
 bundled XSDs, create a `jlink` runtime with `jpackage`, start the packaged launcher once with `paths` from outside the
-repository, and write a `SHA256SUMS` file.
+repository, and write a `SHA256SUMS` file. The app bundle metadata uses version `1.0.0` because macOS rejects a leading
+zero in `--app-version`; the artifact filenames and the project version remain `0.1.0`.
 
 `-SkipBuild` / `--skip-build` packages an existing build. The build is not code-signed; see the limitations below.
 
