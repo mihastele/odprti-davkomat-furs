@@ -46,20 +46,12 @@ jobs:
         include:
           - os: windows-latest
             platform: windows-x64
-            command: ./packaging/package.ps1 -SkipTests
-            shell: pwsh
           - os: macos-13
             platform: macos-x64
-            command: bash packaging/package.sh --skip-tests
-            shell: bash
           - os: macos-14
             platform: macos-arm64
-            command: bash packaging/package.sh --skip-tests
-            shell: bash
           - os: ubuntu-latest
             platform: linux-x64
-            command: bash packaging/package.sh --skip-tests
-            shell: bash
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -75,9 +67,14 @@ jobs:
       - name: Prepare wrappers
         if: runner.os != 'Windows'
         run: chmod +x mvnw build.sh packaging/package.sh
-      - name: Build the app image
-        shell: ${{ matrix.shell }}
-        run: ${{ matrix.command }}
+      - name: Build the app image (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: ./packaging/package.ps1 -SkipTests
+      - name: Build the app image (macOS/Linux)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: bash packaging/package.sh --skip-tests
       - name: Upload the package
         uses: actions/upload-artifact@v4
         with:
