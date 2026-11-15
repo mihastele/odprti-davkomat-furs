@@ -69,6 +69,9 @@ jobs:
       - name: Prepare wrappers
         if: runner.os != 'Windows'
         run: chmod +x mvnw build.sh packaging/package.sh
+      - name: Install Xvfb for the JavaFX smoke test
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y xvfb
       - name: Build the app image (Windows)
         if: runner.os == 'Windows'
         shell: pwsh

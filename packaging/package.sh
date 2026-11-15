@@ -134,7 +134,12 @@ if [ "$platform" = "macos" ]; then
 else
   cp packaging/RUNTIME-DESKTOP-README.txt "$desktop_app/README.txt"
   cp packaging/THIRD-PARTY-NOTICES.txt "$desktop_app/THIRD-PARTY-NOTICES.txt"
-  if ! OPENDAVKI_HOME="$package_dir/smoke-home-desktop" "$desktop_app/bin/OpenDavkiDesktop" --smoke > "$package_dir/desktop-probe.log" 2>&1; then
+  desktop_prefix=()
+  if [ -z "${DISPLAY:-}" ] && command -v xvfb-run >/dev/null 2>&1; then
+    desktop_prefix=(xvfb-run -a)
+  fi
+  if ! OPENDAVKI_HOME="$package_dir/smoke-home-desktop" "${desktop_prefix[@]}" \
+      "$desktop_app/bin/OpenDavkiDesktop" --smoke > "$package_dir/desktop-probe.log" 2>&1; then
     echo "::error title=JavaFX desktop smoke failed::$(tail -n 25 "$package_dir/desktop-probe.log" | tr '\n' ' ')"
     exit 1
   fi
