@@ -96,8 +96,9 @@ project save/open and a download.
 - **Portable app image only.** There is no MSI, DMG, deb, auto-update or desktop-menu installer yet; the artifact is a
   zip/tar.gz (BACKLOG U-06).
 - **No custom icon.** `jpackage` uses its default icon until the maintainers choose a logo (BACKLOG U-08).
-- **JavaFX Linux WebView is unverified.** The shell works on Windows, but JavaFX WebView's Linux native dependencies are
-  platform-specific; the browser client remains the fallback (BACKLOG U-09).
+- **JavaFX Linux WebView is only CI-smoke-tested.** The packaged shell passes the smoke flow under Xvfb on the Linux CI
+  runner, but real Linux window-manager, native file-dialog and download-dialog behaviour remains unverified; the
+  browser client remains the fallback (BACKLOG U-09).
 - **JavaFX packaging is a fat jar.** The desktop artifact is larger (about 76 MB) because it includes JavaFX WebView and
   its native libraries. A jlink/jmod packaging pass could reduce it later.
 - **Linux tray support varies by desktop.** If no tray is available, the browser launcher falls back to the terminal/Ctrl-C

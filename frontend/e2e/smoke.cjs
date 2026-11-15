@@ -128,5 +128,6 @@ function startServer() {
   } finally {
     await browser.close()
     proc.kill()
+    fs.rmSync(settings, { force: true })
   }
 })().catch((e) => { console.error('FAILED:', e.message); process.exit(1) })
