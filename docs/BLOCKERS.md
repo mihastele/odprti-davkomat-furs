@@ -113,10 +113,10 @@ exemption claim, tell me the case. The models exist but have never been tried ag
 
 ## B8. Turn on the CI check (L-10)
 
-`.github/workflows/ci.yml` builds and tests every push and packages Windows, macOS and Linux app images. The first runs
-are green and produced all four artifacts (Windows x64, macOS x64/arm64, Linux x64), including the browser smoke test and
-each package's `paths` probe. What remains is a person opening the UI on a real macOS and Linux desktop; send a note if
-either looks wrong.
+`.github/workflows/ci.yml` builds and tests every push, packages browser and JavaFX clients for Windows x64, macOS
+x64/arm64 and Linux x64, runs the browser smoke test and each package's `paths` probe, and runs the JavaFX smoke flow
+(Linux under Xvfb). The runs are green. What remains is a person opening either UI on a real macOS and Linux desktop;
+send a note if either looks wrong.
 
 ## B9. Code signing and notarization (U-05)
 

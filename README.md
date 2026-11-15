@@ -52,7 +52,7 @@ Principles:
 | Trading 212, Revolut, Trade Republic, eToro, XTB, DEGIRO, Lightyear, N26 | ⬜ planned |
 | Vue 3 browser interface (local server, nothing uploaded) | 🟡 implemented ([docs](docs/web-interface.md)), tried in Chromium only |
 | Self-contained desktop launch (bundled UI, XSDs and JRE; app image for Windows, macOS and Linux) | 🟡 Windows built and smoke-tested locally; macOS/Linux built and launch-probed by CI ([docs](docs/desktop.md)) |
-| JavaFX desktop shell around the same UI | 🟡 implemented on Windows; macOS/Linux WebView awaits verification ([docs](docs/desktop.md)) |
+| JavaFX desktop shell around the same UI | 🟡 packaged and smoke-tested on Windows/macOS/Linux by CI; manual UI interaction still unverified ([docs](docs/desktop.md)) |
 | Settings screen, explicit project save/open, English/Slovenian UI | ✅ implemented; Java diagnostic text remains English |
 
 ## Run it
@@ -63,14 +63,16 @@ The packaging scripts produce self-contained app images with their own Java runt
 XSDs. When the project publishes release artifacts, unzip or untar the one for your platform; you can build the same
 artifact locally with `./packaging/package.ps1` or `./packaging/package.sh`. Then:
 
-- **Windows:** unzip, open the `OpenDavki` folder and double-click `OpenDavki.exe`.
-- **macOS:** open `OpenDavki.app`. The build is unsigned, so the first launch needs right-click → Open (or the
-  Gatekeeper instructions in [docs/desktop.md](docs/desktop.md)).
-- **Linux:** run `OpenDavki/bin/OpenDavki`.
+- **Windows:** unzip, open the `OpenDavki` folder and double-click `OpenDavki.exe` (browser client), or the
+  `OpenDavkiDesktop` folder and `OpenDavkiDesktop.exe` (native JavaFX window).
+- **macOS:** open `OpenDavki.app` or `OpenDavkiDesktop.app`. The build is unsigned, so the first launch needs
+  right-click → Open (or the Gatekeeper instructions in [docs/desktop.md](docs/desktop.md)).
+- **Linux:** run `OpenDavki/bin/OpenDavki` or `OpenDavkiDesktop/bin/OpenDavkiDesktop`.
 
-It starts a server on `127.0.0.1` only, opens the browser interface, and shows a tray icon with **Open** and **Quit**.
-Settings and caches live in the OS user directories; `OpenDavki paths` and `OpenDavki doctor` show exactly where.
-Nothing is uploaded.
+Both clients start the same local server on `127.0.0.1` only and use the same settings and ledger. The browser client
+opens the browser and shows a tray icon with **Open** and **Quit**; the desktop client opens a JavaFX window with
+File → Open in browser, File → Quit and View → Reload. Settings and caches live in the OS user directories;
+`OpenDavki paths` and `OpenDavki doctor` show exactly where. Nothing is uploaded.
 
 ### From source
 
@@ -81,6 +83,7 @@ install is not required.
 ./build.ps1                 # Windows; frontend + Java in one command
 ./build.sh                  # macOS/Linux
 ./run.ps1                   # no arguments: start the interface and open the browser
+java -jar backend/desktop/target/opendavki-desktop.jar   # native JavaFX window
 ```
 
 The built jar also works from any directory:
@@ -199,7 +202,7 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**. 
 - **Only original filings** are produced; corrections and late submissions are partly modelled (D-04).
 - **Audit report and Java diagnostics** are English only; the interface itself switches between English and Slovenian, and the audit is Markdown shown as text (A-01, U-01).
 - **Desktop packaging** is a portable app image, not a signed installer: Windows SmartScreen and macOS Gatekeeper warn about the unsigned build, there is no auto-update, MSI/DMG signing or icon identity yet. CI builds both clients for all platforms and launch-probes them, but nobody has opened the UI on a real macOS or Linux desktop yet (U-05 to U-09).
-- **The JavaFX shell is implemented on Windows** and uses a legacy IIFE bundle, a native file picker and a download bridge. JavaFX WebView on Linux is unverified; the browser client remains the fallback (ODV-013, U-09).
+- **The JavaFX shell** uses a legacy IIFE bundle, a native file picker and a download bridge; CI smoke-tests it on all four packages (Linux under Xvfb). Nobody has yet clicked through it on a real macOS or Linux desktop, so the browser client remains the fallback (ODV-013, U-09).
 - **Saved profiles are stored but not offered as a picker** on the import screen; a profile file is still chosen per import (U-10).
 - **No license file yet**; the CI workflow has run and passes (L-10, see [BLOCKERS](docs/BLOCKERS.md)).
 <!-- KNOWN-LIMITATIONS:END -->
@@ -220,7 +223,7 @@ Full list with IDs and planned tickets: **[docs/BACKLOG.md](docs/BACKLOG.md)**. 
 | ODV-010 | Self-contained runtime: bundled UI/XSDs, user paths, UI by default, `doctor`/`paths` | done (Windows verified; unit tests) |
 | ODV-011 | Cross-platform app images with a bundled JRE, tray, build scripts and CI matrix | done (Windows locally; all four CI artifacts built and launch-probed) |
 | ODV-012 | Settings screen, explicit project save/open, onboarding and localization | done (settings/project e2e; Java diagnostics still English) |
-| ODV-013 | JavaFX WebView shell around the same local UI | done on Windows; macOS/Linux WebView verification pending |
+| ODV-013 | JavaFX WebView shell around the same local UI | done; all four CI packages pass the JavaFX smoke flow |
 | later | More brokers, other forms | |
 
 ## Contributing

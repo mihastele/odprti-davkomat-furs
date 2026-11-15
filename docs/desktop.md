@@ -80,9 +80,9 @@ settings and caches.
 The GitHub Actions matrix builds the browser and JavaFX clients for Windows x64, macOS x64, macOS arm64 and Linux x64.
 The **Windows** builds are created and smoke-tested locally: the browser client starts with its bundled runtime,
 `paths` extracts and verifies the four XSDs, `serve --no-open` returns the bundled interface, and the JavaFX client
-mounts the legacy page, exercises the file-picker and download bridges and imports a one-row statement. CI has produced
-the browser artifacts and each package's `paths` probe; the JavaFX macOS/Linux artifacts must be treated as
-interaction-unverified until someone opens them on those desktops.
+mounts the legacy page, exercises the file-picker and download bridges and imports a one-row statement. CI now produces
+all four 2-client artifact sets and runs both probes; Linux runs the JavaFX smoke flow under Xvfb. Manual UI interaction
+on macOS/Linux is still unverified, so treat those desktops as tested-by-probe rather than visually reviewed.
 
 The e2e smoke test (`node frontend/e2e/smoke.cjs`) starts the self-contained browser jar without `--web-dir` or
 `--schema-dir`. It runs in the CI test job after Playwright's Chromium is installed, and covers reload, settings save,
