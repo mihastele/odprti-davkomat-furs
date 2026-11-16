@@ -16,7 +16,17 @@ class FxTest {
     private static final Path ECB_FILE = Path.of("src/test/resources/fx/ecb-sample.xml");
     private static final LocalDate MAR1 = LocalDate.parse("2024-03-01"), SAT = LocalDate.parse("2024-03-02");
 
-    private static FxConfig cfg(Map<String, String> env) { return FxConfig.from(env); }
+    /** Tests must never read or write the user's real rate cache, so an unset cache dir gets a throw-away one. */
+    private static FxConfig cfg(Map<String, String> env) {
+        if (env.containsKey("OPENDAVKI_FX_CACHE_DIR")) return FxConfig.from(env);
+        try {
+            var withCache = new java.util.HashMap<>(env);
+            withCache.put("OPENDAVKI_FX_CACHE_DIR", Files.createTempDirectory("odv-fx-test").toString());
+            return FxConfig.from(withCache);
+        } catch (IOException e) {
+            throw new java.io.UncheckedIOException(e);
+        }
+    }
 
     @Test void defaultSourceIsEcbWithDocumentedDefaults() {
         FxConfig c = FxConfig.defaults();

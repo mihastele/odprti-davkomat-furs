@@ -320,9 +320,10 @@ class TaxEngineTest {
         assertEquals(r.diagnostics(), r.audit().diagnostics());
     }
 
-    @Test void anUnreachableRateSourceIsReportedOnceNotPerInstrument() {
+    @Test void anUnreachableRateSourceIsReportedOnceNotPerInstrument() throws Exception {
         Instrument other = new Instrument("US5949181045", "MSFT", "Microsoft", Instrument.AssetClass.STOCK);
-        FxService unreachable = new FxService(FxConfig.defaults(), uri -> { throw new java.io.IOException("offline"); });
+        FxService unreachable = new FxService(FxConfig.from(Map.of("OPENDAVKI_FX_CACHE_DIR",
+                java.nio.file.Files.createTempDirectory("odv-fx-test").toString())), uri -> { throw new java.io.IOException("offline"); });
         Ledger l = Ledger.of(List.of(
                 trade("A", Trade.Side.BUY, "2023-01-01", "1", "10", "USD", "0", AAPL), trade("A", Trade.Side.SELL, "2024-01-01", "1", "12", "USD", "0", AAPL),
                 trade("A", Trade.Side.BUY, "2023-01-01", "1", "10", "USD", "0", other), trade("A", Trade.Side.SELL, "2024-01-01", "1", "12", "USD", "0", other)));
