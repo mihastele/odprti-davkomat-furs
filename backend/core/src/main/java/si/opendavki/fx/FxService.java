@@ -107,9 +107,12 @@ public final class FxService {
             }
         }
         if (cachedTable != null) {
-            boolean fresh = Duration.between(Files.getLastModifiedTime(cache).toInstant(), Instant.now()).compareTo(CACHE_TTL) < 0;
             boolean covers = cachedTable.lastDate().isPresent() && !needed.isAfter(cachedTable.lastDate().get());
-            if (fresh || covers) return cachedTable;
+            // A recent file that stops before the needed date (a truncated or foreign file) must not suppress the download;
+            // freshness only matters for dates at or after the last published day, which we cannot know are complete.
+            boolean fresh = Duration.between(Files.getLastModifiedTime(cache).toInstant(), Instant.now()).compareTo(CACHE_TTL) < 0;
+            boolean reachesNeeded = covers && (fresh || needed.isBefore(cachedTable.lastDate().get()));
+            if (reachesNeeded) return cachedTable;
         }
         try {
             byte[] data = fetcher.fetch(uri);

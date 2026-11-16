@@ -110,6 +110,17 @@ class FxTest {
         assertEquals(MAR1, offline.rate("USD", SAT).rateDate());
     }
 
+    @Test void aFreshCacheThatStopsBeforeTheNeededDateIsRefreshed(@TempDir Path dir) throws Exception {
+        // regression: a just-written sample file ending 2024-03-04 hid every 2026 rate for 12 hours
+        Files.copy(ECB_FILE, dir.resolve("ecb-hist.xml"));
+        String newer = "date,currency,rate\n2026-01-16,USD,1.1600\n";
+        AtomicInteger downloads = new AtomicInteger();
+        FxService fx = new FxService(cfg(Map.of("OPENDAVKI_FX_CACHE_DIR", dir.toString())),
+                uri -> { downloads.incrementAndGet(); return newer.getBytes(java.nio.charset.StandardCharsets.UTF_8); });
+        assertEquals(new BigDecimal("1.1600"), fx.rate("USD", LocalDate.parse("2026-01-16")).unitsPerEur());
+        assertEquals(1, downloads.get());
+    }
+
     @Test void downloadFailureWithoutCacheIsReportedAndCorruptDataIsNeverCached(@TempDir Path dir) {
         FxConfig c = cfg(Map.of("OPENDAVKI_FX_CACHE_DIR", dir.toString()));
         assertThrows(RateUnavailableException.class, () -> new FxService(c, uri -> { throw new IOException("offline"); }).rate("USD", MAR1));
